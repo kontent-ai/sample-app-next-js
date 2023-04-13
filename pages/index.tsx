@@ -1,15 +1,13 @@
-import styles from '../styles/Home.module.css'
-import { getHeroUnit } from "../lib/kontentClient";
 import { GetStaticProps, NextPage } from 'next';
-import { HeroUnit } from '../models/content-types/hero_unit';
+import { getRootItem } from "../lib/kontentClient";
+import { Homepage } from '../models';
+import styles from '../styles/Home.module.css';
 
-const Home: NextPage<IndexProps> = ({ heroUnit }) => {
+const Home: NextPage<IndexProps> = ({ homepage }) => {
   return (
     <main >
       <div className={styles.hero}>
-        <h1 className="append-dot">{heroUnit.elements.title.value}</h1>
-        <div className={styles.summary} dangerouslySetInnerHTML={{ __html: heroUnit.elements.marketingMessage.value }}>
-        </div>
+        <h1 className="append-dot">{homepage.elements.title.value}</h1>
       </div>
     </main>
   )
@@ -18,13 +16,13 @@ const Home: NextPage<IndexProps> = ({ heroUnit }) => {
 export default Home
 
 interface IndexProps {
-  heroUnit: HeroUnit;
+  homepage: Homepage;
 }
 
 export const getStaticProps: GetStaticProps<IndexProps> = async () => {
-  const heroUnit = await getHeroUnit();
+  const homepage = await getRootItem();
 
   return {
-    props: { heroUnit },
+    props: { homepage },
   };
 }

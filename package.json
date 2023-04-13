@@ -2,6 +2,7 @@
   "name": "@kontent-ai/boilerplate-next-js",
   "version": "0.3.0",
   "scripts": {
+    "generateModels": "kontent-generate --projectId=d4250b5b-747a-004f-06cd-bef9e9b24150 --outputDir=./models --kontentUrl=https://manage.devkontentmasters.com/v2 --exportRoles=false",
     "dev": "next dev",
     "lint": "next lint",
     "build": "next build",
@@ -10,11 +11,13 @@
   },
   "dependencies": {
     "@kontent-ai/delivery-sdk": "^12.4.0",
+    "@kontent-ai/management-sdk": "^5.0.0",
     "next": "13.0.0",
     "react": "18.2.0",
     "react-dom": "18.2.0"
   },
   "devDependencies": {
+    "@kontent-ai/model-generator": "^5.10.0",
     "@types/node": "^18.11.8",
     "@types/react": "^18.0.24",
     "eslint": "^8.26.0",
