@@ -13,7 +13,7 @@ export type HostedVideo = IContentItem<{
    * Id: 87924912-4861-aa84-176a-1eae7b22529b
    * Codename: video_host
    */
-  video_host: Elements.MultipleChoiceElement;
+  videoHost: Elements.MultipleChoiceElement;
 
   /**
    * Video ID (text)
@@ -21,5 +21,5 @@ export type HostedVideo = IContentItem<{
    * Id: 116a2441-6441-7124-c85b-46a4fef5dcb9
    * Codename: video_id
    */
-  video_id: Elements.TextElement;
+  videoId: Elements.TextElement;
 }>;

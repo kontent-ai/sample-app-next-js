@@ -28,7 +28,7 @@ export type HeroUnit = IContentItem<{
    *
    * Include a main goal of our business. The limit is 80 characters.
    */
-  marketing_message: Elements.RichTextElement;
+  marketingMessage: Elements.RichTextElement;
 
   /**
    * Sitemap (taxonomy)

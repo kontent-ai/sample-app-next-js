@@ -37,7 +37,7 @@ export type AboutUs = IContentItem<{
    *
    * Provide a SEO-friendly URL.
    */
-  url_pattern: Elements.UrlSlugElement;
+  urlPattern: Elements.UrlSlugElement;
 }> &
   GuidelinesForContentCreators &
   Metadata;

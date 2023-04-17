@@ -18,7 +18,9 @@ const deliveryClient = createDeliveryClient({
   propertyNameResolver: camelCasePropertyNameResolver,
   proxy: {
     baseUrl: "http://deliver.devkontentmasters.com",
+    basePreviewUrl: "http://preview-deliver.devkontentmasters.com",
   },
+  previewApiKey: process.env.KONTENT_PREVIEW_API_KEY
 });
 
 const managementClient = createManagementClient({
@@ -41,16 +43,28 @@ const getSpace = (): Promise<SpaceModels.Space> => managementClient
   .toPromise()
   .then(res => res.data)
 
-const getItemById = async <ItemType extends IContentItem>(id: string) => {
+const getItemById = async <ItemType extends IContentItem>(id: string, usePreview: boolean) => {
   const mapiItem = await managementClient.viewContentItem().byItemId(id).toPromise();
   return deliveryClient
     .item<ItemType>(mapiItem.data.codename)
+    .queryConfig({
+      usePreviewMode: usePreview,
+    })
     .toPromise()
     .then(res => res.data);
 }
 
-export const getRootItem = () =>
+export const getRootItem = (usePreview: boolean) =>
   getSpace()
-    .then(s => getItemById<Homepage>(s.webSpotlightRootItem?.id ?? ""))
+    .then(s => getItemById<Homepage>(s.webSpotlightRootItem?.id ?? "", usePreview))
     .then(res => res.item)
+
+export const getItemByCodename = async <ItemType extends IContentItem>(codename: string, usePreview: boolean) =>
+  deliveryClient
+    .item<ItemType>(codename)
+    .queryConfig({
+      usePreviewMode: usePreview,
+    })
+    .toPromise()
+    .then(res => res.data.item);
 

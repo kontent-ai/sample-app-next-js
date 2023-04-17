@@ -21,7 +21,7 @@ export type Page = IContentItem<{
    * Id: f70391e3-4d65-4fe7-8b85-c16580720ef5
    * Codename: show_in_navigation
    */
-  show_in_navigation: Elements.MultipleChoiceElement;
+  showInNavigation: Elements.MultipleChoiceElement;
 
   /**
    * Subpages (subpages)

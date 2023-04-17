@@ -1,13 +1,16 @@
 import { GetStaticProps, NextPage } from 'next';
-import { getRootItem } from "../lib/kontentClient";
-import { Homepage } from '../models';
+import { getItemByCodename, getRootItem } from "../lib/kontentClient";
+import { Homepage, Page } from '../models';
 import styles from '../styles/Home.module.css';
 
-const Home: NextPage<IndexProps> = ({ homepage }) => {
+const Home: NextPage<IndexProps> = props => {
   return (
     <main >
       <div className={styles.hero}>
-        <h1 className="append-dot">{homepage.elements.title.value}</h1>
+        <h1 className="append-dot">{props.homepage.elements.title.value}</h1>
+        <ul>
+          {props.menuItems.map(item => <li key={item.system.id}>{item.system.name}</li>)}
+        </ul>
       </div>
     </main>
   )
@@ -16,13 +19,17 @@ const Home: NextPage<IndexProps> = ({ homepage }) => {
 export default Home
 
 interface IndexProps {
-  homepage: Homepage;
+  readonly homepage: Homepage;
+  readonly menuItems: ReadonlyArray<Page>;
 }
 
-export const getStaticProps: GetStaticProps<IndexProps> = async () => {
-  const homepage = await getRootItem();
+export const getStaticProps: GetStaticProps<IndexProps> = async context => {
+  const homepage = await getRootItem(!!context.preview);
+  const subpages = await Promise.all(homepage.elements.subpages.value.map(c => getItemByCodename<Page>(c, !!context.preview)));
+
+  const menuItems = subpages.filter(p => p.elements.showInNavigation?.value[0]?.codename === "yes");
 
   return {
-    props: { homepage },
+    props: { homepage, menuItems },
   };
 }

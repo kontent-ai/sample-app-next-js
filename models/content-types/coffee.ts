@@ -61,7 +61,7 @@ export type Coffee = IContentItem<{
    *
    * Include a full product description.
    */
-  long_description: Elements.RichTextElement;
+  longDescription: Elements.RichTextElement;
 
   /**
    * Price (number)
@@ -89,7 +89,7 @@ export type Coffee = IContentItem<{
    *
    * Include a product display name.
    */
-  product_name: Elements.TextElement;
+  productName: Elements.TextElement;
 
   /**
    * Product status (taxonomy)
@@ -99,7 +99,7 @@ export type Coffee = IContentItem<{
    *
    * Add a product status if the product is included in a special offering.
    */
-  product_status: Elements.TaxonomyElement<ProductStatus>;
+  productStatus: Elements.TaxonomyElement<ProductStatus>;
 
   /**
    * Short description (rich_text)
@@ -109,7 +109,7 @@ export type Coffee = IContentItem<{
    *
    * Include a short description that fits within 160 characters.
    */
-  short_description: Elements.RichTextElement;
+  shortDescription: Elements.RichTextElement;
 
   /**
    * Sitemap (taxonomy)
@@ -127,7 +127,7 @@ export type Coffee = IContentItem<{
    *
    * Provide a SEO-friendly URL.
    */
-  url_pattern: Elements.UrlSlugElement;
+  urlPattern: Elements.UrlSlugElement;
 
   /**
    * Variety (text)

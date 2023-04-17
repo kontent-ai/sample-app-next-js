@@ -31,7 +31,7 @@ export type Brewer = IContentItem<{
    *
    * Include a full product description.
    */
-  long_description: Elements.RichTextElement;
+  longDescription: Elements.RichTextElement;
 
   /**
    * Manufacturer (taxonomy)
@@ -59,7 +59,7 @@ export type Brewer = IContentItem<{
    *
    * Include a product display name.
    */
-  product_name: Elements.TextElement;
+  productName: Elements.TextElement;
 
   /**
    * Product status (taxonomy)
@@ -69,7 +69,7 @@ export type Brewer = IContentItem<{
    *
    * Add a product status if the product is included in a special offering.
    */
-  product_status: Elements.TaxonomyElement<ProductStatus>;
+  productStatus: Elements.TaxonomyElement<ProductStatus>;
 
   /**
    * Short description (rich_text)
@@ -79,7 +79,7 @@ export type Brewer = IContentItem<{
    *
    * Include a short description that fits within 160 characters.
    */
-  short_description: Elements.RichTextElement;
+  shortDescription: Elements.RichTextElement;
 
   /**
    * Sitemap (taxonomy)
@@ -97,7 +97,7 @@ export type Brewer = IContentItem<{
    *
    * Provide a SEO-friendly URL.
    */
-  url_pattern: Elements.UrlSlugElement;
+  urlPattern: Elements.UrlSlugElement;
 }> &
   GuidelinesForContentCreators &
   Metadata;

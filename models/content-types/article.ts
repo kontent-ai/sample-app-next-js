@@ -27,7 +27,7 @@ export type Article = IContentItem<{
    *
    * Keep the article structured with concise paragraphs complemented with headlines that will help the reader navigate through the article's content.Preferred glossary terms — coffee, brewing, grinder, drip, roast, filter.
    */
-  body_copy: Elements.RichTextElement;
+  bodyCopy: Elements.RichTextElement;
 
   /**
    * Meta description (text)
@@ -37,7 +37,7 @@ export type Article = IContentItem<{
    *
    * Sum up the blog for SEO purposes. Limit for the meta description is 160 characters.
    */
-  meta_description: Elements.TextElement;
+  metaDescription: Elements.TextElement;
 
   /**
    * Meta keywords (text)
@@ -47,7 +47,7 @@ export type Article = IContentItem<{
    *
    * Enter tags separated with a comma. Example: coffee, "coffee roast”, grinder
    */
-  meta_keywords: Elements.TextElement;
+  metaKeywords: Elements.TextElement;
 
   /**
    * Personas (taxonomy)
@@ -67,7 +67,7 @@ export type Article = IContentItem<{
    *
    * Provide a date that will appear on the live site as the date this article was posted live. This date will also influence the order of the articles.
    */
-  post_date: Elements.DateTimeElement;
+  postDate: Elements.DateTimeElement;
 
   /**
    * Product image (asset)
@@ -75,7 +75,7 @@ export type Article = IContentItem<{
    * Id: 84d1c4ca-8b76-44fe-a759-04fc92baa52a
    * Codename: product_image
    */
-  product_image: Elements.AssetsElement;
+  productImage: Elements.AssetsElement;
 
   /**
    * Related articles (modular_content)
@@ -85,7 +85,7 @@ export type Article = IContentItem<{
    *
    * Provide articles with related topics.
    */
-  related_articles: Elements.LinkedItemsElement<IContentItem>;
+  relatedArticles: Elements.LinkedItemsElement<IContentItem>;
 
   /**
    * Sitemap (taxonomy)
@@ -113,7 +113,7 @@ export type Article = IContentItem<{
    *
    * Upload an image at a resolution of at least 600 × 1200 px.
    */
-  teaser_image: Elements.AssetsElement;
+  teaserImage: Elements.AssetsElement;
 
   /**
    * Title (text)
@@ -133,6 +133,6 @@ export type Article = IContentItem<{
    *
    * Provide a SEO-friendly URL.
    */
-  url_pattern: Elements.UrlSlugElement;
+  urlPattern: Elements.UrlSlugElement;
 }> &
   Metadata;

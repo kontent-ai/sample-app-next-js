@@ -80,6 +80,6 @@ export type Office = IContentItem<{
    * Id: e7141da8-8792-a66d-d1c8-1fe704758393
    * Codename: zip_code
    */
-  zip_code: Elements.TextElement;
+  zipCode: Elements.TextElement;
 }> &
   GuidelinesForContentCreators;

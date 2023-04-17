@@ -49,7 +49,7 @@ export type Home = IContentItem<{
    *
    * Assign 1 Hero unit that has been prepared for a home page.
    */
-  hero_unit: Elements.LinkedItemsElement<IContentItem>;
+  heroUnit: Elements.LinkedItemsElement<IContentItem>;
 
   /**
    * Our story (modular_content)
@@ -59,7 +59,7 @@ export type Home = IContentItem<{
    *
    * Assign 1 Fact about us which will be displayed on the home page.
    */
-  our_story: Elements.LinkedItemsElement<IContentItem>;
+  ourStory: Elements.LinkedItemsElement<IContentItem>;
 
   /**
    * Sitemap (taxonomy)
@@ -77,7 +77,7 @@ export type Home = IContentItem<{
    *
    * Provide a SEO-friendly URL.
    */
-  url_pattern: Elements.UrlSlugElement;
+  urlPattern: Elements.UrlSlugElement;
 }> &
   GuidelinesForContentCreators &
   Metadata;

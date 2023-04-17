@@ -13,7 +13,7 @@ export type Tweet = IContentItem<{
    * Id: 8c6db6cf-1003-951e-5407-b2a19c15b4cd
    * Codename: display_options
    */
-  display_options: Elements.MultipleChoiceElement;
+  displayOptions: Elements.MultipleChoiceElement;
 
   /**
    * Theme (multiple_choice)
@@ -29,5 +29,5 @@ export type Tweet = IContentItem<{
    * Id: 20bf9ba1-28fe-203c-5920-6f9610498fb9
    * Codename: tweet_link
    */
-  tweet_link: Elements.TextElement;
+  tweetLink: Elements.TextElement;
 }>;

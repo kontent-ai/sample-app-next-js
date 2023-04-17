@@ -15,7 +15,7 @@ export type Metadata = IContentItem<{
    *
    * Length: 70–150 characters
    */
-  metadata__meta_description: Elements.TextElement;
+  metadataMetaDescription: Elements.TextElement;
 
   /**
    * Meta title (text)
@@ -25,7 +25,7 @@ export type Metadata = IContentItem<{
    *
    * Length: 30–60 characters
    */
-  metadata__meta_title: Elements.TextElement;
+  metadataMetaTitle: Elements.TextElement;
 
   /**
    * og:description (text)
@@ -35,7 +35,7 @@ export type Metadata = IContentItem<{
    *
    * Max. 150 characters
    */
-  metadata__og_description: Elements.TextElement;
+  metadataOgDescription: Elements.TextElement;
 
   /**
    * og:image (asset)
@@ -45,7 +45,7 @@ export type Metadata = IContentItem<{
    *
    * Use images that are at least 1200 × 630 px for best display on high resolution devices. At the minimum, you should use images that are 600 × 315 px to display link page posts with larger images. Images may be up to 1 MB in size.
    */
-  metadata__og_image: Elements.AssetsElement;
+  metadataOgImage: Elements.AssetsElement;
 
   /**
    * og:title (text)
@@ -55,7 +55,7 @@ export type Metadata = IContentItem<{
    *
    * Max. 60 characters
    */
-  metadata__og_title: Elements.TextElement;
+  metadataOgTitle: Elements.TextElement;
 
   /**
    * twitter:creator (text)
@@ -63,7 +63,7 @@ export type Metadata = IContentItem<{
    * Id: 68f65095-c9b4-05d6-a473-2883c2f0c7af
    * Codename: metadata__twitter_creator
    */
-  metadata__twitter_creator: Elements.TextElement;
+  metadataTwitterCreator: Elements.TextElement;
 
   /**
    * twitter:description (text)
@@ -73,7 +73,7 @@ export type Metadata = IContentItem<{
    *
    * A description that concisely summarizes the content as appropriate for presentation within a Tweet. You should not re-use the title as the description, or use this field to describe the general services provided by the website. Max. 150 characters.
    */
-  metadata__twitter_description: Elements.TextElement;
+  metadataTwitterDescription: Elements.TextElement;
 
   /**
    * twitter:image (asset)
@@ -83,7 +83,7 @@ export type Metadata = IContentItem<{
    *
    * Twitter's recommendation: A URL to a unique image representing the content of the page. You should not use a generic image such as your website logo, author photo, or other image that spans multiple pages. Images for this Card should be at least 280 × 150 px. Images may be up to 1 MB in size.Let's go for 560 × 300 px.
    */
-  metadata__twitter_image: Elements.AssetsElement;
+  metadataTwitterImage: Elements.AssetsElement;
 
   /**
    * twitter:site (text)
@@ -91,7 +91,7 @@ export type Metadata = IContentItem<{
    * Id: 34213fdf-0015-8f4f-e5e6-83c6842cff4a
    * Codename: metadata__twitter_site
    */
-  metadata__twitter_site: Elements.TextElement;
+  metadataTwitterSite: Elements.TextElement;
 
   /**
    * twitter:title (text)
@@ -101,5 +101,5 @@ export type Metadata = IContentItem<{
    *
    * Max. 60 characters
    */
-  metadata__twitter_title: Elements.TextElement;
+  metadataTwitterTitle: Elements.TextElement;
 }>;

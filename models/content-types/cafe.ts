@@ -80,6 +80,6 @@ export type Cafe = IContentItem<{
    * Id: bb158ac2-41e1-5a7d-0826-bb8bf6744f0e
    * Codename: zip_code
    */
-  zip_code: Elements.TextElement;
+  zipCode: Elements.TextElement;
 }> &
   GuidelinesForContentCreators;
