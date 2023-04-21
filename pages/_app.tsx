@@ -4,7 +4,7 @@ import { AppProps } from 'next/app'
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <div className="layout">
+    <div className="w-screen h-screen bg-green-100">
       <Component {...pageProps} />
       <Head>
         <title>Kontent.ai Next.js boilerplate</title>

@@ -4,9 +4,11 @@ import { transformToPortableText } from '@pokornyd/kontent-ai-rich-text-parser/d
 import { PortableText, PortableTextReactComponents } from '@portabletext/react';
 import { GetStaticProps, NextPage } from 'next';
 import Image from 'next/image';
+import { HeroImage } from '../components/landingPage/ui/heroImage';
+import { Footer } from '../components/shared/ui/footer';
+import { Menu } from '../components/shared/ui/menu';
 import { getItemByCodename, getRootItem } from "../lib/kontentClient";
 import { Article, Homepage, Page } from '../models';
-import styles from '../styles/Home.module.css';
 
 const Home: NextPage<IndexProps> = props => {
   const teaserImage = props.content.elements.teaserImage.value[0];
@@ -18,26 +20,20 @@ const Home: NextPage<IndexProps> = props => {
   const parsedContent = transformToPortableText(parsedTree);
 
   return (
-    <main >
-      <div className={styles.hero}>
-        <h1 className="append-dot">{props.homepage.elements.title.value}</h1>
-        <ul>
-          {props.menuItems.map(item => <li key={item.system.id}>{item.system.name}</li>)}
-        </ul>
-        {teaserImage && (
-          <Image
-            src={teaserImage.url}
-            alt={teaserImage.description?.[0] ?? "Teaser image"}
-            width={400}
-            height={500}
-          />
-        )}
-        <div>Content: </div>
-        <div>
+    <div className="h-full flex flex-col items-center">
+      <Menu links={props.menuItems.map(i => ({ url: i.system.id, title: i.system.name }))} />
+      <main className="px-10 py-5 container grow">
+        <HeroImage url={teaserImage.url}>
+          <div className="h-full flex justify-center items-center relative">
+            <h1 className="text-4xl">{props.homepage.elements.title.value}</h1>
+          </div>
+        </HeroImage>
+        <div className="flex flex-col items-center mt-20">
           <PortableText value={parsedContent} components={resolvers} />
         </div>
-      </div>
-    </main>
+      </main>
+      <Footer />
+    </div>
   )
 }
 
