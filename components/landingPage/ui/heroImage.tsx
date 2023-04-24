@@ -13,7 +13,7 @@ export const HeroImage: FC<Props> = props => (
       src={props.url}
       alt="Hero image"
       fill
-      className="object-contain"
+      className="object-cover"
     />
     {props.children}
   </figure>
