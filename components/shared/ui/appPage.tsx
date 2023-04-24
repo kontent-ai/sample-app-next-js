@@ -15,12 +15,7 @@ type Props = Readonly<{
 }>;
 
 export const AppPage: FC<Props> = props => {
-  useSmartLink({
-    defaultDataAttributes: {
-      projectId: "5e23f9dd-ef3a-00fb-1a3e-631a7be899bc",
-      languageCodename: "en-US",
-    }
-  });
+  useSmartLink();
   return (
     <div className="h-full flex flex-col items-center">
       <Menu links={props.menuItems} />
