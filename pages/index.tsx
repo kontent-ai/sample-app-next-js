@@ -20,10 +20,18 @@ const Home: NextPage<IndexProps> = props => {
   const parsedContent = transformToPortableText(parsedTree);
 
   return (
-    <AppPage menuItems={props.menuItems.map(i => ({ url: i.system.id, title: i.system.name }))}>
+    <AppPage
+      menuItems={props.menuItems.map(i => ({ url: i.system.id, title: i.system.name }))}
+      itemId={props.homepage.system.id}
+    >
       <HeroImage url={teaserImage.url}>
         <div className="h-full flex justify-center items-center relative">
-          <h1 className="text-4xl">{props.homepage.elements.title.value}</h1>
+          <h1
+            className="text-4xl"
+            data-kontent-element-codename="title"
+          >
+            {props.homepage.elements.title.value}
+          </h1>
         </div>
       </HeroImage>
       <div className="flex flex-col items-center mt-20">

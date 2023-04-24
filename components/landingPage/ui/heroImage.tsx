@@ -14,8 +14,7 @@ export const HeroImage: FC<Props> = props => (
       src={props.url}
       alt="Hero image"
       fill
-      className="object-contain"
-      loader={ImageLoader}
+      className="object-cover"
     />
     {props.children}
   </figure>
