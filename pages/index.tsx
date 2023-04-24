@@ -1,6 +1,6 @@
-import { nodeParse } from '@pokornyd/kontent-ai-rich-text-parser/dist/cjs/src/parser/node';
-import { IPortableTextImage } from '@pokornyd/kontent-ai-rich-text-parser/dist/cjs/src/parser/parser-models';
-import { transformToPortableText } from '@pokornyd/kontent-ai-rich-text-parser/dist/cjs/src/transformers/portable-text-transformer/portable-text-transformer';
+import { nodeParse } from '@kontent-ai/rich-text-resolver/dist/cjs/src/parser/node';
+import { IPortableTextImage } from '@kontent-ai/rich-text-resolver/dist/cjs/src/parser/parser-models';
+import { transformToPortableText } from '@kontent-ai/rich-text-resolver/dist/cjs/src/transformers/portable-text-transformer/portable-text-transformer';
 import { PortableText, PortableTextReactComponents } from '@portabletext/react';
 import { GetStaticProps, NextPage } from 'next';
 import Image from 'next/image';
@@ -8,6 +8,7 @@ import { HeroImage } from '../components/landingPage/ui/heroImage';
 import { AppPage } from '../components/shared/ui/appPage';
 import { getItemByCodename, getRootItem } from "../lib/kontentClient";
 import { Article, Homepage, Page } from '../models';
+import ImageLoader from '../lib/imageLoader';
 
 const Home: NextPage<IndexProps> = props => {
   const teaserImage = props.content.elements.teaserImage.value[0];
@@ -42,6 +43,7 @@ const resolvers: Partial<PortableTextReactComponents> = {
         alt="Cannot get description for assets in rich text :/"
         width={400}
         height={200}
+        loader={ImageLoader}
       />;
     },
   },
