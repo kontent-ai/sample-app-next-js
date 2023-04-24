@@ -63,6 +63,5 @@ export const getStaticProps: GetStaticProps<IndexProps> = async context => {
 
   return {
     props: { homepage, menuItems, content: homepage.elements.content.linkedItems[0] as Article },
-    revalidate: 5,
   };
 }
