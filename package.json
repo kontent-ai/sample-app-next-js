@@ -13,6 +13,7 @@
     "@kontent-ai/delivery-sdk": "^12.4.0",
     "@kontent-ai/management-sdk": "^5.0.0",
     "@kontent-ai/rich-text-resolver": "^0.0.2",
+    "@netlify/plugin-nextjs": "^4.36.0",
     "@portabletext/react": "^2.0.2",
     "next": "13.0.0",
     "react": "18.2.0",
