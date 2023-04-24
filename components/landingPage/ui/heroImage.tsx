@@ -1,5 +1,6 @@
 import { FC, ReactNode } from "react";
 import Image from 'next/image';
+import ImageLoader from '../../../lib/imageLoader';
 
 type Props = Readonly<{
   url: string;
@@ -14,6 +15,7 @@ export const HeroImage: FC<Props> = props => (
       alt="Hero image"
       fill
       className="object-contain"
+      loader={ImageLoader}
     />
     {props.children}
   </figure>

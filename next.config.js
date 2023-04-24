@@ -1,6 +1,6 @@
 module.exports = {
   images: {
     loader: "custom",
-    loaderFile: "./lib/imageLoader.ts",
+    // loaderFile: "./lib/imageLoader.ts",
   }
 }

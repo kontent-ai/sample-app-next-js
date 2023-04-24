@@ -1,6 +1,8 @@
 import { FC } from "react";
 import Image from "next/image"
 import Link from "next/link";
+import ImageLoader from '../../lib/imageLoader';
+
 
 type Props = Readonly<{
   imageUrl: string;
@@ -19,6 +21,8 @@ export const ListItem: FC<Props> = props => (
           alt={props.title}
           fill
           className="object-contain"
+          loader={ImageLoader}
+
         />
       </figure>
       <div className="border-t-2 rounded border-t-gray-100 mx-3 my-3" />
