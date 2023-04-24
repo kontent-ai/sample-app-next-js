@@ -1,6 +1,6 @@
-import { nodeParse } from '@pokornyd/kontent-ai-rich-text-parser/dist/cjs/src/parser/node';
-import { IPortableTextImage } from '@pokornyd/kontent-ai-rich-text-parser/dist/cjs/src/parser/parser-models';
-import { transformToPortableText } from '@pokornyd/kontent-ai-rich-text-parser/dist/cjs/src/transformers/portable-text-transformer/portable-text-transformer';
+import { nodeParse } from '@kontent-ai/rich-text-resolver/dist/cjs/src/parser/node';
+import { IPortableTextImage } from '@kontent-ai/rich-text-resolver/dist/cjs/src/parser/parser-models';
+import { transformToPortableText } from '@kontent-ai/rich-text-resolver/dist/cjs/src/transformers/portable-text-transformer/portable-text-transformer';
 import { PortableText, PortableTextReactComponents } from '@portabletext/react';
 import { GetStaticProps, NextPage } from 'next';
 import Image from 'next/image';

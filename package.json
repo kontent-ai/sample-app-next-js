@@ -10,12 +10,11 @@
     "start": "next start"
   },
   "dependencies": {
-    "@kontent-ai/delivery-sdk": "^12.4.0",
+    "@kontent-ai/delivery-sdk": "^14.0.1",
     "@kontent-ai/management-sdk": "^5.0.0",
+    "@kontent-ai/rich-text-resolver": "^0.0.2",
     "@kontent-ai/smart-link": "^3.0.0",
-    "@netlify/next": "^1.4.5",
-    "@netlify/plugin-nextjs": "^4.35.0",
-    "@pokornyd/kontent-ai-rich-text-parser": "^0.1.11",
+    "@netlify/plugin-nextjs": "^4.36.0",
     "@portabletext/react": "^2.0.2",
     "next": "13.0.0",
     "react": "18.2.0",
