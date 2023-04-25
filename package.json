@@ -2,7 +2,7 @@
   "name": "@kontent-ai/boilerplate-next-js",
   "version": "0.3.0",
   "scripts": {
-    "generateModels": "kontent-generate --projectId=d4250b5b-747a-004f-06cd-bef9e9b24150 --outputDir=./models --kontentUrl=https://manage.devkontentmasters.com/v2 --exportRoles=false --elementResolver=camelCase",
+    "generateModels": "kontent-generate --projectId=2cedc519-a547-01ba-dde7-b01e00b909a1 --outputDir=./models --kontentUrl=https://manage.devkontentmasters.com/v2 --exportRoles=false --elementResolver=camelCase",
     "dev": "next dev",
     "lint": "next lint",
     "build": "next build",

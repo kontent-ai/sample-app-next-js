@@ -2,8 +2,6 @@ import { GetStaticProps } from "next/types";
 import { FC } from "react";
 import { ListItem } from "../components/listingPage/ListItem";
 import { AppPage } from "../components/shared/ui/appPage";
-import { getItemByCodename, getRootItem } from "../lib/kontentClient";
-import { Page } from "../models";
 
 type Product = Readonly<{
   imageUrl: string;
@@ -12,11 +10,10 @@ type Product = Readonly<{
 
 type Props = Readonly<{
   products: ReadonlyArray<Product>;
-  menuItems: ReadonlyArray<Page>;
 }>;
 
 export const Products: FC<Props> = props => (
-  <AppPage menuItems={props.menuItems.map(i => ({ url: i.system.id, title: i.system.name }))}>
+  <AppPage menuItems={[]}>
     <h1 className="text-5xl font-bold flex justify-center">Our great products: </h1>
     <ul className="w-full flex flex-wrap list-none gap-32 pt-36">
       {props.products.map(p => <ListItem key={p.name} imageUrl={p.imageUrl} title={p.name} detailUrl="test" />)}
@@ -25,13 +22,8 @@ export const Products: FC<Props> = props => (
 );
 
 export const getStaticProps: GetStaticProps<Props> = async context => {
-  const homepage = await getRootItem(!!context.preview);
-  const subpages = await Promise.all(homepage.elements.subpages.value.map(c => getItemByCodename<Page>(c, !!context.preview)));
-
-  const menuItems = subpages.filter(p => p.elements.showInNavigation?.value[0]?.codename === "yes");
-
   return {
-    props: { menuItems, products: sampleProducts },
+    props: { products: sampleProducts },
   };
 }
 

@@ -1,9 +1,5 @@
-// Kontent.ai Delivery API
-
-
-import { createDeliveryClient, camelCasePropertyNameResolver, IContentItem } from '@kontent-ai/delivery-sdk'
-import { createManagementClient, SpaceModels } from '@kontent-ai/management-sdk';
-import { HeroUnit, Homepage } from '../models';
+import { camelCasePropertyNameResolver, createDeliveryClient } from '@kontent-ai/delivery-sdk';
+import { WebSpotlightRoot } from '../models/content-types/web_spotlight_root';
 
 const sourceTrackingHeaderName = 'X-KC-SOURCE'
 
@@ -23,48 +19,17 @@ const deliveryClient = createDeliveryClient({
   previewApiKey: process.env.KONTENT_PREVIEW_API_KEY
 });
 
-const managementClient = createManagementClient({
-  apiKey: process.env.KONTENT_MANAGEMENT_KEY || 'key not found',
-  baseUrl: "https://manage.devkontentmasters.com/v2",
-  environmentId: process.env.KONTENT_ENVIRONMENT_ID,
-});
+const homepageTypeCodename = "web_spotlight_root" as const;
 
-export async function getHeroUnit(): Promise<HeroUnit> {
-  const response = await deliveryClient
-    .item<HeroUnit>('home_page_hero_unit')
-    .toPromise()
-
-  return (response.data.item);
-}
-
-const getSpace = (): Promise<SpaceModels.Space> => managementClient
-  .viewSpace()
-  .bySpaceCodename(process.env.KONTENT_SPACE_CODENAME || "")
-  .toPromise()
-  .then(res => res.data)
-
-const getItemById = async <ItemType extends IContentItem>(id: string, usePreview: boolean) => {
-  const mapiItem = await managementClient.viewContentItem().byItemId(id).toPromise();
-  return deliveryClient
-    .item<ItemType>(mapiItem.data.codename)
-    .queryConfig({
-      usePreviewMode: usePreview,
-    })
-    .toPromise()
-    .then(res => res.data);
-}
-
-export const getRootItem = (usePreview: boolean) =>
-  getSpace()
-    .then(s => getItemById<Homepage>(s.webSpotlightRootItem?.id ?? "", usePreview))
-    .then(res => res.item)
-
-export const getItemByCodename = async <ItemType extends IContentItem>(codename: string, usePreview: boolean) =>
+export const getHomepage = (usePreview: boolean) =>
   deliveryClient
-    .item<ItemType>(codename)
+    .items()
+    .type(homepageTypeCodename)
+    .collection(process.env.KONTENT_COLLECTION_CODENAME || '')
     .queryConfig({
       usePreviewMode: usePreview,
     })
     .toPromise()
-    .then(res => res.data.item);
+    .then(res => res.data.items[0] as WebSpotlightRoot | undefined)
+
 
