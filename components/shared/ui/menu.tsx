@@ -11,7 +11,7 @@ type Props = Readonly<{
 }>;
 
 export const Menu: FC<Props> = props => (
-  <menu className="w-screen h-16 shadow-md grow-0 px-10 py-1 flex flex-auto justify-end items-center gap-x-5 bg-green-300">
+  <menu className="w-full h-16 shadow-md grow-0 px-10 py-1 flex flex-auto shrink-0 justify-end items-center gap-x-5 bg-green-300">
     {props.links.map(link => (
       <li
         key={link.title}

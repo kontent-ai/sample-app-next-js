@@ -17,7 +17,7 @@ type Props = Readonly<{
 export const AppPage: FC<Props> = props => {
   useSmartLink();
   return (
-    <div className="h-full flex flex-col items-center">
+    <div className="grow flex flex-col items-center">
       <Menu links={props.menuItems} />
       <main 
         className="px-10 py-5 container grow"
