@@ -26,7 +26,7 @@ const deliveryClient = createDeliveryClient({
 const managementClient = createManagementClient({
   apiKey: process.env.KONTENT_MANAGEMENT_KEY || 'key not found',
   baseUrl: "https://manage.devkontentmasters.com/v2",
-  environmentId: process.env.KONTENT_PROJECT_ID,
+  environmentId: process.env.KONTENT_ENVIRONMENT_ID,
 });
 
 export async function getHeroUnit(): Promise<HeroUnit> {
