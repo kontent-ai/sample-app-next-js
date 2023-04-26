@@ -4,7 +4,7 @@ import { useEffect } from "react";
 export const useSmartLink = () => useEffect(() => {
   const sdk = KontentSmartLink.initialize({
     defaultDataAttributes: {
-      projectId: "5e23f9dd-ef3a-00fb-1a3e-631a7be899bc",
+      projectId: "2cedc519-a547-01ba-dde7-b01e00b909a1",
       languageCodename: "en-US",
     }
   });
