@@ -7,8 +7,8 @@ export type PerCollectionCodenames = Readonly<{
 export const pageCodenames = {
   aboutUs: {
     healthtech_medical: "about_us",
-    healthtech_surgical: "not_implemented_yet",
-    healthtech_imaging: "not_implemented_yet",
+    healthtech_surgical: "about_us_f1ef38e",
+    healthtech_imaging: "about_us_0d30999",
   },
 } as const satisfies Record<string, PerCollectionCodenames>;
 
