@@ -8,7 +8,10 @@ type Props = Readonly<{
 }>;
 
 export const HeroUnitComponent: FC<Props> = props => (
-  <HeroImage url={props.item.elements.backgroundImage.value[0]?.url}>
+  <HeroImage
+    url={props.item.elements.backgroundImage.value[0]?.url}
+    itemId={props.item.system.id}
+  >
     <h1 data-kontent-element-codename={contentTypes.component___hero_unit.elements.title.codename}>
       {props.item.elements.title.value}
     </h1>

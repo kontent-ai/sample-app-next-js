@@ -13,7 +13,10 @@ export const RichTextContentComponent: FC<Props> = props => {
   const portableText = transformToPortableText(nodeParse(props.item.elements.content.value));
 
   return (
-    <div data-kontent-element-codename={contentTypes.component___rich_text_content.elements.content.codename}>
+    <div
+      data-kontent-item-id={props.item.system.id}
+      data-kontent-element-codename={contentTypes.component___rich_text_content.elements.content.codename}
+    >
       <PortableText value={portableText} />
     </div>
   );

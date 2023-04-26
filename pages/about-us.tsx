@@ -3,7 +3,7 @@ import { FC } from "react";
 import { Content } from "../components/shared/Content";
 import { AppPage } from "../components/shared/ui/appPage";
 import { getItemByCodename } from "../lib/kontentClient";
-import { Page } from "../models"
+import { Page, contentTypes } from "../models"
 import { pageCodenames } from "../lib/collectionCodenames";
 
 type Props = Readonly<{
@@ -11,8 +11,12 @@ type Props = Readonly<{
 }>;
 
 const Component: FC<Props> = props => (
-  <AppPage>
-    <h1>{props.page.elements.title.value}</h1>
+  <AppPage itemId={props.page.system.id}>
+    <h1
+      data-kontent-element-codename={contentTypes.page.elements.title.codename}
+    >
+      {props.page.elements.title.value}
+    </h1>
     {props.page.elements.content.linkedItems.map(piece => (
       <Content key={piece.system.id} item={piece as any} />
     ))}
