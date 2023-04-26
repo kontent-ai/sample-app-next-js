@@ -4,6 +4,7 @@ import { Content } from "../components/shared/Content";
 import { AppPage } from "../components/shared/ui/appPage";
 import { getItemByCodename } from "../lib/kontentClient";
 import { Page } from "../models"
+import { pageCodenames } from "../lib/collectionCodenames";
 
 type Props = Readonly<{
   page: Page;
@@ -19,7 +20,7 @@ const Component: FC<Props> = props => (
 );
 
 export const getStaticProps: GetStaticProps<Props> = async context => {
-  const page = await getItemByCodename<Page>("about_us", !!context.preview);
+  const page = await getItemByCodename<Page>(pageCodenames.aboutUs, !!context.preview);
 
   return {
     props: { page },
