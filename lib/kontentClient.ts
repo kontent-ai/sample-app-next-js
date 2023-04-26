@@ -1,4 +1,4 @@
-import { camelCasePropertyNameResolver, createDeliveryClient } from '@kontent-ai/delivery-sdk';
+import { camelCasePropertyNameResolver, createDeliveryClient, IContentItem } from '@kontent-ai/delivery-sdk';
 import { WebSpotlightRoot } from '../models/content-types/web_spotlight_root';
 
 const sourceTrackingHeaderName = 'X-KC-SOURCE'
@@ -18,6 +18,15 @@ const deliveryClient = createDeliveryClient({
   },
   previewApiKey: process.env.KONTENT_PREVIEW_API_KEY
 });
+
+export const getItemByCodename = <ItemType extends IContentItem>(codename: string, usePreview: boolean): Promise<ItemType> =>
+  deliveryClient
+    .item(codename)
+    .queryConfig({
+      usePreviewMode: usePreview,
+    })
+    .toPromise()
+    .then(res => res.data.item as ItemType);
 
 const homepageTypeCodename = "web_spotlight_root" as const;
 

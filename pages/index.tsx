@@ -8,10 +8,7 @@ type Props = Readonly<{
 }>;
 
 const Home: NextPage<Props> = props => (
-  <AppPage
-    menuItems={[]}
-    itemId={props.homepage.system.id}
-  >
+  <AppPage itemId={props.homepage.system.id}>
     <div className="grow">
       Some content will be rendered here.
     </div>

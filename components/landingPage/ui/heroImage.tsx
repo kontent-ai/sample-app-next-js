@@ -15,7 +15,11 @@ export const HeroImage: FC<Props> = props => (
       fill
       className="object-cover"
     />
-    {props.children}
+    <div className="relative w-full h-full flex justify-center items-center">
+      <div>
+        {props.children}
+      </div>
+    </div>
   </figure>
 );
 
