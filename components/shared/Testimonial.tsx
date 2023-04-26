@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { Testimonial } from "../../models";
+import { Testimonial, contentTypes } from "../../models";
 import { AuthorVertical } from "./AuthorVertical";
 import { AuthorHorizontal } from "./AuthorHorizontal";
 
@@ -9,13 +9,16 @@ type Props = Readonly<{
 
 export const TestimonialComponent: FC<Props> = props => {
   return (
-    <section className={`flex gap-4 ${layoutClasses(props.item)}`}>
+    <section
+      className={`flex gap-4 ${layoutClasses(props.item)}`}
+      data-kontent-item-id={props.item.system.id}
+    >
       {renderAuthor(props.item)}
       <div>
-        <p>
+        <p data-kontent-element-codename={contentTypes.testimonial.elements.title.codename}>
           {props.item.elements.title.value}
         </p>
-        <p>
+        <p data-kontent-element-codename={contentTypes.testimonial.elements.subtitle.codename}>
           {props.item.elements.subtitle.value}
         </p>
       </div>
