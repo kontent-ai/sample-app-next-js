@@ -32,6 +32,7 @@ export const getItemByCodename = <ItemType extends IContentItem>(codename: PerCo
     .queryConfig({
       usePreviewMode: usePreview,
     })
+    .withParameter({ getParam: () => "depth=10" })
     .toPromise()
     .then(res => res.data.item as ItemType);
 
