@@ -1,6 +1,7 @@
 export * from './author';
 export * from './callout';
 export * from './composable_page';
+export * from './cta_button';
 export * from './component___footer';
 export * from './component___hero_unit';
 export * from './page';

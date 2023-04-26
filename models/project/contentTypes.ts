@@ -157,6 +157,43 @@ export const contentTypes = {
   },
 
   /**
+   * CTA Button
+   */
+  cta_button: {
+    codename: 'cta_button',
+    id: 'bbbce5ce-5a0c-45fe-8e32-bb6eb635510e',
+    externalId: undefined,
+    name: 'CTA Button',
+    elements: {
+      /**
+       * Button text (text)
+       */
+      button_text: {
+        codename: 'button_text',
+        id: '02379144-f60e-4877-9d2b-eb4bf1bc394a',
+        externalId: undefined,
+        name: 'Button text',
+        required: true,
+        type: 'text',
+        snippetCodename: undefined,
+      },
+
+      /**
+       * Target URL (text)
+       */
+      target_url: {
+        codename: 'target_url',
+        id: 'b57d180f-27af-41c5-a2ca-3cfcf4b2401f',
+        externalId: undefined,
+        name: 'Target URL',
+        required: true,
+        type: 'text',
+        snippetCodename: undefined,
+      },
+    },
+  },
+
+  /**
    * Footer
    */
   component___footer: {
@@ -451,15 +488,56 @@ export const contentTypes = {
     name: 'Testimonial',
     elements: {
       /**
-       * Image (asset)
+       * Author (modular_content)
        */
-      image: {
-        codename: 'image',
-        id: '2000aedc-4a17-4ff9-8978-f40aa5e8fa32',
+      author: {
+        codename: 'author',
+        id: '6811e346-dc62-48e5-b138-a63cb7b34c99',
         externalId: undefined,
-        name: 'Image',
+        name: 'Author',
         required: false,
-        type: 'asset',
+        type: 'modular_content',
+        snippetCodename: undefined,
+      },
+
+      /**
+       * Format (multiple_choice)
+       *
+       * Defines how the individual testimonial elements are organized.
+       */
+      format: {
+        codename: 'format',
+        id: '999d2af3-212d-4d5d-9348-5e14c3e9f957',
+        externalId: undefined,
+        name: 'Format',
+        required: false,
+        type: 'multiple_choice',
+        snippetCodename: undefined,
+      },
+
+      /**
+       * Subtitle (text)
+       */
+      subtitle: {
+        codename: 'subtitle',
+        id: '1361ee48-656f-4f72-9c89-b9e8d3244085',
+        externalId: undefined,
+        name: 'Subtitle',
+        required: false,
+        type: 'text',
+        snippetCodename: undefined,
+      },
+
+      /**
+       * Title (text)
+       */
+      title: {
+        codename: 'title',
+        id: '08a335a9-fa58-455c-928c-df57e7402af5',
+        externalId: undefined,
+        name: 'Title',
+        required: false,
+        type: 'text',
         snippetCodename: undefined,
       },
     },
