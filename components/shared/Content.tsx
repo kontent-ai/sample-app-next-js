@@ -27,7 +27,7 @@ const componentMap: Readonly<{ [key in keyof AcceptedTypesByCodename]: Component
   testimonial: TestimonialComponent,
 };
 
-// Unfortunately, we need to define the relationship manually, becase the generator doesn't define it itself. :/
+// Unfortunately, we need to define the relationship manually, because the generator doesn't define it itself. :/
 type AcceptedTypesByCodename = {
   [contentTypes.component___hero_unit.codename]: HeroUnit;
   [contentTypes.component___rich_text_content.codename]: RichTextContent;
