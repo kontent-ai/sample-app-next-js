@@ -18,7 +18,7 @@ export const Menu: FC<Props> = props => (
         className="h-full"
       >
         <Link
-          className="h-full px-5 flex items-center hover:bg-green-500 hover:text-white cursor-pointer rounded"
+          className="h-full px-5 flex items-center cursor-pointer rounded"
           href={link.url}
         >
           {link.title}

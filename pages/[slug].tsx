@@ -21,6 +21,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
     ))
     return {
         paths,
+        // TODO decide the behavior
         fallback: false, // can also be true or 'blocking'
     }
 }
@@ -44,11 +45,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
     const page = await getItemByCodename<Page>(pageCodename, !!context.preview);
     if (page === null) {
         return {
-            redirect: {
-                destination: '/404',
-                // TODO
-                permanent: true
-            }
+            notFound: true
         };
     };
 

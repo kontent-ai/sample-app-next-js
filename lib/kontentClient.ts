@@ -1,4 +1,4 @@
-import { camelCasePropertyNameResolver, createDeliveryClient, IContentItem } from '@kontent-ai/delivery-sdk';
+import { camelCasePropertyNameResolver, createDeliveryClient, DeliveryError, IContentItem } from '@kontent-ai/delivery-sdk';
 import { WebSpotlightRoot } from '../models/content-types/web_spotlight_root';
 import { isValidCollectionCodename, PerCollectionCodenames } from './routing';
 
@@ -38,14 +38,28 @@ export const getItemByCodename = <ItemType extends IContentItem>(codename: PerCo
     .queryConfig({
       usePreviewMode: usePreview,
     })
-    .withParameter({ getParam: () => "depth=10" })
+    .depthParameter(10)
     .toPromise()
     .then(res => {
-      if(res.response.status === 404) {
+      if (res.response.status === 404) {
         return null;
       }
       return res.data.item as ItemType
+    })
+    .catch((error) => {
+      debugger;
+      if (error instanceof DeliveryError) {
+        // delivery specific error (e.g. item with codename not found...)
+        console.error(error.message, error.errorCode);
+        return null;
+      } else {
+        // some other error
+        console.error("HTTP request error", error);
+        // throw error;
+        return null;
+      }
     });
+
 }
 
 const homepageTypeCodename = "web_spotlight_root" as const;
