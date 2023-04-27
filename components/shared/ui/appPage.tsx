@@ -14,8 +14,9 @@ export const AppPage: FC<Props> = props => {
   return (
     <div className="h-full grow flex flex-col items-center">
       <Menu links={defaultMenu} />
+      {/* https://tailwindcss.com/docs/typography-plugin */}
       <main
-        className="px-10 py-5 container grow h-full"
+        className="prose py-5 container grow h-full"
         data-kontent-item-id={props.itemId}
       >
         {props.children}

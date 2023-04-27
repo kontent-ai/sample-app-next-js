@@ -1,6 +1,6 @@
 import { camelCasePropertyNameResolver, createDeliveryClient, IContentItem } from '@kontent-ai/delivery-sdk';
 import { WebSpotlightRoot } from '../models/content-types/web_spotlight_root';
-import { isValidCollectionCodename, PerCollectionCodenames } from './collectionCodenames';
+import { isValidCollectionCodename, PerCollectionCodenames } from './routing';
 
 const { KONTENT_COLLECTION_CODENAME } = process.env;
 
@@ -26,15 +26,27 @@ const deliveryClient = createDeliveryClient({
   previewApiKey: process.env.KONTENT_PREVIEW_API_KEY
 });
 
-export const getItemByCodename = <ItemType extends IContentItem>(codename: PerCollectionCodenames, usePreview: boolean): Promise<ItemType> =>
-  deliveryClient
-    .item(codename[KONTENT_COLLECTION_CODENAME])
+export const getItemByCodename = <ItemType extends IContentItem>(codename: PerCollectionCodenames, usePreview: boolean): Promise<ItemType | null> => {
+  const itemCodename = codename[KONTENT_COLLECTION_CODENAME];
+
+  if (itemCodename === null) {
+    return Promise.resolve(null);
+  }
+
+  return deliveryClient
+    .item(itemCodename)
     .queryConfig({
       usePreviewMode: usePreview,
     })
     .withParameter({ getParam: () => "depth=10" })
     .toPromise()
-    .then(res => res.data.item as ItemType);
+    .then(res => {
+      if(res.response.status === 404) {
+        return null;
+      }
+      return res.data.item as ItemType
+    });
+}
 
 const homepageTypeCodename = "web_spotlight_root" as const;
 

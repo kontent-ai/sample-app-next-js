@@ -9,7 +9,7 @@ type Props = Readonly<{
 
 const Home: NextPage<Props> = props => (
   <AppPage itemId={props.homepage.system.id}>
-    <div className="grow">
+    <div className="prose">
       Some content will be rendered here.
     </div>
   </AppPage>

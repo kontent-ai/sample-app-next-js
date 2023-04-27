@@ -1,14 +1,19 @@
 export type PerCollectionCodenames = Readonly<{
-  healthtech: string;
-  healthtech_imaging: string;
-  healthtech_surgical: string;
+  healthtech: string | null;
+  healthtech_imaging: string | null;
+  healthtech_surgical: string | null;
 }>;
 
 export const pageCodenames = {
-  aboutUs: {
+  ['about-us']: {
     healthtech: "about_us",
     healthtech_surgical: "about_us_0d30999",
     healthtech_imaging: "about_us_f1ef38e",
+  },
+  ['terms']: {
+    healthtech: "terms_and_conditions",
+    healthtech_surgical: null,
+    healthtech_imaging: null,
   },
 } as const satisfies Record<string, PerCollectionCodenames>;
 
