@@ -19,8 +19,8 @@ export const HeroImage: FC<Props> = props => (
       fill
       className="object-cover"
     />
-    <div className="relative w-full h-full flex justify-center items-center">
-      <div>
+    <div className="relative w-full h-full flex justify-start items-end">
+      <div className="backdrop-contrast-100 bg-white/70 p-10 rounded-tr-lg backdrop-opacity-5">
         {props.children}
       </div>
     </div>
