@@ -12,7 +12,7 @@ type Props = Readonly<{
 export const AppPage: FC<Props> = props => {
   useSmartLink();
   return (
-    <div className="grow flex flex-col items-center">
+    <div className="min-h-full grow flex flex-col items-center">
       <Menu links={defaultMenu} />
       {/* https://tailwindcss.com/docs/typography-plugin */}
       <main
