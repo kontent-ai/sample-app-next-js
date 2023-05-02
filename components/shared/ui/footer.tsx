@@ -5,7 +5,7 @@ type Props = Readonly<{
 }>;
 
 export const Footer: FC<Props> = props => (
-  <footer className={`w-full grow-0 h-16 px-10 flex flex-auto shrink-0 justify-end items-center ${props.className ?? ""}`}>
+  <footer className={`w-full grow-0 h-16 px-10 flex flex-auto shrink-0 justify-end items-center bg-green-300 ${props.className ?? ""}`}>
     <p>Welltale cosmatics inc.</p>
   </footer>
 )
