@@ -5,12 +5,12 @@ export type PerCollectionCodenames = Readonly<{
 }>;
 
 export const pageCodenames = {
-  ['about-us']: {
+  "about-us": {
     healthtech: "about_us",
     healthtech_surgical: "about_us_0d30999",
     healthtech_imaging: "about_us_f1ef38e",
   },
-  ['terms']: {
+  "terms": {
     healthtech: "terms_and_conditions",
     healthtech_surgical: null,
     healthtech_imaging: null,
