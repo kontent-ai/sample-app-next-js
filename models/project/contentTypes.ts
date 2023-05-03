@@ -698,6 +698,19 @@ export const contentTypes = {
       },
 
       /**
+       * Slug (url_slug)
+       */
+      slug: {
+        codename: 'slug',
+        id: '0a75f346-deea-464b-a278-43d9c3bcc2b4',
+        externalId: undefined,
+        name: 'Slug',
+        required: false,
+        type: 'url_slug',
+        snippetCodename: undefined,
+      },
+
+      /**
        * Title (text)
        */
       title: {

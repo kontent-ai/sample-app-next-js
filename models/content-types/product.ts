@@ -44,6 +44,14 @@ export type Product = IContentItem<{
   productImage: Elements.AssetsElement;
 
   /**
+   * Slug (url_slug)
+   * Required: false
+   * Id: 0a75f346-deea-464b-a278-43d9c3bcc2b4
+   * Codename: slug
+   */
+  slug: Elements.UrlSlugElement;
+
+  /**
    * Title (text)
    * Required: true
    * Id: 3a30f214-983b-4fd2-b72b-f7116d6040ca
