@@ -18,9 +18,9 @@ export const collections = {
   /**
    * HealthTech
    */
-  healthtech_medical: {
-    codename: 'healthtech_medical',
-    id: '63ff94b8-a191-4979-a897-a64bc46979d7',
+  healthtech: {
+    codename: 'healthtech',
+    id: '4925dca2-e330-4f55-b647-9b2ec310e453',
     name: 'HealthTech',
   },
 

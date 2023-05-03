@@ -5,4 +5,51 @@
  * Environment: Production
  * Project Id: 2cedc519-a547-01ba-dde7-b01e00b909a1
  */
-export const contentTypeSnippets = {} as const;
+export const contentTypeSnippets = {
+  /**
+   * SEO Metadata
+   */
+  seo_metadata: {
+    codename: 'seo_metadata',
+    id: '22775c9b-d269-4b03-941f-8dc0ee6c00c0',
+    externalId: undefined,
+    name: 'SEO Metadata',
+    elements: {
+      /**
+       * Description (text)
+       */
+      seo_metadata__description: {
+        codename: 'seo_metadata__description',
+        id: '0848a00d-f935-4270-b9b5-ba0b22d7eaa2',
+        externalId: undefined,
+        name: 'Description',
+        required: false,
+        type: 'text',
+      },
+
+      /**
+       * og:image (text)
+       */
+      seo_metadata__og_image: {
+        codename: 'seo_metadata__og_image',
+        id: '96973c48-0433-46e8-8efd-9e26418dc30a',
+        externalId: undefined,
+        name: 'og:image',
+        required: false,
+        type: 'text',
+      },
+
+      /**
+       * og:type (text)
+       */
+      seo_metadata__og_type: {
+        codename: 'seo_metadata__og_type',
+        id: '0ddecb17-cca6-465d-8aa6-7f94945e054c',
+        externalId: undefined,
+        name: 'og:type',
+        required: false,
+        type: 'text',
+      },
+    },
+  },
+} as const;

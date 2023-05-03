@@ -5,4 +5,44 @@
  * Environment: Production
  * Project Id: 2cedc519-a547-01ba-dde7-b01e00b909a1
  */
-export const taxonomies = {} as const;
+export const taxonomies = {
+  /**
+   * Article type
+   */
+  article_type: {
+    codename: 'article_type',
+    id: '7328c36a-d608-41eb-b640-71f7ac9bcd27',
+    externalId: undefined,
+    name: 'Article type',
+    terms: {
+      case_study: {
+        codename: 'case_study',
+        id: 'ae6e1aaf-b997-4879-a7b8-05bdb0d5a87f',
+        externalId: undefined,
+        name: 'Case study',
+        terms: {},
+      },
+      clinical_trial: {
+        codename: 'clinical_trial',
+        id: 'dc9f8f81-7a43-4a59-a67c-5eaa60dd2396',
+        externalId: undefined,
+        name: 'Clinical trial',
+        terms: {},
+      },
+      industry_news: {
+        codename: 'industry_news',
+        id: '08981170-0142-4e1d-8448-03a5ba1f5bee',
+        externalId: undefined,
+        name: 'Industry news',
+        terms: {},
+      },
+      research: {
+        codename: 'research',
+        id: 'dc3b3736-b090-47a3-86e2-1dd1618f7e83',
+        externalId: undefined,
+        name: 'Research',
+        terms: {},
+      },
+    },
+  },
+} as const;

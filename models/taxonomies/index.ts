@@ -1,1 +1,1 @@
-export {};
+export * from './article_type';
