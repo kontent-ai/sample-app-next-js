@@ -15,7 +15,7 @@ type Props = Readonly<{
 export const Products: FC<Props> = props => (
   <AppPage>
     <h1 className="text-5xl font-bold flex justify-center">Our great products: </h1>
-    <ul className="w-full flex flex-wrap list-none gap-32 pt-36">
+    <ul className="w-full flex flex-wrap list-none justify-between pt-4 ">
       {props.products.map(p => <ListItem key={p.name} imageUrl={p.imageUrl} title={p.name} detailUrl="test" />)}
     </ul>
   </AppPage>
