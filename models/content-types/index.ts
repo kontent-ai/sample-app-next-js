@@ -9,6 +9,7 @@ export * from './cta_button';
 export * from './footer';
 export * from './component___hero_unit';
 export * from './page';
+export * from './product';
 export * from './component___rich_text_content';
 export * from './component___solution';
 export * from './solution_set';

@@ -635,6 +635,97 @@ export const contentTypes = {
   },
 
   /**
+   * Product
+   */
+  product: {
+    codename: 'product',
+    id: 'd8195a31-dd83-402a-9fac-019c14978cb3',
+    externalId: undefined,
+    name: 'Product',
+    elements: {
+      /**
+       * Product category (taxonomy)
+       */
+      category: {
+        codename: 'category',
+        id: '606496e4-acf4-423b-bf60-453dcd1e0ce7',
+        externalId: undefined,
+        name: 'Category',
+        required: true,
+        type: 'taxonomy',
+        snippetCodename: undefined,
+      },
+
+      /**
+       * Description (text)
+       */
+      description: {
+        codename: 'description',
+        id: '74e64991-93d6-467f-84f9-d39b9b8b83f2',
+        externalId: undefined,
+        name: 'Description',
+        required: false,
+        type: 'text',
+        snippetCodename: undefined,
+      },
+
+      /**
+       * Price (number)
+       *
+       * Price in Euros.
+       */
+      price: {
+        codename: 'price',
+        id: '0d215ac7-1c98-42ac-aec6-7f02ad4f34f9',
+        externalId: undefined,
+        name: 'Price',
+        required: true,
+        type: 'number',
+        snippetCodename: undefined,
+      },
+
+      /**
+       * Product image (asset)
+       */
+      product_image: {
+        codename: 'product_image',
+        id: 'ec77bde2-a08a-4c91-9105-faf43a1899be',
+        externalId: undefined,
+        name: 'Product image',
+        required: false,
+        type: 'asset',
+        snippetCodename: undefined,
+      },
+
+      /**
+       * Slug (url_slug)
+       */
+      slug: {
+        codename: 'slug',
+        id: '0a75f346-deea-464b-a278-43d9c3bcc2b4',
+        externalId: undefined,
+        name: 'Slug',
+        required: false,
+        type: 'url_slug',
+        snippetCodename: undefined,
+      },
+
+      /**
+       * Title (text)
+       */
+      title: {
+        codename: 'title',
+        id: '3a30f214-983b-4fd2-b72b-f7116d6040ca',
+        externalId: undefined,
+        name: 'Title',
+        required: true,
+        type: 'text',
+        snippetCodename: undefined,
+      },
+    },
+  },
+
+  /**
    * Rich text content
    */
   component___rich_text_content: {
