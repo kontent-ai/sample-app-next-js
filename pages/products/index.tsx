@@ -1,9 +1,9 @@
 import { GetStaticProps } from "next/types";
 import { FC } from "react";
-import { ListItem } from "../components/listingPage/ListItem";
-import { AppPage } from "../components/shared/ui/appPage";
-import { ValidCollectionCodename } from "../lib/types/perCollection";
-import { siteCodename } from "../lib/utils/env";
+import { ListItem } from "../../components/listingPage/ListItem";
+import { AppPage } from "../../components/shared/ui/appPage";
+import { ValidCollectionCodename } from "../../lib/types/perCollection";
+import { siteCodename } from "../../lib/utils/env";
 
 type Product = Readonly<{
   imageUrl: string;
