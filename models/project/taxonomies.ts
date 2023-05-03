@@ -45,4 +45,44 @@ export const taxonomies = {
       },
     },
   },
+
+  /**
+   * Product category
+   */
+  product_category: {
+    codename: 'product_category',
+    id: 'e70e602f-49c6-4980-a748-5a6263d366c5',
+    externalId: undefined,
+    name: 'Product category',
+    terms: {
+      machinery: {
+        codename: 'machinery',
+        id: 'd9d5bed9-a7d6-4b74-ab05-c5a063df56fe',
+        externalId: undefined,
+        name: 'Machinery',
+        terms: {},
+      },
+      other: {
+        codename: 'other',
+        id: '1174cd78-c6d2-4965-93c5-af17f535dadf',
+        externalId: undefined,
+        name: 'Other',
+        terms: {},
+      },
+      precision_instruments: {
+        codename: 'precision_instruments',
+        id: 'd3418351-c394-4fa7-8364-312dc706779e',
+        externalId: undefined,
+        name: 'Precision instruments',
+        terms: {},
+      },
+      sanitary_clothing: {
+        codename: 'sanitary_clothing',
+        id: 'f8638c49-3e84-412d-b798-71f444b3168b',
+        externalId: undefined,
+        name: 'Sanitary clothing',
+        terms: {},
+      },
+    },
+  },
 } as const;

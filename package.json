@@ -2,7 +2,7 @@
   "name": "@kontent-ai/boilerplate-next-js",
   "version": "0.3.0",
   "scripts": {
-    "generateModels": "rm -rf models && kontent-generate --projectId=2cedc519-a547-01ba-dde7-b01e00b909a1 --outputDir=./models --kontentUrl=https://manage.devkontentmasters.com/v2 --exportRoles=false --elementResolver=camelCase",
+    "generateModels": "rimraf -rf models && kontent-generate --projectId=2cedc519-a547-01ba-dde7-b01e00b909a1 --outputDir=./models --kontentUrl=https://manage.devkontentmasters.com/v2 --exportRoles=false --elementResolver=camelCase",
     "dev": "next dev",
     "lint": "next lint",
     "build": "next build",
@@ -30,6 +30,7 @@
     "eslint": "^8.26.0",
     "eslint-config-next": "^13.0.0",
     "postcss": "^8.4.22",
+    "rimraf": "^5.0.0",
     "tailwindcss": "^3.3.1",
     "typescript": "5.0.4"
   }

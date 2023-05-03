@@ -4,9 +4,9 @@ export type PerCollectionCodenames = PerCollection<string | null>;
 
 export const pageCodenames = {
   "about-us": {
-    healthtech: "about_us",
-    healthtech_surgical: "about_us_0d30999",
-    healthtech_imaging: "about_us_f1ef38e",
+    healthtech: "about_us_f9c172b",
+    healthtech_surgical: "about_us_f9c172b",
+    healthtech_imaging: "about_us_f9c172b",
   },
   "terms": {
     healthtech: "terms_and_conditions",

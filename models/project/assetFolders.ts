@@ -25,4 +25,14 @@ export const assetFolders = {
     externalId: undefined,
     folders: {},
   },
+
+  /**
+   * Product images
+   */
+  productImages: {
+    id: '9f1a4a41-e4da-45a1-b793-cb708f3b7db3',
+    name: 'Product images',
+    externalId: undefined,
+    folders: {},
+  },
 } as const;
