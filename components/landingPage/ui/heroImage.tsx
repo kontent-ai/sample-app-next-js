@@ -18,6 +18,7 @@ export const HeroImage: FC<Props> = props => (
       alt="Hero image"
       fill
       className="object-cover"
+      priority
     />
     <div className="relative w-full h-full flex justify-start items-end">
       <div className="backdrop-contrast-100 bg-white/70 p-10 rounded-tr-lg backdrop-opacity-5">
