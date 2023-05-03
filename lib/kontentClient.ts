@@ -73,13 +73,13 @@ export const getHomepage = (usePreview: boolean) =>
 
 export const getProductsForListing = (usePreview: boolean) =>
   deliveryClient
-    .items()
+    .items<Product>()
     .type('product')
     .elementsParameter(['title', 'product_image', 'slug'])
     .queryConfig({
       usePreviewMode: usePreview,
     })
     .toAllPromise()
-    .then(res => res.data.items as Product[] | undefined)
+    .then(res => res.data.items)
 
 
