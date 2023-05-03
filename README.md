@@ -73,7 +73,7 @@ TBD - raise the issue, if you want the project backup
 
 ### Commands
 
-https://github.com/kontent-ai-bot/kontent-ai-new-sample-app/blob/main/package.json#L3-L11
+https://github.com/kontent-ai-bot/kontent-ai-new-sample-app/blob/52b3e36114ca719b7ef977ae2d68902777ab5e8f/package.json#L4-L11
 
 [contributors-shield]: https://img.shields.io/github/contributors/kontent-ai-bot/kontent-ai-new-sample-app.svg?style=for-the-badge
 [contributors-url]: https://github.com/kontent-ai-bot/kontent-ai-new-sample-app/graphs/contributors
