@@ -12,10 +12,6 @@ const perCollectionMenus = {
       title: "Home",
     },
     {
-      url: "/products",
-      title: "Products",
-    },
-    {
       url: "/about-us",
       title: "About us",
     },
@@ -24,10 +20,6 @@ const perCollectionMenus = {
     {
       url: "/",
       title: "Home",
-    },
-    {
-      url: "/products",
-      title: "Products",
     },
     {
       url: "/about-us",
