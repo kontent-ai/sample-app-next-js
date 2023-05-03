@@ -6,7 +6,7 @@ import { ValidCollectionCodename } from "../../lib/types/perCollection";
 import { siteCodename } from "../../lib/utils/env";
 import { getItemByCodename, getProductsForListing } from "../../lib/kontentClient";
 import { Page, Product } from "../../models";
-import { pageCodenames } from "../../lib/routing";
+import { PerCollectionCodenames, pageCodenames } from "../../lib/routing";
 import { Content } from "../../components/shared/Content";
 
 type Props = Readonly<{
@@ -27,7 +27,11 @@ export const Products: FC<Props> = props => (
 );
 
 export const getStaticProps: GetStaticProps<Props> = async context => {
-  const pageCodename = pageCodenames['products'];
+  const pageCodename: PerCollectionCodenames = {
+    healthtech: null,
+    healthtech_imaging: null,
+    healthtech_surgical: "products"
+  };
 
   const page = await getItemByCodename<Page>(pageCodename , !!context.preview);
   const products = await getProductsForListing(!!context.preview);

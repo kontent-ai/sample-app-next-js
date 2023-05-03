@@ -12,11 +12,6 @@ export const pageCodenames = {
     healthtech: "terms_and_conditions",
     healthtech_surgical: null,
     healthtech_imaging: null,
-  },
-  "products": {
-    healthtech: null,
-    healthtech_surgical: "products",
-    healthtech_imaging: null
   }
 } as const satisfies Record<string, PerCollectionCodenames>;
 
