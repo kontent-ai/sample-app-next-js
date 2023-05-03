@@ -2,6 +2,8 @@ import { GetStaticProps } from "next/types";
 import { FC } from "react";
 import { ListItem } from "../components/listingPage/ListItem";
 import { AppPage } from "../components/shared/ui/appPage";
+import { ValidCollectionCodename } from "../lib/types/perCollection";
+import { siteCodename } from "../lib/utils/env";
 
 type Product = Readonly<{
   imageUrl: string;
@@ -10,10 +12,11 @@ type Product = Readonly<{
 
 type Props = Readonly<{
   products: ReadonlyArray<Product>;
+  siteCodename: ValidCollectionCodename;
 }>;
 
 export const Products: FC<Props> = props => (
-  <AppPage>
+  <AppPage siteCodename={props.siteCodename}>
     <h1 className="text-5xl font-bold flex justify-center">Our great products: </h1>
     <ul className="w-full flex flex-wrap list-none justify-between pt-4 ">
       {props.products.map(p => <ListItem key={p.name} imageUrl={p.imageUrl} title={p.name} detailUrl="test" />)}
@@ -23,7 +26,7 @@ export const Products: FC<Props> = props => (
 
 export const getStaticProps: GetStaticProps<Props> = async context => {
   return {
-    props: { products: sampleProducts },
+    props: { products: sampleProducts, siteCodename },
   };
 }
 

@@ -1,8 +1,6 @@
-export type PerCollectionCodenames = Readonly<{
-  healthtech: string | null;
-  healthtech_imaging: string | null;
-  healthtech_surgical: string | null;
-}>;
+import { PerCollection } from "./types/perCollection";
+
+export type PerCollectionCodenames = PerCollection<string | null>;
 
 export const pageCodenames = {
   "about-us": {
@@ -17,13 +15,3 @@ export const pageCodenames = {
   },
 } as const satisfies Record<string, PerCollectionCodenames>;
 
-const emptyCodenames: PerCollectionCodenames = {
-  healthtech_imaging: "",
-  healthtech_surgical: "",
-  healthtech: "",
-};
-
-export type ValidCollectionCodename = keyof PerCollectionCodenames;
-
-export const isValidCollectionCodename = (codename: string | undefined): codename is ValidCollectionCodename =>
-  Object.keys(emptyCodenames).includes(codename || "");

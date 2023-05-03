@@ -1,12 +1,7 @@
 import { camelCasePropertyNameResolver, createDeliveryClient, DeliveryError, IContentItem } from '@kontent-ai/delivery-sdk';
 import { WebSpotlightRoot } from '../models/content-types/web_spotlight_root';
-import { isValidCollectionCodename, PerCollectionCodenames } from './routing';
-
-const { KONTENT_COLLECTION_CODENAME } = process.env;
-
-if (!isValidCollectionCodename(KONTENT_COLLECTION_CODENAME)) {
-  throw new Error(`Invalid collection codename "${KONTENT_COLLECTION_CODENAME}".`);
-}
+import { PerCollectionCodenames } from './routing';
+import { siteCodename } from './utils/env';
 
 const sourceTrackingHeaderName = 'X-KC-SOURCE'
 
@@ -27,7 +22,7 @@ const deliveryClient = createDeliveryClient({
 });
 
 export const getItemByCodename = <ItemType extends IContentItem>(codename: PerCollectionCodenames, usePreview: boolean): Promise<ItemType | null> => {
-  const itemCodename = codename[KONTENT_COLLECTION_CODENAME];
+  const itemCodename = codename[siteCodename];
 
   if (itemCodename === null) {
     return Promise.resolve(null);
@@ -68,7 +63,7 @@ export const getHomepage = (usePreview: boolean) =>
   deliveryClient
     .items()
     .type(homepageTypeCodename)
-    .collection(KONTENT_COLLECTION_CODENAME)
+    .collection(siteCodename)
     .queryConfig({
       usePreviewMode: usePreview,
     })
