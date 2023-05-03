@@ -10,6 +10,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "@heroicons/react": "^2.0.17",
     "@kontent-ai/delivery-sdk": "^14.0.1",
     "@kontent-ai/management-sdk": "^5.0.0",
     "@kontent-ai/rich-text-resolver": "^0.0.2",

@@ -67,6 +67,7 @@ export const getHomepage = (usePreview: boolean) =>
     .queryConfig({
       usePreviewMode: usePreview,
     })
+    .depthParameter(10)
     .toPromise()
     .then(res => res.data.items[0] as WebSpotlightRoot | undefined)
 
