@@ -2,6 +2,7 @@ import { camelCasePropertyNameResolver, createDeliveryClient, DeliveryError, ICo
 import { WebSpotlightRoot } from '../models/content-types/web_spotlight_root';
 import { PerCollectionCodenames } from './routing';
 import { siteCodename } from './utils/env';
+import { Product } from '../models';
 
 const sourceTrackingHeaderName = 'X-KC-SOURCE'
 
@@ -69,5 +70,16 @@ export const getHomepage = (usePreview: boolean) =>
     })
     .toPromise()
     .then(res => res.data.items[0] as WebSpotlightRoot | undefined)
+
+export const getProductsForListing = (usePreview: boolean) =>
+  deliveryClient
+    .items()
+    .type('product')
+    .elementsParameter(['title', 'product_image', 'slug'])
+    .queryConfig({
+      usePreviewMode: usePreview,
+    })
+    .toPromise()
+    .then(res => res.data.items as Product[] | undefined)
 
 
