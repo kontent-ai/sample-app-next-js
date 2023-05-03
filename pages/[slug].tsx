@@ -34,7 +34,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
   // TODO break hardcoding
   const { slug } = context.params as IParams;
 
-  const pageCodename = pageCodenames[slug];
+  const pageCodename = pageCodenames[slug] ?? null;
   if (pageCodename === null) {
     return {
       redirect: {
