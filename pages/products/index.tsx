@@ -7,6 +7,7 @@ import { siteCodename } from "../../lib/utils/env";
 import { getItemByCodename, getProductsForListing } from "../../lib/kontentClient";
 import { Page, Product } from "../../models";
 import { pageCodenames } from "../../lib/routing";
+import { Content } from "../../components/shared/Content";
 
 type Props = Readonly<{
   page: Page;
@@ -16,7 +17,9 @@ type Props = Readonly<{
 
 export const Products: FC<Props> = props => (
   <AppPage siteCodename={props.siteCodename}>
-    <h1 className="text-5xl font-bold flex justify-center">Our great products: </h1>
+    {props.page.elements.content.linkedItems.map(piece => (
+      <Content key={piece.system.id} item={piece as any} />
+    ))}
     <ul className="w-full flex flex-wrap list-none justify-between pt-4 ">
       {props.products && props.products.map(p => <ListItem key={p.elements.title.value} imageUrl={p.elements.productImage.value[0].url} title={p.elements.title.value} detailUrl={`products/${p.elements.slug.value}`} />)}
     </ul>

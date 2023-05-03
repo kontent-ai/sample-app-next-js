@@ -79,7 +79,7 @@ export const getProductsForListing = (usePreview: boolean) =>
     .queryConfig({
       usePreviewMode: usePreview,
     })
-    .toPromise()
+    .toAllPromise()
     .then(res => res.data.items as Product[] | undefined)
 
 
