@@ -17,9 +17,6 @@ export const Menu: FC<Props> = props => {
   return (
     <div className="flex flex-auto h-16 w-full bg-green-300 justify-between shadow-md items-center px-10 grow-0 shrink-0">
       <div className="h-full flex gap-x-5 py-1">
-        <div className="h-full flex items-center">
-          {router.isPreview ? "Preview" : "Published"}
-        </div>
         {router.isPreview && (
           <div
             className="h-full"
