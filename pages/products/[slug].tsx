@@ -1,4 +1,4 @@
-import { GetStaticPaths, GetStaticProps, GetStaticPropsResult, Redirect } from "next";
+import { GetStaticPaths, GetStaticProps, Redirect } from "next";
 import { Product, contentTypes } from "../../models"
 import { FC } from "react";
 import { getProductDetail, getProductSlugs } from "../../lib/kontentClient";
@@ -7,8 +7,6 @@ import { siteCodename } from "../../lib/utils/env";
 import { ValidCollectionCodename } from "../../lib/types/perCollection";
 import { AppPage } from "../../components/shared/ui/appPage";
 import Image from "next/image";
-import { RichTextContentComponent } from "../../components/shared/RichTextContent";
-import { PortableText } from "@portabletext/react";
 
 type Props = Readonly<{
   product: Product;
@@ -29,13 +27,13 @@ export const getStaticPaths: GetStaticPaths = () => {
   //   }
 
   return getProductSlugs()
-    .then(product => ({
-      paths: product.map(product => product.elements.slug.value),
+    .then(products => ({
+      paths: products.map(product => `/products/${product.elements.slug.value}`),
       fallback: 'blocking'
     }));
 }
 
-const nonPermanentRedirect: { redirect: Redirect } = {
+const nonPermanentHomeRedirect: { redirect: Redirect } = {
   redirect: {
     permanent: false,
     destination: '/404'
@@ -46,13 +44,13 @@ export const getStaticProps: GetStaticProps<Props, IParams> = async (context) =>
   const slug = context.params?.slug;
 
   if (!slug) {
-    return nonPermanentRedirect;
+    return nonPermanentHomeRedirect;
   };
 
   const product = await getProductDetail(slug, !!context.preview);
 
   if (!product) {
-    return nonPermanentRedirect;
+    return nonPermanentHomeRedirect;
   }
 
   return {
