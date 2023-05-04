@@ -15,22 +15,25 @@ export const Menu: FC<Props> = props => {
   const router = useRouter();
 
   return (
-    <div className="flex flex-auto w-full bg-green-300 justify-between shadow-md items-center px-10 grow-0 shrink-0">
-      <div className="h-full">
-        <span className="self-start h-full">{router.isPreview ? "Preview" : "Published"}</span>
+    <div className="flex flex-auto h-16 w-full bg-green-300 justify-between shadow-md items-center px-10 grow-0 shrink-0">
+      <div className="h-full flex gap-x-5 py-1">
+        <div className="h-full flex items-center">
+          {router.isPreview ? "Preview" : "Published"}
+        </div>
         {router.isPreview && (
-          <span
-            className="self-start h-full"
+          <div
+            className="h-full"
           >
             <Link
-              className="h-full px-5 mx-5 cursor-pointer rounded hover:bg-white"
+              className="h-full px-5 cursor-pointer rounded hover:bg-white flex items-center"
               href="/api/exit-preview"
             >
               Exit preview
             </Link>
-          </span>)}
+          </div>
+        )}
       </div>
-      <menu className="h-16 grow-0 py-1 flex flex-auto shrink-0 justify-end items-center gap-x-5">
+      <menu className="h-full grow-0 py-1 flex flex-auto shrink-0 justify-end items-center gap-x-5">
         {props.links.map(link => (
           <li
             key={link.title}
