@@ -44,7 +44,7 @@ const calculateItemState = (params: { currentIndex: number; itemIndex: number })
     return "next";
   }
   if (params.currentIndex - 1 === params.itemIndex) {
-    return "previos";
+    return "previous";
   }
   return "hidden";
 };
@@ -54,7 +54,7 @@ type ItemProps = Readonly<{
   state: ItemState;
 }>;
 
-type ItemState = "current" | "next" | "previos" | "hidden";
+type ItemState = "current" | "next" | "previous" | "hidden";
 
 const Item: FC<ItemProps> = props => (
   <div className={`${createItemAnimationClasses(props.state)} absolute transition-transform transform inset-0 duration-700 ease-in-out`}>
@@ -72,7 +72,7 @@ const createItemAnimationClasses = (state: ItemState): string => {
       return "hidden";
     case "next":
       return "z-10 translate-x-full";
-    case "previos":
+    case "previous":
       return "z-10 -translate-x-full";
     default:
       throw new Error(`Unknown item state ${state}.`);
