@@ -18,10 +18,12 @@ export const AppPage: FC<Props> = props => {
       <Menu links={createDefaultMenu(props.siteCodename)} />
       {/* https://tailwindcss.com/docs/typography-plugin */}
       <main
-        className="prose py-5 container grow h-full"
+        className="py-5 container grow h-full"
         data-kontent-item-id={props.itemId}
       >
-        {props.children}
+        <div className="prose w-full max-w-full">
+          {props.children}
+        </div>
       </main>
       <Footer />
     </div>

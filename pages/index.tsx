@@ -13,7 +13,7 @@ type Props = Readonly<{
 
 const Home: NextPage<Props> = props => (
   <AppPage itemId={props.homepage.system.id} siteCodename={props.siteCodename}>
-    <div className="prose">
+    <div>
       {props.homepage.elements.content.linkedItems.map(item => (
         <Content key={item.system.id} item={item as any} />
       ))}

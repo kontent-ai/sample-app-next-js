@@ -65,7 +65,7 @@ const widthLimit = 300;
 
 const ProductDetail: FC<Props> = ({ product, siteCodename }) => (
   <AppPage itemId={product.system.id} siteCodename={siteCodename}>
-    <div className="prose container">
+    <div>
       <h1
         data-kontent-element-codename={contentTypes.product.elements.title.codename}>
         {product.elements.title.value}
