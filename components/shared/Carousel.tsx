@@ -17,7 +17,11 @@ export const CarouselComponent: FC<Props> = props => {
 
   return (
     <div className="relative w-full">
-      <div className="relative h-56 overflow-hidden rounded-lg md:h-96">
+      <div className="relative overflow-hidden rounded-lg">
+        {/*This is a placeholder to determine the carousel height, because the real carousel items are absolutely positioned.*/}
+        <div className="relative z-0 opacity-0 w-fit">
+          <Content item={props.item.elements.heroUnits.linkedItems[0]} />
+        </div>
         {props.item.elements.heroUnits.linkedItems.map((item, index) => (
           <Item
             key={index}
