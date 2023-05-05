@@ -10,10 +10,24 @@ type Props = Readonly<{
 
 export const CarouselComponent: FC<Props> = props => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [lastMove, setLastMove] = useState<LastMove>("withoutAnimation")
 
   const itemCount = props.item.elements.heroUnits.linkedItems.length;
 
   const wrapIndex = (i: number) => i < 0 ? itemCount + i : i % itemCount;
+
+  const moveForward = () => {
+    setLastMove("forward");
+    setCurrentIndex(prev => wrapIndex(prev + 1));
+  };
+  const moveBackward = () => {
+    setLastMove("back");
+    setCurrentIndex(prev => wrapIndex(prev - 1));
+  };
+  const jumpToIndex = (i: number) => {
+    setLastMove("withoutAnimation");
+    setCurrentIndex(i);
+  };
 
   return (
     <div className="relative w-full">
@@ -25,39 +39,43 @@ export const CarouselComponent: FC<Props> = props => {
         {props.item.elements.heroUnits.linkedItems.map((item, index) => (
           <Item
             key={index}
-            state={calculateItemState({ currentIndex, itemIndex: index })}
+            state={calculateItemState({ currentIndex, itemIndex: index, lastMove, wrapIndex })}
+            shouldAnimate={lastMove !== "withoutAnimation"}
             item={item}
           />
         ))}
       </div>
-      <Indicator currentIndex={currentIndex} navigateTo={i => setCurrentIndex(wrapIndex(i))} totalItems={props.item.elements.heroUnits.linkedItems.length} />
-      <NextPrev onNext={() => setCurrentIndex(prev => wrapIndex(prev + 1))} onPrev={() => setCurrentIndex(prev => wrapIndex(prev - 1))} />
+      <Indicator currentIndex={currentIndex} navigateTo={jumpToIndex} totalItems={props.item.elements.heroUnits.linkedItems.length} />
+      <NextPrev onNext={moveForward} onPrev={moveBackward} />
     </div>
   );
 };
 
-const calculateItemState = (params: { currentIndex: number; itemIndex: number }): ItemState => {
+type LastMove = "forward" | "back" | "withoutAnimation";
+
+const calculateItemState = (params: { currentIndex: number; itemIndex: number; lastMove: LastMove; wrapIndex: (i: number) => number }): ItemState => {
   if (params.currentIndex === params.itemIndex) {
     return "current";
   }
-  if (params.currentIndex + 1 === params.itemIndex) {
-    return "next";
+  if (params.wrapIndex(params.currentIndex + 1) === params.itemIndex) {
+    return params.lastMove === "back" ? "nextMovingAway" : "next";
   }
-  if (params.currentIndex - 1 === params.itemIndex) {
-    return "previous";
+  if (params.wrapIndex(params.currentIndex - 1) === params.itemIndex) {
+    return params.lastMove === "forward" ? "previousMovingAway" : "previous";
   }
   return "hidden";
 };
 
 type ItemProps = Readonly<{
   item: ComponentProps<typeof Content>["item"];
+  shouldAnimate: boolean;
   state: ItemState;
 }>;
 
-type ItemState = "current" | "next" | "previous" | "hidden";
+type ItemState = "current" | "next" | "previous" | "hidden" | "nextMovingAway" | "previousMovingAway";
 
 const Item: FC<ItemProps> = props => (
-  <div className={`${createItemAnimationClasses(props.state)} absolute transition-transform transform inset-0 duration-700 ease-in-out`}>
+  <div className={`${createItemAnimationClasses(props.state)} absolute ${props.shouldAnimate ? "transition-transform" : ""} transform inset-0 duration-700 ease-in-out`}>
     <div className="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
       <Content item={props.item} />
     </div>
@@ -72,8 +90,12 @@ const createItemAnimationClasses = (state: ItemState): string => {
       return "hidden";
     case "next":
       return "z-10 translate-x-full";
+    case "nextMovingAway":
+      return "z-[11] translate-x-full";
     case "previous":
       return "z-10 -translate-x-full";
+    case "previousMovingAway":
+      return "z-[11] -translate-x-full";
     default:
       throw new Error(`Unknown item state ${state}.`);
   }
