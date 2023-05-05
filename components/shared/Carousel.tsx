@@ -12,9 +12,10 @@ export const CarouselComponent: FC<Props> = props => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [lastMove, setLastMove] = useState<LastMove>("withoutAnimation")
 
-  const itemCount = props.item.elements.heroUnits.linkedItems.length;
+  const items = props.item.elements.heroUnits.linkedItems;
+  const itemsToRender = items.length == 2 ? [...items, ...items] : items;
 
-  const wrapIndex = (i: number) => i < 0 ? itemCount + i : i % itemCount;
+  const wrapIndex = (i: number) => i < 0 ? itemsToRender.length + i : i % itemsToRender.length;
 
   const moveForward = () => {
     setLastMove("forward");
@@ -36,7 +37,7 @@ export const CarouselComponent: FC<Props> = props => {
         <div className="relative z-0 opacity-0 w-fit">
           <Content item={props.item.elements.heroUnits.linkedItems[0]} />
         </div>
-        {props.item.elements.heroUnits.linkedItems.map((item, index) => (
+        {itemsToRender.map((item, index) => (
           <Item
             key={index}
             state={calculateItemState({ currentIndex, itemIndex: index, lastMove, wrapIndex })}
@@ -45,8 +46,12 @@ export const CarouselComponent: FC<Props> = props => {
           />
         ))}
       </div>
-      <Indicator currentIndex={currentIndex} navigateTo={jumpToIndex} totalItems={props.item.elements.heroUnits.linkedItems.length} />
-      <NextPrev onNext={moveForward} onPrev={moveBackward} />
+      {items.length > 1 && (
+        <>
+          <Indicator currentIndex={currentIndex} navigateTo={jumpToIndex} totalItems={items.length} />
+          <NextPrev onNext={moveForward} onPrev={moveBackward} />
+        </>
+      )}
     </div>
   );
 };
