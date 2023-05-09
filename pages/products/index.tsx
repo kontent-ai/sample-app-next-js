@@ -1,13 +1,13 @@
 import { GetStaticProps } from "next/types";
 import { FC } from "react";
 import { ListItem } from "../../components/listingPage/ListItem";
+import { Content } from "../../components/shared/Content";
 import { AppPage } from "../../components/shared/ui/appPage";
+import { getItemByCodename, getProductsForListing } from "../../lib/kontentClient";
+import { PerCollectionCodenames } from "../../lib/routing";
 import { ValidCollectionCodename } from "../../lib/types/perCollection";
 import { siteCodename } from "../../lib/utils/env";
-import { getItemByCodename, getProductsForListing } from "../../lib/kontentClient";
 import { Page, Product } from "../../models";
-import { PerCollectionCodenames, pageCodenames } from "../../lib/routing";
-import { Content } from "../../components/shared/Content";
 
 type Props = Readonly<{
   page: Page;
@@ -20,8 +20,16 @@ export const Products: FC<Props> = props => (
     {props.page.elements.content.linkedItems.map(piece => (
       <Content key={piece.system.id} item={piece as any} />
     ))}
-    <ul className="w-full flex flex-wrap list-none justify-between pt-4 ">
-      {props.products && props.products.map(p => <ListItem key={p.elements.title.value} imageUrl={p.elements.productImage.value[0].url} title={p.elements.title.value} detailUrl={`products/${p.elements.slug.value}`} />)}
+    <ul className="w-ull flex flex-wrap list-none justify-between pt-4 ">
+      {props.products?.map(p => (
+        <ListItem
+          key={p.system.id}
+          imageUrl={p.elements.productImage.value[0].url}
+          title={p.elements.title.value}
+          detailUrl={`products/${p.elements.slug.value}`}
+          itemId={p.system.id}
+        />
+      ))}
     </ul>
   </AppPage>
 );
@@ -33,7 +41,7 @@ export const getStaticProps: GetStaticProps<Props> = async context => {
     healthtech_surgical: "products"
   };
 
-  const page = await getItemByCodename<Page>(pageCodename , !!context.preview);
+  const page = await getItemByCodename<Page>(pageCodename, !!context.preview);
   const products = await getProductsForListing(!!context.preview);
 
   if (page === null) {
