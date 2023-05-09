@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { FC } from "react";
+import { useSiteCodename } from "../siteCodenameContext";
+import { mainColorBgClass } from "../../../lib/constants/colors";
 
 type Link = Readonly<{
   url: string;
@@ -13,9 +15,10 @@ type Props = Readonly<{
 
 export const Menu: FC<Props> = props => {
   const router = useRouter();
+  const siteCodename = useSiteCodename();
 
   return (
-    <div className="flex flex-auto h-16 w-full bg-green-300 justify-between shadow-md items-center px-10 grow-0 shrink-0">
+    <div className={`flex flex-auto h-16 w-full ${mainColorBgClass[siteCodename]} justify-between shadow-md items-center px-10 grow-0 shrink-0`}>
       <div className="h-full flex gap-x-5 py-1">
         {router.isPreview && (
           <div

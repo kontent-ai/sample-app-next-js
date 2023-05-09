@@ -1,15 +1,16 @@
 import { FC, ReactNode, createContext, useContext, useMemo } from "react";
+import { ValidCollectionCodename } from "../../lib/types/perCollection";
 
 type CodenameContext = Readonly<{
-  siteCodename: string;
+  siteCodename: ValidCollectionCodename;
 }>;
 
-const SiteContext = createContext<CodenameContext>({ siteCodename: "" });
+const SiteContext = createContext<CodenameContext>({ siteCodename: "healthtech" });
 
 export const useSiteCodename = () => useContext(SiteContext).siteCodename;
 
 type Props = Readonly<{
-  siteCodename: string;
+  siteCodename: ValidCollectionCodename;
   children: ReactNode;
 }>;
 

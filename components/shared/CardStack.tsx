@@ -1,6 +1,8 @@
 import { FC, useState } from "react";
 import { CardStack } from "../../models"
 import { CardComponent } from "./Card";
+import { useSiteCodename } from "./siteCodenameContext";
+import { mainColorBorderClass } from "../../lib/constants/colors";
 
 type Props = Readonly<{
   item: CardStack;
@@ -39,18 +41,22 @@ type HeadersProps = Readonly<{
   onHeaderSelected: (headerIndex: number) => void;
 }>;
 
-const Headers: FC<HeadersProps> = props => (
-  <menu className="flex gap-6 border-b-2 border-b-gray-100">
-    {props.headers.map((header, i) => (
-      <li
-        key={i}
-        className={`overflow-hidden h-full m-0 shrink text-ellipsis flex justify-center items-center cursor-pointer border-b-green-600 ${props.selectedHeaderIndex === i ? "border-b-2" : ""}`}
-        onClick={() => props.onHeaderSelected(i)}
-      >
-        {header}
-      </li>
-    ))}
-  </menu>
-)
+const Headers: FC<HeadersProps> = props => {
+  const siteCodename = useSiteCodename();
+
+  return (
+    <menu className="flex gap-6 border-b-2 border-b-gray-100">
+      {props.headers.map((header, i) => (
+        <li
+          key={i}
+          className={`overflow-hidden h-full m-0 shrink text-ellipsis flex justify-center items-center cursor-pointer ${mainColorBorderClass[siteCodename]} ${props.selectedHeaderIndex === i ? "border-b-2" : ""}`}
+          onClick={() => props.onHeaderSelected(i)}
+        >
+          {header}
+        </li>
+      ))}
+    </menu>
+  );
+}
 
 const wrapIndex = ({ index, length }: Readonly<{ index: number; length: number }>) => index < 0 ? length + index : index % length;
