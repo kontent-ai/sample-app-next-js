@@ -20,7 +20,7 @@ export const Products: FC<Props> = props => (
     {props.page.elements.content.linkedItems.map(piece => (
       <Content key={piece.system.id} item={piece as any} />
     ))}
-    <ul className="w-ull flex flex-wrap list-none justify-between pt-4 ">
+    <ul className="w-ull flex flex-wrap list-none justify-start gap-5 pt-4">
       {props.products?.map(p => (
         <ListItem
           key={p.system.id}
