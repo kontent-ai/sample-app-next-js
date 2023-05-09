@@ -72,15 +72,17 @@ const ProductDetail: FC<Props> = ({ product, siteCodename }) => (
       >
         {product.elements.title.value}
       </h1>
-      <Image
-        src={`${product.elements.productImage.value[0].url}?w=${widthLimit}`}
-        alt={product.elements.productImage.value[0].description || product.elements.productImage.value[0].url.split('/').pop() || "Product image"}
-        width={widthLimit}
-        height={product.elements.productImage.value[0].height || 200}
-        className="object-cover"
-        priority
-      />
-      <div>
+      <div {...createElementSmartLink(contentTypes.product.elements.product_image.codename)}>
+        <Image
+          src={`${product.elements.productImage.value[0].url}?w=${widthLimit}`}
+          alt={product.elements.productImage.value[0].description || product.elements.productImage.value[0].url.split('/').pop() || "Product image"}
+          width={widthLimit}
+          height={product.elements.productImage.value[0].height || 200}
+          className="object-cover"
+          priority
+        />
+      </div>
+      <div {...createElementSmartLink(contentTypes.product.elements.description.codename)}>
         {product.elements.description.value}
       </div>
     </div>
