@@ -1,7 +1,7 @@
 import { FC } from "react";
 import Image from "next/image"
 import Link from "next/link";
-import { createItemSmartLink } from "../../lib/utils/smartLinkUtils";
+import { StandaloneSmartLinkButton } from "../shared/StandaloneSmartLinkButton";
 
 type Props = Readonly<{
   imageUrl: string;
@@ -11,13 +11,9 @@ type Props = Readonly<{
 }>;
 
 export const ListItem: FC<Props> = props => (
-  <li
-    className="w-64  rounded-xl shadow hover:shadow-xl transition-shadow border cursor-pointer"
-    {...createItemSmartLink(props.itemId)}
-  >
-    <Link
-      href={props.detailUrl}
-    >
+  <li className="w-64 relative rounded-xl shadow hover:shadow-xl transition-shadow border cursor-pointer">
+    <StandaloneSmartLinkButton itemId={props.itemId} />
+    <Link href={props.detailUrl}>
       <figure className="w-full h-40 relative">
         <Image
           src={props.imageUrl}
