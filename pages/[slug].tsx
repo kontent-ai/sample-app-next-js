@@ -8,6 +8,7 @@ import { AppPage } from "../components/shared/ui/appPage";
 import { ParsedUrlQuery } from "querystring";
 import { ValidCollectionCodename } from "../lib/types/perCollection";
 import { siteCodename } from "../lib/utils/env";
+import { createElementSmartLink } from "../lib/utils/smartLinkUtils";
 
 type Props = Readonly<{
   page: Page;
@@ -60,7 +61,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
 const TopLevelPage: FC<Props> = props => (
   <AppPage itemId={props.page.system.id} siteCodename={props.siteCodename}>
     <h1
-      data-kontent-element-codename={contentTypes.page.elements.title.codename}
+      {...createElementSmartLink(contentTypes.page.elements.title.codename)}
     >
       {props.page.elements.title.value}
     </h1>

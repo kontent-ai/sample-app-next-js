@@ -1,6 +1,7 @@
 import { FC } from "react";
 import { Author, contentTypes } from "../../models"
 import Image from "next/image";
+import { createElementSmartLink, createItemSmartLink } from "../../lib/utils/smartLinkUtils";
 
 type Props = Readonly<{
   item: Author;
@@ -11,11 +12,11 @@ export const AuthorHorizontal: FC<Props> = props => {
   return (
     <div
       className="flex items-center"
-      data-kontent-item-id={props.item.system.id}
+      {...createItemSmartLink(props.item.system.id)}
     >
       <figure
         className="relative rounded-full w-20 h-20 overflow-hidden"
-        data-kontent-element-codename={contentTypes.author.elements.photograph.codename}
+        {...createElementSmartLink(contentTypes.author.elements.photograph.codename)}
       >
         <Image
           src={props.item.elements.photograph.value[0]?.url ?? "missing author image url"}
@@ -26,10 +27,10 @@ export const AuthorHorizontal: FC<Props> = props => {
       </figure>
       <div className="flex flex-col">
         <span>
-          <span data-kontent-element-codename={contentTypes.author.elements.first_name.codename}>{props.item.elements.firstName.value}</span>
-          <span data-kontent-element-codename={contentTypes.author.elements.last_name.codename}>{props.item.elements.lastName.value}</span>
+          <span {...createElementSmartLink(contentTypes.author.elements.first_name.codename)}>{props.item.elements.firstName.value}</span>
+          <span {...createElementSmartLink(contentTypes.author.elements.last_name.codename)}>{props.item.elements.lastName.value}</span>
         </span>
-        <em data-kontent-element-codename={contentTypes.author.elements.occupation.codename}>({props.item.elements.occupation.value})</em>
+        <em {...createElementSmartLink(contentTypes.author.elements.occupation.codename)}>({props.item.elements.occupation.value})</em>
       </div>
     </div>
   );

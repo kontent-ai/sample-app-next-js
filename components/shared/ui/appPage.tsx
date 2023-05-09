@@ -5,6 +5,7 @@ import { useSmartLink } from "../../../lib/useSmartLink";
 import { createDefaultMenu } from "../../../lib/constants/menu";
 import { ValidCollectionCodename } from "../../../lib/types/perCollection";
 import { SiteCodenameProvider } from "../siteCodenameContext";
+import { createItemSmartLink } from "../../../lib/utils/smartLinkUtils";
 
 type Props = Readonly<{
   children: ReactNode;
@@ -21,7 +22,7 @@ export const AppPage: FC<Props> = props => {
         {/* https://tailwindcss.com/docs/typography-plugin */}
         <main
           className="py-5 container grow h-full"
-          data-kontent-item-id={props.itemId}
+          {...createItemSmartLink(props.itemId)}
         >
           <div className="prose w-full max-w-full">
             {props.children}

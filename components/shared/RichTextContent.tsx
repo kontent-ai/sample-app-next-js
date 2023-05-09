@@ -4,6 +4,7 @@ import { PortableText } from "@portabletext/react";
 import { FC } from "react";
 import { contentTypes } from "../../models";
 import { RichTextContent } from "../../models/content-types/component___rich_text_content"
+import { createElementSmartLink, createItemSmartLink } from "../../lib/utils/smartLinkUtils";
 
 type Props = Readonly<{
   item: RichTextContent;
@@ -14,8 +15,8 @@ export const RichTextContentComponent: FC<Props> = props => {
 
   return (
     <div
-      data-kontent-item-id={props.item.system.id}
-      data-kontent-element-codename={contentTypes.component___rich_text_content.elements.content.codename}
+      {...createItemSmartLink(props.item.system.id)}
+      {...createElementSmartLink(contentTypes.component___rich_text_content.elements.content.codename)}
     >
       <PortableText value={portableText} />
     </div>

@@ -1,5 +1,6 @@
 import { FC, ReactNode } from "react";
 import Image from 'next/image';
+import { createItemSmartLink } from "../../../lib/utils/smartLinkUtils";
 
 type Props = Readonly<{
   url: string;
@@ -11,7 +12,7 @@ type Props = Readonly<{
 export const HeroImage: FC<Props> = props => (
   <figure
     className={`relative m-0 w-full h-[32rem] ${props.className ?? ""}`}
-    data-kontent-item-id={props.itemId}
+    {...createItemSmartLink(props.itemId)}
   >
     <Image
       src={props.url}

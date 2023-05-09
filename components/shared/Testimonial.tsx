@@ -2,6 +2,7 @@ import { FC } from "react";
 import { Testimonial, contentTypes } from "../../models";
 import { AuthorVertical } from "./AuthorVertical";
 import { AuthorHorizontal } from "./AuthorHorizontal";
+import { createElementSmartLink, createItemSmartLink } from "../../lib/utils/smartLinkUtils";
 
 type Props = Readonly<{
   item: Testimonial;
@@ -11,14 +12,14 @@ export const TestimonialComponent: FC<Props> = props => {
   return (
     <section
       className={`flex gap-4 ${layoutClasses(props.item)}`}
-      data-kontent-item-id={props.item.system.id}
+      {...createItemSmartLink(props.item.system.id)}
     >
       {renderAuthor(props.item)}
       <div>
-        <p data-kontent-element-codename={contentTypes.testimonial.elements.title.codename}>
+        <p {...createElementSmartLink(contentTypes.testimonial.elements.title.codename)}>
           {props.item.elements.title.value}
         </p>
-        <p data-kontent-element-codename={contentTypes.testimonial.elements.subtitle.codename}>
+        <p {...createElementSmartLink(contentTypes.testimonial.elements.subtitle.codename)}>
           {props.item.elements.subtitle.value}
         </p>
       </div>

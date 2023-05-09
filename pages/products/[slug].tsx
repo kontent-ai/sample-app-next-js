@@ -7,6 +7,7 @@ import { siteCodename } from "../../lib/utils/env";
 import { ValidCollectionCodename } from "../../lib/types/perCollection";
 import { AppPage } from "../../components/shared/ui/appPage";
 import Image from "next/image";
+import { createElementSmartLink } from "../../lib/utils/smartLinkUtils";
 
 type Props = Readonly<{
   product: Product;
@@ -67,7 +68,8 @@ const ProductDetail: FC<Props> = ({ product, siteCodename }) => (
   <AppPage itemId={product.system.id} siteCodename={siteCodename}>
     <div>
       <h1
-        data-kontent-element-codename={contentTypes.product.elements.title.codename}>
+        {...createElementSmartLink(contentTypes.product.elements.title.codename)}
+      >
         {product.elements.title.value}
       </h1>
       <Image
