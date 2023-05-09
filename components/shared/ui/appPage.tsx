@@ -22,7 +22,7 @@ export const AppPage: FC<Props> = props => {
         {/* https://tailwindcss.com/docs/typography-plugin */}
         <main
           className="py-5 container grow h-full"
-          {...createItemSmartLink(props.itemId)}
+          {...createItemSmartLink(props.itemId, true)}
         >
           <div className="prose w-full max-w-full">
             {props.children}
