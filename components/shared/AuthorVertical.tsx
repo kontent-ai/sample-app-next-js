@@ -27,12 +27,12 @@ export const AuthorVertical: FC<Props> = props => {
       </figure>
       <div className="relative flex flex-col items-center">
         <span className="flex gap-2">
-          <span {...createElementSmartLink(contentTypes.author.elements.first_name.codename)}>{props.item.elements.firstName.value}</span>
-          <span {...createElementSmartLink(contentTypes.author.elements.last_name.codename)}>{props.item.elements.lastName.value}</span>
+          <span {...createElementSmartLink(contentTypes.author.elements.first_name.codename, true)}>{props.item.elements.firstName.value}</span>
+          <span {...createElementSmartLink(contentTypes.author.elements.last_name.codename, true)}>{props.item.elements.lastName.value}</span>
         </span>
         <em
           className="text-sm truncate"
-          {...createElementSmartLink(contentTypes.author.elements.occupation.codename)}
+          {...createElementSmartLink(contentTypes.author.elements.occupation.codename, true)}
         >
           ({props.item.elements.occupation.value})
         </em>

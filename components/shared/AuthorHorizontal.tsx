@@ -16,7 +16,7 @@ export const AuthorHorizontal: FC<Props> = props => {
     >
       <figure
         className="relative rounded-full w-20 h-20 overflow-hidden"
-        {...createElementSmartLink(contentTypes.author.elements.photograph.codename)}
+        {...createElementSmartLink(contentTypes.author.elements.photograph.codename, true)}
       >
         <Image
           src={props.item.elements.photograph.value[0]?.url ?? "missing author image url"}
@@ -27,10 +27,10 @@ export const AuthorHorizontal: FC<Props> = props => {
       </figure>
       <div className="flex flex-col">
         <span>
-          <span {...createElementSmartLink(contentTypes.author.elements.first_name.codename)}>{props.item.elements.firstName.value}</span>
-          <span {...createElementSmartLink(contentTypes.author.elements.last_name.codename)}>{props.item.elements.lastName.value}</span>
+          <span {...createElementSmartLink(contentTypes.author.elements.first_name.codename, true)}>{props.item.elements.firstName.value}</span>
+          <span {...createElementSmartLink(contentTypes.author.elements.last_name.codename, true)}>{props.item.elements.lastName.value}</span>
         </span>
-        <em {...createElementSmartLink(contentTypes.author.elements.occupation.codename)}>({props.item.elements.occupation.value})</em>
+        <em {...createElementSmartLink(contentTypes.author.elements.occupation.codename, true)}>({props.item.elements.occupation.value})</em>
       </div>
     </div>
   );
