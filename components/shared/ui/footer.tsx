@@ -11,7 +11,7 @@ export const Footer: FC<Props> = props => {
 
   return (
     <footer className={`w-full grow-0 h-16 px-10 flex flex-auto shrink-0 justify-end items-center ${mainColorBgClass[siteCodename]} ${props.className ?? ""}`}>
-      <p>Welltale cosmatics inc.</p>
+      <p>Healthtech inc.</p>
     </footer>
   );
 }
