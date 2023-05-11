@@ -5,9 +5,13 @@ import { siteCodename } from './utils/env';
 import { contentTypes, Product } from '../models';
 
 const sourceTrackingHeaderName = 'X-KC-SOURCE'
+const envId = process.env.NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID;
+if (!envId) {
+  throw new Error("Missing 'NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID' environment variable.");
+}
 
 const deliveryClient = createDeliveryClient({
-  environmentId: process.env.KONTENT_ENVIRONMENT_ID || "975bf280-fd91-488c-994c-2f04416e5ee3",
+  environmentId: envId,
   globalHeaders: (_queryConfig) => [
     {
       header: sourceTrackingHeaderName,
