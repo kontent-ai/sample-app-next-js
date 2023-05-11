@@ -8,7 +8,7 @@ import { AppPage } from "../components/shared/ui/appPage";
 import { ParsedUrlQuery } from "querystring";
 import { ValidCollectionCodename } from "../lib/types/perCollection";
 import { siteCodename } from "../lib/utils/env";
-import { createElementSmartLink } from "../lib/utils/smartLinkUtils";
+import { createElementSmartLink, createFixedAddSmartLink } from "../lib/utils/smartLinkUtils";
 
 type Props = Readonly<{
   page: Page;
@@ -65,9 +65,14 @@ const TopLevelPage: FC<Props> = props => (
     >
       {props.page.elements.title.value}
     </h1>
-    {props.page.elements.content.linkedItems.map(piece => (
-      <Content key={piece.system.id} item={piece as any} />
-    ))}
+    <div
+      {...createElementSmartLink(contentTypes.page.elements.content.codename)}
+      {...createFixedAddSmartLink("end")}
+    >
+      {props.page.elements.content.linkedItems.map(piece => (
+        <Content key={piece.system.id} item={piece as any} />
+      ))}
+    </div>
   </AppPage>
 );
 
