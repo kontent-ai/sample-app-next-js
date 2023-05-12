@@ -50,16 +50,12 @@ const Headers: FC<HeadersProps> = props => {
       {props.headers.map((header, i) => (
         <li
           key={i}
-          className={`overflow-hidden h-full m-0 shrink cursor-pointer ${mainColorBorderClass[siteCodename]} ${props.selectedHeaderIndex === i ? "border-b-2" : ""}`}
+          className={`overflow-hidden h-full m-0 shrink text-ellipsis flex justify-center items-center cursor-pointer ${mainColorBorderClass[siteCodename]} ${props.selectedHeaderIndex === i ? "border-b-2" : ""}`}
           onClick={() => props.onHeaderSelected(i)}
           {...createItemSmartLink(header.id, true)}
+          {...createRelativeAddSmartLink("after")}
         >
-          <div
-            className="w-full h-full flex justify-center items-center overflow-hidden text-ellipsis shrink"
-            {...createRelativeAddSmartLink("after")}
-          >
-            {header.label}
-          </div>
+          {header.label}
         </li>
       ))}
     </menu>
