@@ -1,9 +1,9 @@
 import { FC, useState } from "react";
-import { CardStack } from "../../models"
+import { CardStack, contentTypes } from "../../models"
 import { CardComponent } from "./Card";
 import { useSiteCodename } from "./siteCodenameContext";
 import { mainColorBorderClass } from "../../lib/constants/colors";
-import { createItemSmartLink, createRelativeAddSmartLink } from "../../lib/utils/smartLinkUtils";
+import { createElementSmartLink, createItemSmartLink, createRelativeAddSmartLink } from "../../lib/utils/smartLinkUtils";
 
 type Props = Readonly<{
   item: CardStack;
@@ -19,10 +19,20 @@ export const CardStackComponent: FC<Props> = props => {
   }
 
   return (
-    <div className="p-7">
-      <h2>{props.item.elements.title.value}</h2>
-      {props.item.elements.message.value}
-      <section className="py-11">
+    <div
+      className="p-7"
+      {...createItemSmartLink(props.item.system.id, true)}
+    >
+      <h2 {...createElementSmartLink(contentTypes.card_stack.elements.title.codename)}>
+        {props.item.elements.title.value}
+      </h2>
+      <div {...createElementSmartLink(contentTypes.card_stack.elements.message.codename)}>
+        {props.item.elements.message.value}
+      </div>
+      <section
+        className="py-11"
+        {...createElementSmartLink(contentTypes.card_stack.elements.stack.codename)}
+      >
         <Headers
           headers={props.item.elements.stack.linkedItems.map(item => ({ id: item.system.id, label: item.elements.title.value }))}
           onHeaderSelected={setCardIndex}
