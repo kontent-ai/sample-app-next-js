@@ -3,6 +3,7 @@ import { CardStack } from "../../models"
 import { CardComponent } from "./Card";
 import { useSiteCodename } from "./siteCodenameContext";
 import { mainColorBorderClass } from "../../lib/constants/colors";
+import { createItemSmartLink, createRelativeAddSmartLink } from "../../lib/utils/smartLinkUtils";
 
 type Props = Readonly<{
   item: CardStack;
@@ -23,7 +24,7 @@ export const CardStackComponent: FC<Props> = props => {
       {props.item.elements.message.value}
       <section className="py-11">
         <Headers
-          headers={props.item.elements.stack.linkedItems.map(item => item.elements.title.value)}
+          headers={props.item.elements.stack.linkedItems.map(item => ({ id: item.system.id, label: item.elements.title.value }))}
           onHeaderSelected={setCardIndex}
           selectedHeaderIndex={cardIndex}
         />
@@ -36,7 +37,7 @@ export const CardStackComponent: FC<Props> = props => {
 };
 
 type HeadersProps = Readonly<{
-  headers: ReadonlyArray<string>;
+  headers: ReadonlyArray<Readonly<{ id: string; label: string }>>;
   selectedHeaderIndex: number;
   onHeaderSelected: (headerIndex: number) => void;
 }>;
@@ -49,14 +50,19 @@ const Headers: FC<HeadersProps> = props => {
       {props.headers.map((header, i) => (
         <li
           key={i}
-          className={`overflow-hidden h-full m-0 shrink text-ellipsis flex justify-center items-center cursor-pointer ${mainColorBorderClass[siteCodename]} ${props.selectedHeaderIndex === i ? "border-b-2" : ""}`}
+          className={`overflow-hidden h-full m-0 shrink cursor-pointer ${mainColorBorderClass[siteCodename]} ${props.selectedHeaderIndex === i ? "border-b-2" : ""}`}
           onClick={() => props.onHeaderSelected(i)}
+          {...createItemSmartLink(header.id, true)}
         >
-          {header}
+          <div
+            className="w-full h-full flex justify-center items-center overflow-hidden text-ellipsis shrink"
+            {...createRelativeAddSmartLink("after")}
+          >
+            {header.label}
+          </div>
         </li>
       ))}
     </menu>
   );
 }
 
-const wrapIndex = ({ index, length }: Readonly<{ index: number; length: number }>) => index < 0 ? length + index : index % length;
