@@ -63,7 +63,7 @@ const Headers: FC<HeadersProps> = props => {
           className={`overflow-hidden h-full m-0 shrink text-ellipsis flex justify-center items-center cursor-pointer ${mainColorBorderClass[siteCodename]} ${props.selectedHeaderIndex === i ? "border-b-2" : ""}`}
           onClick={() => props.onHeaderSelected(i)}
           {...createItemSmartLink(header.id, true)}
-          {...createRelativeAddSmartLink("after", "right")}
+          {...createRelativeAddSmartLink("after", "bottom-end")}
         >
           {header.label}
         </li>
