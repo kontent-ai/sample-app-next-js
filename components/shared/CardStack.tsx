@@ -4,6 +4,7 @@ import { CardComponent } from "./Card";
 import { useSiteCodename } from "./siteCodenameContext";
 import { mainColorBorderClass } from "../../lib/constants/colors";
 import { createElementSmartLink, createItemSmartLink, createRelativeAddSmartLink } from "../../lib/utils/smartLinkUtils";
+import { StandaloneSmartLinkButton } from "./StandaloneSmartLinkButton";
 
 type Props = Readonly<{
   item: CardStack;
@@ -20,7 +21,7 @@ export const CardStackComponent: FC<Props> = props => {
 
   return (
     <div
-      className="p-7"
+      className="p-7 relative"
       {...createItemSmartLink(props.item.system.id, true)}
     >
       <h2 {...createElementSmartLink(contentTypes.card_stack.elements.title.codename)}>
@@ -29,10 +30,8 @@ export const CardStackComponent: FC<Props> = props => {
       <div {...createElementSmartLink(contentTypes.card_stack.elements.message.codename)}>
         {props.item.elements.message.value}
       </div>
-      <section
-        className="py-11"
-        {...createElementSmartLink(contentTypes.card_stack.elements.stack.codename)}
-      >
+      <section className="py-11">
+        <StandaloneSmartLinkButton elementCodename={contentTypes.card_stack.elements.stack.codename} />
         <Headers
           headers={props.item.elements.stack.linkedItems.map(item => ({ id: item.system.id, label: item.elements.title.value }))}
           onHeaderSelected={setCardIndex}
