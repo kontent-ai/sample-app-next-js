@@ -24,7 +24,7 @@ export const ListItem: FC<Props> = props => (
       </figure>
       <div className="border-t-2 rounded border-t-gray-100 mx-3 my-3" />
       <div className="w-full flex justify-center pt-4 pb-8">
-        <b>{props.title}</b>
+        <b className="text-center">{props.title}</b>
       </div>
     </Link>
   </li>
