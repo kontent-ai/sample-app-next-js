@@ -4,6 +4,7 @@ import { PortableText } from "@portabletext/react";
 import { FC } from "react";
 import { RichTextContent, contentTypes } from "../../models";
 import { createElementSmartLink, createFixedAddSmartLink, createItemSmartLink } from "../../lib/utils/smartLinkUtils";
+import { createDefaultResolvers } from "../../lib/richTextResolvers";
 
 type Props = Readonly<{
   item: RichTextContent;
@@ -18,7 +19,7 @@ export const RichTextContentComponent: FC<Props> = props => {
       {...createElementSmartLink(contentTypes.component___rich_text_content.elements.content.codename)}
       {...createFixedAddSmartLink("end")}
     >
-      <PortableText value={portableText} />
+      <PortableText value={portableText} components={createDefaultResolvers(props.item.elements.content)} />
     </div >
   );
 }
