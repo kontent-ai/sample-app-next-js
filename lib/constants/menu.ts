@@ -32,6 +32,10 @@ const perCollectionMenus = {
       title: "Home",
     },
     {
+      url: "/articles",
+      title: "Articles",
+    },
+    {
       url: "/products",
       title: "Products",
     },
