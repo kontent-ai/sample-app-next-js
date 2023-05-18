@@ -122,3 +122,13 @@ export const getArticlesForListing = (usePreview: boolean) =>
     })
     .toAllPromise()
     .then(res => res.data.items);
+
+export const getArticleBySlug = (slug: string, usePreview: boolean) =>
+  deliveryClient
+    .items<Article>()
+    .equalsFilter(`elements.${contentTypes.article.elements.slug.codename}`, slug)
+    .queryConfig({
+      usePreviewMode: usePreview,
+    })
+    .toAllPromise()
+    .then(res => res.data.items[0]);
