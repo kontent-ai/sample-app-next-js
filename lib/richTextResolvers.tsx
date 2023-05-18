@@ -1,6 +1,6 @@
 import { Elements } from "@kontent-ai/delivery-sdk";
-import { IPortableTextImage } from "@kontent-ai/rich-text-resolver";
-import { PortableTextReactComponents } from "@portabletext/react";
+import { IPortableTextImage, IPortableTextTable, resolveTable } from "@kontent-ai/rich-text-resolver";
+import { PortableText, PortableTextReactComponents } from "@portabletext/react";
 import Image from "next/image";
 
 export const createDefaultResolvers = (element: Elements.RichTextElement): Partial<PortableTextReactComponents> => ({
@@ -15,6 +15,23 @@ export const createDefaultResolvers = (element: Elements.RichTextElement): Parti
           height={asset?.height ?? undefined}
         />
       );
-    }
+    },
+    table: ({ value }: { value: IPortableTextTable }) => {
+      return (
+        <table>
+          <tbody>
+            {value.rows.map(r => (
+              <tr key={r._key}>
+                {r.cells.map(c => (
+                  <td key={c._key}>
+                    <PortableText value={c.content} components={createDefaultResolvers(element)} />
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )
+    },
   }
 })
