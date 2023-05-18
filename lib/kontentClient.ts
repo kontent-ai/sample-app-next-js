@@ -80,6 +80,7 @@ export const getProductsForListing = (usePreview: boolean) =>
   deliveryClient
     .items<Product>()
     .type('product')
+    .collection(siteCodename)
     .elementsParameter(['title', 'product_image', 'slug'])
     .queryConfig({
       usePreviewMode: usePreview,
