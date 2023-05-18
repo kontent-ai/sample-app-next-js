@@ -3,7 +3,8 @@ import { PerCollectionCodenames } from './routing';
 import { siteCodename } from './utils/env';
 import { contentTypes, Product, WebSpotlightRoot } from '../models';
 
-const sourceTrackingHeaderName = 'X-KC-SOURCE'
+const sourceTrackingHeaderName = 'X-KC-SOURCE';
+
 const envId = process.env.NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID;
 if (!envId) {
   throw new Error("Missing 'NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID' environment variable.");
