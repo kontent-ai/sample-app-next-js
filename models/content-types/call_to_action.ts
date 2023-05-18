@@ -25,7 +25,7 @@ export type CallToAction = IContentItem<{
 
   /**
    * Title (text)
-   * Required: false
+   * Required: true
    * Id: 2a1e51f1-3128-4321-8cf5-38e821712af0
    * Codename: title
    */

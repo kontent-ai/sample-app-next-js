@@ -25,7 +25,7 @@ export type Solution = IContentItem<{
 
   /**
    * Title (text)
-   * Required: false
+   * Required: true
    * Id: 3fbe76f7-aef4-4336-8100-24f428a29ef8
    * Codename: title
    */

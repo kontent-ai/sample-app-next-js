@@ -12,7 +12,7 @@ import { type HeroUnit } from './component___hero_unit';
 export type Carousel = IContentItem<{
   /**
    * Elements (modular_content)
-   * Required: false
+   * Required: true
    * Id: fb6b765a-1d09-4d98-81db-66bc3a63c487
    * Codename: hero_units
    */

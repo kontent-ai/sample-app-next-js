@@ -19,7 +19,7 @@ export type CardStack = IContentItem<{
 
   /**
    * Stack (modular_content)
-   * Required: false
+   * Required: true
    * Id: 03baf56e-27a7-4f3a-be28-86f5deafc3f9
    * Codename: stack
    */

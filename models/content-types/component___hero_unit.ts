@@ -35,7 +35,7 @@ export type HeroUnit = IContentItem<{
 
   /**
    * Title (text)
-   * Required: false
+   * Required: true
    * Id: 250e0af2-9305-47b8-acdb-9b65c70cbc06
    * Codename: title
    */

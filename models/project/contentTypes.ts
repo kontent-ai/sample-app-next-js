@@ -49,7 +49,7 @@ export const contentTypes = {
         id: 'cbc1433d-6449-4ce8-bdd6-215eb92362c5',
         externalId: undefined,
         name: 'Author',
-        required: false,
+        required: true,
         type: 'modular_content',
         snippetCodename: undefined,
       },
@@ -164,7 +164,7 @@ export const contentTypes = {
         id: '0cfa6910-1b04-4489-a352-d15970f7357c',
         externalId: undefined,
         name: 'First Name',
-        required: false,
+        required: true,
         type: 'text',
         snippetCodename: undefined,
       },
@@ -177,7 +177,7 @@ export const contentTypes = {
         id: '07994d54-d6a1-45e4-82cb-7094a29813b8',
         externalId: undefined,
         name: 'Last Name',
-        required: false,
+        required: true,
         type: 'text',
         snippetCodename: undefined,
       },
@@ -253,7 +253,7 @@ export const contentTypes = {
         id: '2a1e51f1-3128-4321-8cf5-38e821712af0',
         externalId: undefined,
         name: 'Title',
-        required: false,
+        required: true,
         type: 'text',
         snippetCodename: undefined,
       },
@@ -277,7 +277,7 @@ export const contentTypes = {
         id: '76a0b381-b3a5-445d-8337-77c90297d7a2',
         externalId: undefined,
         name: 'Content',
-        required: false,
+        required: true,
         type: 'rich_text',
         snippetCodename: undefined,
       },
@@ -290,7 +290,7 @@ export const contentTypes = {
         id: 'b1a8da0e-2b24-44a0-826f-7029d2f59a1e',
         externalId: undefined,
         name: 'Type',
-        required: false,
+        required: true,
         type: 'multiple_choice',
         snippetCodename: undefined,
       },
@@ -353,7 +353,7 @@ export const contentTypes = {
         id: '541b4fba-088a-4f59-9098-326eb7ff075c',
         externalId: undefined,
         name: 'Title',
-        required: false,
+        required: true,
         type: 'text',
         snippetCodename: undefined,
       },
@@ -390,7 +390,7 @@ export const contentTypes = {
         id: '03baf56e-27a7-4f3a-be28-86f5deafc3f9',
         externalId: undefined,
         name: 'Stack',
-        required: false,
+        required: true,
         type: 'modular_content',
         snippetCodename: undefined,
       },
@@ -427,7 +427,7 @@ export const contentTypes = {
         id: 'fb6b765a-1d09-4d98-81db-66bc3a63c487',
         externalId: undefined,
         name: 'Elements',
-        required: false,
+        required: true,
         type: 'modular_content',
         snippetCodename: undefined,
       },
@@ -551,7 +551,7 @@ export const contentTypes = {
         id: '250e0af2-9305-47b8-acdb-9b65c70cbc06',
         externalId: undefined,
         name: 'Title',
-        required: false,
+        required: true,
         type: 'text',
         snippetCodename: undefined,
       },
@@ -792,7 +792,7 @@ export const contentTypes = {
         id: '3fbe76f7-aef4-4336-8100-24f428a29ef8',
         externalId: undefined,
         name: 'Title',
-        required: false,
+        required: true,
         type: 'text',
         snippetCodename: undefined,
       },
@@ -818,56 +818,6 @@ export const contentTypes = {
         name: 'Solutions',
         required: false,
         type: 'modular_content',
-        snippetCodename: undefined,
-      },
-    },
-  },
-
-  /**
-   * Templated page
-   */
-  templated_page: {
-    codename: 'templated_page',
-    id: '626ffac7-398f-407d-bbc2-56662331b530',
-    externalId: undefined,
-    name: 'Templated page',
-    elements: {
-      /**
-       * Content (rich_text)
-       */
-      content: {
-        codename: 'content',
-        id: '445464b8-d1e7-4ce4-a360-801133113e2b',
-        externalId: undefined,
-        name: 'Content',
-        required: false,
-        type: 'rich_text',
-        snippetCodename: undefined,
-      },
-
-      /**
-       * Publish date (date_time)
-       */
-      publish_date: {
-        codename: 'publish_date',
-        id: 'b4f07b7f-15ca-47e9-ab35-e2670394766e',
-        externalId: undefined,
-        name: 'Publish date',
-        required: false,
-        type: 'date_time',
-        snippetCodename: undefined,
-      },
-
-      /**
-       * Title (text)
-       */
-      title: {
-        codename: 'title',
-        id: '3bf33c30-f2aa-43f2-8932-8cbb7292bd74',
-        externalId: undefined,
-        name: 'Title',
-        required: false,
-        type: 'text',
         snippetCodename: undefined,
       },
     },
@@ -905,7 +855,7 @@ export const contentTypes = {
         id: '999d2af3-212d-4d5d-9348-5e14c3e9f957',
         externalId: undefined,
         name: 'Format',
-        required: false,
+        required: true,
         type: 'multiple_choice',
         snippetCodename: undefined,
       },

@@ -13,6 +13,5 @@ export * from './product';
 export * from './component___rich_text_content';
 export * from './component___solution';
 export * from './solution_set';
-export * from './templated_page';
 export * from './testimonial';
 export * from './web_spotlight_root';

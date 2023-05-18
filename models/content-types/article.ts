@@ -29,7 +29,7 @@ export type Article = IContentItem<{
 
   /**
    * Author (modular_content)
-   * Required: false
+   * Required: true
    * Id: cbc1433d-6449-4ce8-bdd6-215eb92362c5
    * Codename: author
    */
