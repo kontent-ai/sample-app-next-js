@@ -79,9 +79,13 @@ export const getHomepage = (usePreview: boolean) =>
 export const getProductsForListing = (usePreview: boolean) =>
   deliveryClient
     .items<Product>()
-    .type('product')
+    .type(contentTypes.product.codename)
     .collection(siteCodename)
-    .elementsParameter(['title', 'product_image', 'slug'])
+    .elementsParameter([
+      contentTypes.product.elements.title.codename,
+      contentTypes.product.elements.product_image.codename,
+      contentTypes.product.elements.slug.codename,
+    ])
     .queryConfig({
       usePreviewMode: usePreview,
     })
