@@ -23,6 +23,9 @@ const ArticlePage: FC<Props> = props => (
     <HeroImage url={props.article.elements.heroImage.value[0]?.url} itemId={props.article.system.id}>
       <h1>{props.article.elements.title.value}</h1>
     </HeroImage>
+    <p>
+      {props.article.elements.abstract.value}
+    </p>
     <PortableText value={props.parsedContent} components={createDefaultResolvers(props.article.elements.content)} />
   </AppPage>
 );

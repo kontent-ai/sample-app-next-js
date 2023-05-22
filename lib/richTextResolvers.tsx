@@ -1,5 +1,5 @@
 import { Elements } from "@kontent-ai/delivery-sdk";
-import { IPortableTextImage, IPortableTextTable, resolveTable } from "@kontent-ai/rich-text-resolver";
+import { IPortableTextImage, IPortableTextTable } from "@kontent-ai/rich-text-resolver";
 import { PortableText, PortableTextReactComponents } from "@portabletext/react";
 import Image from "next/image";
 
@@ -33,5 +33,17 @@ export const createDefaultResolvers = (element: Elements.RichTextElement): Parti
         </table>
       )
     },
-  }
+  },
+  marks: {
+    sub: props => (
+      <sub>
+        {props.children}
+      </sub>
+    ),
+    sup: props => (
+      <sup>
+        {props.children}
+      </sup>
+    ),
+  },
 })
