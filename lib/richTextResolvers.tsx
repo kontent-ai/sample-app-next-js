@@ -1,7 +1,8 @@
 import { Elements } from "@kontent-ai/delivery-sdk";
-import { IPortableTextImage, IPortableTextTable } from "@kontent-ai/rich-text-resolver";
+import { IPortableTextComponent, IPortableTextImage, IPortableTextTable } from "@kontent-ai/rich-text-resolver";
 import { PortableText, PortableTextReactComponents } from "@portabletext/react";
 import Image from "next/image";
+import { RichTextComponent, isAcceptedComponentItem } from "../components/shared/richText/richTextComponent";
 
 export const createDefaultResolvers = (element: Elements.RichTextElement): Partial<PortableTextReactComponents> => ({
   types: {
@@ -32,6 +33,19 @@ export const createDefaultResolvers = (element: Elements.RichTextElement): Parti
           </tbody>
         </table>
       )
+    },
+    component: ({ value }: { value: IPortableTextComponent }) => {
+      const componentItem = element.linkedItems.find(i => i.system.codename === value.component._ref);
+      if (!componentItem) {
+        throw new Error("Component item not found, probably not enought depth requested.");
+      }
+      if (!isAcceptedComponentItem(componentItem)) {
+        throw new Error(`Cannot render a component of type ${componentItem.system.type}, please make sure the app supports it.`);
+      }
+
+      return (
+        <RichTextComponent item={componentItem} />
+      );
     },
   },
   marks: {
