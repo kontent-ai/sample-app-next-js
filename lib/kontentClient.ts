@@ -129,6 +129,7 @@ export const getArticleBySlug = (slug: string, usePreview: boolean) =>
   deliveryClient
     .items<Article>()
     .equalsFilter(`elements.${contentTypes.article.elements.slug.codename}`, slug)
+    .depthParameter(10)
     .queryConfig({
       usePreviewMode: usePreview,
     })
