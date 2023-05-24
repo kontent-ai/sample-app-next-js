@@ -44,12 +44,28 @@ export type Article = IContentItem<{
   content: Elements.RichTextElement;
 
   /**
+   * Hero Image (asset)
+   * Required: true
+   * Id: 7735f75c-88d7-4f3a-a66b-c0d2338af4c8
+   * Codename: hero_image
+   */
+  heroImage: Elements.AssetsElement;
+
+  /**
    * Publishing date (date_time)
    * Required: true
    * Id: ceb09050-d3e8-4e62-8f07-ea12d4b9e59d
    * Codename: publishing_date
    */
   publishingDate: Elements.DateTimeElement;
+
+  /**
+   * Slug (url_slug)
+   * Required: true
+   * Id: 1c06cbbc-914d-4305-a44a-67467d7c51a4
+   * Codename: slug
+   */
+  slug: Elements.UrlSlugElement;
 
   /**
    * Title (text)

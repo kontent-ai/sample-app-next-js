@@ -2,7 +2,7 @@ import { camelCasePropertyNameResolver, createDeliveryClient, DeliveryError, ICo
 import { WebSpotlightRoot } from '../models/content-types/web_spotlight_root';
 import { PerCollectionCodenames } from './routing';
 import { siteCodename } from './utils/env';
-import { contentTypes, Product } from '../models';
+import { contentTypes, Navigation, Product } from '../models';
 
 const sourceTrackingHeaderName = 'X-KC-SOURCE'
 const envId = process.env.NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID;
@@ -92,6 +92,15 @@ export const getProductsForListing = (usePreview: boolean) =>
     .toAllPromise()
     .then(res => res.data.items)
 
+export const getSiteMenu = (siteMenuCodename: string, usePreview: boolean) =>
+  deliveryClient
+    .item<Navigation>(siteMenuCodename)
+    .queryConfig({
+      usePreviewMode: usePreview
+    })
+    .depthParameter(10)
+    .toPromise()
+    .then(res => res.data.item)
 
 export const getProductSlugs = () =>
   deliveryClient

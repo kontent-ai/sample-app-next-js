@@ -2,7 +2,7 @@
   "name": "@kontent-ai/boilerplate-next-js",
   "version": "0.3.0",
   "scripts": {
-    "generateModels": "rimraf -rf models && kontent-generate --projectId=2cedc519-a547-01ba-dde7-b01e00b909a1 --outputDir=./models --kontentUrl=https://manage.devkontentmasters.com/v2 --exportRoles=false --elementResolver=camelCase",
+    "generateModels": "rimraf -rf models && kontent-generate --projectId=0a12060e-20af-0124-a95d-871d26379561 --outputDir=./models --kontentUrl=https://manage.devkontentmasters.com/v2 --exportRoles=false --elementResolver=camelCase",
     "dev": "next dev",
     "lint": "next lint",
     "build": "next build",

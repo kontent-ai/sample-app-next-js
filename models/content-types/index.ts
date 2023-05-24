@@ -8,6 +8,7 @@ export * from './carousel';
 export * from './cta_button';
 export * from './footer';
 export * from './component___hero_unit';
+export * from './navigation';
 export * from './page';
 export * from './product';
 export * from './component___rich_text_content';
