@@ -67,6 +67,8 @@ You can start editing the page by modifying `pages/index.js`. The page auto-upda
 
 > By default, the content is loaded from a shared Kontent.ai project. If you want to use your own clone of the project so that you can customize it and experiment with Kontent, continue to the next section.
 
+To generate new models from Kontent.ai data, just run `npm run generateModels`. Make sure you have environment variables filled in properly.
+
 ## Create your own data source project in Kontent.ai
 
 TBD - raise the issue, if you want the project backup
