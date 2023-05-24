@@ -4,6 +4,7 @@ import { PortableText, PortableTextMarkComponentProps, PortableTextReactComponen
 import Image from "next/image";
 import { RichTextComponent, isAcceptedComponentItem } from "../components/shared/richText/richTextComponent";
 import { InternalLink } from "../components/shared/internalLinks/InternalLink";
+import { ArrowTopRightOnSquareIcon } from "@heroicons/react/24/solid";
 
 export const createDefaultResolvers = (element: Elements.RichTextElement): Partial<PortableTextReactComponents> => ({
   types: {
@@ -71,6 +72,22 @@ export const createDefaultResolvers = (element: Elements.RichTextElement): Parti
           {children}
         </InternalLink>
       );
-    }
+    },
+    link: ({ value, children }) => {
+      const target = (value?.href || "").startsWith("http")
+        ? "_blank"
+        : undefined;
+      return (
+        <a
+          href={value?.href}
+          target={target}
+          rel={value?.rel}
+          title={value?.title}
+        >
+          {children}
+          {!!value["data-new-window"] && <ArrowTopRightOnSquareIcon className="w-5 inline-block ml-1" />}
+        </a>
+      );
+    },
   },
 })
