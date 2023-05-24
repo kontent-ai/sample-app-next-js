@@ -1,6 +1,5 @@
 import { FC } from "react";
-import { contentTypes } from "../../models";
-import { HeroUnit } from "../../models/content-types/component___hero_unit"
+import { HeroUnit, contentTypes } from "../../models";
 import { HeroImage } from "../landingPage/ui/heroImage";
 import { createElementSmartLink } from "../../lib/utils/smartLinkUtils";
 

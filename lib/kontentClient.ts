@@ -1,8 +1,7 @@
 import { camelCasePropertyNameResolver, createDeliveryClient, DeliveryError, IContentItem } from '@kontent-ai/delivery-sdk';
-import { WebSpotlightRoot } from '../models/content-types/web_spotlight_root';
 import { PerCollectionCodenames } from './routing';
 import { siteCodename } from './utils/env';
-import { contentTypes, Product } from '../models';
+import { contentTypes, Product, WebSpotlightRoot } from '../models';
 
 const sourceTrackingHeaderName = 'X-KC-SOURCE'
 const envId = process.env.NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID;
