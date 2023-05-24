@@ -2,8 +2,7 @@ import { nodeParse } from "@kontent-ai/rich-text-resolver/dist/cjs/src/parser/no
 import { transformToPortableText } from "@kontent-ai/rich-text-resolver/dist/cjs/src/transformers/portable-text-transformer";
 import { PortableText } from "@portabletext/react";
 import { FC } from "react";
-import { contentTypes } from "../../models";
-import { RichTextContent } from "../../models/content-types/component___rich_text_content"
+import { RichTextContent, contentTypes } from "../../models";
 import { createElementSmartLink, createFixedAddSmartLink, createItemSmartLink } from "../../lib/utils/smartLinkUtils";
 
 type Props = Readonly<{

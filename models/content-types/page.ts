@@ -16,14 +16,6 @@ export type Page = IContentItem<{
   content: Elements.LinkedItemsElement<IContentItem>;
 
   /**
-   * Show in navigation (multiple_choice)
-   * Required: false
-   * Id: 96ee042a-9d21-499b-8cfe-0069270f062c
-   * Codename: show_in_navigation
-   */
-  showInNavigation: Elements.MultipleChoiceElement;
-
-  /**
    * Subpages (subpages)
    * Required: false
    * Id: 5ab7ce82-dc6d-49e6-abef-2fe24e6d8fa3

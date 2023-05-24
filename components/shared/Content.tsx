@@ -1,7 +1,5 @@
 import { ComponentType, FC } from "react";
-import { CallToAction, CardStack, Carousel, Testimonial, contentTypes } from "../../models";
-import { HeroUnit } from "../../models/content-types/component___hero_unit";
-import { RichTextContent } from "../../models/content-types/component___rich_text_content";
+import { CallToAction, CardStack, Carousel, HeroUnit, RichTextContent, Testimonial, contentTypes } from "../../models";
 import { HeroUnitComponent } from "./HeroUnit";
 import { RichTextContentComponent } from "./RichTextContent";
 import { TestimonialComponent } from "./Testimonial";

@@ -1,10 +1,10 @@
 import { GetStaticProps, NextPage } from 'next';
 import { AppPage } from '../components/shared/ui/appPage';
 import { getHomepage } from "../lib/kontentClient";
-import { WebSpotlightRoot } from '../models/content-types/web_spotlight_root';
 import { ValidCollectionCodename } from '../lib/types/perCollection';
 import { siteCodename } from '../lib/utils/env';
 import { Content } from '../components/shared/Content';
+import { WebSpotlightRoot } from '../models';
 
 type Props = Readonly<{
   homepage: WebSpotlightRoot;

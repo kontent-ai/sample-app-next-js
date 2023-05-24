@@ -1,4 +1,5 @@
 import { type IContentItem, type Elements } from '@kontent-ai/delivery-sdk';
+import { type Navigation } from './navigation';
 import { type Page } from './page';
 
 /**
@@ -23,7 +24,7 @@ export type WebSpotlightRoot = IContentItem<{
    * Id: 61be1529-49fc-43b6-ba33-962a360e4c9f
    * Codename: subpages
    */
-  subpages: Elements.LinkedItemsElement<Page>;
+  subpages: Elements.LinkedItemsElement<Page | Navigation>;
 
   /**
    * Title (text)
