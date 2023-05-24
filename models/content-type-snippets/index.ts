@@ -1,1 +1,1 @@
-export * from './sEOMetadata';
+export * from './SEOMetadata';

@@ -1,16 +1,27 @@
 import * as fsPromises from "fs/promises";
-import { generateModelsAsync, textHelper } from '@kontent-ai/model-generator';
+import { DefaultResolverType, generateModelsAsync, textHelper } from '@kontent-ai/model-generator';
 import * as dotenv from "dotenv";
 
 dotenv.config({ path: ".env.local" });
 
 const createMissingVarErrorMsg = (variableDescription: string) => `Missing ${variableDescription}. Please, make sure it is properly set in your .env.local file or otherwise provided as an environment variable.`
 
-type Style = "camelCase" | "pascalCase";
+type Style = "camelCase" | "pascalCase" | "camelOrPascalCase";
 
 const byNameResolver = (style: Style) => (obj: Readonly<{ name: string }>) => resolveName(obj.name, style);
 
-const resolveName = (name: string, style: Style) => replaceInvalidChars(textHelper.resolveTextWithDefaultResolver(name, style));
+const resolveName = (name: string, style: Style) => replaceInvalidChars(textHelper.resolveTextWithDefaultResolver(name, handleCaseSwitch(style, name)));
+
+const upperLetterRegex = /[A-Z]/;
+const handleCaseSwitch = (style: Style, name: string): DefaultResolverType => {
+  if (style === "camelCase" || style === "pascalCase") {
+    return style;
+  }
+
+  return upperLetterRegex.test(name[1])
+    ? "pascalCase"
+    : "camelCase";
+}
 
 const replaceInvalidChars = (str: string) => map(replaceIfNeeded, str)
 
@@ -58,10 +69,10 @@ await generateModelsAsync({
   elementResolver: (_, elementCodename) => resolveName(elementCodename, "camelCase"),
   contentTypeResolver: byNameResolver("pascalCase"),
   taxonomyTypeResolver: byNameResolver("pascalCase"),
-  contentTypeFileResolver: byNameResolver("camelCase"),
-  taxonomyTypeFileResolver: byNameResolver("camelCase"),
+  contentTypeFileResolver: byNameResolver("camelOrPascalCase"),
+  taxonomyTypeFileResolver: byNameResolver("camelOrPascalCase"),
   contentTypeSnippetResolver: byNameResolver("pascalCase"),
-  contentTypeSnippetFileResolver: byNameResolver("camelCase"),
+  contentTypeSnippetFileResolver: byNameResolver("camelOrPascalCase"),
 });
 
 console.log("Generating models is finished.");
