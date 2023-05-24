@@ -16,7 +16,7 @@ const deliveryClient = createDeliveryClient({
     {
       header: sourceTrackingHeaderName,
       value: `${process.env.APP_NAME || "n/a"};${process.env.APP_VERSION || "n/a"}`,
-    },
+    }
   ],
   propertyNameResolver: camelCasePropertyNameResolver,
   proxy: {
@@ -71,6 +71,7 @@ export const getHomepage = (usePreview: boolean) =>
     .collection(siteCodename)
     .queryConfig({
       usePreviewMode: usePreview,
+      waitForLoadingNewContent: usePreview
     })
     .depthParameter(10)
     .toPromise()
