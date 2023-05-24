@@ -25,6 +25,7 @@
     "**/*.tsx"
   ],
   "exclude": [
+    "scripts/*.ts",
     "node_modules"
   ]
 }
