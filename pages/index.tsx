@@ -4,12 +4,11 @@ import { getHomepage, getSiteMenu } from "../lib/kontentClient";
 import { ValidCollectionCodename } from '../lib/types/perCollection';
 import { siteCodename } from '../lib/utils/env';
 import { Content } from '../components/shared/Content';
-import { WSL_WebSpotlightRoot } from '../models';
+import { WSL_WebSpotlightRoot, Navigation } from '../models';
 import { useEffect, useState } from 'react';
 import { KontentSmartLinkEvent } from '@kontent-ai/smart-link';
 import { IRefreshMessageData, IRefreshMessageMetadata } from '@kontent-ai/smart-link/types/lib/IFrameCommunicatorTypes';
 import { useSmartLink } from '../lib/useSmartLink';
-import { Navigation } from '../models';
 import { getMenuCodename } from '../lib/constants/menu';
 
 type Props = Readonly<{

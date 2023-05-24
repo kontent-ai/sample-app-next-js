@@ -667,7 +667,7 @@ export const contentTypes = {
         externalId: undefined,
         name: 'Occupation',
         required: false,
-        type: 'text',
+        type: 'modular_content',
         snippetCodename: undefined,
       },
 
@@ -936,7 +936,7 @@ export const contentTypes = {
         externalId: undefined,
         name: 'Description',
         required: false,
-        type: 'text',
+        type: 'modular_content',
         snippetCodename: undefined,
       },
 
