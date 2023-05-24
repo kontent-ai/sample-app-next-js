@@ -13,7 +13,6 @@ import { useSmartLink } from '../lib/useSmartLink';
 type Props = Readonly<{
   homepage: WebSpotlightRoot;
   siteCodename: ValidCollectionCodename;
-  preview: boolean,
 }>;
 
 const Home: NextPage<Props> = props => {
@@ -56,7 +55,7 @@ export const getStaticProps: GetStaticProps<Props> = async context => {
   }
 
   return {
-    props: { homepage, siteCodename, preview: !!context.preview },
+    props: { homepage, siteCodename },
   };
 }
 
