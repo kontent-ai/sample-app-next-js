@@ -41,11 +41,11 @@ type PopoverProps = Readonly<{
 }>;
 
 const Popover: FC<PopoverProps> = props => (
-  <div className="absolute bottom-full -left-1/2 z-10 p-3 invisible group-hover/popoverTarget:visible">
-    <div className="border-gray-200 rounded-l p-5 drop-shadow-md bg-white w-max max-w-[200px]">
+  <span className="block absolute bottom-full -left-1/2 z-10 p-3 invisible group-hover/popoverTarget:visible">
+    <span className="block border-gray-200 rounded-l p-5 drop-shadow-md bg-white w-max max-w-[200px]">
       {props.children}
-    </div>
-  </div>
+    </span>
+  </span>
 );
 
 type ProductPreviewProps = Readonly<{
@@ -61,12 +61,12 @@ const ProductPreview: FC<ProductPreviewProps> = props => (
       width={props.product.elements.productImage.value[0]?.width || 200}
       className="object-contain"
     />
-    <div className="w-full h-0 border-gray-200 border-b-2 my-3" />
-    <div className="flex justify-center">
+    <span className="block w-full h-0 border-gray-200 border-b-2 my-3" />
+    <span className="flex justify-center">
       {props.product.elements.title.value}
-    </div>
-    <div className="flex justify-center">
+    </span>
+    <span className="flex justify-center">
       Price: {props.product.elements.price.value}€
-    </div>
+    </span>
   </>
 );
