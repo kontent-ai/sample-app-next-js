@@ -41,7 +41,7 @@ type PopoverProps = Readonly<{
 }>;
 
 const Popover: FC<PopoverProps> = props => (
-  <span className="block absolute bottom-full -left-1/2 z-10 p-3 invisible group-hover/popoverTarget:visible">
+  <span className="block absolute bottom-full left-1/2 -translate-x-1/2 z-10 p-3 invisible group-hover/popoverTarget:visible">
     <span className="block border-gray-200 rounded-l p-5 drop-shadow-md bg-white w-max max-w-[200px]">
       {props.children}
     </span>
