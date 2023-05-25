@@ -1056,6 +1056,17 @@ export const contentTypes = {
   },
 
   /**
+   * UMLP component – Resource listing
+   */
+  umlp_component___resource_listing: {
+    codename: 'umlp_component___resource_listing',
+    id: 'b6f5902d-8a00-494d-97dc-3bf99e3bf801',
+    externalId: undefined,
+    name: 'UMLP component – Resource listing',
+    elements: {},
+  },
+
+  /**
    * Web spotlight root
    */
   web_spotlight_root: {

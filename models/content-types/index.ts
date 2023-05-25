@@ -17,4 +17,5 @@ export * from './solution';
 export * from './solutionSet';
 export * from './testimonial';
 export * from './UMLPComponent_Achievements';
+export * from './UMLPComponent_ResourceListing';
 export * from './webSpotlightRoot';
