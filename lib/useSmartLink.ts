@@ -17,7 +17,7 @@ export const useSmartLink = () => {
     }));
 
     return () => sdk?.destroy()
-  }, [setSdk, sdk]);
+  }, [sdk]);
 
   return sdk;
 }
