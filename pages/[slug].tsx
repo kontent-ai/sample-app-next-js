@@ -1,7 +1,7 @@
 import { GetStaticPaths, GetStaticProps } from "next";
 import { pageCodenames } from '../lib/routing';
-import { getItemByCodename } from "../lib/kontentClient";
-import { Page, contentTypes } from "../models";
+import { getItemByCodename, getSiteMenu } from "../lib/kontentClient";
+import { Navigation, Page, contentTypes } from "../models";
 import { FC } from "react";
 import { Content } from "../components/shared/Content";
 import { AppPage } from "../components/shared/ui/appPage";
@@ -9,10 +9,12 @@ import { ParsedUrlQuery } from "querystring";
 import { ValidCollectionCodename } from "../lib/types/perCollection";
 import { siteCodename } from "../lib/utils/env";
 import { createElementSmartLink, createFixedAddSmartLink } from "../lib/utils/smartLinkUtils";
+import { getMenuCodename } from "../lib/constants/menu";
 
 type Props = Readonly<{
   page: Page;
   siteCodename: ValidCollectionCodename;
+  siteMenu: Navigation;
 }>;
 
 interface IParams extends ParsedUrlQuery {
@@ -45,6 +47,8 @@ export const getStaticProps: GetStaticProps = async (context) => {
       }
     };
   };
+  const menuCodename = getMenuCodename(siteCodename);
+  const siteMenu = await getSiteMenu(menuCodename, !!context.preview);
 
   const page = await getItemByCodename<Page>(pageCodename, !!context.preview);
   if (page === null) {
@@ -54,12 +58,12 @@ export const getStaticProps: GetStaticProps = async (context) => {
   };
 
   return {
-    props: { page, siteCodename },
+    props: { page, siteCodename, siteMenu },
   };
 }
 
 const TopLevelPage: FC<Props> = props => (
-  <AppPage itemId={props.page.system.id} siteCodename={props.siteCodename}>
+  <AppPage itemId={props.page.system.id} siteCodename={props.siteCodename} siteMenu={props.siteMenu}>
     <h1
       {...createElementSmartLink(contentTypes.page.elements.title.codename)}
     >
