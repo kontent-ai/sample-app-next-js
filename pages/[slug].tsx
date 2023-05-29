@@ -64,11 +64,6 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
 const TopLevelPage: FC<Props> = props => (
   <AppPage itemId={props.page.system.id} siteCodename={props.siteCodename} siteMenu={props.siteMenu}>
-    <h1
-      {...createElementSmartLink(contentTypes.page.elements.title.codename)}
-    >
-      {props.page.elements.title.value}
-    </h1>
     <div
       {...createElementSmartLink(contentTypes.page.elements.content.codename)}
       {...createFixedAddSmartLink("end")}
