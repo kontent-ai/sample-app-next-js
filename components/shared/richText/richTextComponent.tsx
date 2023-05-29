@@ -12,7 +12,6 @@ type Props = Readonly<{
 export const RichTextComponent: FC<Props> = props => {
   const TargetComponent = componentMap[props.item.system.type as keyof AcceptedTypesByCodename];
   if (!TargetComponent) {
-    // throw new Error(`Cannot render a content item with codename: ${props.item.system.codename}`);
     return null;
   }
 
