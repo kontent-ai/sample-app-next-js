@@ -10,13 +10,17 @@ export const createDefaultResolvers = (element: Elements.RichTextElement): Parti
   types: {
     image: ({ value }: PortableTextTypeComponentProps<IPortableTextImage>) => {
       const asset = element.images.find(i => i.imageId === value.asset._ref);
+      if (!asset) {
+        throw new Error(`Asset ${value.asset._ref} not found.`);
+      }
+
       return (
         <span className="flex justify-center">
           <Image
             src={value.asset.url}
-            alt={asset?.description ?? ""}
-            width={asset?.width ?? undefined}
-            height={asset?.height ?? undefined}
+            alt={asset.description ?? ""}
+            width={asset.width ?? undefined}
+            height={asset.height ?? undefined}
             className="rounded-3xl"
           />
         </span>
