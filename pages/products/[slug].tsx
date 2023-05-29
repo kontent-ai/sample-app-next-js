@@ -1,17 +1,20 @@
 import { GetStaticPaths, GetStaticProps, Redirect } from "next";
 import { Product, contentTypes } from "../../models"
 import { FC } from "react";
-import { getProductDetail, getProductSlugs } from "../../lib/kontentClient";
+import { getProductDetail, getProductSlugs, getSiteMenu } from "../../lib/kontentClient";
 import { ParsedUrlQuery } from 'querystring';
 import { siteCodename } from "../../lib/utils/env";
 import { ValidCollectionCodename } from "../../lib/types/perCollection";
 import { AppPage } from "../../components/shared/ui/appPage";
 import Image from "next/image";
 import { createElementSmartLink } from "../../lib/utils/smartLinkUtils";
+import { Navigation } from "../../models";
+import { getMenuCodename } from "../../lib/constants/menu";
 
 type Props = Readonly<{
   product: Product;
   siteCodename: ValidCollectionCodename;
+  siteMenu: Navigation;
 }>;
 
 interface IParams extends ParsedUrlQuery {
@@ -48,7 +51,9 @@ export const getStaticProps: GetStaticProps<Props, IParams> = async (context) =>
     return nonPermanentHomeRedirect;
   };
 
+  const menuCodename = getMenuCodename(siteCodename);
   const product = await getProductDetail(slug, !!context.preview);
+  const siteMenu = await getSiteMenu(menuCodename, !!context.preview);
 
   if (!product) {
     return nonPermanentHomeRedirect;
@@ -57,15 +62,16 @@ export const getStaticProps: GetStaticProps<Props, IParams> = async (context) =>
   return {
     props: {
       product,
-      siteCodename
+      siteCodename,
+      siteMenu
     }
   };
 };
 
 const widthLimit = 300;
 
-const ProductDetail: FC<Props> = ({ product, siteCodename }) => (
-  <AppPage itemId={product.system.id} siteCodename={siteCodename}>
+const ProductDetail: FC<Props> = ({ product, siteCodename, siteMenu }) => (
+  <AppPage itemId={product.system.id} siteCodename={siteCodename} siteMenu={siteMenu}>
     <div>
       <h1
         {...createElementSmartLink(contentTypes.product.elements.title.codename)}

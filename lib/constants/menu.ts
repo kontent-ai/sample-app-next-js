@@ -6,45 +6,10 @@ type MenuItem = Readonly<{
 }>;
 
 const perCollectionMenus = {
-  healthtech: [
-    {
-      url: "/",
-      title: "Home",
-    },
-    {
-      url: "/about-us",
-      title: "About us",
-    },
-  ],
-  healthtech_imaging: [
-    {
-      url: "/",
-      title: "Home",
-    },
-    {
-      url: "/about-us",
-      title: "About us",
-    },
-  ],
-  healthtech_surgical: [
-    {
-      url: "/",
-      title: "Home",
-    },
-    {
-      url: "/articles",
-      title: "Articles",
-    },
-    {
-      url: "/products",
-      title: "Products",
-    },
-    {
-      url: "/about-us",
-      title: "About us",
-    },
-  ],
-} as const satisfies PerCollection<ReadonlyArray<MenuItem>>;
+  healthtech: "header_navigation",
+  healthtech_imaging: "header_navigation_imaging",
+  healthtech_surgical: "header_navigation_surgical"
+} as const satisfies PerCollection<string>;
 
-export const createDefaultMenu = (siteCodename: ValidCollectionCodename) => perCollectionMenus[siteCodename];
+export const getMenuCodename = (siteCodename: ValidCollectionCodename) => perCollectionMenus[siteCodename];
 

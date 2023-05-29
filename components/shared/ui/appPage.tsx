@@ -2,15 +2,17 @@ import { FC, ReactNode } from "react";
 import { Footer } from "./footer";
 import { Menu } from "./menu";
 import { useSmartLink } from "../../../lib/useSmartLink";
-import { createDefaultMenu } from "../../../lib/constants/menu";
+import { getMenuCodename } from "../../../lib/constants/menu";
 import { ValidCollectionCodename } from "../../../lib/types/perCollection";
 import { SiteCodenameProvider } from "../siteCodenameContext";
 import { createItemSmartLink } from "../../../lib/utils/smartLinkUtils";
+import { Navigation } from "../../../models";
 
 type Props = Readonly<{
   children: ReactNode;
   siteCodename: ValidCollectionCodename;
   itemId?: string;
+  siteMenu: Navigation;
 }>;
 
 export const AppPage: FC<Props> = props => {
@@ -18,7 +20,7 @@ export const AppPage: FC<Props> = props => {
   return (
     <SiteCodenameProvider siteCodename={props.siteCodename}>
       <div className="min-h-full grow flex flex-col items-center overflow-hidden">
-        <Menu links={createDefaultMenu(props.siteCodename)} />
+        <Menu links={props.siteMenu.elements.subitems.linkedItems} />
         {/* https://tailwindcss.com/docs/typography-plugin */}
         <main
           className="py-5 container grow h-full"

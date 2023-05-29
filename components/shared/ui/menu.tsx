@@ -2,11 +2,9 @@ import Link from "next/link";
 import { FC } from "react";
 import { mainColorBgClass } from "../../../lib/constants/colors";
 import { useSiteCodename } from "../siteCodenameContext";
+import { Navigation } from "../../../models";
 
-type Link = Readonly<{
-  url: string;
-  title: string;
-}>;
+type Link = Readonly<Navigation>;
 
 type Props = Readonly<{
   links: ReadonlyArray<Link>;
@@ -14,21 +12,22 @@ type Props = Readonly<{
 
 export const Menu: FC<Props> = props => {
   const siteCodename = useSiteCodename();
-
+  console.log(props.links[0].elements);
   return (
     <div className={`flex flex-auto h-16 w-full ${mainColorBgClass[siteCodename]} justify-between shadow-md items-center px-10 grow-0 shrink-0`}>
       <div />
       <menu className="h-full grow-0 py-1 flex flex-auto shrink-0 justify-end items-center gap-x-5">
         {props.links.map(link => (
           <li
-            key={link.title}
+            key={link.elements.label.value}
             className="h-full"
           >
+            
             <Link
               className="h-full px-5 flex items-center cursor-pointer rounded hover:bg-white"
-              href={link.url}
+              href={link.elements.pageLink.linkedItems[0].elements.url.value}
             >
-              {link.title}
+              {link.elements.label.value}
             </Link>
           </li>
         ))}
