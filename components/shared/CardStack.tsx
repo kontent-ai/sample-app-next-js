@@ -30,7 +30,10 @@ export const CardStackComponent: FC<Props> = props => {
       <div {...createElementSmartLink(contentTypes.card_stack.elements.message.codename)}>
         {props.item.elements.message.value}
       </div>
-      <section className="py-11">
+      <section
+        className="py-11"
+        {...createElementSmartLink(contentTypes.card_stack.elements.stack.codename, true)}
+      >
         <StandaloneSmartLinkButton elementCodename={contentTypes.card_stack.elements.stack.codename} />
         <Headers
           headers={props.item.elements.stack.linkedItems.map(item => ({ id: item.system.id, label: item.elements.title.value }))}
