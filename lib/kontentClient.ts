@@ -1,7 +1,7 @@
 import { camelCasePropertyNameResolver, createDeliveryClient, DeliveryError, IContentItem } from '@kontent-ai/delivery-sdk';
 import { PerCollectionCodenames } from './routing';
 import { siteCodename } from './utils/env';
-import { Article, contentTypes, Product, WebSpotlightRoot } from '../models'; 
+import { Article, contentTypes, Product, WebSpotlightRoot } from '../models';
 
 const sourceTrackingHeaderName = 'X-KC-SOURCE'
 const envId = process.env.NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID;
@@ -54,7 +54,6 @@ export const getItemByCodename = <ItemType extends IContentItem>(codename: PerCo
       } else {
         // some other error
         console.error("HTTP request error", error);
-        // throw error;
         return null;
       }
     });
