@@ -1,10 +1,10 @@
 import { FC } from "react";
 import { ValidCollectionCodename } from "../../lib/types/perCollection";
-import { Article } from "../../models"
+import { Article, Navigation } from "../../models"
 import { AppPage } from "../../components/shared/ui/appPage";
 import { HeroImage } from "../../components/landingPage/ui/heroImage";
 import { GetStaticPaths, GetStaticProps } from "next";
-import { getArticleBySlug, getArticlesForListing } from "../../lib/kontentClient";
+import { getArticleBySlug, getArticlesForListing, getSiteMenu } from "../../lib/kontentClient";
 import { siteCodename } from "../../lib/utils/env";
 import { RichTextElement } from "../../components/shared/RichTextContent";
 
@@ -14,7 +14,7 @@ type Props = Readonly<{
 }>;
 
 const ArticlePage: FC<Props> = props => (
-  <AppPage siteCodename={props.siteCodename}>
+  <AppPage siteCodename={props.siteCodename} siteMenu={props.siteMenu}>
     <HeroImage url={props.article.elements.heroImage.value[0]?.url} itemId={props.article.system.id}>
       <h1>{props.article.elements.title.value}</h1>
     </HeroImage>
@@ -33,6 +33,8 @@ const notFoundRedirect = {
 };
 
 export const getStaticProps: GetStaticProps<Props, { slug: string }> = async context => {
+  const menuCodename = getMenuCodename(siteCodename);
+  const siteMenu = await getSiteMenu(menuCodename, !!context.preview);
   const slug = typeof context.params?.slug === "string" ? context.params.slug : "";
   if (!slug) {
     return notFoundRedirect;
