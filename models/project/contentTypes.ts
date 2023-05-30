@@ -7,43 +7,6 @@
  */
 export const contentTypes = {
   /**
-   * Achievement
-   */
-  achievement: {
-    codename: 'achievement',
-    id: '59d408cc-299b-48d2-972b-22028e095963',
-    externalId: undefined,
-    name: 'Achievement',
-    elements: {
-      /**
-       * Subtitle (text)
-       */
-      subtitle: {
-        codename: 'subtitle',
-        id: '7b04ac84-cdd9-4e30-b4f6-93ace70f4116',
-        externalId: undefined,
-        name: 'Subtitle',
-        required: true,
-        type: 'text',
-        snippetCodename: undefined,
-      },
-
-      /**
-       * Title (text)
-       */
-      title: {
-        codename: 'title',
-        id: 'f49769f4-7688-4fee-94e4-16174c03e049',
-        externalId: undefined,
-        name: 'Title',
-        required: true,
-        type: 'text',
-        snippetCodename: undefined,
-      },
-    },
-  },
-
-  /**
    * Article
    */
   article: {
@@ -274,56 +237,6 @@ export const contentTypes = {
   },
 
   /**
-   * Call to action
-   */
-  call_to_action: {
-    codename: 'call_to_action',
-    id: '11c3fbcd-2de0-4f56-96e5-f080bb9a28d1',
-    externalId: undefined,
-    name: 'Call to action',
-    elements: {
-      /**
-       * CTA Image (asset)
-       */
-      cta_image: {
-        codename: 'cta_image',
-        id: '20971f85-0c14-4698-b92d-e4be7347069f',
-        externalId: undefined,
-        name: 'CTA Image',
-        required: false,
-        type: 'asset',
-        snippetCodename: undefined,
-      },
-
-      /**
-       * Subtitle (text)
-       */
-      subtitle: {
-        codename: 'subtitle',
-        id: '1feb250b-c828-4b32-9196-d70d66b84bd9',
-        externalId: undefined,
-        name: 'Subtitle',
-        required: false,
-        type: 'text',
-        snippetCodename: undefined,
-      },
-
-      /**
-       * Title (text)
-       */
-      title: {
-        codename: 'title',
-        id: '2a1e51f1-3128-4321-8cf5-38e821712af0',
-        externalId: undefined,
-        name: 'Title',
-        required: true,
-        type: 'text',
-        snippetCodename: undefined,
-      },
-    },
-  },
-
-  /**
    * Callout
    */
   callout: {
@@ -424,117 +337,6 @@ export const contentTypes = {
   },
 
   /**
-   * Card stack
-   */
-  card_stack: {
-    codename: 'card_stack',
-    id: 'e0ee220a-4d5d-4a9a-aa9c-6733433bf4a2',
-    externalId: undefined,
-    name: 'Card stack',
-    elements: {
-      /**
-       * Message (text)
-       */
-      message: {
-        codename: 'message',
-        id: 'fd56aff1-e0f8-4611-ac59-3c14dfb647e9',
-        externalId: undefined,
-        name: 'Message',
-        required: false,
-        type: 'text',
-        snippetCodename: undefined,
-      },
-
-      /**
-       * Stack (modular_content)
-       */
-      stack: {
-        codename: 'stack',
-        id: '03baf56e-27a7-4f3a-be28-86f5deafc3f9',
-        externalId: undefined,
-        name: 'Stack',
-        required: true,
-        type: 'modular_content',
-        snippetCodename: undefined,
-      },
-
-      /**
-       * Title (text)
-       */
-      title: {
-        codename: 'title',
-        id: '489177d9-8fab-4ad0-bc57-92c107b340b0',
-        externalId: undefined,
-        name: 'Title',
-        required: false,
-        type: 'text',
-        snippetCodename: undefined,
-      },
-    },
-  },
-
-  /**
-   * Carousel
-   */
-  carousel: {
-    codename: 'carousel',
-    id: 'f1e220f9-76af-4c78-8137-e2bfa026e320',
-    externalId: undefined,
-    name: 'Carousel',
-    elements: {
-      /**
-       * Elements (modular_content)
-       */
-      hero_units: {
-        codename: 'hero_units',
-        id: 'fb6b765a-1d09-4d98-81db-66bc3a63c487',
-        externalId: undefined,
-        name: 'Elements',
-        required: true,
-        type: 'modular_content',
-        snippetCodename: undefined,
-      },
-    },
-  },
-
-  /**
-   * CTA Button
-   */
-  cta_button: {
-    codename: 'cta_button',
-    id: 'bbbce5ce-5a0c-45fe-8e32-bb6eb635510e',
-    externalId: undefined,
-    name: 'CTA Button',
-    elements: {
-      /**
-       * Button text (text)
-       */
-      button_text: {
-        codename: 'button_text',
-        id: '02379144-f60e-4877-9d2b-eb4bf1bc394a',
-        externalId: undefined,
-        name: 'Button text',
-        required: true,
-        type: 'text',
-        snippetCodename: undefined,
-      },
-
-      /**
-       * Target URL (text)
-       */
-      target_url: {
-        codename: 'target_url',
-        id: 'b57d180f-27af-41c5-a2ca-3cfcf4b2401f',
-        externalId: undefined,
-        name: 'Target URL',
-        required: true,
-        type: 'text',
-        snippetCodename: undefined,
-      },
-    },
-  },
-
-  /**
    * Footer
    */
   footer: {
@@ -559,49 +361,23 @@ export const contentTypes = {
   },
 
   /**
-   * Hero unit
+   * Milestone
    */
-  component___hero_unit: {
-    codename: 'component___hero_unit',
-    id: '76f5b7c0-3d2d-40d9-a5a9-3e4d8ec71a54',
+  milestone: {
+    codename: 'milestone',
+    id: '59d408cc-299b-48d2-972b-22028e095963',
     externalId: undefined,
-    name: 'Hero unit',
+    name: 'Milestone',
     elements: {
-      /**
-       * Background image (asset)
-       */
-      background_image: {
-        codename: 'background_image',
-        id: 'f00f8f79-3a3b-4098-8143-c52f0804f27b',
-        externalId: undefined,
-        name: 'Background image',
-        required: false,
-        type: 'asset',
-        snippetCodename: undefined,
-      },
-
-      /**
-       * Call to action (modular_content)
-       */
-      call_to_action: {
-        codename: 'call_to_action',
-        id: '0495dc8d-5ce8-47fc-ac6b-9fac99bcdbfa',
-        externalId: undefined,
-        name: 'Call to action',
-        required: false,
-        type: 'modular_content',
-        snippetCodename: undefined,
-      },
-
       /**
        * Subtitle (text)
        */
       subtitle: {
         codename: 'subtitle',
-        id: 'a63b8dfd-3f13-43b7-9a63-02bf070c3cb0',
+        id: '7b04ac84-cdd9-4e30-b4f6-93ace70f4116',
         externalId: undefined,
         name: 'Subtitle',
-        required: false,
+        required: true,
         type: 'text',
         snippetCodename: undefined,
       },
@@ -611,7 +387,7 @@ export const contentTypes = {
        */
       title: {
         codename: 'title',
-        id: '250e0af2-9305-47b8-acdb-9b65c70cbc06',
+        id: 'f49769f4-7688-4fee-94e4-16174c03e049',
         externalId: undefined,
         name: 'Title',
         required: true,
@@ -869,104 +645,6 @@ export const contentTypes = {
   },
 
   /**
-   * Rich text content
-   */
-  component___rich_text_content: {
-    codename: 'component___rich_text_content',
-    id: '7d315973-6157-4b4b-b722-0674b16121bf',
-    externalId: undefined,
-    name: 'Rich text content',
-    elements: {
-      /**
-       * Content (rich_text)
-       */
-      content: {
-        codename: 'content',
-        id: 'f7e1a1d0-f3cb-42f8-b7b1-4005fae328d0',
-        externalId: undefined,
-        name: 'Content',
-        required: false,
-        type: 'rich_text',
-        snippetCodename: undefined,
-      },
-    },
-  },
-
-  /**
-   * Solution
-   */
-  component___solution: {
-    codename: 'component___solution',
-    id: '8cf1f294-22da-4ce9-8b9e-57e09d03c4d6',
-    externalId: undefined,
-    name: 'Solution',
-    elements: {
-      /**
-       * Background image (asset)
-       */
-      background_image: {
-        codename: 'background_image',
-        id: '98e2f96d-556b-4c01-afa8-b613d3dc3bbc',
-        externalId: undefined,
-        name: 'Background image',
-        required: false,
-        type: 'asset',
-        snippetCodename: undefined,
-      },
-
-      /**
-       * Overview (rich_text)
-       */
-      overview: {
-        codename: 'overview',
-        id: '06bb2885-9c53-40b0-8429-c1f3b2ebb956',
-        externalId: undefined,
-        name: 'Overview',
-        required: false,
-        type: 'rich_text',
-        snippetCodename: undefined,
-      },
-
-      /**
-       * Title (text)
-       */
-      title: {
-        codename: 'title',
-        id: '3fbe76f7-aef4-4336-8100-24f428a29ef8',
-        externalId: undefined,
-        name: 'Title',
-        required: true,
-        type: 'text',
-        snippetCodename: undefined,
-      },
-    },
-  },
-
-  /**
-   * Solution set
-   */
-  solution_set: {
-    codename: 'solution_set',
-    id: '1a1d2ce6-4a23-4428-acac-78205e9d72b5',
-    externalId: undefined,
-    name: 'Solution set',
-    elements: {
-      /**
-       * Solutions (modular_content)
-       */
-      solutions: {
-        codename: 'solutions',
-        id: '90719e11-0830-477c-991a-93ac31e1cc5b',
-        externalId: undefined,
-        name: 'Solutions',
-        required: false,
-        type: 'modular_content',
-        snippetCodename: undefined,
-      },
-    },
-  },
-
-  /**
    * Testimonial
    */
   testimonial: {
@@ -1032,22 +710,209 @@ export const contentTypes = {
   },
 
   /**
-   * UMLP component – Achievements
+   * UMLP component – Call to action
    */
-  umlp_component___achievements: {
-    codename: 'umlp_component___achievements',
-    id: '6f83adaa-788a-4778-8ed6-b64d73d54cff',
+  call_to_action: {
+    codename: 'call_to_action',
+    id: '11c3fbcd-2de0-4f56-96e5-f080bb9a28d1',
     externalId: undefined,
-    name: 'UMLP component – Achievements',
+    name: 'UMLP component – Call to action',
     elements: {
       /**
-       * Achievements (modular_content)
+       * CTA button text (text)
+       */
+      cta_button_text: {
+        codename: 'cta_button_text',
+        id: '8bacc95f-18a0-4bbb-af06-2081c37b59a0',
+        externalId: undefined,
+        name: 'CTA button text',
+        required: false,
+        type: 'text',
+        snippetCodename: undefined,
+      },
+
+      /**
+       * CTA Image (asset)
+       */
+      cta_image: {
+        codename: 'cta_image',
+        id: '20971f85-0c14-4698-b92d-e4be7347069f',
+        externalId: undefined,
+        name: 'CTA Image',
+        required: false,
+        type: 'asset',
+        snippetCodename: undefined,
+      },
+
+      /**
+       * Subtitle (text)
+       */
+      subtitle: {
+        codename: 'subtitle',
+        id: '1feb250b-c828-4b32-9196-d70d66b84bd9',
+        externalId: undefined,
+        name: 'Subtitle',
+        required: false,
+        type: 'text',
+        snippetCodename: undefined,
+      },
+
+      /**
+       * Title (text)
+       */
+      title: {
+        codename: 'title',
+        id: '2a1e51f1-3128-4321-8cf5-38e821712af0',
+        externalId: undefined,
+        name: 'Title',
+        required: true,
+        type: 'text',
+        snippetCodename: undefined,
+      },
+    },
+  },
+
+  /**
+   * UMLP component – Card stack
+   */
+  card_stack: {
+    codename: 'card_stack',
+    id: 'e0ee220a-4d5d-4a9a-aa9c-6733433bf4a2',
+    externalId: undefined,
+    name: 'UMLP component – Card stack',
+    elements: {
+      /**
+       * Message (text)
+       */
+      message: {
+        codename: 'message',
+        id: 'fd56aff1-e0f8-4611-ac59-3c14dfb647e9',
+        externalId: undefined,
+        name: 'Message',
+        required: false,
+        type: 'text',
+        snippetCodename: undefined,
+      },
+
+      /**
+       * Stack (modular_content)
+       */
+      stack: {
+        codename: 'stack',
+        id: '03baf56e-27a7-4f3a-be28-86f5deafc3f9',
+        externalId: undefined,
+        name: 'Stack',
+        required: true,
+        type: 'modular_content',
+        snippetCodename: undefined,
+      },
+
+      /**
+       * Title (text)
+       */
+      title: {
+        codename: 'title',
+        id: '489177d9-8fab-4ad0-bc57-92c107b340b0',
+        externalId: undefined,
+        name: 'Title',
+        required: false,
+        type: 'text',
+        snippetCodename: undefined,
+      },
+    },
+  },
+
+  /**
+   * UMLP component – Carousel
+   */
+  carousel: {
+    codename: 'carousel',
+    id: 'f1e220f9-76af-4c78-8137-e2bfa026e320',
+    externalId: undefined,
+    name: 'UMLP component – Carousel',
+    elements: {
+      /**
+       * Elements (modular_content)
+       */
+      hero_units: {
+        codename: 'hero_units',
+        id: 'fb6b765a-1d09-4d98-81db-66bc3a63c487',
+        externalId: undefined,
+        name: 'Elements',
+        required: true,
+        type: 'modular_content',
+        snippetCodename: undefined,
+      },
+    },
+  },
+
+  /**
+   * UMLP component – Hero unit
+   */
+  component___hero_unit: {
+    codename: 'component___hero_unit',
+    id: '76f5b7c0-3d2d-40d9-a5a9-3e4d8ec71a54',
+    externalId: undefined,
+    name: 'UMLP component – Hero unit',
+    elements: {
+      /**
+       * Background image (asset)
+       */
+      background_image: {
+        codename: 'background_image',
+        id: 'f00f8f79-3a3b-4098-8143-c52f0804f27b',
+        externalId: undefined,
+        name: 'Background image',
+        required: false,
+        type: 'asset',
+        snippetCodename: undefined,
+      },
+
+      /**
+       * Subtitle (text)
+       */
+      subtitle: {
+        codename: 'subtitle',
+        id: 'a63b8dfd-3f13-43b7-9a63-02bf070c3cb0',
+        externalId: undefined,
+        name: 'Subtitle',
+        required: false,
+        type: 'text',
+        snippetCodename: undefined,
+      },
+
+      /**
+       * Title (text)
+       */
+      title: {
+        codename: 'title',
+        id: '250e0af2-9305-47b8-acdb-9b65c70cbc06',
+        externalId: undefined,
+        name: 'Title',
+        required: true,
+        type: 'text',
+        snippetCodename: undefined,
+      },
+    },
+  },
+
+  /**
+   * UMLP component – Milestones
+   */
+  umlp_component___milestones: {
+    codename: 'umlp_component___milestones',
+    id: '6f83adaa-788a-4778-8ed6-b64d73d54cff',
+    externalId: undefined,
+    name: 'UMLP component – Milestones',
+    elements: {
+      /**
+       * Milestones (modular_content)
        */
       achievements: {
         codename: 'achievements',
         id: '43fad747-0fac-4559-a0e4-9b1576eff9e7',
         externalId: undefined,
-        name: 'Achievements',
+        name: 'Milestones',
         required: false,
         type: 'modular_content',
         snippetCodename: undefined,
@@ -1064,6 +929,30 @@ export const contentTypes = {
     externalId: undefined,
     name: 'UMLP component – Resource listing',
     elements: {},
+  },
+
+  /**
+   * UMLP component – Rich text content
+   */
+  component___rich_text_content: {
+    codename: 'component___rich_text_content',
+    id: '7d315973-6157-4b4b-b722-0674b16121bf',
+    externalId: undefined,
+    name: 'UMLP component – Rich text content',
+    elements: {
+      /**
+       * Content (rich_text)
+       */
+      content: {
+        codename: 'content',
+        id: 'f7e1a1d0-f3cb-42f8-b7b1-4005fae328d0',
+        externalId: undefined,
+        name: 'Content',
+        required: false,
+        type: 'rich_text',
+        snippetCodename: undefined,
+      },
+    },
   },
 
   /**

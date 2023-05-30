@@ -1,5 +1,5 @@
 import { FC, useState } from "react";
-import { CardStack, contentTypes } from "../../models"
+import { UMLPComponent_CardStack, contentTypes } from "../../models"
 import { CardComponent } from "./Card";
 import { useSiteCodename } from "./siteCodenameContext";
 import { mainColorBorderClass } from "../../lib/constants/colors";
@@ -7,7 +7,7 @@ import { createElementSmartLink, createItemSmartLink, createRelativeAddSmartLink
 import { StandaloneSmartLinkButton } from "./StandaloneSmartLinkButton";
 
 type Props = Readonly<{
-  item: CardStack;
+  item: UMLPComponent_CardStack;
 }>;
 
 export const CardStackComponent: FC<Props> = props => {

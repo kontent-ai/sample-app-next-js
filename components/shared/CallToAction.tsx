@@ -1,8 +1,8 @@
 import { FC } from "react";
-import { CallToAction } from "../../models"
+import { UMLPComponent_CallToAction } from "../../models"
 
 type Props = Readonly<{
-  item: CallToAction;
+  item: UMLPComponent_CallToAction;
 }>;
 
 export const CallToActionComponent: FC<Props> = () => null;

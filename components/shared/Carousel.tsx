@@ -1,11 +1,11 @@
 import { ComponentProps, FC, useState } from "react";
-import { Carousel } from "../../models"
+import { UMLPComponent_Carousel } from "../../models"
 import { range } from "../../lib/utils/range";
 import { Content } from "./Content";
 import { ArrowLeftIcon, ArrowRightIcon } from "@heroicons/react/24/solid";
 
 type Props = Readonly<{
-  item: Carousel;
+  item: UMLPComponent_Carousel;
 }>;
 
 export const CarouselComponent: FC<Props> = props => {

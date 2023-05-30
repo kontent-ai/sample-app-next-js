@@ -20,10 +20,10 @@ export const AppPage: FC<Props> = props => {
   return (
     <SiteCodenameProvider siteCodename={props.siteCodename}>
       <div className="min-h-full grow flex flex-col items-center overflow-hidden">
-        <Menu links={props.siteMenu.elements.subitems.linkedItems} />
+        <Menu item={props.siteMenu} />
         {/* https://tailwindcss.com/docs/typography-plugin */}
         <main
-          className="py-5 container grow h-full"
+          className="py-14 md:py-20 container grow h-full"
           {...createItemSmartLink(props.itemId, true)}
         >
           <div className="prose w-full max-w-full">

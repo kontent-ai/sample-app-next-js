@@ -1,10 +1,10 @@
 import { FC } from "react";
-import { HeroUnit, contentTypes } from "../../models";
+import { UMLPComponent_HeroUnit, contentTypes } from "../../models";
 import { HeroImage } from "../landingPage/ui/heroImage";
 import { createElementSmartLink } from "../../lib/utils/smartLinkUtils";
 
 type Props = Readonly<{
-  item: HeroUnit;
+  item: UMLPComponent_HeroUnit;
 }>;
 
 export const HeroUnitComponent: FC<Props> = props => (
