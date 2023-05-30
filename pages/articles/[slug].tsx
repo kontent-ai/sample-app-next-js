@@ -6,16 +6,11 @@ import { HeroImage } from "../../components/landingPage/ui/heroImage";
 import { GetStaticPaths, GetStaticProps } from "next";
 import { getArticleBySlug, getArticlesForListing } from "../../lib/kontentClient";
 import { siteCodename } from "../../lib/utils/env";
-import { nodeParse } from "@kontent-ai/rich-text-resolver/dist/cjs/src/parser/node";
-import { PortableText } from "@portabletext/react";
-import { createDefaultResolvers } from "../../lib/richTextResolvers";
-import { IPortableTextItem } from "@kontent-ai/rich-text-resolver/dist/cjs/src/parser/parser-models";
-import { transformToPortableText } from "@kontent-ai/rich-text-resolver/dist/cjs/src/transformers";
+import { RichTextElement } from "../../components/shared/RichTextContent";
 
 type Props = Readonly<{
   article: Article;
   siteCodename: ValidCollectionCodename;
-  parsedContent: IPortableTextItem[];
 }>;
 
 const ArticlePage: FC<Props> = props => (
@@ -26,7 +21,7 @@ const ArticlePage: FC<Props> = props => (
     <p>
       {props.article.elements.abstract.value}
     </p>
-    <PortableText value={props.parsedContent} components={createDefaultResolvers(props.article.elements.content)} />
+    <RichTextElement element={props.article.elements.content} />
   </AppPage>
 );
 
@@ -52,7 +47,6 @@ export const getStaticProps: GetStaticProps<Props, { slug: string }> = async con
     props: {
       article,
       siteCodename,
-      parsedContent: transformToPortableText(nodeParse(article.elements.content.value)),
     },
   };
 }
