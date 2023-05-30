@@ -19,7 +19,7 @@ export const RichTextContentComponent: FC<Props> = props => {
       {...createElementSmartLink(contentTypes.component___rich_text_content.elements.content.codename)}
       {...createFixedAddSmartLink("end")}
     >
-      <PortableText value={portableText} components={createDefaultResolvers(props.item.elements.content)} />
+      <PortableText value={portableText} components={createDefaultResolvers(props.item.elements.content, item => <RichTextContentComponent item={item} />)} />
     </div >
   );
 }

@@ -5,8 +5,10 @@ import Image from "next/image";
 import { RichTextComponent, isAcceptedComponentItem } from "../components/shared/richText/richTextComponent";
 import { InternalLink } from "../components/shared/internalLinks/InternalLink";
 import { ArrowTopRightOnSquareIcon } from "@heroicons/react/24/solid";
+import { RichTextContent } from "../models";
+import { ReactNode } from "react";
 
-export const createDefaultResolvers = (element: Elements.RichTextElement): Partial<PortableTextReactComponents> => ({
+export const createDefaultResolvers = (element: Elements.RichTextElement, renderRichText: (item: RichTextContent) => ReactNode): Partial<PortableTextReactComponents> => ({
   types: {
     image: ({ value }: PortableTextTypeComponentProps<IPortableTextImage>) => {
       const asset = element.images.find(i => i.imageId === value.asset._ref);
@@ -34,7 +36,7 @@ export const createDefaultResolvers = (element: Elements.RichTextElement): Parti
               <tr key={r._key}>
                 {r.cells.map(c => (
                   <td key={c._key}>
-                    <PortableText value={c.content} components={createDefaultResolvers(element)} />
+                    <PortableText value={c.content} components={createDefaultResolvers(element, renderRichText)} />
                   </td>
                 ))}
               </tr>
@@ -53,7 +55,7 @@ export const createDefaultResolvers = (element: Elements.RichTextElement): Parti
       }
 
       return (
-        <RichTextComponent item={componentItem} />
+        <RichTextComponent item={componentItem} renderRichText={renderRichText} />
       );
     },
   },
