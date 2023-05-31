@@ -43,9 +43,9 @@ export const Menu: FC<Props> = props => {
           className="w-screen h-full md:flex justify-between md:order-1 z-50"
         >
           <div className="flex h-full justify-between items-center px-8 py-4">
-            <a href="/" className="flex items-center">
+            <Link href="/" className="flex items-center">
               <span className="font-extrabold">HealthTech</span>
-            </a>
+            </Link>
             <button
               type="button"
               className="md:hidden justify-end"
