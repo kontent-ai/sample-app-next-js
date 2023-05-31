@@ -17,7 +17,7 @@ export type Author = IContentItem<{
 
   /**
    * First Name (text)
-   * Required: false
+   * Required: true
    * Id: 0cfa6910-1b04-4489-a352-d15970f7357c
    * Codename: first_name
    */
@@ -25,7 +25,7 @@ export type Author = IContentItem<{
 
   /**
    * Last Name (text)
-   * Required: false
+   * Required: true
    * Id: 07994d54-d6a1-45e4-82cb-7094a29813b8
    * Codename: last_name
    */

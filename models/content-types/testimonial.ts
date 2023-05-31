@@ -19,7 +19,7 @@ export type Testimonial = IContentItem<{
 
   /**
    * Format (multiple_choice)
-   * Required: false
+   * Required: true
    * Id: 999d2af3-212d-4d5d-9348-5e14c3e9f957
    * Codename: format
    *

@@ -33,7 +33,7 @@ export type Card = IContentItem<{
 
   /**
    * Title (text)
-   * Required: false
+   * Required: true
    * Id: 541b4fba-088a-4f59-9098-326eb7ff075c
    * Codename: title
    */

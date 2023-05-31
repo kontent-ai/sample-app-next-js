@@ -9,7 +9,7 @@ import { type IContentItem, type Elements } from '@kontent-ai/delivery-sdk';
 export type Callout = IContentItem<{
   /**
    * Content (rich_text)
-   * Required: false
+   * Required: true
    * Id: 76a0b381-b3a5-445d-8337-77c90297d7a2
    * Codename: content
    */
@@ -17,7 +17,7 @@ export type Callout = IContentItem<{
 
   /**
    * Type (multiple_choice)
-   * Required: false
+   * Required: true
    * Id: b1a8da0e-2b24-44a0-826f-7029d2f59a1e
    * Codename: type
    */

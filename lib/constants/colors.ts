@@ -11,3 +11,4 @@ export const mainColorBorderClass: PerCollection<string> = {
   healthtech_imaging: "border-red-300",
   healthtech_surgical: "border-blue-300",
 };
+

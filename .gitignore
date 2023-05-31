@@ -35,3 +35,6 @@ yarn-error.log*
 
 # custom
 .env.local
+
+# scripts
+/scripts/build

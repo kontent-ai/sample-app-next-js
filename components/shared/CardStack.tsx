@@ -1,8 +1,10 @@
 import { FC, useState } from "react";
-import { CardStack } from "../../models"
+import { CardStack, contentTypes } from "../../models"
 import { CardComponent } from "./Card";
 import { useSiteCodename } from "./siteCodenameContext";
 import { mainColorBorderClass } from "../../lib/constants/colors";
+import { createElementSmartLink, createItemSmartLink, createRelativeAddSmartLink } from "../../lib/utils/smartLinkUtils";
+import { StandaloneSmartLinkButton } from "./StandaloneSmartLinkButton";
 
 type Props = Readonly<{
   item: CardStack;
@@ -18,12 +20,23 @@ export const CardStackComponent: FC<Props> = props => {
   }
 
   return (
-    <div className="p-7">
-      <h2>{props.item.elements.title.value}</h2>
-      {props.item.elements.message.value}
-      <section className="py-11">
+    <div
+      className="p-7 relative"
+      {...createItemSmartLink(props.item.system.id, true)}
+    >
+      <h2 {...createElementSmartLink(contentTypes.card_stack.elements.title.codename)}>
+        {props.item.elements.title.value}
+      </h2>
+      <div {...createElementSmartLink(contentTypes.card_stack.elements.message.codename)}>
+        {props.item.elements.message.value}
+      </div>
+      <section
+        className="py-11"
+        {...createElementSmartLink(contentTypes.card_stack.elements.stack.codename, true)}
+      >
+        <StandaloneSmartLinkButton elementCodename={contentTypes.card_stack.elements.stack.codename} />
         <Headers
-          headers={props.item.elements.stack.linkedItems.map(item => item.elements.title.value)}
+          headers={props.item.elements.stack.linkedItems.map(item => ({ id: item.system.id, label: item.elements.title.value }))}
           onHeaderSelected={setCardIndex}
           selectedHeaderIndex={cardIndex}
         />
@@ -36,7 +49,7 @@ export const CardStackComponent: FC<Props> = props => {
 };
 
 type HeadersProps = Readonly<{
-  headers: ReadonlyArray<string>;
+  headers: ReadonlyArray<Readonly<{ id: string; label: string }>>;
   selectedHeaderIndex: number;
   onHeaderSelected: (headerIndex: number) => void;
 }>;
@@ -51,12 +64,13 @@ const Headers: FC<HeadersProps> = props => {
           key={i}
           className={`overflow-hidden h-full m-0 shrink text-ellipsis flex justify-center items-center cursor-pointer ${mainColorBorderClass[siteCodename]} ${props.selectedHeaderIndex === i ? "border-b-2" : ""}`}
           onClick={() => props.onHeaderSelected(i)}
+          {...createItemSmartLink(header.id, true)}
+          {...createRelativeAddSmartLink("after", "bottom-end")}
         >
-          {header}
+          {header.label}
         </li>
       ))}
     </menu>
   );
 }
 
-const wrapIndex = ({ index, length }: Readonly<{ index: number; length: number }>) => index < 0 ? length + index : index % length;

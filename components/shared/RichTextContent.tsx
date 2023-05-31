@@ -2,23 +2,33 @@ import { nodeParse } from "@kontent-ai/rich-text-resolver/dist/cjs/src/parser/no
 import { transformToPortableText } from "@kontent-ai/rich-text-resolver/dist/cjs/src/transformers/portable-text-transformer";
 import { PortableText } from "@portabletext/react";
 import { FC } from "react";
-import { contentTypes } from "../../models";
-import { RichTextContent } from "../../models/content-types/component___rich_text_content"
-import { createElementSmartLink, createItemSmartLink } from "../../lib/utils/smartLinkUtils";
+import { RichTextContent, contentTypes } from "../../models";
+import { createElementSmartLink, createFixedAddSmartLink, createItemSmartLink } from "../../lib/utils/smartLinkUtils";
+import { createDefaultResolvers } from "../../lib/richTextResolvers";
+import { Elements } from "@kontent-ai/delivery-sdk";
 
 type Props = Readonly<{
   item: RichTextContent;
 }>;
 
-export const RichTextContentComponent: FC<Props> = props => {
-  const portableText = transformToPortableText(nodeParse(props.item.elements.content.value));
+export const RichTextContentComponent: FC<Props> = props => (
+  <div
+    {...createItemSmartLink(props.item.system.id)}
+    {...createElementSmartLink(contentTypes.component___rich_text_content.elements.content.codename)}
+    {...createFixedAddSmartLink("end")}
+  >
+    <RichTextElement element={props.item.elements.content} />
+  </div>
+);
+
+type ElementProps = Readonly<{
+  element: Elements.RichTextElement;
+}>;
+
+export const RichTextElement: FC<ElementProps> = props => {
+  const portableText = transformToPortableText(nodeParse(props.element.value));
 
   return (
-    <div
-      {...createItemSmartLink(props.item.system.id)}
-      {...createElementSmartLink(contentTypes.component___rich_text_content.elements.content.codename)}
-    >
-      <PortableText value={portableText} />
-    </div>
+    <PortableText value={portableText} components={createDefaultResolvers(props.element, item => <RichTextContentComponent item={item} />)} />
   );
 }

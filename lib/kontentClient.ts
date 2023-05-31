@@ -1,10 +1,10 @@
 import { camelCasePropertyNameResolver, createDeliveryClient, DeliveryError, IContentItem } from '@kontent-ai/delivery-sdk';
-import { WebSpotlightRoot } from '../models/content-types/web_spotlight_root';
 import { PerCollectionCodenames } from './routing';
 import { siteCodename } from './utils/env';
-import { contentTypes, Product } from '../models';
+import { Article, contentTypes, Product, WebSpotlightRoot } from '../models';
 
-const sourceTrackingHeaderName = 'X-KC-SOURCE'
+const sourceTrackingHeaderName = 'X-KC-SOURCE';
+
 const envId = process.env.NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID;
 if (!envId) {
   throw new Error("Missing 'NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID' environment variable.");
@@ -16,7 +16,7 @@ const deliveryClient = createDeliveryClient({
     {
       header: sourceTrackingHeaderName,
       value: `${process.env.APP_NAME || "n/a"};${process.env.APP_VERSION || "n/a"}`,
-    },
+    }
   ],
   propertyNameResolver: camelCasePropertyNameResolver,
   proxy: {
@@ -55,7 +55,6 @@ export const getItemByCodename = <ItemType extends IContentItem>(codename: PerCo
       } else {
         // some other error
         console.error("HTTP request error", error);
-        // throw error;
         return null;
       }
     });
@@ -71,6 +70,7 @@ export const getHomepage = (usePreview: boolean) =>
     .collection(siteCodename)
     .queryConfig({
       usePreviewMode: usePreview,
+      waitForLoadingNewContent: usePreview
     })
     .depthParameter(10)
     .toPromise()
@@ -79,8 +79,13 @@ export const getHomepage = (usePreview: boolean) =>
 export const getProductsForListing = (usePreview: boolean) =>
   deliveryClient
     .items<Product>()
-    .type('product')
-    .elementsParameter(['title', 'product_image', 'slug'])
+    .type(contentTypes.product.codename)
+    .collection(siteCodename)
+    .elementsParameter([
+      contentTypes.product.elements.title.codename,
+      contentTypes.product.elements.product_image.codename,
+      contentTypes.product.elements.slug.codename,
+    ])
     .queryConfig({
       usePreviewMode: usePreview,
     })
@@ -102,6 +107,28 @@ export const getProductDetail = (slug: string, usePreview: boolean) =>
   deliveryClient
     .items<Product>()
     .equalsFilter(`elements.${contentTypes.product.elements.slug.codename}`, slug)
+    .queryConfig({
+      usePreviewMode: usePreview,
+    })
+    .toAllPromise()
+    .then(res => res.data.items[0]);
+
+export const getArticlesForListing = (usePreview: boolean) =>
+  deliveryClient
+    .items<Article>()
+    .type(contentTypes.article.codename)
+    .collection(siteCodename)
+    .queryConfig({
+      usePreviewMode: usePreview,
+    })
+    .toAllPromise()
+    .then(res => res.data.items);
+
+export const getArticleBySlug = (slug: string, usePreview: boolean) =>
+  deliveryClient
+    .items<Article>()
+    .equalsFilter(`elements.${contentTypes.article.elements.slug.codename}`, slug)
+    .depthParameter(10)
     .queryConfig({
       usePreviewMode: usePreview,
     })
