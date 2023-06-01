@@ -6,7 +6,7 @@ import { type IContentItem, type Elements } from '@kontent-ai/delivery-sdk';
  * Id: 7d0c0ae4-72e7-4678-ab62-01885ae8cd35
  * Codename: callout
  */
-export type Block_Callout = IContentItem<{
+export type Component_Callout = IContentItem<{
   /**
    * Content (rich_text)
    * Required: true

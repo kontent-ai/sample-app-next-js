@@ -1,6 +1,6 @@
 export * from './WSL_Page';
 export * from './WSL_WebSpotlightRoot';
-export * from './Block_Callout';
+export * from './Component_Callout';
 export * from './Block_CallToAction';
 export * from './Block_Carousel';
 export * from './Block_ContentChunk';
