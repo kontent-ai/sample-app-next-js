@@ -30,7 +30,12 @@ const MenuDropdown: FC<DropdownProps> = props => {
 
 export const Menu: FC<Props> = props => {
   const siteCodename = useSiteCodename();
-  const [isMenuActive, setIsMenuActive] = useState(false);
+  const [activeMenu, setActiveMenu] = useState<string | number>();
+  const [smallMenuActive, setSmallMenuActive] = useState(false);
+
+  const handleMenuClick = (menuId: string | number) => {
+    menuId === activeMenu ? setActiveMenu(-1) : setActiveMenu(menuId);
+  }
 
   return (
     <div
@@ -51,7 +56,7 @@ export const Menu: FC<Props> = props => {
               className="md:hidden justify-end"
               aria-controls="mega-menu-full"
               aria-expanded="false"
-              onClick={() => setIsMenuActive(!isMenuActive)}
+              onClick={() => setSmallMenuActive(!smallMenuActive)}
             >
               <span className="sr-only">Open main menu</span>
               <svg
@@ -70,11 +75,14 @@ export const Menu: FC<Props> = props => {
             </button>
           </div>
           <div>
-            <ul className={`${isMenuActive ? "flex" : "hidden"} md:flex flex-col font-medium md:flex-row md:mt-0 h-full`}>
-              {props.item.elements.subitems.linkedItems.map((link) => (
-                <li key={link.elements.caption.value} className="h-full px-5 bg-green-300 lg:bg-transparent lg:hover:bg-gray-50">
+            <ul className={`${smallMenuActive ? "flex" : "hidden"} md:flex flex-col font-medium md:flex-row md:mt-0 h-full`}>
+              {props.item.elements.subitems.linkedItems.map((link, i) => (
+                <li
+                  key={i} className="h-full px-5 bg-green-300 group lg:bg-transparent lg:hover:bg-white"
+                  onClick={() => handleMenuClick(i)}
+                >
                   {link.elements.subitems.value.length > 0 ? (
-                    <span className="group">
+                    <span>
                       <button
                         id="mega-menu-full-dropdown-button"
                         data-collapse-toggle="mega-menu-full-dropdown"
@@ -95,8 +103,9 @@ export const Menu: FC<Props> = props => {
                         </svg>
                       </button>
                       <div
+                        key={i}
                         id="mega-menu-full-dropdown"
-                        className={`hidden group-hover:block transition-all duration-300 absolute z-50 left-0 shadow-sm bg-white border-gray-200 dark:bg-gray-800 dark:border-gray-600 w-full`}
+                        className={`${i === activeMenu ? "block" : "hidden"} md:group-hover:block transition-all duration-300 absolute z-50 left-0 shadow-sm bg-white border-gray-200 dark:bg-gray-800 dark:border-gray-600 w-full`}
                       >
                         <div className="grid max-w-screen-xl px-4 py-5 mx-auto text-gray-900 dark:text-white sm:grid-cols-2 md:grid-cols-3 md:px-6">
                           <MenuDropdown links={link.elements.subitems.linkedItems} />
