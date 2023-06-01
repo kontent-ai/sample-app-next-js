@@ -5,10 +5,10 @@ import Image from "next/image";
 import { RichTextComponent, isAcceptedComponentItem } from "../components/shared/richText/richTextComponent";
 import { InternalLink } from "../components/shared/internalLinks/InternalLink";
 import { ArrowTopRightOnSquareIcon } from "@heroicons/react/24/solid";
-import { RichTextContent } from "../models";
+import { Block_ContentChunk } from "../models";
 import { ReactNode } from "react";
 
-export const createDefaultResolvers = (element: Elements.RichTextElement, renderRichText: (item: RichTextContent) => ReactNode): Partial<PortableTextReactComponents> => ({
+export const createDefaultResolvers = (element: Elements.RichTextElement, renderRichText: (item: Block_ContentChunk) => ReactNode): Partial<PortableTextReactComponents> => ({
   types: {
     image: ({ value }: PortableTextTypeComponentProps<IPortableTextImage>) => {
       const asset = element.images.find(i => i.imageId === value.asset._ref);

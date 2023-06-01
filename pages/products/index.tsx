@@ -7,10 +7,10 @@ import { getItemByCodename, getProductsForListing } from "../../lib/kontentClien
 import { PerCollectionCodenames } from "../../lib/routing";
 import { ValidCollectionCodename } from "../../lib/types/perCollection";
 import { siteCodename } from "../../lib/utils/env";
-import { Page, Product } from "../../models";
+import { WSL_Page, Product } from "../../models";
 
 type Props = Readonly<{
-  page: Page;
+  page: WSL_Page;
   products: ReadonlyArray<Product> | undefined;
   siteCodename: ValidCollectionCodename;
 }>;
@@ -41,7 +41,7 @@ export const getStaticProps: GetStaticProps<Props> = async context => {
     healthtech_surgical: "products"
   };
 
-  const page = await getItemByCodename<Page>(pageCodename, !!context.preview);
+  const page = await getItemByCodename<WSL_Page>(pageCodename, !!context.preview);
   const products = await getProductsForListing(!!context.preview);
 
   if (page === null) {

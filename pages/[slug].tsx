@@ -1,7 +1,7 @@
 import { GetStaticPaths, GetStaticProps } from "next";
 import { pageCodenames } from '../lib/routing';
 import { getItemByCodename } from "../lib/kontentClient";
-import { Page, contentTypes } from "../models";
+import { WSL_Page, contentTypes } from "../models";
 import { FC } from "react";
 import { Content } from "../components/shared/Content";
 import { AppPage } from "../components/shared/ui/appPage";
@@ -11,7 +11,7 @@ import { siteCodename } from "../lib/utils/env";
 import { createElementSmartLink, createFixedAddSmartLink } from "../lib/utils/smartLinkUtils";
 
 type Props = Readonly<{
-  page: Page;
+  page: WSL_Page;
   siteCodename: ValidCollectionCodename;
 }>;
 
@@ -46,7 +46,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
     };
   };
 
-  const page = await getItemByCodename<Page>(pageCodename, !!context.preview);
+  const page = await getItemByCodename<WSL_Page>(pageCodename, !!context.preview);
   if (page === null) {
     return {
       notFound: true

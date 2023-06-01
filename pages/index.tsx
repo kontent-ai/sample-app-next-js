@@ -4,14 +4,14 @@ import { getHomepage } from "../lib/kontentClient";
 import { ValidCollectionCodename } from '../lib/types/perCollection';
 import { siteCodename } from '../lib/utils/env';
 import { Content } from '../components/shared/Content';
-import { WebSpotlightRoot } from '../models';
+import { WSL_WebSpotlightRoot } from '../models';
 import { useEffect, useState } from 'react';
 import { KontentSmartLinkEvent } from '@kontent-ai/smart-link';
 import { IRefreshMessageData, IRefreshMessageMetadata } from '@kontent-ai/smart-link/types/lib/IFrameCommunicatorTypes';
 import { useSmartLink } from '../lib/useSmartLink';
 
 type Props = Readonly<{
-  homepage: WebSpotlightRoot;
+  homepage: WSL_WebSpotlightRoot;
   siteCodename: ValidCollectionCodename;
 }>;
 

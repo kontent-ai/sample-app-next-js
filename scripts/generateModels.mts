@@ -27,8 +27,20 @@ const replaceInvalidChars = (str: string) => map(replaceIfNeeded, str)
 
 const replaceIfNeeded = (char: string, index: number) => {
   const isValid = index === 0 ? isValidFirstChar : isValidChar;
+  switch (char.codePointAt(0)) {
+    case 55358:  {
+      return "Block";
+    }
 
-  return isValid(char) ? char : "_";
+    case 129513:
+      return "Component";
+
+    case 55357:
+      return "WSL"
+    
+    default:
+      return isValid(char) ? char : "_";
+  }
 };
 
 const firstCharRegex = /[a-zA-Z_$]/;
