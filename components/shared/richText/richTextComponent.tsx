@@ -1,5 +1,5 @@
 import { ComponentType, FC, ReactNode } from "react";
-import { Block_Callout, Block_ContentChunk, contentTypes } from "../../../models";
+import { Component_Callout, Block_ContentChunk, contentTypes } from "../../../models";
 import { CalloutComponent } from "./Callout";
 import { IContentItem } from "@kontent-ai/delivery-sdk";
 
@@ -29,7 +29,7 @@ const componentMap: Readonly<{ [key in keyof AcceptedTypesByCodename]: Component
 
 // Unfortunately, we need to define the relationship manually, because the generator doesn't define it itself. :/
 type AcceptedTypesByCodename = {
-  [contentTypes.callout.codename]: Block_Callout;
+  [contentTypes.callout.codename]: Component_Callout;
   [contentTypes.content_chunk.codename]: Block_ContentChunk;
 };
 

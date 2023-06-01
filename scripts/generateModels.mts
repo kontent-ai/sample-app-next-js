@@ -28,15 +28,15 @@ const replaceInvalidChars = (str: string) => map(replaceIfNeeded, str)
 const replaceIfNeeded = (char: string, index: number) => {
   const isValid = index === 0 ? isValidFirstChar : isValidChar;
   switch (char.codePointAt(0)) {
-    case 55358:  {
-      return "Block";
-    }
-
-    case 129513:
-      return "Component";
-
-    case 55357:
-      return "WSL"
+    case 55358:
+      case 0x1F9F1:
+        return "Block_";
+  
+      case 0x1F9E9:
+        return "Component_";
+  
+      case 0x1F4A1:
+        return "WSL_"
     
     default:
       return isValid(char) ? char : "_";
@@ -50,7 +50,7 @@ const validCharRegex = /\w$/;
 const isValidChar = (char: string) => validCharRegex.test(char);
 
 const map = (mapper: (char: string, index: number) => string, str: string) =>
-  str.replaceAll(/./g, mapper);
+  str.replaceAll(new RegExp(/./, 'ug'), mapper);
 
 const {
   KONTENT_MANAGEMENT_API_KEY,
