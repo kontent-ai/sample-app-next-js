@@ -1,8 +1,8 @@
 import { FC } from "react";
-import { CallToAction } from "../../models"
+import { Block_CallToAction } from "../../models"
 
 type Props = Readonly<{
-  item: CallToAction;
+  item: Block_CallToAction;
 }>;
 
 export const CallToActionComponent: FC<Props> = () => null;

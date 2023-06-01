@@ -1,18 +1,18 @@
 import { ComponentProps, FC, useState } from "react";
-import { Carousel } from "../../models"
+import { Block_Carousel } from "../../models"
 import { range } from "../../lib/utils/range";
 import { Content } from "./Content";
 import { ArrowLeftIcon, ArrowRightIcon } from "@heroicons/react/24/solid";
 
 type Props = Readonly<{
-  item: Carousel;
+  item: Block_Carousel;
 }>;
 
 export const CarouselComponent: FC<Props> = props => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [lastMove, setLastMove] = useState<LastMove>("withoutAnimation")
 
-  const items = props.item.elements.heroUnits.linkedItems;
+  const items = props.item.elements.elements.linkedItems;
   const itemsToRender = items.length == 2 ? [...items, ...items] : items;
 
   const wrapIndex = (i: number) => i < 0 ? itemsToRender.length + i : i % itemsToRender.length;
@@ -35,7 +35,7 @@ export const CarouselComponent: FC<Props> = props => {
       <div className="relative overflow-hidden rounded-lg">
         {/*This is a placeholder to determine the carousel height, because the real carousel items are absolutely positioned.*/}
         <div className="relative z-0 opacity-0 w-fit">
-          <Content item={props.item.elements.heroUnits.linkedItems[0]} />
+          <Content item={props.item.elements.elements.linkedItems[0]} />
         </div>
         {itemsToRender.map((item, index) => (
           <Item

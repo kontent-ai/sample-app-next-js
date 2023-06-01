@@ -1,21 +1,21 @@
 import { FC, useState } from "react";
-import { CardStack, contentTypes } from "../../models"
-import { CardComponent } from "./Card";
+import { Block_Stack, contentTypes } from "../../models"
+import { GenericActionComponent } from "./GenericAction";
 import { useSiteCodename } from "./siteCodenameContext";
 import { mainColorBorderClass } from "../../lib/constants/colors";
 import { createElementSmartLink, createItemSmartLink, createRelativeAddSmartLink } from "../../lib/utils/smartLinkUtils";
 import { StandaloneSmartLinkButton } from "./StandaloneSmartLinkButton";
 
 type Props = Readonly<{
-  item: CardStack;
+  item: Block_Stack;
 }>;
 
-export const CardStackComponent: FC<Props> = props => {
-  const [cardIndex, setCardIndex] = useState(0);
+export const StackComponent: FC<Props> = props => {
+  const [actionIndex, setActionIndex] = useState(0);
 
-  const currentCard = props.item.elements.stack.linkedItems[cardIndex];
+  const currentAction = props.item.elements.stack.linkedItems[actionIndex];
 
-  if (!currentCard) {
+  if (!currentAction) {
     return null;
   }
 
@@ -24,24 +24,24 @@ export const CardStackComponent: FC<Props> = props => {
       className="p-7 relative"
       {...createItemSmartLink(props.item.system.id, true)}
     >
-      <h2 {...createElementSmartLink(contentTypes.card_stack.elements.title.codename)}>
+      <h2 {...createElementSmartLink(contentTypes.stack.elements.title.codename)}>
         {props.item.elements.title.value}
       </h2>
-      <div {...createElementSmartLink(contentTypes.card_stack.elements.message.codename)}>
+      <div {...createElementSmartLink(contentTypes.stack.elements.message.codename)}>
         {props.item.elements.message.value}
       </div>
       <section
         className="py-11"
-        {...createElementSmartLink(contentTypes.card_stack.elements.stack.codename, true)}
+        {...createElementSmartLink(contentTypes.stack.elements.stack.codename, true)}
       >
-        <StandaloneSmartLinkButton elementCodename={contentTypes.card_stack.elements.stack.codename} />
+        <StandaloneSmartLinkButton elementCodename={contentTypes.stack.elements.stack.codename} />
         <Headers
           headers={props.item.elements.stack.linkedItems.map(item => ({ id: item.system.id, label: item.elements.title.value }))}
-          onHeaderSelected={setCardIndex}
-          selectedHeaderIndex={cardIndex}
+          onHeaderSelected={setActionIndex}
+          selectedHeaderIndex={actionIndex}
         />
         <div className="pt-3">
-          <CardComponent item={currentCard} />
+          <GenericActionComponent item={currentAction} />
         </div>
       </section>
     </div>

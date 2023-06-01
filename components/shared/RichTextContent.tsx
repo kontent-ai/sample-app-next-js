@@ -2,19 +2,19 @@ import { nodeParse } from "@kontent-ai/rich-text-resolver/dist/cjs/src/parser/no
 import { transformToPortableText } from "@kontent-ai/rich-text-resolver/dist/cjs/src/transformers/portable-text-transformer";
 import { PortableText } from "@portabletext/react";
 import { FC } from "react";
-import { RichTextContent, contentTypes } from "../../models";
+import { Block_ContentChunk, contentTypes } from "../../models";
 import { createElementSmartLink, createFixedAddSmartLink, createItemSmartLink } from "../../lib/utils/smartLinkUtils";
 import { createDefaultResolvers } from "../../lib/richTextResolvers";
 import { Elements } from "@kontent-ai/delivery-sdk";
 
 type Props = Readonly<{
-  item: RichTextContent;
+  item: Block_ContentChunk;
 }>;
 
 export const RichTextContentComponent: FC<Props> = props => (
   <div
     {...createItemSmartLink(props.item.system.id)}
-    {...createElementSmartLink(contentTypes.component___rich_text_content.elements.content.codename)}
+    {...createElementSmartLink(contentTypes.content_chunk.elements.content.codename)}
     {...createFixedAddSmartLink("end")}
   >
     <RichTextElement element={props.item.elements.content} />

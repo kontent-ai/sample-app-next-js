@@ -1,7 +1,7 @@
 import { camelCasePropertyNameResolver, createDeliveryClient, DeliveryError, IContentItem } from '@kontent-ai/delivery-sdk';
 import { PerCollectionCodenames } from './routing';
 import { siteCodename } from './utils/env';
-import { Article, contentTypes, Product, WebSpotlightRoot } from '../models';
+import { Article, contentTypes, Product, WSL_WebSpotlightRoot } from '../models';
 
 const sourceTrackingHeaderName = 'X-KC-SOURCE';
 
@@ -74,7 +74,7 @@ export const getHomepage = (usePreview: boolean) =>
     })
     .depthParameter(10)
     .toPromise()
-    .then(res => res.data.items[0] as WebSpotlightRoot | undefined)
+    .then(res => res.data.items[0] as WSL_WebSpotlightRoot | undefined)
 
 export const getProductsForListing = (usePreview: boolean) =>
   deliveryClient

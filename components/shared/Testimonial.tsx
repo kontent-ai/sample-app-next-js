@@ -1,11 +1,11 @@
 import { FC } from "react";
-import { Testimonial, contentTypes } from "../../models";
+import { Block_Testimonial, contentTypes } from "../../models";
 import { AuthorVertical } from "./AuthorVertical";
 import { AuthorHorizontal } from "./AuthorHorizontal";
 import { createElementSmartLink, createItemSmartLink } from "../../lib/utils/smartLinkUtils";
 
 type Props = Readonly<{
-  item: Testimonial;
+  item: Block_Testimonial;
 }>;
 
 export const TestimonialComponent: FC<Props> = props => {
@@ -27,7 +27,7 @@ export const TestimonialComponent: FC<Props> = props => {
   );
 };
 
-const renderAuthor = (item: Testimonial) => {
+const renderAuthor = (item: Block_Testimonial) => {
   const authorItem = item.elements.author.linkedItems[0];
 
   switch (item.elements.format.value[0]?.codename) {
@@ -42,7 +42,7 @@ const renderAuthor = (item: Testimonial) => {
   }
 }
 
-const layoutClasses = (item: Testimonial) => {
+const layoutClasses = (item: Block_Testimonial) => {
   switch (item.elements.format.value[0]?.codename) {
     case formatOptions.imageTop:
       return "flex-col items-start";

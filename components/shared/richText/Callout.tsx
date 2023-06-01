@@ -1,12 +1,12 @@
 import { FC } from "react";
-import { Callout } from "../../../models"
+import { Block_Callout } from "../../../models"
 import { useSiteCodename } from "../siteCodenameContext";
 import { mainColorBorderClass } from "../../../lib/constants/colors";
 import { ExclamationTriangleIcon, InformationCircleIcon, LightBulbIcon } from "@heroicons/react/24/solid";
 import { RichTextElement } from "../RichTextContent";
 
 type Props = Readonly<{
-  item: Callout;
+  item: Block_Callout;
 }>;
 
 export const CalloutComponent: FC<Props> = props => {
@@ -22,7 +22,7 @@ export const CalloutComponent: FC<Props> = props => {
   );
 }
 
-const renderTypeIcon = (callout: Callout) => {
+const renderTypeIcon = (callout: Block_Callout) => {
   switch (callout.elements.type.value[0]?.codename) {
     case OptionCodename.Warning:
       return <ExclamationTriangleIcon />;
@@ -35,7 +35,7 @@ const renderTypeIcon = (callout: Callout) => {
   }
 };
 
-const createIconColor = (callout: Callout) => {
+const createIconColor = (callout: Block_Callout) => {
   switch (callout.elements.type.value[0]?.codename) {
     case OptionCodename.Warning:
       return "text-orange-400";
@@ -54,6 +54,6 @@ enum OptionCodename {
   Lightbulb = "lightbulb",
 }
 
-const throwUnknownType = (callout: Callout) => {
+const throwUnknownType = (callout: Block_Callout) => {
   throw new Error(`Can't render callout of type ${callout.elements.type.value[0]?.codename}. Please make sure the app supports all possible callout types.`);
 }
