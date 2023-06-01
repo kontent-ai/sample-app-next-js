@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { Article, Navigation, Page } from "../../models";
+import { Article, Navigation, WSL_Page } from "../../models";
 import { AppPage } from "../../components/shared/ui/appPage";
 import { ValidCollectionCodename } from "../../lib/types/perCollection";
 import { GetStaticProps } from "next";
@@ -14,7 +14,7 @@ type Props = Readonly<{
   siteCodename: ValidCollectionCodename;
   articles: ReadonlyArray<Article>;
   siteMenu: Navigation,
-  page: Page
+  page: WSL_Page
 }>;
 
 const ArticlesPage: FC<Props> = props => (
@@ -46,7 +46,7 @@ export const getStaticProps: GetStaticProps<Props> = async context => {
   const articles = await getArticlesForListing(!!context.preview);
   const menuCodename = getMenuCodename(siteCodename);
   const siteMenu = await getSiteMenu(menuCodename, !!context.preview);
-  const page = await getItemByCodename<Page>(pageCodename, !!context.preview);
+  const page = await getItemByCodename<WSL_Page>(pageCodename, !!context.preview);
 
   if (page === null) {
     return {
