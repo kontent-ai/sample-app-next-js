@@ -7,10 +7,12 @@ import { GetStaticPaths, GetStaticProps } from "next";
 import { getArticleBySlug, getArticlesForListing, getSiteMenu } from "../../lib/kontentClient";
 import { siteCodename } from "../../lib/utils/env";
 import { RichTextElement } from "../../components/shared/RichTextContent";
+import { getMenuCodename } from "../../lib/constants/menu";
 
 type Props = Readonly<{
   article: Article;
   siteCodename: ValidCollectionCodename;
+  siteMenu: Navigation;
 }>;
 
 const ArticlePage: FC<Props> = props => (
@@ -49,6 +51,7 @@ export const getStaticProps: GetStaticProps<Props, { slug: string }> = async con
     props: {
       article,
       siteCodename,
+      siteMenu
     },
   };
 }
