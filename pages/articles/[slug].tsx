@@ -7,12 +7,11 @@ import { GetStaticPaths, GetStaticProps } from "next";
 import { getArticleBySlug, getArticlesForListing, getSiteMenu } from "../../lib/kontentClient";
 import { siteCodename } from "../../lib/utils/env";
 import { RichTextElement } from "../../components/shared/RichTextContent";
-import { getMenuCodename } from "../../lib/constants/menu";
 
 type Props = Readonly<{
   article: Article;
   siteCodename: ValidCollectionCodename;
-  siteMenu: Navigation;
+  siteMenu?: Navigation;
 }>;
 
 const ArticlePage: FC<Props> = props => (
@@ -35,8 +34,7 @@ const notFoundRedirect = {
 };
 
 export const getStaticProps: GetStaticProps<Props, { slug: string }> = async context => {
-  const menuCodename = getMenuCodename(siteCodename);
-  const siteMenu = await getSiteMenu(menuCodename, !!context.preview);
+  const siteMenu = await getSiteMenu(!!context.preview);
   const slug = typeof context.params?.slug === "string" ? context.params.slug : "";
   if (!slug) {
     return notFoundRedirect;

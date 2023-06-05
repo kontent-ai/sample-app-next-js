@@ -9,12 +9,11 @@ import { AppPage } from "../../components/shared/ui/appPage";
 import Image from "next/image";
 import { createElementSmartLink } from "../../lib/utils/smartLinkUtils";
 import { Navigation } from "../../models";
-import { getMenuCodename } from "../../lib/constants/menu";
 
 type Props = Readonly<{
   product: Product;
   siteCodename: ValidCollectionCodename;
-  siteMenu: Navigation;
+  siteMenu?: Navigation;
 }>;
 
 interface IParams extends ParsedUrlQuery {
@@ -51,9 +50,8 @@ export const getStaticProps: GetStaticProps<Props, IParams> = async (context) =>
     return nonPermanentHomeRedirect;
   };
 
-  const menuCodename = getMenuCodename(siteCodename);
   const product = await getProductDetail(slug, !!context.preview);
-  const siteMenu = await getSiteMenu(menuCodename, !!context.preview);
+  const siteMenu = await getSiteMenu(!!context.preview);
 
   if (!product) {
     return nonPermanentHomeRedirect;

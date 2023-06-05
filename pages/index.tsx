@@ -1,6 +1,6 @@
 import { GetStaticProps, NextPage } from 'next';
 import { AppPage } from '../components/shared/ui/appPage';
-import { getHomepage, getSiteMenu } from "../lib/kontentClient";
+import { getHomepage, getItemByCodename, getSiteMenu } from "../lib/kontentClient";
 import { ValidCollectionCodename } from '../lib/types/perCollection';
 import { siteCodename } from '../lib/utils/env';
 import { Content } from '../components/shared/Content';
@@ -9,12 +9,12 @@ import { useEffect, useState } from 'react';
 import { KontentSmartLinkEvent } from '@kontent-ai/smart-link';
 import { IRefreshMessageData, IRefreshMessageMetadata } from '@kontent-ai/smart-link/types/lib/IFrameCommunicatorTypes';
 import { useSmartLink } from '../lib/useSmartLink';
-import { getMenuCodename } from '../lib/constants/menu';
+import { perCollectionRootItems } from '../lib/constants/menu';
 
 type Props = Readonly<{
   homepage: WSL_WebSpotlightRoot;
   siteCodename: ValidCollectionCodename;
-  siteMenu: Navigation;
+  siteMenu?: Navigation;
 }>;
 
 const Home: NextPage<Props> = props => {
@@ -50,9 +50,8 @@ const Home: NextPage<Props> = props => {
 )};
 
 export const getStaticProps: GetStaticProps<Props> = async context => {
-  const menuCodename = getMenuCodename(siteCodename);
   const homepage = await getHomepage(!!context.preview);
-  const siteMenu = await getSiteMenu(menuCodename, !!context.preview);
+  const siteMenu = await getSiteMenu(!!context.preview);
 
   if (!homepage) {
     throw new Error("Can't find homepage item.");

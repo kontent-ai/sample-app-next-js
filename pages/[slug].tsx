@@ -9,7 +9,6 @@ import { ParsedUrlQuery } from "querystring";
 import { ValidCollectionCodename } from "../lib/types/perCollection";
 import { siteCodename } from "../lib/utils/env";
 import { createElementSmartLink, createFixedAddSmartLink } from "../lib/utils/smartLinkUtils";
-import { getMenuCodename } from "../lib/constants/menu";
 
 type Props = Readonly<{
   page: WSL_Page;
@@ -47,8 +46,8 @@ export const getStaticProps: GetStaticProps = async (context) => {
       }
     };
   };
-  const menuCodename = getMenuCodename(siteCodename);
-  const siteMenu = await getSiteMenu(menuCodename, !!context.preview);
+
+  const siteMenu = await getSiteMenu(!!context.preview);
 
   const page = await getItemByCodename<WSL_Page>(pageCodename, !!context.preview);
   if (page === null) {

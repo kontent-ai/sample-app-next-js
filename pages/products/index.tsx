@@ -8,13 +8,12 @@ import { PerCollectionCodenames } from "../../lib/routing";
 import { ValidCollectionCodename } from "../../lib/types/perCollection";
 import { siteCodename } from "../../lib/utils/env";
 import { Navigation, WSL_Page, Product } from "../../models";
-import { getMenuCodename } from "../../lib/constants/menu";
 
 type Props = Readonly<{
   page: WSL_Page;
   products: ReadonlyArray<Product> | undefined;
   siteCodename: ValidCollectionCodename;
-  siteMenu: Navigation;
+  siteMenu?: Navigation;
 }>;
 
 export const Products: FC<Props> = props => (
@@ -43,10 +42,9 @@ export const getStaticProps: GetStaticProps<Props> = async context => {
     healthtech_surgical: "products"
   };
 
-  const menuCodename = getMenuCodename(siteCodename);
   const page = await getItemByCodename<WSL_Page>(pageCodename, !!context.preview);
   const products = await getProductsForListing(!!context.preview);
-  const siteMenu = await getSiteMenu(menuCodename, !!context.preview);
+  const siteMenu = await getSiteMenu(!!context.preview);
 
   if (page === null) {
     return {

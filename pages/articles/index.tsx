@@ -6,14 +6,13 @@ import { GetStaticProps } from "next";
 import { getArticlesForListing, getItemByCodename, getSiteMenu } from "../../lib/kontentClient";
 import { siteCodename } from "../../lib/utils/env";
 import { ListItem } from "../../components/listingPage/ListItem";
-import { getMenuCodename } from "../../lib/constants/menu";
 import { PerCollectionCodenames } from "../../lib/routing";
 import { Content } from "../../components/shared/Content";
 
 type Props = Readonly<{
   siteCodename: ValidCollectionCodename;
   articles: ReadonlyArray<Article>;
-  siteMenu: Navigation,
+  siteMenu?: Navigation,
   page: WSL_Page
 }>;
 
@@ -44,8 +43,7 @@ export const getStaticProps: GetStaticProps<Props> = async context => {
   };
   
   const articles = await getArticlesForListing(!!context.preview);
-  const menuCodename = getMenuCodename(siteCodename);
-  const siteMenu = await getSiteMenu(menuCodename, !!context.preview);
+  const siteMenu = await getSiteMenu(!!context.preview);
   const page = await getItemByCodename<WSL_Page>(pageCodename, !!context.preview);
 
   if (page === null) {

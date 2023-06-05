@@ -1,7 +1,8 @@
 import { camelCasePropertyNameResolver, createDeliveryClient, DeliveryError, IContentItem } from '@kontent-ai/delivery-sdk';
 import { PerCollectionCodenames } from './routing';
 import { siteCodename } from './utils/env';
-import { Article, contentTypes, Product, WSL_WebSpotlightRoot, Navigation } from '../models';
+import { Article, contentTypes, Product, WSL_WebSpotlightRoot } from '../models';
+import { perCollectionRootItems } from './constants/menu';
 
 const sourceTrackingHeaderName = 'X-KC-SOURCE';
 
@@ -92,16 +93,6 @@ export const getProductsForListing = (usePreview: boolean) =>
     .toAllPromise()
     .then(res => res.data.items)
 
-export const getSiteMenu = (siteMenuCodename: string, usePreview: boolean) =>
-  deliveryClient
-    .item<Navigation>(siteMenuCodename)
-    .queryConfig({
-      usePreviewMode: usePreview
-    })
-    .depthParameter(10)
-    .toPromise()
-    .then(res => res.data.item)
-
 export const getProductSlugs = () =>
   deliveryClient
     .items<Product>()
@@ -143,3 +134,9 @@ export const getArticleBySlug = (slug: string, usePreview: boolean) =>
     })
     .toAllPromise()
     .then(res => res.data.items[0]);
+
+export const getSiteMenu = async (usePreview: boolean) => {
+  const res = await getItemByCodename<WSL_WebSpotlightRoot>(perCollectionRootItems, usePreview);
+  
+  return res?.elements.navigation.linkedItems[0];
+}
