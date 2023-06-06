@@ -19,7 +19,7 @@ export const AppPage: FC<Props> = props => {
   return (
     <SiteCodenameProvider siteCodename={props.siteCodename}>
       <div className="min-h-full grow flex flex-col items-center overflow-hidden">
-        {props.siteMenu && <Menu item={props.siteMenu} />}
+        {props.siteMenu ? <Menu item={props.siteMenu} /> : <span>Missing top navigation. Please provide a valid navigation item in the web spotlight root.</span>}
         {/* https://tailwindcss.com/docs/typography-plugin */}
         <main
           className="py-14 md:py-20 container grow h-full"

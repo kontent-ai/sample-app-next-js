@@ -1,6 +1,6 @@
 import { GetStaticProps, NextPage } from 'next';
 import { AppPage } from '../components/shared/ui/appPage';
-import { getHomepage, getItemByCodename, getSiteMenu } from "../lib/kontentClient";
+import { getHomepage, getSiteMenu } from "../lib/kontentClient";
 import { ValidCollectionCodename } from '../lib/types/perCollection';
 import { siteCodename } from '../lib/utils/env';
 import { Content } from '../components/shared/Content';
@@ -9,7 +9,6 @@ import { useEffect, useState } from 'react';
 import { KontentSmartLinkEvent } from '@kontent-ai/smart-link';
 import { IRefreshMessageData, IRefreshMessageMetadata } from '@kontent-ai/smart-link/types/lib/IFrameCommunicatorTypes';
 import { useSmartLink } from '../lib/useSmartLink';
-import { perCollectionRootItems } from '../lib/constants/menu';
 
 type Props = Readonly<{
   homepage: WSL_WebSpotlightRoot;

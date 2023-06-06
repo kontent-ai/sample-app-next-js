@@ -18,7 +18,7 @@ type Props = Readonly<{
 
 const ArticlesPage: FC<Props> = props => (
   <AppPage siteCodename={props.siteCodename} siteMenu={props.siteMenu}>
-        {props.page.elements.content.linkedItems.map(piece => (
+    {props.page.elements.content.linkedItems.map(piece => (
       <Content key={piece.system.id} item={piece as any} />
     ))}
     <menu>
@@ -41,7 +41,7 @@ export const getStaticProps: GetStaticProps<Props> = async context => {
     healthtech_imaging: "articles",
     healthtech_surgical: "articles"
   };
-  
+
   const articles = await getArticlesForListing(!!context.preview);
   const siteMenu = await getSiteMenu(!!context.preview);
   const page = await getItemByCodename<WSL_Page>(pageCodename, !!context.preview);

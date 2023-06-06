@@ -4,27 +4,44 @@ import { mainColorBgClass } from "../../../lib/constants/colors";
 import { useSiteCodename } from "../siteCodenameContext";
 import { Navigation } from "../../../models";
 import { createItemSmartLink } from "../../../lib/utils/smartLinkUtils";
+import { ChevronDownIcon, Bars3Icon } from "@heroicons/react/24/solid";
 
 type Link = Readonly<Navigation>;
-
-type DropdownProps = Readonly<{
-  links: ReadonlyArray<Link>;
-}>;
 
 type Props = Readonly<{
   item: Link;
 }>
 
-const MenuDropdown: FC<DropdownProps> = props => {
+type DropdownMenuProps = Readonly<{
+  links: ReadonlyArray<Link>;
+}>;
+
+const DropdownMenu: FC<DropdownMenuProps> = props => {
   return (
     <>
       {props.links.map(link => (
-        <Link key={link.system.codename} {...link.elements.openInANewWindow.value ? { rel: "noopener noreferrer", target: "_blank" } : {}} href={link.elements.externalLink.value ? link.elements.externalLink.value : "/" + link.elements.pageLink.linkedItems[0].elements.url.value} className="block p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700">
+        <Link
+          key={link.system.codename}
+          {...link.elements.openInANewWindow.value[0] ? { rel: "noopener noreferrer", target: "_blank" } : {}}
+          href={link.elements.externalLink.value ? link.elements.externalLink.value : "/" + link.elements.pageLink.linkedItems[0].elements.url.value}
+          className="block p-3 rounded-lg hover:bg-gray-50"
+        >
           <div className="font-semibold">{link.elements.label.value}</div>
-          <span className="text-sm text-gray-500 dark:text-gray-400">{link.elements.caption.value}</span>
+          <span className="text-sm text-gray-500">{link.elements.caption.value}</span>
         </Link>
       ))}
     </>
+  )
+}
+
+const DropdownButton: FC<Props> = props => {
+  return (
+    <button
+      className="h-full flex items-center justify-between w-full py-2 pl-3 pr-4 font-medium text-gray-900 border-b border-gray-100 md:w-auto md:bg-transparent md:border-0"
+    >
+      {props.item.elements.label.value}
+      <ChevronDownIcon className="w-4 h-4 ml-1 mt-1" />
+    </button>
   )
 }
 
@@ -38,77 +55,33 @@ export const Menu: FC<Props> = props => {
   }
 
   return (
-    <div
-      className={`w-screen ${mainColorBgClass[siteCodename]} fixed z-50`}
-      {...createItemSmartLink(props.item.system.id)}
-    >
+    <div className={`w-screen ${mainColorBgClass[siteCodename]} fixed z-50`} {...createItemSmartLink(props.item.system.id)}>
       <div className="flex justify-between items-center mx-auto max-w-screen-xl md:h-16">
-        <div
-          id="mega-menu-full"
-          className="w-screen h-full md:flex justify-between md:order-1 z-50"
-        >
+        <div className="w-screen h-full md:flex justify-between z-50">
           <div className="flex h-full justify-between items-center px-8 py-4">
             <Link href="/" className="flex items-center">
               <span className="font-extrabold">HealthTech</span>
             </Link>
             <button
               type="button"
-              className="md:hidden justify-end"
-              aria-controls="mega-menu-full"
-              aria-expanded="false"
+              className="md:hidden flex justify-center items-center"
               onClick={() => setSmallMenuActive(!smallMenuActive)}
             >
-              <span className="sr-only">Open main menu</span>
-              <svg
-                className="w-6 h-6"
-                aria-hidden="true"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
-                  clipRule="evenodd"
-                ></path>
-              </svg>
+              <Bars3Icon className="w-6 h-6" />
             </button>
           </div>
           <div>
-            <ul className={`${smallMenuActive ? "flex" : "hidden"} md:flex flex-col font-medium md:flex-row md:mt-0 h-full`}>
+            <ul className={`${smallMenuActive ? "flex" : "hidden"} md:flex flex-col font-medium md:flex-row h-full`}>
               {props.item.elements.subitems.linkedItems.map((link, i) => (
-                <li
-                  key={i} className="h-full px-5 bg-green-300 group lg:bg-transparent lg:hover:bg-white"
-                  onClick={() => handleMenuClick(i)}
-                >
+                <li key={i} className="h-full px-5 bg-green-300 group md:hover:bg-white" onClick={() => handleMenuClick(i)}>
                   {link.elements.subitems.value.length > 0 ? (
                     <span>
-                      <button
-                        id="mega-menu-full-dropdown-button"
-                        data-collapse-toggle="mega-menu-full-dropdown"
-                        className="h-full flex items-center justify-between w-full py-2 pl-3 pr-4 font-medium text-gray-900 border-b border-gray-100 md:w-auto md:bg-transparent md:border-0"
-                      >
-                        {link.elements.label.value}
-                        <svg
-                          className="w-5 h-5 ml-1"
-                          fill="currentColor"
-                          viewBox="0 0 20 20"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            fillRule="evenodd"
-                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                            clipRule="evenodd"
-                          ></path>
-                        </svg>
-                      </button>
+                      <DropdownButton item={link} />
                       <div
-                        key={i}
-                        id="mega-menu-full-dropdown"
-                        className={`${i === activeMenu ? "block" : "hidden"} md:group-hover:block transition-all duration-300 absolute z-50 left-0 shadow-sm bg-white border-gray-200 dark:bg-gray-800 dark:border-gray-600 w-full`}
+                        className={`${i === activeMenu ? "block" : "hidden"} md:group-hover:block absolute z-50 left-0 shadow-sm bg-white border-gray-200 w-full`}
                       >
-                        <div className="grid max-w-screen-xl px-4 py-5 mx-auto text-gray-900 dark:text-white sm:grid-cols-2 md:grid-cols-3 md:px-6">
-                          <MenuDropdown links={link.elements.subitems.linkedItems} />
+                        <div className="grid max-w-screen-xl px-4 py-5 mx-auto text-gray-900 sm:grid-cols-2 md:grid-cols-3 md:px-6">
+                          <DropdownMenu links={link.elements.subitems.linkedItems} />
                         </div>
                       </div>
                     </span>
