@@ -10,41 +10,21 @@ import { siteCodename } from "../../lib/utils/env";
 import { Block_Navigation, WSL_Page, Product } from "../../models";
 import { useRouter } from "next/router";
 
-
 type Props = Readonly<{
   page: WSL_Page;
-  products: ReadonlyArray<Product> | undefined;
+  products: Product[] | undefined;
   siteCodename: ValidCollectionCodename;
   siteMenu?: Block_Navigation;
 }>;
 
-type ItemProps = Readonly<{
-  products?: ReadonlyArray<Product> | undefined,
+type ProductListingProps = Readonly<{
+  products?: Product[],
 }>
 
-const Items: FC<ItemProps> = (props) => {
-  const router = useRouter();
-  const { page, category } = router.query
-  const [products, setProducts] = useState(props.products);
-
-  const getProducts = useCallback(async () => {
-    const response = await fetch(`/api${router.asPath}`);
-    const data = await response.json();
-
-    setProducts(data.products);
-  }, [router.asPath, page, category])
-
-  useEffect(() => {
-    if (page || category) {
-      getProducts();
-      return;
-    }
-    setProducts(props.products);
-  }, [getProducts, page, props.products, category])
-
+const ProductListing: FC<ProductListingProps> = (props) => {
   return (
     <ul className="w-ull flex flex-wrap list-none justify-start gap-5 pt-4">
-      {products?.map(p => (
+      {props.products?.map(p => (
         <ListItem
           key={p.system.id}
           imageUrl={p.elements.productImage.value[0].url}
@@ -70,6 +50,10 @@ export const Products: FC<Props> = props => {
   const [paging, setPaging] = useState(1);
   const [categories, setCategories] = useState<string[]>([]);
 
+  const{page, category} = router.query
+
+  const [data, setData] = useState<Product[]>([]);
+
   useEffect(() => {
     const params: Record<string, string | string[]> = {};
     if (paging > 1) {
@@ -81,6 +65,21 @@ export const Products: FC<Props> = props => {
     router.replace({ query: params ? params : null });
   }, [paging, categories])
 
+  const getProducts = useCallback(async () => {
+    const response = await fetch(`/api/${router.asPath})`);
+    const newData = await response.json();
+
+    setData(newData.products);
+  }, [router.asPath])
+
+  useEffect(() => {
+    if(!page && !category){
+      setData(props.products ?? [])
+      return;
+    }
+    getProducts();
+  }, [page, category, setData, getProducts, props.products])
+
   const renderFilterOption = (optionCodename: string, labelText: string, onClick: (checked: boolean) => void) => {
     return (
       <div className="flex items-center mb-4">
@@ -89,7 +88,6 @@ export const Products: FC<Props> = props => {
       </div>
     );
   };
-
 
   return (
     <AppPage siteCodename={props.siteCodename} siteMenu={props.siteMenu}>
@@ -102,9 +100,8 @@ export const Products: FC<Props> = props => {
           renderFilterOption(codename, name, (checked) => setCategories(prev => checked ? prev.concat([codename]) : prev.filter(a => a !== codename))))}
       </ul>
      
-      <Suspense fallback={<p>fsdaf</p>}>
-        <Items products={props.products} />
-      </Suspense>
+     
+     {!page && !category ? <ProductListing products={props.products} /> : <ProductListing products={data}/> } 
 
       <button
         className="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-700"
