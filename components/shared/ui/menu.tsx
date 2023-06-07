@@ -2,11 +2,11 @@ import Link from "next/link";
 import { FC, useState } from "react";
 import { mainColorBgClass } from "../../../lib/constants/colors";
 import { useSiteCodename } from "../siteCodenameContext";
-import { Navigation } from "../../../models";
+import { Block_Navigation } from "../../../models";
 import { createItemSmartLink } from "../../../lib/utils/smartLinkUtils";
 import { ChevronDownIcon, Bars3Icon } from "@heroicons/react/24/solid";
 
-type Link = Readonly<Navigation>;
+type Link = Readonly<Block_Navigation>;
 
 type Props = Readonly<{
   item: Link;
@@ -60,7 +60,8 @@ export const Menu: FC<Props> = props => {
         <div className="w-screen h-full md:flex justify-between z-50">
           <div className="flex h-full justify-between items-center px-8 py-4">
             <Link href="/" className="flex items-center">
-              <span className="font-extrabold">HealthTech</span>
+              <span className="font-extrabold">Ficto</span>
+              <span>Healthtech</span>
             </Link>
             <button
               type="button"

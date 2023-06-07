@@ -7,13 +7,13 @@ import { getItemByCodename, getProductsForListing, getSiteMenu } from "../../lib
 import { PerCollectionCodenames } from "../../lib/routing";
 import { ValidCollectionCodename } from "../../lib/types/perCollection";
 import { siteCodename } from "../../lib/utils/env";
-import { Navigation, WSL_Page, Product } from "../../models";
+import { Block_Navigation, WSL_Page, Product } from "../../models";
 
 type Props = Readonly<{
   page: WSL_Page;
   products: ReadonlyArray<Product> | undefined;
   siteCodename: ValidCollectionCodename;
-  siteMenu?: Navigation;
+  siteMenu?: Block_Navigation;
 }>;
 
 export const Products: FC<Props> = props => (

@@ -5,13 +5,13 @@ import { useSmartLink } from "../../../lib/useSmartLink";
 import { ValidCollectionCodename } from "../../../lib/types/perCollection";
 import { SiteCodenameProvider } from "../siteCodenameContext";
 import { createItemSmartLink } from "../../../lib/utils/smartLinkUtils";
-import { Navigation } from "../../../models";
+import { Block_Navigation } from "../../../models";
 
 type Props = Readonly<{
   children: ReactNode;
   siteCodename: ValidCollectionCodename;
   itemId?: string;
-  siteMenu?: Navigation;
+  siteMenu?: Block_Navigation;
 }>;
 
 export const AppPage: FC<Props> = props => {

@@ -29,7 +29,7 @@ export type GenericAction = IContentItem<{
    * Id: 701f593b-aca1-49d2-8810-1ac448ee16f0
    * Codename: redirect_url
    *
-   * Target URL - Set target URL including i.e. UTM parameters.
+   * Target URL
    */
   redirectUrl: Elements.TextElement;
 

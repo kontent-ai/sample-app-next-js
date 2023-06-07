@@ -4,9 +4,9 @@ import { type Block_Carousel } from './Block_Carousel';
 import { type Block_ContentChunk } from './Block_ContentChunk';
 import { type Block_Grid } from './Block_Grid';
 import { type Block_HeroUnit } from './Block_HeroUnit';
+import { type Block_Navigation } from './Block_Navigation';
 import { type Block_Stack } from './Block_Stack';
 import { type Block_Testimonial } from './Block_Testimonial';
-import { type Navigation } from './navigation';
 import { type WSL_Page } from './WSL_Page';
 
 /**
@@ -39,7 +39,7 @@ export type WSL_WebSpotlightRoot = IContentItem<{
    * Id: a026a51c-fa29-4dfd-bf6b-cafe2f0ecb0f
    * Codename: navigation
    */
-  navigation: Elements.LinkedItemsElement<Navigation>;
+  navigation: Elements.LinkedItemsElement<Block_Navigation>;
 
   /**
    * Subpages (subpages)
@@ -47,7 +47,7 @@ export type WSL_WebSpotlightRoot = IContentItem<{
    * Id: 61be1529-49fc-43b6-ba33-962a360e4c9f
    * Codename: subpages
    */
-  subpages: Elements.LinkedItemsElement<WSL_Page | Navigation>;
+  subpages: Elements.LinkedItemsElement<WSL_Page | Block_Navigation>;
 
   /**
    * Title (text)

@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { ValidCollectionCodename } from "../../lib/types/perCollection";
-import { Article, Navigation } from "../../models"
+import { Article, Block_Navigation } from "../../models"
 import { AppPage } from "../../components/shared/ui/appPage";
 import { HeroImage } from "../../components/landingPage/ui/heroImage";
 import { GetStaticPaths, GetStaticProps } from "next";
@@ -11,7 +11,7 @@ import { RichTextElement } from "../../components/shared/RichTextContent";
 type Props = Readonly<{
   article: Article;
   siteCodename: ValidCollectionCodename;
-  siteMenu?: Navigation;
+  siteMenu?: Block_Navigation;
 }>;
 
 const ArticlePage: FC<Props> = props => (
