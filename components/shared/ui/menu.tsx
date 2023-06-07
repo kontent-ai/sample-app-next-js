@@ -87,7 +87,7 @@ export const Menu: FC<Props> = props => {
                     </span>
                   ) : (
                     <Link
-                      {...link.elements.openInANewWindow.value ? { rel: "noopener noreferrer", target: "_blank" } : {}}
+                      {...link.elements.openInANewWindow.value[0] ? { rel: "noopener noreferrer", target: "_blank" } : {}}
                       className="h-full flex items-center justify-between w-full py-2 pl-3 pr-4 font-medium text-gray-900 border-b border-gray-100 md:w-auto md:bg-transparent md:border-0"
                       href={link.elements.externalLink.value ? link.elements.externalLink.value : "/" + link.elements.pageLink.linkedItems[0].elements.url.value}
                     >
