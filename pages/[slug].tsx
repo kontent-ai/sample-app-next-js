@@ -1,7 +1,7 @@
 import { GetStaticPaths, GetStaticProps } from "next";
 import { pageCodenames } from '../lib/routing';
-import { getItemByCodename } from "../lib/kontentClient";
-import { WSL_Page, contentTypes } from "../models";
+import { getItemByCodename, getSiteMenu } from "../lib/kontentClient";
+import { Navigation, WSL_Page, contentTypes } from "../models";
 import { FC } from "react";
 import { Content } from "../components/shared/Content";
 import { AppPage } from "../components/shared/ui/appPage";
@@ -13,6 +13,7 @@ import { createElementSmartLink, createFixedAddSmartLink } from "../lib/utils/sm
 type Props = Readonly<{
   page: WSL_Page;
   siteCodename: ValidCollectionCodename;
+  siteMenu: Navigation;
 }>;
 
 interface IParams extends ParsedUrlQuery {
@@ -46,6 +47,8 @@ export const getStaticProps: GetStaticProps = async (context) => {
     };
   };
 
+  const siteMenu = await getSiteMenu(!!context.preview);
+
   const page = await getItemByCodename<WSL_Page>(pageCodename, !!context.preview);
   if (page === null) {
     return {
@@ -54,17 +57,12 @@ export const getStaticProps: GetStaticProps = async (context) => {
   };
 
   return {
-    props: { page, siteCodename },
+    props: { page, siteCodename, siteMenu },
   };
 }
 
 const TopLevelPage: FC<Props> = props => (
-  <AppPage itemId={props.page.system.id} siteCodename={props.siteCodename}>
-    <h1
-      {...createElementSmartLink(contentTypes.page.elements.title.codename)}
-    >
-      {props.page.elements.title.value}
-    </h1>
+  <AppPage itemId={props.page.system.id} siteCodename={props.siteCodename} siteMenu={props.siteMenu}>
     <div
       {...createElementSmartLink(contentTypes.page.elements.content.codename)}
       {...createFixedAddSmartLink("end")}

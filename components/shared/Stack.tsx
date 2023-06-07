@@ -2,7 +2,7 @@ import { FC, useState } from "react";
 import { Block_Stack, contentTypes } from "../../models"
 import { GenericActionComponent } from "./GenericAction";
 import { useSiteCodename } from "./siteCodenameContext";
-import { mainColorBorderClass } from "../../lib/constants/colors";
+import { mainColorBorderClass, mainColorTextClass } from "../../lib/constants/colors";
 import { createElementSmartLink, createItemSmartLink, createRelativeAddSmartLink } from "../../lib/utils/smartLinkUtils";
 import { StandaloneSmartLinkButton } from "./StandaloneSmartLinkButton";
 
@@ -62,12 +62,13 @@ const Headers: FC<HeadersProps> = props => {
       {props.headers.map((header, i) => (
         <li
           key={i}
-          className={`overflow-hidden h-full m-0 shrink text-ellipsis flex justify-center items-center cursor-pointer ${mainColorBorderClass[siteCodename]} ${props.selectedHeaderIndex === i ? "border-b-2" : ""}`}
+          className={`w-12 md:w-fit overflow-hidden h-full m-0 shrink text-ellipsis flex justify-center items-center cursor-pointer ${mainColorBorderClass[siteCodename]} ${props.selectedHeaderIndex === i ? "md:border-b-2" : ""}`}
           onClick={() => props.onHeaderSelected(i)}
           {...createItemSmartLink(header.id, true)}
           {...createRelativeAddSmartLink("after", "bottom-end")}
         >
-          {header.label}
+          <span className="hidden md:block">{header.label}</span>
+          <span className={`md:hidden font-black text-xl ${props.selectedHeaderIndex === i ? mainColorTextClass[siteCodename] : ""}`}>•</span>
         </li>
       ))}
     </menu>

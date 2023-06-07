@@ -1,10 +1,10 @@
 import { GetStaticProps, NextPage } from 'next';
 import { AppPage } from '../components/shared/ui/appPage';
-import { getHomepage } from "../lib/kontentClient";
+import { getHomepage, getSiteMenu } from "../lib/kontentClient";
 import { ValidCollectionCodename } from '../lib/types/perCollection';
 import { siteCodename } from '../lib/utils/env';
 import { Content } from '../components/shared/Content';
-import { WSL_WebSpotlightRoot } from '../models';
+import { WSL_WebSpotlightRoot, Navigation } from '../models';
 import { useEffect, useState } from 'react';
 import { KontentSmartLinkEvent } from '@kontent-ai/smart-link';
 import { IRefreshMessageData, IRefreshMessageMetadata } from '@kontent-ai/smart-link/types/lib/IFrameCommunicatorTypes';
@@ -13,6 +13,7 @@ import { useSmartLink } from '../lib/useSmartLink';
 type Props = Readonly<{
   homepage: WSL_WebSpotlightRoot;
   siteCodename: ValidCollectionCodename;
+  siteMenu?: Navigation;
 }>;
 
 const Home: NextPage<Props> = props => {
@@ -38,7 +39,7 @@ const Home: NextPage<Props> = props => {
   }, [sdk]);
 
   return (
-    <AppPage itemId={homepage.system.id} siteCodename={props.siteCodename}>
+    <AppPage itemId={homepage.system.id} siteCodename={props.siteCodename} siteMenu={props.siteMenu}>
       <div>
         {homepage.elements.content.linkedItems.map(item => (
           <Content key={item.system.id} item={item as any} />
@@ -49,13 +50,14 @@ const Home: NextPage<Props> = props => {
 
 export const getStaticProps: GetStaticProps<Props> = async context => {
   const homepage = await getHomepage(!!context.preview);
+  const siteMenu = await getSiteMenu(!!context.preview);
 
   if (!homepage) {
     throw new Error("Can't find homepage item.");
   }
 
   return {
-    props: { homepage, siteCodename },
+    props: { homepage, siteCodename, siteMenu },
   };
 }
 

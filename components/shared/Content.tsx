@@ -1,11 +1,12 @@
 import { ComponentType, FC } from "react";
-import { Block_CallToAction, Block_Stack, Block_Carousel, Block_HeroUnit, Block_ContentChunk, Block_Testimonial, contentTypes } from "../../models";
+import { Block_CallToAction, Block_Stack, Block_Carousel, Block_HeroUnit, Block_ContentChunk, Block_Testimonial, contentTypes, Block_Grid } from "../../models";
 import { HeroUnitComponent } from "./HeroUnit";
 import { RichTextContentComponent } from "./RichTextContent";
 import { TestimonialComponent } from "./Testimonial";
 import { CarouselComponent } from "./Carousel";
 import { CallToActionComponent } from "./CallToAction";
 import { StackComponent } from "./Stack";
+import { GridComponent } from "./Grid";
 
 type AcceptedType = AcceptedTypesByCodename[keyof AcceptedTypesByCodename];
 
@@ -29,6 +30,7 @@ const componentMap: Readonly<{ [key in keyof AcceptedTypesByCodename]: Component
   carousel: CarouselComponent,
   call_to_action: CallToActionComponent,
   stack: StackComponent,
+  grid: GridComponent
 };
 
 // Unfortunately, we need to define the relationship manually, because the generator doesn't define it itself. :/
@@ -39,5 +41,6 @@ type AcceptedTypesByCodename = {
   [contentTypes.carousel.codename]: Block_Carousel;
   [contentTypes.call_to_action.codename]: Block_CallToAction;
   [contentTypes.stack.codename]: Block_Stack;
+  [contentTypes.grid.codename]: Block_Grid;
 };
 
