@@ -8,12 +8,12 @@ import { ValidCollectionCodename } from "../../lib/types/perCollection";
 import { AppPage } from "../../components/shared/ui/appPage";
 import Image from "next/image";
 import { createElementSmartLink } from "../../lib/utils/smartLinkUtils";
-import { Navigation } from "../../models";
+import { Block_Navigation } from "../../models";
 
 type Props = Readonly<{
   product: Product;
   siteCodename: ValidCollectionCodename;
-  siteMenu?: Navigation;
+  siteMenu?: Block_Navigation;
 }>;
 
 interface IParams extends ParsedUrlQuery {

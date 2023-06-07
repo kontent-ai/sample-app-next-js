@@ -1,7 +1,7 @@
 import { GetStaticPaths, GetStaticProps } from "next";
 import { pageCodenames } from '../lib/routing';
 import { getItemByCodename, getSiteMenu } from "../lib/kontentClient";
-import { Navigation, WSL_Page, contentTypes } from "../models";
+import { Block_Navigation, WSL_Page, contentTypes } from "../models";
 import { FC } from "react";
 import { Content } from "../components/shared/Content";
 import { AppPage } from "../components/shared/ui/appPage";
@@ -13,7 +13,7 @@ import { createElementSmartLink, createFixedAddSmartLink } from "../lib/utils/sm
 type Props = Readonly<{
   page: WSL_Page;
   siteCodename: ValidCollectionCodename;
-  siteMenu: Navigation;
+  siteMenu: Block_Navigation;
 }>;
 
 interface IParams extends ParsedUrlQuery {

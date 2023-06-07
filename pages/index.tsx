@@ -4,7 +4,7 @@ import { getHomepage, getSiteMenu } from "../lib/kontentClient";
 import { ValidCollectionCodename } from '../lib/types/perCollection';
 import { siteCodename } from '../lib/utils/env';
 import { Content } from '../components/shared/Content';
-import { WSL_WebSpotlightRoot, Navigation } from '../models';
+import { WSL_WebSpotlightRoot, Block_Navigation } from '../models';
 import { useEffect, useState } from 'react';
 import { KontentSmartLinkEvent } from '@kontent-ai/smart-link';
 import { IRefreshMessageData, IRefreshMessageMetadata } from '@kontent-ai/smart-link/types/lib/IFrameCommunicatorTypes';
@@ -13,7 +13,7 @@ import { useSmartLink } from '../lib/useSmartLink';
 type Props = Readonly<{
   homepage: WSL_WebSpotlightRoot;
   siteCodename: ValidCollectionCodename;
-  siteMenu?: Navigation;
+  siteMenu?: Block_Navigation;
 }>;
 
 const Home: NextPage<Props> = props => {

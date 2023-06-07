@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { Article, Navigation, WSL_Page } from "../../models";
+import { Article, Block_Navigation, WSL_Page } from "../../models";
 import { AppPage } from "../../components/shared/ui/appPage";
 import { ValidCollectionCodename } from "../../lib/types/perCollection";
 import { GetStaticProps } from "next";
@@ -12,7 +12,7 @@ import { Content } from "../../components/shared/Content";
 type Props = Readonly<{
   siteCodename: ValidCollectionCodename;
   articles: ReadonlyArray<Article>;
-  siteMenu?: Navigation,
+  siteMenu?: Block_Navigation,
   page: WSL_Page
 }>;
 
