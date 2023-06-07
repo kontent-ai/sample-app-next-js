@@ -17,7 +17,7 @@ const handler: NextApiHandler = async (req, res) => {
   
     const products = await getProductsForListing(false, isNaN(pageNumber) ? undefined : pageNumber, category);
   
-    return res.status(200).json({ products });
+    return res.status(200).json({ products: products.items, totalCount: products.pagination.totalCount});
   };
   
   export default handler;

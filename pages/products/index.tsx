@@ -10,10 +10,13 @@ import { siteCodename } from "../../lib/utils/env";
 import { Block_Navigation, WSL_Page, Product } from "../../models";
 import { useRouter } from "next/router";
 
+const pageSize = 5;
+
 type Props = Readonly<{
   page: WSL_Page;
   products: Product[] | undefined;
   siteCodename: ValidCollectionCodename;
+  totalCount: number;
   siteMenu?: Block_Navigation;
 }>;
 
@@ -42,7 +45,6 @@ const FilterOptions: Record<string, string> = {
   "sanitary_clothing": "Sanitary Clothing",
   "machinery": 'Machinery',
   'other': 'Other'
-
 }
 
 export const Products: FC<Props> = props => {
@@ -50,9 +52,18 @@ export const Products: FC<Props> = props => {
   const [paging, setPaging] = useState(1);
   const [categories, setCategories] = useState<string[]>([]);
 
+  const [totalCount, setTotalCount] = useState(props.totalCount);
+  const [data, setData] = useState<Product[]>([]);
   const{page, category} = router.query
 
-  const [data, setData] = useState<Product[]>([]);
+  const getProducts = useCallback(async () => {
+    const response = await fetch(`/api/${router.asPath}`);
+    const newData = await response.json();
+    setTotalCount(newData.totalCount);
+    setData(newData.products); 
+  }, [router.asPath])
+
+  const isLastPage = paging * pageSize >= totalCount;
 
   useEffect(() => {
     const params: Record<string, string | string[]> = {};
@@ -65,20 +76,15 @@ export const Products: FC<Props> = props => {
     router.replace({ query: params ? params : null });
   }, [paging, categories])
 
-  const getProducts = useCallback(async () => {
-    const response = await fetch(`/api/${router.asPath})`);
-    const newData = await response.json();
-
-    setData(newData.products);
-  }, [router.asPath])
-
   useEffect(() => {
     if(!page && !category){
       setData(props.products ?? [])
+      setTotalCount(props.totalCount)
       return;
     }
     getProducts();
-  }, [page, category, setData, getProducts, props.products])
+  }, [page, category, setData, getProducts, props.products, props.totalCount])
+
 
   const renderFilterOption = (optionCodename: string, labelText: string, onClick: (checked: boolean) => void) => {
     return (
@@ -97,19 +103,24 @@ export const Products: FC<Props> = props => {
 
       <ul>
         {Object.entries(FilterOptions).map(([codename, name]) =>
-          renderFilterOption(codename, name, (checked) => setCategories(prev => checked ? prev.concat([codename]) : prev.filter(a => a !== codename))))}
+          renderFilterOption(codename, name, (checked) => { 
+            setCategories(prev => checked ? prev.concat([codename]) : prev.filter(a => a !== codename))
+            setPaging(1);
+            }))}
       </ul>
      
      
      {!page && !category ? <ProductListing products={props.products} /> : <ProductListing products={data}/> } 
 
       <button
-        className="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-700"
+        className="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg enabled:hover:bg-gray-100 disabled:bg-gray-200 enabled:hover:text-gray-700"
         onClick={() => setPaging(prev => prev > 1 ? prev - 1 : 1)}
+        disabled={paging <= 1}
       >Previous</button>
       <button
-        className="inline-flex items-center px-4 py-2 ml-3 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-700"
+        className="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg enabled:hover:bg-gray-100 disabled:bg-gray-200 enabled:hover:text-gray-700"
         onClick={() => setPaging(prev => prev + 1)}
+        disabled={isLastPage}
       >Next</button>
 
     </AppPage>
@@ -134,7 +145,7 @@ export const getStaticProps: GetStaticProps<Props> = async context => {
   };
 
   return {
-    props: { page, siteCodename, products, siteMenu },
+    props: { page, siteCodename, products: products.items, totalCount: products.pagination.totalCount ?? 0, siteMenu},
   };
 }
 

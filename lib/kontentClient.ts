@@ -68,7 +68,7 @@ export const getHomepage = (usePreview: boolean) =>
   deliveryClient
     .items()
     .type(homepageTypeCodename)
-    .collection(siteCodename)
+    .collection(siteCodename) 
     .queryConfig({
       usePreviewMode: usePreview,
       waitForLoadingNewContent: usePreview
@@ -77,7 +77,7 @@ export const getHomepage = (usePreview: boolean) =>
     .toPromise()
     .then(res => res.data.items[0] as WSL_WebSpotlightRoot | undefined)
 
-export const getProductsForListing = (usePreview: boolean, page?: number, categories?: Array<string>) => {
+export const getProductsForListing = (usePreview: boolean, page?: number, categories?: string[], pageSize: number =5) => {
   const query = deliveryClient
     .items<Product>()
     .type(contentTypes.product.codename)
@@ -91,19 +91,20 @@ export const getProductsForListing = (usePreview: boolean, page?: number, catego
     .queryConfig({
       usePreviewMode: usePreview,
     })
-    .limitParameter(5)
+    .limitParameter(pageSize)
     
     if(page){
-      query.skipParameter((page - 1) * 5)
+      query.skipParameter((page - 1) * pageSize)
     };
 
     if(categories){
-      query.anyFilter('elements.category', categories);
+      query.anyFilter(`elements.${contentTypes.product.elements.category.codename}`, categories);
     }
+    query.includeTotalCountParameter();
 
     return query
       .toPromise()
-      .then(res => res.data.items);
+      .then(res => res.data);
   }
 
 export const getProductSlugs = () =>
