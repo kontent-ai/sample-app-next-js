@@ -16,29 +16,29 @@ export const collections = {
   },
 
   /**
-   * FHT Imaging
-   */
-  healthtech_imaging: {
-    codename: 'healthtech_imaging',
-    id: 'ac38396d-da5d-4f02-afb0-0f6e8d9f5d22',
-    name: 'FHT Imaging',
-  },
-
-  /**
-   * FHT Surgical
-   */
-  healthtech_surgical: {
-    codename: 'healthtech_surgical',
-    id: '29b05ad9-0308-45af-b1db-0871a8d0e696',
-    name: 'FHT Surgical',
-  },
-
-  /**
    * Ficto Healthtech
    */
-  healthtech: {
-    codename: 'healthtech',
-    id: '4925dca2-e330-4f55-b647-9b2ec310e453',
+  ficto_healthtech: {
+    codename: 'ficto_healthtech',
+    id: '0d36edf0-33f4-4a47-8d86-c43b5fa6e3c7',
     name: 'Ficto Healthtech',
+  },
+
+  /**
+   * Ficto Healthtech Imaging
+   */
+  ficto_healthtech_imaging: {
+    codename: 'ficto_healthtech_imaging',
+    id: '2d903140-2df6-453d-916e-2d7e98bd30cb',
+    name: 'Ficto Healthtech Imaging',
+  },
+
+  /**
+   * Ficto Healthtech Surgical
+   */
+  ficto_healthtech_surgical: {
+    codename: 'ficto_healthtech_surgical',
+    id: '070cb03c-594a-4ca2-92d9-a01716dab261',
+    name: 'Ficto Healthtech Surgical',
   },
 } as const;

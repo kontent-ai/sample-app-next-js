@@ -1,7 +1,7 @@
 export type PerCollection<T> = Readonly<{
-  healthtech: T;
-  healthtech_imaging: T;
-  healthtech_surgical: T;
+  ficto_healthtech: T;
+  ficto_healthtech_imaging: T;
+  ficto_healthtech_surgical: T;
 }>;
 
 export type ValidCollectionCodename = keyof PerCollection<never>;
@@ -10,8 +10,8 @@ export const isValidCollectionCodename = (codename: string | undefined): codenam
   Object.keys(emptyCodenames).includes(codename || "");
 
 const emptyCodenames: PerCollection<null> = {
-  healthtech_imaging: null,
-  healthtech_surgical: null,
-  healthtech: null,
+  ficto_healthtech_imaging: null,
+  ficto_healthtech_surgical: null,
+  ficto_healthtech: null,
 };
 

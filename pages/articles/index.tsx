@@ -37,9 +37,9 @@ const ArticlesPage: FC<Props> = props => (
 
 export const getStaticProps: GetStaticProps<Props> = async context => {
   const pageCodename: PerCollectionCodenames = {
-    healthtech: "articles",
-    healthtech_imaging: "articles",
-    healthtech_surgical: "articles"
+    ficto_healthtech: "articles",
+    ficto_healthtech_imaging: "articles",
+    ficto_healthtech_surgical: "articles"
   };
 
   const articles = await getArticlesForListing(!!context.preview);

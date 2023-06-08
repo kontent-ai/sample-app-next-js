@@ -5,7 +5,7 @@ type CodenameContext = Readonly<{
   siteCodename: ValidCollectionCodename;
 }>;
 
-const SiteContext = createContext<CodenameContext>({ siteCodename: "healthtech" });
+const SiteContext = createContext<CodenameContext>({ siteCodename: "ficto_healthtech" });
 
 export const useSiteCodename = () => useContext(SiteContext).siteCodename;
 
