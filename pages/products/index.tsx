@@ -1,5 +1,5 @@
 import { GetStaticProps } from "next/types";
-import { FC, Suspense, useCallback, useEffect, useState } from "react";
+import { FC, useCallback, useEffect, useMemo, useState } from "react";
 import { ListItem } from "../../components/listingPage/ListItem";
 import { Content } from "../../components/shared/Content";
 import { AppPage } from "../../components/shared/ui/appPage";
@@ -9,6 +9,7 @@ import { ValidCollectionCodename } from "../../lib/types/perCollection";
 import { siteCodename } from "../../lib/utils/env";
 import { Block_Navigation, WSL_Page, Product } from "../../models";
 import { useRouter } from "next/router";
+import { taxonomies } from "../../models/project"
 
 const pageSize = 5;
 
@@ -40,44 +41,47 @@ const ProductListing: FC<ProductListingProps> = (props) => {
   )
 }
 
-const FilterOptions: Record<string, string> = {
-  "precision_instruments": "Precision instruments",
-  "sanitary_clothing": "Sanitary Clothing",
-  "machinery": 'Machinery',
-  'other': 'Other'
-}
+const CreateFilterOptionsFromTaxonomies = () => Object.fromEntries(Object.entries(taxonomies.product_category.terms).map(([codename, obj]) => [codename, obj.name]));
+
+const FilterOptions = CreateFilterOptionsFromTaxonomies();
 
 export const Products: FC<Props> = props => {
   const router = useRouter();
-  const [paging, setPaging] = useState(1);
-  const [categories, setCategories] = useState<string[]>([]);
-
   const [totalCount, setTotalCount] = useState(props.totalCount);
   const [data, setData] = useState<Product[]>([]);
-  const{page, category} = router.query
+  const { page, category } = router.query
+
+  const pageNumber = useMemo(() => {
+    if (!page || Array.isArray(page)) {
+      return 1;
+    }
+
+    return isNaN(+page) ? 1 : +page;
+  }, [page])
+
+  const isLastPage = pageNumber * pageSize >= totalCount;
+
+  const categories = useMemo(() => {
+    if (!category) {
+      return [];
+    }
+    if (typeof category === 'string') {
+      return [category];
+    }
+
+    return category;
+  }, [category])
 
   const getProducts = useCallback(async () => {
     const response = await fetch(`/api/${router.asPath}`);
     const newData = await response.json();
+
+    setData(newData.products);
     setTotalCount(newData.totalCount);
-    setData(newData.products); 
   }, [router.asPath])
 
-  const isLastPage = paging * pageSize >= totalCount;
-
   useEffect(() => {
-    const params: Record<string, string | string[]> = {};
-    if (paging > 1) {
-      params.page = paging.toString();
-    }
-    if (categories.length > 0) {
-      params.category = categories;
-    }
-    router.replace({ query: params ? params : null });
-  }, [paging, categories])
-
-  useEffect(() => {
-    if(!page && !category){
+    if (!page && !category) {
       setData(props.products ?? [])
       setTotalCount(props.totalCount)
       return;
@@ -85,11 +89,29 @@ export const Products: FC<Props> = props => {
     getProducts();
   }, [page, category, setData, getProducts, props.products, props.totalCount])
 
+  const onPreviousClick = () => {
+    if (pageNumber === 2) {
+      const { page, ...obj } = router.query;
+      router.replace({ query: obj })
+    } else {
+      router.replace({ query: { ...router.query, page: pageNumber - 1, } });
+    }
+  }
+
+  const onNextClick = () => {
+    router.replace({ query: { ...router.query, page: pageNumber + 1, } })
+  }
 
   const renderFilterOption = (optionCodename: string, labelText: string, onClick: (checked: boolean) => void) => {
     return (
-      <div className="flex items-center mb-4">
-        <input id={optionCodename} type="checkbox" onChange={(event) => onClick(event.target.checked)} value="" className="w-4 h-4 bg-gray-100 border-gray-300 rounded" />
+      <div key={optionCodename} className="flex items-center mb-4">
+        <input 
+          id={optionCodename} 
+          type="checkbox" 
+          checked={categories.includes(optionCodename)}   
+          onChange={(event) => onClick(event.target.checked)}
+          className="w-4 h-4 bg-gray-100 border-gray-300 rounded" 
+        />
         <label htmlFor={optionCodename} className="ml-2 text-sm font-medium text-gray-600">{labelText}</label>
       </div>
     );
@@ -103,23 +125,22 @@ export const Products: FC<Props> = props => {
 
       <ul>
         {Object.entries(FilterOptions).map(([codename, name]) =>
-          renderFilterOption(codename, name, (checked) => { 
-            setCategories(prev => checked ? prev.concat([codename]) : prev.filter(a => a !== codename))
-            setPaging(1);
-            }))}
+          renderFilterOption(codename, name, (checked) => {
+            router.replace({ query: { category: checked ? categories.concat(codename) : categories.filter(c => c !== codename) } })
+          }))}
       </ul>
-     
-     
-     {!page && !category ? <ProductListing products={props.products} /> : <ProductListing products={data}/> } 
+
+
+      {!page && !category ? <ProductListing products={props.products} /> : <ProductListing products={data} />}
 
       <button
         className="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg enabled:hover:bg-gray-100 disabled:bg-gray-200 enabled:hover:text-gray-700"
-        onClick={() => setPaging(prev => prev > 1 ? prev - 1 : 1)}
-        disabled={paging <= 1}
+        onClick={onPreviousClick}
+        disabled={pageNumber <= 1}
       >Previous</button>
       <button
         className="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg enabled:hover:bg-gray-100 disabled:bg-gray-200 enabled:hover:text-gray-700"
-        onClick={() => setPaging(prev => prev + 1)}
+        onClick={onNextClick}
         disabled={isLastPage}
       >Next</button>
 

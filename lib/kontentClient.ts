@@ -68,7 +68,7 @@ export const getHomepage = (usePreview: boolean) =>
   deliveryClient
     .items()
     .type(homepageTypeCodename)
-    .collection(siteCodename) 
+    .collection(siteCodename)
     .queryConfig({
       usePreviewMode: usePreview,
       waitForLoadingNewContent: usePreview
