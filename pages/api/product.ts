@@ -26,9 +26,9 @@ const parseBoolean = (str: string | string[] | undefined) => {
 }
 
 const forAllCodenames = (value: string): PerCollection<string> => ({
-  healthtech: value,
-  healthtech_imaging: value,
-  healthtech_surgical: value,
+  ficto_healthtech: value,
+  ficto_healthtech_imaging: value,
+  ficto_healthtech_surgical: value,
 });
 
 export default handler;

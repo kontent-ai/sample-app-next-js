@@ -37,9 +37,9 @@ export const Products: FC<Props> = props => (
 
 export const getStaticProps: GetStaticProps<Props> = async context => {
   const pageCodename: PerCollectionCodenames = {
-    healthtech: null,
-    healthtech_imaging: null,
-    healthtech_surgical: "products"
+    ficto_healthtech: null,
+    ficto_healthtech_imaging: null,
+    ficto_healthtech_surgical: "products"
   };
 
   const page = await getItemByCodename<WSL_Page>(pageCodename, !!context.preview);

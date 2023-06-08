@@ -74,7 +74,7 @@ export const Menu: FC<Props> = props => {
           <div>
             <ul className={`${smallMenuActive ? "flex" : "hidden"} md:flex flex-col font-medium md:flex-row h-full`}>
               {props.item.elements.subitems.linkedItems.map((link, i) => (
-                <li key={i} className="h-full px-5 bg-green-300 group md:hover:bg-white" onClick={() => handleMenuClick(i)}>
+                <li key={i} className={`h-full px-5 ${mainColorBgClass[siteCodename]} group md:hover:bg-white`} onClick={() => handleMenuClick(i)}>
                   {link.elements.subitems.value.length > 0 ? (
                     <span>
                       <DropdownButton item={link} />

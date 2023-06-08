@@ -8,17 +8,17 @@
 
 ## Demo
 
-HealthTech
+Ficto Healthtech
 
 [![Vercel](https://therealsujitk-vercel-badge.vercel.app/?app=health-tech&style=for-the-badge&logo=false)](https://health-tech.vercel.app)
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/aa724fef-9fda-4a85-8f6b-4a58f6f3763e/deploy-status)](https://app.netlify.com/sites/new-sample-app/deploys)
 
-HealthTech Imaging
+Ficto Healthech Imaging
 
 [![Vercel](https://therealsujitk-vercel-badge.vercel.app/?app=health-tech-imaging&style=for-the-badge&logo=false)](https://health-tech-imaging.vercel.app)
 
-HealthTech Surgical
+Ficto Health Surgical
 
 [![Vercel](https://therealsujitk-vercel-badge.vercel.app/?app=health-tech-surgical&style=for-the-badge&logo=false)](https://health-tech-surgical.vercel.app)
 
