@@ -14,7 +14,7 @@ Ficto Healthtech
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/aa724fef-9fda-4a85-8f6b-4a58f6f3763e/deploy-status)](https://app.netlify.com/sites/new-sample-app/deploys)
 
-Ficto Healthech Imaging
+Ficto Healthtech Imaging
 
 [![Vercel](https://therealsujitk-vercel-badge.vercel.app/?app=health-tech-imaging&style=for-the-badge&logo=false)](https://health-tech-imaging.vercel.app)
 
