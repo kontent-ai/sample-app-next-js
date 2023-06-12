@@ -77,8 +77,8 @@ export const getHomepage = (usePreview: boolean) =>
     .toPromise()
     .then(res => res.data.items[0] as WSL_WebSpotlightRoot | undefined)
 
-export const getProductsForListing = (usePreview: boolean) =>
-  deliveryClient
+export const getProductsForListing = (usePreview: boolean, page?: number, categories?: string[], pageSize: number =5) => {
+  const query = deliveryClient
     .items<Product>()
     .type(contentTypes.product.codename)
     .collection(siteCodename)
@@ -86,12 +86,26 @@ export const getProductsForListing = (usePreview: boolean) =>
       contentTypes.product.elements.title.codename,
       contentTypes.product.elements.product_image.codename,
       contentTypes.product.elements.slug.codename,
+      contentTypes.product.elements.category.codename,
     ])
     .queryConfig({
       usePreviewMode: usePreview,
     })
-    .toAllPromise()
-    .then(res => res.data.items)
+    .limitParameter(pageSize)
+    
+    if(page){
+      query.skipParameter((page - 1) * pageSize)
+    };
+
+    if(categories){
+      query.anyFilter(`elements.${contentTypes.product.elements.category.codename}`, categories);
+    }
+    query.includeTotalCountParameter();
+
+    return query
+      .toPromise()
+      .then(res => res.data);
+  }
 
 export const getProductSlugs = () =>
   deliveryClient
