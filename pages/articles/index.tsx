@@ -13,7 +13,8 @@ type Props = Readonly<{
   siteCodename: ValidCollectionCodename;
   articles: ReadonlyArray<Article>;
   siteMenu?: Block_Navigation,
-  page: WSL_Page
+  page: WSL_Page,
+  totalCount: number | null
 }>;
 
 const ArticlesPage: FC<Props> = props => (
@@ -21,7 +22,7 @@ const ArticlesPage: FC<Props> = props => (
     {props.page.elements.content.linkedItems.map(piece => (
       <Content key={piece.system.id} item={piece as any} />
     ))}
-    <menu>
+    <ul className="w-ull flex flex-wrap list-none justify-start gap-5 pt-4">
       {props.articles.map(a => (
         <ListItem
           key={a.system.id}
@@ -31,7 +32,24 @@ const ArticlesPage: FC<Props> = props => (
           detailUrl={`articles/${a.elements.slug.value}`}
         />
       ))}
-    </menu>
+    </ul>
+
+    <nav>
+  <ul className="inline-flex -space-x-px">
+    <li>
+      <a href="#" className="px-3 py-2 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700">Previous</a>
+    </li>
+    <li>
+      <a href="#" className="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700">2</a>
+    </li>
+    <li>
+      <a href="#" aria-current="page" className="px-3 py-2 text-blue-600 border border-gray-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700">3</a>
+    </li>
+    <li>
+      <a href="#" className="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700 ">Next</a>
+    </li>
+  </ul>
+</nav>
   </AppPage>
 );
 
@@ -54,10 +72,11 @@ export const getStaticProps: GetStaticProps<Props> = async context => {
 
   return {
     props: {
-      articles,
+      articles: articles.items,
       siteCodename,
       siteMenu,
-      page
+      page,
+      totalCount: articles.pagination.totalCount
     },
   };
 };

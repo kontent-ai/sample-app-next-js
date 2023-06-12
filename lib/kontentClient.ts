@@ -127,16 +127,26 @@ export const getProductDetail = (slug: string, usePreview: boolean) =>
     .toAllPromise()
     .then(res => res.data.items[0]);
 
-export const getArticlesForListing = (usePreview: boolean) =>
-  deliveryClient
+export const getArticlesForListing = (usePreview: boolean, page?: number, pageSize: number = 2) => {
+  const query = deliveryClient
     .items<Article>()
     .type(contentTypes.article.codename)
     .collection(siteCodename)
     .queryConfig({
-      usePreviewMode: usePreview,
+      usePreviewMode: true,
     })
-    .toAllPromise()
-    .then(res => res.data.items);
+    .limitParameter(pageSize)
+
+    if(page){
+      query.skipParameter((page - 1) * pageSize)
+    };
+
+    query.includeTotalCountParameter();
+
+    return query
+      .toPromise()
+      .then(res => res.data);
+  }
 
 export const getArticleBySlug = (slug: string, usePreview: boolean) =>
   deliveryClient
