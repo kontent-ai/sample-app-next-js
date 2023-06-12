@@ -10,6 +10,7 @@ import { siteCodename } from "../../lib/utils/env";
 import { Block_Navigation, WSL_Page, Product } from "../../models";
 import { useRouter } from "next/router";
 import { taxonomies } from "../../models/project"
+import { ParsedUrlQueryInput } from "querystring";
 
 const pageSize = 5;
 
@@ -81,25 +82,29 @@ export const Products: FC<Props> = props => {
   const onPreviousClick = () => {
     if (pageNumber === 2) {
       const { page, ...obj } = router.query;
-      router.replace({ query: obj })
+      changeUrlQueryString(obj);
     } else {
-      router.replace({ query: { ...router.query, page: pageNumber - 1, } });
+      changeUrlQueryString({ ...router.query, page: pageNumber - 1 });
     }
   }
 
   const onNextClick = () => {
-    router.replace({ query: { ...router.query, page: pageNumber + 1, } })
+    changeUrlQueryString({ ...router.query, page: pageNumber + 1 });
+  }
+
+  const changeUrlQueryString = (query: ParsedUrlQueryInput) => {
+    router.replace({ query: query }, undefined, { scroll: false });
   }
 
   const renderFilterOption = (optionCodename: string, labelText: string, onClick: (checked: boolean) => void) => {
     return (
       <div key={optionCodename} className="flex items-center mb-4">
-        <input 
-          id={optionCodename} 
-          type="checkbox" 
-          checked={categories.includes(optionCodename)}   
+        <input
+          id={optionCodename}
+          type="checkbox"
+          checked={categories.includes(optionCodename)}
           onChange={(event) => onClick(event.target.checked)}
-          className="w-4 h-4 bg-gray-100 border-gray-300 rounded" 
+          className="w-4 h-4 bg-gray-100 border-gray-300 rounded"
         />
         <label htmlFor={optionCodename} className="ml-2 text-sm font-medium text-gray-600">{labelText}</label>
       </div>
@@ -115,7 +120,7 @@ export const Products: FC<Props> = props => {
       <ul>
         {Object.entries(FilterOptions).map(([codename, name]) =>
           renderFilterOption(codename, name, (checked) => {
-            router.replace({ query: { category: checked ? categories.concat(codename) : categories.filter(c => c !== codename) } })
+            changeUrlQueryString({ category: checked ? categories.concat(codename) : categories.filter(c => c !== codename) });
           }))}
       </ul>
 
