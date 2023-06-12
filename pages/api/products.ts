@@ -3,11 +3,7 @@ import { getProductsForListing } from "../../lib/kontentClient";
 
 const handler: NextApiHandler = async (req, res) => {
     const page = req.query.page;
-    let category = req.query.category;
-
-    if(typeof category === 'string'){
-        category = [category]
-    }
+    const category = typeof req.query.category === "string" ? [req.query.category] : req.query.category;
 
     const pageNumber = parseInt(page as string)
 

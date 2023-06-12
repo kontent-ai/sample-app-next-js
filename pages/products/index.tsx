@@ -15,14 +15,14 @@ const pageSize = 5;
 
 type Props = Readonly<{
   page: WSL_Page;
-  products: Product[] | undefined;
+  products: ReadonlyArray<Product> | undefined;
   siteCodename: ValidCollectionCodename;
   totalCount: number;
   siteMenu?: Block_Navigation;
 }>;
 
 type ProductListingProps = Readonly<{
-  products?: Product[],
+  products: ReadonlyArray<Product> | undefined,
 }>
 
 const ProductListing: FC<ProductListingProps> = (props) => {
@@ -48,16 +48,10 @@ const FilterOptions = CreateFilterOptionsFromTaxonomies();
 export const Products: FC<Props> = props => {
   const router = useRouter();
   const [totalCount, setTotalCount] = useState(props.totalCount);
-  const [data, setData] = useState<Product[]>([]);
+  const [products, setProducts] = useState<ReadonlyArray<Product> | undefined>(props.products);
   const { page, category } = router.query
 
-  const pageNumber = useMemo(() => {
-    if (!page || Array.isArray(page)) {
-      return 1;
-    }
-
-    return isNaN(+page) ? 1 : +page;
-  }, [page])
+  const pageNumber = useMemo(() => !page || Array.isArray(page) || isNaN(+page) ? 1 : +page, [page])
 
   const isLastPage = pageNumber * pageSize >= totalCount;
 
@@ -76,18 +70,13 @@ export const Products: FC<Props> = props => {
     const response = await fetch(`/api/${router.asPath}`);
     const newData = await response.json();
 
-    setData(newData.products);
+    setProducts(newData.products);
     setTotalCount(newData.totalCount);
   }, [router.asPath])
 
   useEffect(() => {
-    if (!page && !category) {
-      setData(props.products ?? [])
-      setTotalCount(props.totalCount)
-      return;
-    }
     getProducts();
-  }, [page, category, setData, getProducts, props.products, props.totalCount])
+  }, [page, category, getProducts])
 
   const onPreviousClick = () => {
     if (pageNumber === 2) {
@@ -130,8 +119,7 @@ export const Products: FC<Props> = props => {
           }))}
       </ul>
 
-
-      {!page && !category ? <ProductListing products={props.products} /> : <ProductListing products={data} />}
+      <ProductListing products={products} />
 
       <button
         className="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg enabled:hover:bg-gray-100 disabled:bg-gray-200 enabled:hover:text-gray-700"
