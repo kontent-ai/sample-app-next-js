@@ -42,9 +42,7 @@ const ProductListing: FC<ProductListingProps> = (props) => {
   )
 }
 
-const CreateFilterOptionsFromTaxonomies = () => Object.fromEntries(Object.entries(taxonomies.product_category.terms).map(([codename, obj]) => [codename, obj.name]));
-
-const FilterOptions = CreateFilterOptionsFromTaxonomies();
+const FilterOptions = Object.fromEntries(Object.entries(taxonomies.product_category.terms).map(([codename, obj]) => [codename, obj.name]));
 
 export const Products: FC<Props> = props => {
   const router = useRouter();
@@ -52,7 +50,7 @@ export const Products: FC<Props> = props => {
   const [products, setProducts] = useState<ReadonlyArray<Product> | undefined>(props.products);
   const { page, category } = router.query
 
-  const pageNumber = useMemo(() => !page || Array.isArray(page) || isNaN(+page) ? 1 : +page, [page])
+  const pageNumber = useMemo(() => !page || isNaN(+page) ? 1 : +page, [page])
 
   const isLastPage = pageNumber * pageSize >= totalCount;
 
