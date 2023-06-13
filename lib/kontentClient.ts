@@ -3,6 +3,7 @@ import { PerCollectionCodenames } from './routing';
 import { siteCodename } from './utils/env';
 import { Article, contentTypes, Product, WSL_WebSpotlightRoot } from '../models';
 import { perCollectionRootItems } from './constants/menu';
+import { ArticlePageSize } from './constants/paging';
 
 const sourceTrackingHeaderName = 'X-KC-SOURCE';
 
@@ -127,13 +128,13 @@ export const getProductDetail = (slug: string, usePreview: boolean) =>
     .toAllPromise()
     .then(res => res.data.items[0]);
 
-export const getArticlesForListing = (usePreview: boolean, page?: number, pageSize: number = 2) => {
+export const getArticlesForListing = (usePreview: boolean, page?: number, pageSize: number = ArticlePageSize) => {
   const query = deliveryClient
     .items<Article>()
     .type(contentTypes.article.codename)
     .collection(siteCodename)
     .queryConfig({
-      usePreviewMode: true,
+      usePreviewMode: usePreview,
     })
     .limitParameter(pageSize)
 

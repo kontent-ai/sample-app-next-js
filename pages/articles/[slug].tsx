@@ -58,7 +58,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   const articles = await getArticlesForListing(false);
 
   return {
-    paths: articles.map(a => `/articles/${a.elements.slug.value}`),
+    paths: articles.items.map(a => `/articles/${a.elements.slug.value}`),
     fallback: "blocking",
   };
 }
