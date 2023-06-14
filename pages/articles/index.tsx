@@ -41,7 +41,7 @@ const ArticlesPage: FC<Props> = props => {
       ))}
     </ul>
 
-    <nav>
+    {pageCount > 1 && <nav>
       <ul className="inline-flex flex-wrap -space-x-px list-none">
         <li>
           <Link
@@ -62,7 +62,7 @@ const ArticlesPage: FC<Props> = props => {
             className={`px-3 py-2 ${(page ?? 1) === pageCount && 'pointer-events-none'} leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700`}>Next</Link>
         </li>
       </ul>
-    </nav>
+    </nav> }
   </AppPage>
 }
 
