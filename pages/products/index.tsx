@@ -11,8 +11,7 @@ import { Block_Navigation, WSL_Page, Product } from "../../models";
 import { useRouter } from "next/router";
 import { taxonomies } from "../../models/project"
 import { ParsedUrlQueryInput } from "querystring";
-
-const pageSize = 5;
+import { ProductsPageSize } from "../../lib/constants/paging";
 
 type Props = Readonly<{
   page: WSL_Page;
@@ -52,7 +51,7 @@ export const Products: FC<Props> = props => {
 
   const pageNumber = useMemo(() => !page || isNaN(+page) ? 1 : +page, [page])
 
-  const isLastPage = pageNumber * pageSize >= totalCount;
+  const isLastPage = pageNumber * ProductsPageSize >= totalCount;
 
   const categories = useMemo(() => {
     if (!category) {

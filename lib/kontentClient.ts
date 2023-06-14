@@ -3,7 +3,7 @@ import { PerCollectionCodenames } from './routing';
 import { siteCodename } from './utils/env';
 import { Article, contentTypes, Product, WSL_WebSpotlightRoot } from '../models';
 import { perCollectionRootItems } from './constants/menu';
-import { ArticlePageSize } from './constants/paging';
+import { ArticlePageSize, ProductsPageSize } from './constants/paging';
 
 const sourceTrackingHeaderName = 'X-KC-SOURCE';
 
@@ -78,7 +78,7 @@ export const getHomepage = (usePreview: boolean) =>
     .toPromise()
     .then(res => res.data.items[0] as WSL_WebSpotlightRoot | undefined)
 
-export const getProductsForListing = (usePreview: boolean, page?: number, categories?: string[], pageSize: number =5) => {
+export const getProductsForListing = (usePreview: boolean, page?: number, categories?: string[], pageSize: number = ProductsPageSize) => {
   const query = deliveryClient
     .items<Product>()
     .type(contentTypes.product.codename)
