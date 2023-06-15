@@ -133,6 +133,7 @@ export const getArticlesForListing = (usePreview: boolean, page?: number, pageSi
     .items<Article>()
     .type(contentTypes.article.codename)
     .collection(siteCodename)
+    .orderByDescending(`elements.${contentTypes.article.elements.publishing_date.codename}`)
     .queryConfig({
       usePreviewMode: usePreview,
     })

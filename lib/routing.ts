@@ -12,6 +12,11 @@ export const pageCodenames = {
     ficto_healthtech: "terms_and_conditions",
     ficto_healthtech_surgical: null,
     ficto_healthtech_imaging: null,
+  },
+  "articles": {
+    ficto_healthtech: "articles",
+    ficto_healthtech_imaging: "articles",
+    ficto_healthtech_surgical: "articles"
   }
 } as const satisfies Record<string, PerCollectionCodenames>;
 

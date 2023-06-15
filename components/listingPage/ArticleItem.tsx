@@ -1,0 +1,50 @@
+import { FC } from "react";
+import Image from "next/image"
+import Link from "next/link";
+import { StandaloneSmartLinkButton } from "../shared/StandaloneSmartLinkButton";
+
+type Props = Readonly<{
+  imageUrl: string;
+  title: string;
+  detailUrl: string;
+  description: string,
+  publisingDate: string | null,
+  itemId?: string;
+}>;
+
+export const ArticleItem: FC<Props> = props => {
+
+  const formatDate = (date: string) => (new Date(date))
+  .toLocaleDateString(
+    'en-US', 
+    {
+      day: 'numeric', 
+      month: 'long',
+      year: 'numeric'
+    }
+  )
+
+  return (<Link href={props.detailUrl} className="no-underline">
+    <li className="mr-8 ml-4 m-0 relative sm:mr-0 sm:ml-0 rounded-lg shadow hover:shadow-xl transition-shadow border border-gray-200 cursor-pointer">
+      <StandaloneSmartLinkButton itemId={props.itemId} />
+      <figure className="w-full relative m-0 h-40">
+        <Image
+          src={props.imageUrl}
+          alt={props.title}
+          fill
+          className="object-cover h-full m-0 p-0 rounded-t-lg"
+        />
+      </figure>
+      {props.publisingDate && <div className="w-fit p-2 bg-gray-800 text-white opacity-90 font-normal line-clamp-6 absolute right-0 translate-y-[-100%]">
+        <p className="m-0 w-fit">{formatDate(props.publisingDate)}</p>
+      </div> }
+      <div className="p-5">
+        <h5 className="mb-2 text-xl font-bold tracking-tight text-gray-900 no-underline line-clamp-2 ">{props.title}</h5>
+        <p className="mb-3 font-normal text-gray-700 line-clamp-6">{props.description}</p>
+      </div>
+    </li>
+  </Link>
+  );
+}
+
+ArticleItem.displayName = "ListItem";
