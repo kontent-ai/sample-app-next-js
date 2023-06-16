@@ -93,6 +93,7 @@ export const getProductsForListing = (usePreview: boolean, page?: number, catego
     .queryConfig({
       usePreviewMode: usePreview,
     })
+    .includeTotalCountParameter()
     .limitParameter(pageSize)
     
     if(page){

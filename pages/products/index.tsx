@@ -27,7 +27,7 @@ type ProductListingProps = Readonly<{
 
 const ProductListing: FC<ProductListingProps> = (props) => {
   return (
-    <ul className="w-full min-h-full mt-4 m-0 md:mt-0 p-0 sm:pr-0 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 list-none items-center md:justify-start gap-2">
+    <ul className="w-full min-h-full mt-4 m-0 md:mt-0 p-0 px-4 sm:px-0 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 list-none items-center md:justify-start gap-2">
       {props.products?.map(p => (
         <ProductItem
           key={p.system.id}
@@ -35,6 +35,7 @@ const ProductListing: FC<ProductListingProps> = (props) => {
           title={p.elements.title.value}
           detailUrl={`products/${p.elements.slug.value}`}
           price={p.elements.price.value}
+          category={p.elements.category.value[0].name}
           itemId={p.system.id}
         />
       ))}
@@ -96,7 +97,7 @@ export const Products: FC<Props> = props => {
 
   const renderFilterOption = (optionCodename: string, labelText: string, onClick: (checked: boolean) => void) => {
     return (
-      <div key={optionCodename} className="flex flex-row gap-1 items-center min-w-fit">
+      <li key={optionCodename} className="m-0 p-0 flex flex-row gap-1 items-center min-w-fit">
         <input
           id={optionCodename}
           type="checkbox"
@@ -105,7 +106,7 @@ export const Products: FC<Props> = props => {
           className="min-w-4 min-h-4 bg-gray-100 border-gray-300 rounded"
         />
         <label htmlFor={optionCodename} className="min-w-fit ml-2 text-sm font-medium text-gray-600">{labelText}</label>
-      </div>
+      </li>
     );
   };
 
@@ -115,9 +116,11 @@ export const Products: FC<Props> = props => {
         <Content key={piece.system.id} item={piece as any} />
       ))}
 
-      <div className="flex flex-col md:flex-row mt-4">
+      <h2 className="m-0 mt-16 ml-4 sm:ml-0">Surgical products</h2>
+
+      <div className="flex flex-col md:flex-row mt-4 md:gap-2">
         <ul className="m-0 min-h-full flex flex-col gap-2 bg-blue-200 p-4">
-          <h4 className="m-0">Category</h4>
+          <li className="m-0 p-0"><h4 className="m-0">Category</h4></li>
           {Object.entries(FilterOptions).map(([codename, name]) =>
             renderFilterOption(codename, name, (checked) => {
               changeUrlQueryString({ category: checked ? categories.concat(codename) : categories.filter(c => c !== codename) });
@@ -127,7 +130,7 @@ export const Products: FC<Props> = props => {
         <ProductListing products={products} />
       </div>
 
-      <div className="mt-4 flex flex-row justify-center md:justify-end">
+      <div className="mt-8 flex flex-row justify-center">
       <button
         className="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg enabled:hover:bg-gray-100 disabled:bg-gray-200 enabled:hover:text-gray-700"
         onClick={onPreviousClick}
