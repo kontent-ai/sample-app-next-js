@@ -1,10 +1,9 @@
 import { GetStaticProps } from "next/types";
 import { FC, useCallback, useEffect, useMemo, useState } from "react";
-import { ListItem } from "../../components/listingPage/ListItem";
 import { Content } from "../../components/shared/Content";
 import { AppPage } from "../../components/shared/ui/appPage";
 import { getItemByCodename, getProductsForListing, getSiteMenu } from "../../lib/kontentClient";
-import { PerCollectionCodenames, pageCodenames } from "../../lib/routing";
+import { PerCollectionCodenames } from "../../lib/routing";
 import { ValidCollectionCodename } from "../../lib/types/perCollection";
 import { siteCodename } from "../../lib/utils/env";
 import { Block_Navigation, WSL_Page, Product } from "../../models";
@@ -28,7 +27,7 @@ type ProductListingProps = Readonly<{
 
 const ProductListing: FC<ProductListingProps> = (props) => {
   return (
-    <ul className="w-full min-h-full mt-4 m-0 md:mt-0 md:ml-2 p-0 pr-8 sm:pr-0 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 list-none place-content-center md:justify-start gap-2">
+    <ul className="w-full min-h-full mt-4 m-0 md:mt-0 p-0 sm:pr-0 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 list-none items-center md:justify-start gap-2">
       {props.products?.map(p => (
         <ProductItem
           key={p.system.id}
@@ -146,8 +145,13 @@ export const Products: FC<Props> = props => {
 };
 
 export const getStaticProps: GetStaticProps<Props> = async context => {
+  const pageCodename: PerCollectionCodenames = {
+    ficto_healthtech: null,
+    ficto_healthtech_imaging: null,
+    ficto_healthtech_surgical: "products"
+  };
 
-  const page = await getItemByCodename<WSL_Page>(pageCodenames.products, !!context.preview);
+  const page = await getItemByCodename<WSL_Page>(pageCodename, !!context.preview);
   const products = await getProductsForListing(!!context.preview);
   const siteMenu = await getSiteMenu(!!context.preview);
 
