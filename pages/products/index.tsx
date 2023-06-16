@@ -12,6 +12,7 @@ import { taxonomies } from "../../models/project"
 import { ParsedUrlQueryInput } from "querystring";
 import { ProductsPageSize } from "../../lib/constants/paging";
 import { ProductItem } from "../../components/listingPage/ProductItem";
+import { mainColorBgClass } from "../../lib/constants/colors";
 
 type Props = Readonly<{
   page: WSL_Page;
@@ -105,7 +106,7 @@ export const Products: FC<Props> = props => {
           onChange={(event) => onClick(event.target.checked)}
           className="min-w-4 min-h-4 bg-gray-100 border-gray-300 rounded"
         />
-        <label htmlFor={optionCodename} className="min-w-fit ml-2 text-sm font-medium text-gray-600">{labelText}</label>
+        <label htmlFor={optionCodename} className="min-w-fit ml-2 text-sm font-semibold">{labelText}</label>
       </li>
     );
   };
@@ -119,7 +120,7 @@ export const Products: FC<Props> = props => {
       <h2 className="m-0 mt-16 ml-4 sm:ml-0">Surgical products</h2>
 
       <div className="flex flex-col md:flex-row mt-4 md:gap-2">
-        <ul className="m-0 min-h-full flex flex-col gap-2 bg-blue-200 p-4">
+        <ul className={`m-0 min-h-full flex flex-col gap-2 ${mainColorBgClass[props.siteCodename]} p-4`}>
           <li className="m-0 p-0"><h4 className="m-0">Category</h4></li>
           {Object.entries(FilterOptions).map(([codename, name]) =>
             renderFilterOption(codename, name, (checked) => {

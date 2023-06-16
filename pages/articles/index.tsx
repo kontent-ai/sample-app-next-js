@@ -4,13 +4,15 @@ import { AppPage } from "../../components/shared/ui/appPage";
 import { ValidCollectionCodename } from "../../lib/types/perCollection";
 import { GetStaticProps } from "next";
 import { getArticlesForListing, getItemByCodename, getSiteMenu } from "../../lib/kontentClient";
-import { siteCodename } from "../../lib/utils/env";
 import { PerCollectionCodenames } from "../../lib/routing";
 import { Content } from "../../components/shared/Content";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { ArticlePageSize } from "../../lib/constants/paging";
 import { ArticleItem } from "../../components/listingPage/ArticleItem";
+import { mainColorBgClass } from "../../lib/constants/colors";
+import { useSiteCodename } from "../../components/shared/siteCodenameContext";
+import { siteCodename } from "../../lib/utils/env";
 
 type Props = Readonly<{
   siteCodename: ValidCollectionCodename;
@@ -30,6 +32,8 @@ type LinkButtonProps = {
 }
 
 const LinkButton: FC<LinkButtonProps> = props => {
+  const siteCodename = useSiteCodename();
+
   return (
     <Link
       scroll={false}
@@ -38,7 +42,7 @@ const LinkButton: FC<LinkButtonProps> = props => {
     >
       <button
         disabled={props.disabled}
-        className={`${props.roundRight && 'rounded-r-lg'} ${props.roundLeft && 'rounded-l-lg'} disabled:cursor-not-allowed ${props.highlight ? 'bg-blue-200' : 'bg-white'} px-3 py-2 leading-tight text-gray-500 border disabled:bg-gray-200 border-gray-300 enabled:hover:bg-gray-100 enabled:hover:text-gray-700 `}>
+        className={`${props.roundRight && 'rounded-r-lg'} ${props.roundLeft && 'rounded-l-lg'} disabled:cursor-not-allowed ${props.highlight ? mainColorBgClass[siteCodename] : 'bg-white'} px-3 py-2 leading-tight text-gray-500 border disabled:bg-gray-200 border-gray-300 enabled:hover:bg-gray-100 enabled:hover:text-gray-700 `}>
         {props.text}
       </button>
     </Link>
@@ -115,7 +119,7 @@ export const getStaticProps: GetStaticProps<Props> = async context => {
 
   const articles = await getArticlesForListing(!!context.preview, pageNumber);
   const siteMenu = await getSiteMenu(!!context.preview);
-  
+
   const page = await getItemByCodename<WSL_Page>(pageCodename, !!context.preview);
 
   if (page === null) {

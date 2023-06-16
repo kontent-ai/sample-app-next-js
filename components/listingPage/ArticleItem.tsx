@@ -2,6 +2,8 @@ import { FC } from "react";
 import Image from "next/image"
 import Link from "next/link";
 import { StandaloneSmartLinkButton } from "../shared/StandaloneSmartLinkButton";
+import { useSiteCodename } from "../shared/siteCodenameContext";
+import { mainColorTextClass } from "../../lib/constants/colors";
 
 type Props = Readonly<{
   imageUrl: string;
@@ -13,6 +15,7 @@ type Props = Readonly<{
 }>;
 
 export const ArticleItem: FC<Props> = props => {
+  const siteCodename = useSiteCodename()
 
   const formatDate = (date: string) => (new Date(date))
     .toLocaleDateString(
@@ -43,7 +46,7 @@ export const ArticleItem: FC<Props> = props => {
           <h5 className="mb-2 text-xl font-bold tracking-tight text-gray-900 no-underline line-clamp-2 ">{props.title}</h5>
           <p className="mb-0 font-normal text-gray-700 line-clamp-6">{props.description}</p>
         </div>
-        <button className="block ml-auto w-fit mb-3 mr-4 font-normal text-blue-600 line-clamp-6">Continue reading</button>
+        <button className={`block ml-auto w-fit mb-3 mr-4 font-normal ${mainColorTextClass[siteCodename]} line-clamp-6`}>Continue reading</button>
       </Link>
     </li>
   );
