@@ -28,7 +28,7 @@ type ProductListingProps = Readonly<{
 
 const ProductListing: FC<ProductListingProps> = (props) => {
   return (
-    <ul className="w-full min-h-full mt-4 m-0 md:mt-0 p-0 px-4 sm:px-0 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 list-none items-center md:justify-start gap-2">
+    <ul className="w-full min-h-full mt-4 m-0 md:mt-0 p-0 px-4 sm:px-0 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-5 list-none items-center md:justify-start gap-2">
       {props.products?.map(p => (
         <ProductItem
           key={p.system.id}
