@@ -2,7 +2,7 @@ import { FC } from "react";
 import Image from "next/image"
 import Link from "next/link";
 import { StandaloneSmartLinkButton } from "../shared/StandaloneSmartLinkButton";
-import { mainColorBgClass, mainColorBgHoverClass } from "../../lib/constants/colors";
+import { mainColorBgClass, mainColorTextClass } from "../../lib/constants/colors";
 import { useSiteCodename } from "../shared/siteCodenameContext";
 
 type Props = Readonly<{
@@ -34,7 +34,7 @@ export const ProductItem: FC<Props> = props => {
             />
           </figure>
           {props.price && <p className="m-0 text-center text-xl font-normal pb-2">{`${props.price}€`}</p>}
-          <button className={`text-black hover:text-white block ml-auto w-fit mb-3 mr-4 font-bold line-clamp-6 hover:${mainColorBgHoverClass[siteCodename]} ${mainColorBgClass[siteCodename]} py-2 px-4 rounded`}>Detail</button>
+          <button className={`${mainColorTextClass} block ml-auto w-fit mb-3 mr-4 font-semibold line-clamp-6 hover:bg-transparent border ${mainColorBgClass[siteCodename]} py-2 px-4 rounded`}>Detail</button>
         </div>
       </Link>
     </li>
