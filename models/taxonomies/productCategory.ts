@@ -6,7 +6,9 @@
  * Codename: product_category
  */
 export type ProductCategory =
-  | 'machinery'
+  | 'clothing'
+  | 'equipment'
   | 'other'
   | 'precision_instruments'
-  | 'sanitary_clothing';
+  | 'sanitary_clothing'
+  | 'tools';
