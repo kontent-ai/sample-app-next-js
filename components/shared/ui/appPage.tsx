@@ -6,6 +6,8 @@ import { ValidCollectionCodename } from "../../../lib/types/perCollection";
 import { SiteCodenameProvider } from "../siteCodenameContext";
 import { createItemSmartLink } from "../../../lib/utils/smartLinkUtils";
 import { Block_Navigation } from "../../../models";
+import Head from "next/head";
+import { perCollectionSEOTitle } from "../../../lib/constants/labels";
 
 type Props = Readonly<{
   children: ReactNode;
@@ -18,6 +20,9 @@ export const AppPage: FC<Props> = props => {
   useSmartLink();
   return (
     <SiteCodenameProvider siteCodename={props.siteCodename}>
+      <Head>
+        <title>{perCollectionSEOTitle[props.siteCodename]}</title>
+      </Head>
       <div className="min-h-full grow flex flex-col items-center overflow-hidden">
         {props.siteMenu ? <Menu item={props.siteMenu} /> : <span>Missing top navigation. Please provide a valid navigation item in the web spotlight root.</span>}
         {/* https://tailwindcss.com/docs/typography-plugin */}
