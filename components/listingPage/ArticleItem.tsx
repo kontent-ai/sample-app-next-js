@@ -3,7 +3,7 @@ import Image from "next/image"
 import Link from "next/link";
 import { StandaloneSmartLinkButton } from "../shared/StandaloneSmartLinkButton";
 import { useSiteCodename } from "../shared/siteCodenameContext";
-import { mainColorBgClass } from "../../lib/constants/colors";
+import { mainColorBgClass, mainColorTextClass } from "../../lib/constants/colors";
 
 type Props = Readonly<{
   imageUrl: string;

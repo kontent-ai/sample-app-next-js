@@ -61,7 +61,7 @@ const ArticlesPage: FC<Props> = props => {
 
     <div className="px-4 sm:px-0">
       <h2 className="m-0 mt-16">Latest Articles</h2>
-      <ul className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 place-items-center list-none gap-5 pt-4 pl-0 justify-center">
+      <ul className="w-full grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 place-items-center list-none gap-5 pt-4 pl-0 justify-center">
         {props.articles.map(a => (
           <ArticleItem
             key={a.system.id}
