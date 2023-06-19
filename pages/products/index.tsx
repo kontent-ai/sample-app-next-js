@@ -116,34 +116,34 @@ export const Products: FC<Props> = props => {
 
   const renderFilterOption = (term: ITaxonomyTerms) => {
     const onCheckBoxClicked = (isChecked: boolean) => {
-      let newCategories = [];
-      if(isChecked) {
-        newCategories = term.terms.length > 0 ? categories.concat(term.terms.map(t => t.codename), term.codename) : categories.concat(term.codename);
-      } else {
-        newCategories = categories.filter(c => c !== term.codename);
-        if(term.terms.length > 0) {
-          newCategories = newCategories.filter(c => !(term.terms.map(t => t.codename).includes(c)));
-        }
-      }
+      const newCategories = isChecked
+        ? [...categories, term.codename, ...term.terms.map((t) => t.codename)]
+        : categories.filter((c) => c !== term.codename && !term.terms.map((t) => t.codename).includes(c));
 
       changeUrlQueryString({ category: newCategories });
-    }
+    };
+
     return (
-      <li key={term.codename} className="m-0 p-0 flex flex-row gap-1 items-center min-w-fit">
-        <input
-          id={term.codename}
-          type="checkbox"
-          checked={categories.includes(term.codename)}
-          onChange={(event) => onCheckBoxClicked(event.target.checked)}
-          className="min-w-4 min-h-4 bg-gray-100 border-gray-300 rounded"
-        />
-        <label htmlFor={term.codename} className="min-w-fit ml-2 text-sm font-semibold">{term.name}</label>
-        {term.terms.length > 0 &&
-          <ul>
-            {term.terms.map(t =>
-              renderFilterOption(t))}
-          </ul>}
+      <li key={term.codename} className="m-0 p-0">
+        <div className="flex flex-row items-center min-w-fit">
+          <input
+            id={term.codename}
+            type="checkbox"
+            checked={categories.includes(term.codename)}
+            onChange={(event) => onCheckBoxClicked(event.target.checked)}
+            className="min-w-4 min-h-4 bg-gray-100 border-gray-300 rounded"
+          />
+          <label htmlFor={term.codename} className="ml-2 text-sm font-semibold whitespace-nowrap">
+            {term.name}
+          </label>
+        </div>
+        {term.terms.length > 0 && (
+          <ul className="list-none">
+            {term.terms.map((t) => renderFilterOption(t))}
+          </ul>
+        )}
       </li>
+
     );
   };
 
@@ -158,7 +158,7 @@ export const Products: FC<Props> = props => {
       <div className={"flex flex-col md:flex-row mt-4 md:gap-2"}>
         <div className={`flex flex-col ${mainColorBgClass[props.siteCodename]} p-4`}>
           <h4 className="m-0 py-2">Category</h4>
-          <ul className={`m-0 min-h-full gap-2 p-0`}>
+          <ul className={`m-0 min-h-full gap-2 p-0 list-none`}>
             {taxonomies.map(term =>
               renderFilterOption(term))}
           </ul>
