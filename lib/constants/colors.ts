@@ -6,6 +6,12 @@ export const mainColorBgClass: PerCollection<string> = {
   ficto_healthtech_surgical: "bg-blue-300",
 };
 
+export const mainColorBgHoverClass: PerCollection<string> = {
+  ficto_healthtech: "bg-green-700",
+  ficto_healthtech_imaging: "bg-red-700",
+  ficto_healthtech_surgical: "bg-blue-700",
+};
+
 export const mainColorBorderClass: PerCollection<string> = {
   ficto_healthtech: "border-green-300",
   ficto_healthtech_imaging: "border-red-300",

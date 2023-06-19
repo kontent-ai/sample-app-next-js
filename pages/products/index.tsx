@@ -27,8 +27,14 @@ type ProductListingProps = Readonly<{
 }>
 
 const ProductListing: FC<ProductListingProps> = (props) => {
+  if (!props.products || props.products.length === 0) {
+    return (
+      <div className="self-center text-center w-full h-10 pt-2">No products with specified criteria</div>
+    )
+  }
+
   return (
-    <ul className="w-full min-h-full mt-4 m-0 md:mt-0 p-0 px-4 sm:px-0 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-5 list-none items-center md:justify-start gap-2">
+    <ul className="w-full min-h-full mt-4 m-0 md:mt-0 p-0 px-4 sm:px-0 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 2xl:grid-cols-4 list-none items-center md:justify-start gap-2">
       {props.products?.map(p => (
         <ProductItem
           key={p.system.id}
@@ -119,29 +125,30 @@ export const Products: FC<Props> = props => {
 
       <h2 className="m-0 mt-16 ml-4 sm:ml-0">Surgical products</h2>
 
-      <div className="flex flex-col md:flex-row mt-4 md:gap-2">
-        <ul className={`m-0 min-h-full flex flex-col gap-2 ${mainColorBgClass[props.siteCodename]} p-4`}>
-          <li className="m-0 p-0"><h4 className="m-0">Category</h4></li>
-          {Object.entries(FilterOptions).map(([codename, name]) =>
-            renderFilterOption(codename, name, (checked) => {
-              changeUrlQueryString({ category: checked ? categories.concat(codename) : categories.filter(c => c !== codename) });
-            }))}
-        </ul>
-
+      <div className={"flex flex-col md:flex-row mt-4 md:gap-2"}>
+        <div className={`flex flex-col ${mainColorBgClass[props.siteCodename]} p-4`}>
+          <h4 className="m-0 py-2">Category</h4>
+          <ul className={`m-0 min-h-full gap-2 p-0`}>
+            {Object.entries(FilterOptions).map(([codename, name]) =>
+              renderFilterOption(codename, name, (checked) => {
+                changeUrlQueryString({ category: checked ? categories.concat(codename) : categories.filter(c => c !== codename) });
+              }))}
+          </ul>
+        </div>
         <ProductListing products={products} />
       </div>
 
       <div className="mt-8 flex flex-row justify-center">
-      <button
-        className="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg enabled:hover:bg-gray-100 disabled:bg-gray-200 enabled:hover:text-gray-700"
-        onClick={onPreviousClick}
-        disabled={pageNumber <= 1}
-      >Previous</button>
-      <button
-        className="inline-flex items-center ml-2 px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg enabled:hover:bg-gray-100 disabled:bg-gray-200 enabled:hover:text-gray-700"
-        onClick={onNextClick}
-        disabled={isLastPage}
-      >Next</button>
+        <button
+          className="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg enabled:hover:bg-gray-100 disabled:bg-gray-200 enabled:hover:text-gray-700"
+          onClick={onPreviousClick}
+          disabled={pageNumber <= 1}
+        >Previous</button>
+        <button
+          className="inline-flex items-center ml-2 px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg enabled:hover:bg-gray-100 disabled:bg-gray-200 enabled:hover:text-gray-700"
+          onClick={onNextClick}
+          disabled={isLastPage}
+        >Next</button>
       </div>
 
     </AppPage>
@@ -166,7 +173,7 @@ export const getStaticProps: GetStaticProps<Props> = async context => {
   };
 
   return {
-    props: { page, siteCodename, products: products.items, totalCount: products.pagination.totalCount ?? 0, siteMenu},
+    props: { page, siteCodename, products: products.items, totalCount: products.pagination.totalCount ?? 0, siteMenu },
   };
 }
 
