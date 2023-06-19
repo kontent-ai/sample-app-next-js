@@ -111,7 +111,7 @@ const ArticlesPage: FC<Props> = props => {
 export const getStaticProps: GetStaticProps<Props> = async context => {
   const pageCodename: PerCollectionCodenames = {
     ficto_healthtech: "articles",
-    ficto_healthtech_imaging: "articles",
+    ficto_healthtech_imaging: null,
     ficto_healthtech_surgical: "articles"
   };
   const pageURLParameter = context.params?.page;
