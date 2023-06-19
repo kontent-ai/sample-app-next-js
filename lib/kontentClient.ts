@@ -189,3 +189,11 @@ export const getItemsCount = (usePreview: boolean, contentTypeCodename?: string)
     .then(res => res.data.pagination.totalCount)
 }
 
+export const getProductTaxonomy = async (usePreview: boolean) =>
+  deliveryClient
+    .taxonomy("product_category")
+    .queryConfig({
+      usePreviewMode: usePreview,
+    })
+    .toPromise()
+    .then(res => res.data.taxonomy.terms);

@@ -55,12 +55,20 @@ export const taxonomies = {
     externalId: undefined,
     name: 'Product category',
     terms: {
-      machinery: {
-        codename: 'machinery',
-        id: 'd9d5bed9-a7d6-4b74-ab05-c5a063df56fe',
+      clothing: {
+        codename: 'clothing',
+        id: '244596e9-bd8f-45e5-a3de-55e3f9aadbc4',
         externalId: undefined,
-        name: 'Machinery',
-        terms: {},
+        name: 'Clothing',
+        terms: {
+          sanitary_clothing: {
+            codename: 'sanitary_clothing',
+            id: 'f8638c49-3e84-412d-b798-71f444b3168b',
+            externalId: undefined,
+            name: 'Sanitary clothing',
+            terms: {},
+          },
+        },
       },
       other: {
         codename: 'other',
@@ -69,19 +77,27 @@ export const taxonomies = {
         name: 'Other',
         terms: {},
       },
-      precision_instruments: {
-        codename: 'precision_instruments',
-        id: 'd3418351-c394-4fa7-8364-312dc706779e',
+      tools: {
+        codename: 'tools',
+        id: '6e640568-f009-44b9-90c8-b4f854e71988',
         externalId: undefined,
-        name: 'Precision instruments',
-        terms: {},
-      },
-      sanitary_clothing: {
-        codename: 'sanitary_clothing',
-        id: 'f8638c49-3e84-412d-b798-71f444b3168b',
-        externalId: undefined,
-        name: 'Sanitary clothing',
-        terms: {},
+        name: 'Tools',
+        terms: {
+          equipment: {
+            codename: 'equipment',
+            id: 'd9d5bed9-a7d6-4b74-ab05-c5a063df56fe',
+            externalId: undefined,
+            name: 'Equipment',
+            terms: {},
+          },
+          precision_instruments: {
+            codename: 'precision_instruments',
+            id: 'd3418351-c394-4fa7-8364-312dc706779e',
+            externalId: undefined,
+            name: 'Precision instruments',
+            terms: {},
+          },
+        },
       },
     },
   },
