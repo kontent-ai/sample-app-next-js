@@ -8,11 +8,11 @@ import { ValidCollectionCodename } from "../../lib/types/perCollection";
 import { siteCodename } from "../../lib/utils/env";
 import { Block_Navigation, WSL_Page, Product } from "../../models";
 import { useRouter } from "next/router";
-import { taxonomies } from "../../models/project"
 import { ParsedUrlQueryInput } from "querystring";
 import { ProductsPageSize } from "../../lib/constants/paging";
 import { ProductItem } from "../../components/listingPage/ProductItem";
 import { mainColorBgClass } from "../../lib/constants/colors";
+import { ITaxonomyTerms } from "@kontent-ai/delivery-sdk";
 
 type Props = Readonly<{
   page: WSL_Page;
@@ -20,6 +20,7 @@ type Props = Readonly<{
   siteCodename: ValidCollectionCodename;
   totalCount: number;
   siteMenu?: Block_Navigation;
+  isPreview: boolean;
 }>;
 
 type ProductListingProps = Readonly<{
@@ -50,8 +51,6 @@ const ProductListing: FC<ProductListingProps> = (props) => {
   )
 }
 
-const FilterOptions = Object.fromEntries(Object.entries(taxonomies.product_category.terms).map(([codename, obj]) => [codename, obj.name]));
-
 export const Products: FC<Props> = props => {
   const router = useRouter();
   const [totalCount, setTotalCount] = useState(props.totalCount);
@@ -61,6 +60,8 @@ export const Products: FC<Props> = props => {
   const pageNumber = useMemo(() => !page || isNaN(+page) ? 1 : +page, [page])
 
   const isLastPage = pageNumber * ProductsPageSize >= totalCount;
+
+  const [taxonomies, setTaxonomies] = useState<ITaxonomyTerms[]>([]);
 
   const categories = useMemo(() => {
     if (!category) {
@@ -81,9 +82,20 @@ export const Products: FC<Props> = props => {
     setTotalCount(newData.totalCount);
   }, [router.asPath])
 
+  const getProductCategories = useCallback(async () => {
+    const response = await fetch(`/api/product-categories?preview=${props.isPreview}`);
+    const productCategories = await response.json();
+
+    setTaxonomies(productCategories);
+  }, [props.isPreview])
+
   useEffect(() => {
     getProducts();
   }, [page, category, getProducts])
+
+  useEffect(() => {
+    getProductCategories();
+  }, [getProductCategories])
 
   const onPreviousClick = () => {
     if (pageNumber === 2) {
@@ -102,17 +114,35 @@ export const Products: FC<Props> = props => {
     router.replace({ query: query }, undefined, { scroll: false });
   }
 
-  const renderFilterOption = (optionCodename: string, labelText: string, onClick: (checked: boolean) => void) => {
+  const renderFilterOption = (term: ITaxonomyTerms) => {
+    const onCheckBoxClicked = (isChecked: boolean) => {
+      let newCategories = [];
+      if(isChecked) {
+        newCategories = term.terms.length > 0 ? categories.concat(term.terms.map(t => t.codename), term.codename) : categories.concat(term.codename);
+      } else {
+        newCategories = categories.filter(c => c !== term.codename);
+        if(term.terms.length > 0) {
+          newCategories = newCategories.filter(c => !(term.terms.map(t => t.codename).includes(c)));
+        }
+      }
+
+      changeUrlQueryString({ category: newCategories });
+    }
     return (
-      <li key={optionCodename} className="m-0 p-0 flex flex-row gap-1 items-center min-w-fit">
+      <li key={term.codename} className="m-0 p-0 flex flex-row gap-1 items-center min-w-fit">
         <input
-          id={optionCodename}
+          id={term.codename}
           type="checkbox"
-          checked={categories.includes(optionCodename)}
-          onChange={(event) => onClick(event.target.checked)}
+          checked={categories.includes(term.codename)}
+          onChange={(event) => onCheckBoxClicked(event.target.checked)}
           className="min-w-4 min-h-4 bg-gray-100 border-gray-300 rounded"
         />
-        <label htmlFor={optionCodename} className="min-w-fit ml-2 text-sm font-semibold">{labelText}</label>
+        <label htmlFor={term.codename} className="min-w-fit ml-2 text-sm font-semibold">{term.name}</label>
+        {term.terms.length > 0 &&
+          <ul>
+            {term.terms.map(t =>
+              renderFilterOption(t))}
+          </ul>}
       </li>
     );
   };
@@ -129,10 +159,8 @@ export const Products: FC<Props> = props => {
         <div className={`flex flex-col ${mainColorBgClass[props.siteCodename]} p-4`}>
           <h4 className="m-0 py-2">Category</h4>
           <ul className={`m-0 min-h-full gap-2 p-0`}>
-            {Object.entries(FilterOptions).map(([codename, name]) =>
-              renderFilterOption(codename, name, (checked) => {
-                changeUrlQueryString({ category: checked ? categories.concat(codename) : categories.filter(c => c !== codename) });
-              }))}
+            {taxonomies.map(term =>
+              renderFilterOption(term))}
           </ul>
         </div>
         <ProductListing products={products} />
@@ -150,7 +178,6 @@ export const Products: FC<Props> = props => {
           disabled={isLastPage}
         >Next</button>
       </div>
-
     </AppPage>
   )
 };
@@ -173,7 +200,7 @@ export const getStaticProps: GetStaticProps<Props> = async context => {
   };
 
   return {
-    props: { page, siteCodename, products: products.items, totalCount: products.pagination.totalCount ?? 0, siteMenu },
+    props: { page, siteCodename, products: products.items, totalCount: products.pagination.totalCount ?? 0, siteMenu, isPreview: !!context.preview },
   };
 }
 

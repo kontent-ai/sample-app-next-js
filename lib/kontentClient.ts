@@ -167,3 +167,12 @@ export const getSiteMenu = async (usePreview: boolean) => {
   
   return res?.elements.navigation.linkedItems[0];
 }
+
+export const getProductTaxonomy = async (usePreview: boolean) =>
+  deliveryClient
+    .taxonomy("product_category")
+    .queryConfig({
+      usePreviewMode: usePreview,
+    })
+    .toPromise()
+    .then(res => res.data.taxonomy.terms);
