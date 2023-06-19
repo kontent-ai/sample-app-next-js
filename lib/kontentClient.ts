@@ -3,6 +3,7 @@ import { PerCollectionCodenames } from './routing';
 import { siteCodename } from './utils/env';
 import { Article, contentTypes, Product, WSL_WebSpotlightRoot } from '../models';
 import { perCollectionRootItems } from './constants/menu';
+import { ArticlePageSize, ProductsPageSize } from './constants/paging';
 
 const sourceTrackingHeaderName = 'X-KC-SOURCE';
 
@@ -77,7 +78,7 @@ export const getHomepage = (usePreview: boolean) =>
     .toPromise()
     .then(res => res.data.items[0] as WSL_WebSpotlightRoot | undefined)
 
-export const getProductsForListing = (usePreview: boolean, page?: number, categories?: string[], pageSize: number =5) => {
+export const getProductsForListing = (usePreview: boolean, page?: number, categories?: string[], pageSize: number = ProductsPageSize) => {
   const query = deliveryClient
     .items<Product>()
     .type(contentTypes.product.codename)
@@ -87,10 +88,12 @@ export const getProductsForListing = (usePreview: boolean, page?: number, catego
       contentTypes.product.elements.product_image.codename,
       contentTypes.product.elements.slug.codename,
       contentTypes.product.elements.category.codename,
+      contentTypes.product.elements.price.codename,
     ])
     .queryConfig({
       usePreviewMode: usePreview,
     })
+    .includeTotalCountParameter()
     .limitParameter(pageSize)
     
     if(page){
@@ -100,7 +103,6 @@ export const getProductsForListing = (usePreview: boolean, page?: number, catego
     if(categories){
       query.anyFilter(`elements.${contentTypes.product.elements.category.codename}`, categories);
     }
-    query.includeTotalCountParameter();
 
     return query
       .toPromise()
@@ -127,16 +129,27 @@ export const getProductDetail = (slug: string, usePreview: boolean) =>
     .toAllPromise()
     .then(res => res.data.items[0]);
 
-export const getArticlesForListing = (usePreview: boolean) =>
-  deliveryClient
+export const getArticlesForListing = (usePreview: boolean, page?: number, pageSize: number = ArticlePageSize) => {
+  const query = deliveryClient
     .items<Article>()
     .type(contentTypes.article.codename)
     .collection(siteCodename)
+    .orderByDescending(`elements.${contentTypes.article.elements.publishing_date.codename}`)
     .queryConfig({
       usePreviewMode: usePreview,
     })
-    .toAllPromise()
-    .then(res => res.data.items);
+    .limitParameter(pageSize)
+
+    if(page){
+      query.skipParameter((page - 1) * pageSize)
+    };
+
+    query.includeTotalCountParameter();
+
+    return query
+      .toPromise()
+      .then(res => res.data);
+  }
 
 export const getArticleBySlug = (slug: string, usePreview: boolean) =>
   deliveryClient

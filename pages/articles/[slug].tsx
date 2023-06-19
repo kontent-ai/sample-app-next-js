@@ -5,8 +5,9 @@ import { AppPage } from "../../components/shared/ui/appPage";
 import { HeroImage } from "../../components/landingPage/ui/heroImage";
 import { GetStaticPaths, GetStaticProps } from "next";
 import { getArticleBySlug, getArticlesForListing, getSiteMenu } from "../../lib/kontentClient";
-import { siteCodename } from "../../lib/utils/env";
 import { RichTextElement } from "../../components/shared/RichTextContent";
+import { mainColorBgClass } from "../../lib/constants/colors";
+import { siteCodename } from "../../lib/utils/env";
 
 type Props = Readonly<{
   article: Article;
@@ -17,7 +18,9 @@ type Props = Readonly<{
 const ArticlePage: FC<Props> = props => (
   <AppPage siteCodename={props.siteCodename} siteMenu={props.siteMenu}>
     <HeroImage url={props.article.elements.heroImage.value[0]?.url} itemId={props.article.system.id}>
-      <h1>{props.article.elements.title.value}</h1>
+      <div className={`py-1 px-3 w-full md:w-fit ${mainColorBgClass[props.siteCodename]}  opacity-[85%]`}>
+        <h1 className="m-0 text-3xl tracking-wide font-semibold">{props.article.elements.title.value}</h1>
+      </div>
     </HeroImage>
     <p>
       {props.article.elements.abstract.value}
@@ -58,7 +61,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   const articles = await getArticlesForListing(false);
 
   return {
-    paths: articles.map(a => `/articles/${a.elements.slug.value}`),
+    paths: articles.items.map(a => `/articles/${a.elements.slug.value}`),
     fallback: "blocking",
   };
 }

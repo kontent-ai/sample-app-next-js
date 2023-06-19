@@ -21,10 +21,8 @@ export const HeroImage: FC<Props> = props => (
       className="object-cover"
       priority
     />
-    <div className="relative w-full h-full flex justify-start items-end">
-      <div className="max-w-[60%] bg-white/70 p-10 rounded-tr-lg">
+    <div className="relative w-fit h-full flex flex-col items-center md:items-start justify-end pb-12 px-6">
         {props.children}
-      </div>
     </div>
   </figure>
 );

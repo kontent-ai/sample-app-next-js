@@ -13,8 +13,8 @@ export const mainColorBorderClass: PerCollection<string> = {
 };
 
 export const mainColorTextClass: PerCollection<string> = {
-  ficto_healthtech: "text-green-300",
-  ficto_healthtech_imaging: "text-red-300",
-  ficto_healthtech_surgical: "text-blue-300",
+  ficto_healthtech: "text-green-600",
+  ficto_healthtech_imaging: "text-red-600",
+  ficto_healthtech_surgical: "text-blue-600",
 }
 
