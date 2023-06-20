@@ -12,6 +12,7 @@ type Props = Readonly<{
 
 export const StackComponent: FC<Props> = props => {
   const [actionIndex, setActionIndex] = useState(0);
+  const siteCodename = useSiteCodename();
 
   const currentAction = props.item.elements.stack.linkedItems[actionIndex];
 
@@ -31,7 +32,7 @@ export const StackComponent: FC<Props> = props => {
         {props.item.elements.message.value}
       </div>
       <section
-        className="py-11"
+        className="py-10"
         {...createElementSmartLink(contentTypes.stack.elements.stack.codename, true)}
       >
         <StandaloneSmartLinkButton elementCodename={contentTypes.stack.elements.stack.codename} />
@@ -40,7 +41,7 @@ export const StackComponent: FC<Props> = props => {
           onHeaderSelected={setActionIndex}
           selectedHeaderIndex={actionIndex}
         />
-        <div className="pt-3">
+        <div>
           <GenericActionComponent item={currentAction} />
         </div>
       </section>
@@ -58,17 +59,17 @@ const Headers: FC<HeadersProps> = props => {
   const siteCodename = useSiteCodename();
 
   return (
-    <menu className="flex gap-6 border-b-2 border-b-gray-100">
+    <menu className="flex grow">
       {props.headers.map((header, i) => (
         <li
           key={i}
-          className={`w-12 md:w-fit overflow-hidden h-full m-0 shrink text-ellipsis flex justify-center items-center cursor-pointer ${mainColorBorderClass[siteCodename]} ${props.selectedHeaderIndex === i ? "md:border-b-2" : ""}`}
+          className={`grow w-full text-center justify-center items-center flex overflow-hidden m-0 p-2 cursor-pointer ${props.selectedHeaderIndex === i ? `bg-gray-200  border-t-2 ${mainColorBorderClass[siteCodename]}` : ""}`}
           onClick={() => props.onHeaderSelected(i)}
           {...createItemSmartLink(header.id, true)}
           {...createRelativeAddSmartLink("after", "bottom-end")}
         >
-          <span className="hidden md:block">{header.label}</span>
-          <span className={`md:hidden font-black text-xl ${props.selectedHeaderIndex === i ? mainColorTextClass[siteCodename] : ""}`}>•</span>
+          <span className={`hidden md:block`}>{header.label}</span>
+          <span className={`md:hidden font-black text-xl`}>•</span>
         </li>
       ))}
     </menu>
