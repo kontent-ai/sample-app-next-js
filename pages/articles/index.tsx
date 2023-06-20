@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import { Article, Block_Navigation, WSL_Page } from "../../models";
 import { AppPage } from "../../components/shared/ui/appPage";
 import { ValidCollectionCodename } from "../../lib/types/perCollection";
@@ -7,12 +7,14 @@ import { getArticlesForListing, getItemByCodename, getSiteMenu } from "../../lib
 import { PerCollectionCodenames } from "../../lib/routing";
 import { Content } from "../../components/shared/Content";
 import Link from "next/link";
-import { useRouter } from "next/router";
+import { NextRouter, useRouter } from "next/router";
 import { ArticlePageSize } from "../../lib/constants/paging";
 import { ArticleItem } from "../../components/listingPage/ArticleItem";
 import { mainColorBgClass } from "../../lib/constants/colors";
 import { useSiteCodename } from "../../components/shared/siteCodenameContext";
 import { siteCodename } from "../../lib/utils/env";
+import { taxonomies } from "../../models";
+import { changeUrlQueryString } from "../../lib/utils/changeUrlQueryString";
 
 type Props = Readonly<{
   siteCodename: ValidCollectionCodename;
@@ -25,11 +27,16 @@ type Props = Readonly<{
 type LinkButtonProps = {
   text: string;
   href: string;
-  disabled?: boolean,
+  disabled?: boolean;
   roundRight?: boolean;
   roundLeft?: boolean;
   highlight?: boolean;
 }
+
+type FilterOptionProps = Readonly<{
+  options: { [key: string]:  string };
+  router: NextRouter;
+}>;
 
 const LinkButton: FC<LinkButtonProps> = props => {
   const siteCodename = useSiteCodename();
@@ -49,18 +56,46 @@ const LinkButton: FC<LinkButtonProps> = props => {
   )
 }
 
+const FilterOptions: FC<FilterOptionProps> = ({ options, router }) => {
+  const [activeFilter, setActiveFilter] = useState<string>();
+  const handleButtonClick = (key: string) => {
+    setActiveFilter(key)
+    changeUrlQueryString({ category: [key] }, router);
+  };
+
+  const clearFilters = () => {
+    setActiveFilter(undefined);
+    changeUrlQueryString({}, router);
+  }
+
+  useEffect(() => console.log(activeFilter),[activeFilter])
+
+  return (
+    <div className={"flex flex-row pt-10"}>
+      {Object.entries(options).map(([key, value]) => (
+        <div key={key} className="mr-4" onClick={() => handleButtonClick(key)}>
+          <input id={key} checked={activeFilter === key} type="checkbox" name="article-type" className="hidden peer" />
+          <label htmlFor={key} className="inline-flex items-center justify-between w-full px-6 py-1 bg-white border border-gray-200 rounded-3xl cursor-pointer peer-checked:border-blue-300 peer-checked:bg-blue-300 hover:bg-gray-100">{value}</label>
+        </div>
+      ))}
+      <button onClick={clearFilters} className={`px-6 py-1 ${activeFilter === undefined ? "invisible" : ""} bg-blue-600 text-white font-bold rounded-3xl cursor-pointer`}>Clear</button>
+    </div>
+  );
+};
+
 const ArticlesPage: FC<Props> = props => {
   const router = useRouter();
-  const page = typeof router.query.page === 'string' ? +router.query.page : undefined;
+  const page = typeof router.query.page === 'string' ? + router.query.page : undefined;
   const pageCount = Math.ceil((props.totalCount ?? 0) / ArticlePageSize);
+  const filterOptions = Object.fromEntries(Object.entries(taxonomies.article_type.terms).map(([codename, obj]) => [codename, obj.name]));
 
   return <AppPage siteCodename={props.siteCodename} siteMenu={props.siteMenu}>
     {props.page.elements.content.linkedItems.map(piece => (
       <Content key={piece.system.id} item={piece as any} />
     ))}
-
     <div className="px-4 sm:px-0">
       <h2 className="m-0 mt-16">Latest Articles</h2>
+      <FilterOptions options={filterOptions} router={router}/>
       <ul className="w-full grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 place-items-center list-none gap-5 pt-4 pl-0 justify-center">
         {props.articles.map(a => (
           <ArticleItem
@@ -112,14 +147,12 @@ export const getStaticProps: GetStaticProps<Props> = async context => {
   const pageCodename: PerCollectionCodenames = {
     ficto_healthtech: "articles",
     ficto_healthtech_imaging: null,
-    ficto_healthtech_surgical: "articles"
+    ficto_healthtech_surgical: "articles_surgical"
   };
   const pageURLParameter = context.params?.page;
   const pageNumber = !pageURLParameter || isNaN(+pageURLParameter) ? 1 : +pageURLParameter;
-
   const articles = await getArticlesForListing(!!context.preview, pageNumber);
   const siteMenu = await getSiteMenu(!!context.preview);
-
   const page = await getItemByCodename<WSL_Page>(pageCodename, !!context.preview);
 
   if (page === null) {
@@ -137,6 +170,5 @@ export const getStaticProps: GetStaticProps<Props> = async context => {
     revalidate: 10,
   };
 };
-
 
 export default ArticlesPage;
