@@ -13,6 +13,7 @@ import { ProductsPageSize } from "../../lib/constants/paging";
 import { ProductItem } from "../../components/listingPage/ProductItem";
 import { mainColorBgClass } from "../../lib/constants/colors";
 import { ITaxonomyTerms } from "@kontent-ai/delivery-sdk";
+import { changeUrlQueryString } from "../../lib/utils/changeUrlQueryString";
 
 type Props = Readonly<{
   page: WSL_Page;
@@ -55,13 +56,12 @@ export const Products: FC<Props> = props => {
   const router = useRouter();
   const [totalCount, setTotalCount] = useState(props.totalCount);
   const [products, setProducts] = useState<ReadonlyArray<Product> | undefined>(props.products);
+  const [taxonomies, setTaxonomies] = useState<ITaxonomyTerms[]>([]);
   const { page, category } = router.query
 
   const pageNumber = useMemo(() => !page || isNaN(+page) ? 1 : +page, [page])
 
   const isLastPage = pageNumber * ProductsPageSize >= totalCount;
-
-  const [taxonomies, setTaxonomies] = useState<ITaxonomyTerms[]>([]);
 
   const categories = useMemo(() => {
     if (!category) {
@@ -100,18 +100,14 @@ export const Products: FC<Props> = props => {
   const onPreviousClick = () => {
     if (pageNumber === 2) {
       const { page, ...obj } = router.query;
-      changeUrlQueryString(obj);
+      changeUrlQueryString(obj, router);
     } else {
-      changeUrlQueryString({ ...router.query, page: pageNumber - 1 });
+      changeUrlQueryString({ ...router.query, page: pageNumber - 1 }, router);
     }
   }
 
   const onNextClick = () => {
-    changeUrlQueryString({ ...router.query, page: pageNumber + 1 });
-  }
-
-  const changeUrlQueryString = (query: ParsedUrlQueryInput) => {
-    router.replace({ query: query }, undefined, { scroll: false });
+    changeUrlQueryString({ ...router.query, page: pageNumber + 1 }, router);
   }
 
   const renderFilterOption = (term: ITaxonomyTerms) => {
@@ -120,7 +116,7 @@ export const Products: FC<Props> = props => {
         ? [...categories, term.codename, ...term.terms.map((t) => t.codename)]
         : categories.filter((c) => c !== term.codename && !term.terms.map((t) => t.codename).includes(c));
 
-      changeUrlQueryString({ category: newCategories });
+      changeUrlQueryString({ category: newCategories }, router);
     };
 
     return (
