@@ -104,7 +104,7 @@ export const Menu: FC<Props> = props => {
   return (
     <div className={`w-screen ${mainColorBgClass[siteCodename]} fixed z-50`} {...createItemSmartLink(props.item.system.id)}>
       <div className="flex justify-between items-center mx-auto max-w-screen-xl md:h-16">
-        <div className="w-screen h-full md:flex justify-between z-50">
+        <div className="w-screen h-full md:flex justify-between z-50 md:pr-24 xl:pr-12 2xl:pr-0">
           <div className="flex h-full justify-between items-center px-8 py-4">
             <Link href="/" className="flex items-center">
               <span className="font-extrabold">Ficto</span>
