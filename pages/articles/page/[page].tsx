@@ -6,7 +6,7 @@ import { getItemsCount, getArticlesForListing, getItemByCodename, getSiteMenu } 
 import { siteCodename } from "../../../lib/utils/env";
 import { PerCollectionCodenames } from "../../../lib/routing";
 import ArticlesPage from "..";
-import { ArticlePageSize } from "../../../lib/constants/page";
+import { ArticlePageSize } from "../../../lib/constants/paging";
 
 type Props = Readonly<{
   siteCodename: ValidCollectionCodename;

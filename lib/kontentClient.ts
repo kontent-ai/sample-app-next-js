@@ -3,7 +3,7 @@ import { PerCollectionCodenames } from './routing';
 import { siteCodename } from './utils/env';
 import { Article, contentTypes, Product, WSL_WebSpotlightRoot } from '../models';
 import { perCollectionRootItems } from './constants/menu';
-import { ArticlePageSize, ProductsPageSize } from './constants/page';
+import { ArticlePageSize, ProductsPageSize } from './constants/paging';
 
 const sourceTrackingHeaderName = 'X-KC-SOURCE';
 
