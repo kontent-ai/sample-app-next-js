@@ -56,8 +56,6 @@ const MenuItems: FC<MenuItemsProps> = props => {
   const siteCodename = useSiteCodename();
   const router = useRouter();
 
-  console.log(router);
-
   return (
     <>
       {props.items.map((link, i) => (
