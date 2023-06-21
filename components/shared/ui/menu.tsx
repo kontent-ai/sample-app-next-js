@@ -61,7 +61,7 @@ const MenuItems: FC<MenuItemsProps> = props => {
 const DropdownButton: FC<Props> = props => {
   return (
     <button
-      className={`h-full flex items-center justify-between w-full p-4 pr-10 py-2 font-medium text-gray-900 border-b border-gray-100 md:w-auto md:bg-transparent md:border-0`}
+      className={`h-full flex items-center justify-between w-full p-4 py-2 font-medium text-gray-900 border-b border-gray-100 md:w-auto md:bg-transparent md:border-0`}
     >
       {props.item.elements.label.value}
       <ChevronDownIcon className="w-4 h-4 ml-1 mt-1" />
