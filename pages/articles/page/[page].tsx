@@ -63,6 +63,7 @@ export const getStaticProps: GetStaticProps<Props> = async context => {
       page,
       totalCount: articles.pagination.totalCount
     },
+    revalidate: 10,
   };
 };
 
