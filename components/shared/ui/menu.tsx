@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { FC, useState } from "react";
-import { mainColorBgClass } from "../../../lib/constants/colors";
+import { mainColorBgClass, mainColorBorderClass } from "../../../lib/constants/colors";
 import { useSiteCodename } from "../siteCodenameContext";
 import { Block_Navigation } from "../../../models";
 import { createItemSmartLink } from "../../../lib/utils/smartLinkUtils";
@@ -23,35 +23,6 @@ type DropdownMenuProps = Readonly<{
   links: ReadonlyArray<Link>;
 }>;
 
-const DropdownMenuItems: FC<DropdownMenuProps> = props => {
-  return (
-    <>
-      {props.links.map(link => (
-        <Link
-          key={link.system.codename}
-          {...link.elements.openInANewWindow.value[0] ? { rel: "noopener noreferrer", target: "_blank" } : {}}
-          href={link.elements.externalLink.value ? link.elements.externalLink.value : "/" + link.elements.pageLink.linkedItems[0].elements.url.value}
-          className="block p-3 rounded-lg hover:bg-gray-50"
-        >
-          <div className="font-semibold">{link.elements.label.value}</div>
-          <span className="text-sm text-gray-500">{link.elements.caption.value}</span>
-        </Link>
-      ))}
-    </>
-  )
-}
-
-const DropdownButton: FC<Props> = props => {
-  return (
-    <button
-      className={`h-full flex items-center justify-between w-full py-2 pl-3 pr-4 font-medium text-gray-900 border-b border-gray-100 md:w-auto md:bg-transparent md:border-0`}
-    >
-      {props.item.elements.label.value}
-      <ChevronDownIcon className="w-4 h-4 ml-1 mt-1" />
-    </button>
-  )
-}
-
 const MenuItems: FC<MenuItemsProps> = props => {
   const siteCodename = useSiteCodename();
   const router = useRouter();
@@ -59,15 +30,15 @@ const MenuItems: FC<MenuItemsProps> = props => {
   return (
     <>
       {props.items.map((link, i) => (
-        <li key={i} className={` ${"/" + link.elements.pageLink.linkedItems[0]?.elements.url.value === router.asPath ? "border-t-8" : ""}
-         h-full ${mainColorBgClass[siteCodename]} group md:hover:bg-white grow`} onClick={() => props.handleClick(i)}>
+        <li key={i} className={` ${"/" + link.elements.pageLink.linkedItems[0]?.elements.url.value === router.asPath ? "" : "border-l-transparent border-t-transparent"}
+        border-l-8 border-t-0 md:border-t-8 md:border-l-0 h-full ${mainColorBgClass[siteCodename]} group md:hover:bg-white grow`} onClick={() => props.handleClick(i)}>
           {link.elements.subitems.value.length > 0 ? (
-            <div className={`${i === props.activeMenu ? "md:bg-white" : ""} h-full`}>
+            <div className={`${i === props.activeMenu ? "bg-white " : ""} h-full`}>
               <DropdownButton item={link} />
               <div
                 className={`${i === props.activeMenu ? "block" : "hidden"} md:group-hover:block absolute z-50 left-0 shadow-sm bg-white border-gray-200 w-full`}
               >
-                <div className="grid max-w-screen-xl px-4 py-5 mx-auto text-gray-900 sm:grid-cols-2 md:grid-cols-3 md:px-6">
+                <div className="grid gap-2 max-w-screen-xl px-4 py-5 mx-auto text-gray-900 sm:grid-cols-2 md:grid-cols-3 md:px-6">
                   <DropdownMenuItems links={link.elements.subitems.linkedItems} />
                 </div>
               </div>
@@ -87,6 +58,37 @@ const MenuItems: FC<MenuItemsProps> = props => {
   );
 }
 
+const DropdownButton: FC<Props> = props => {
+  return (
+    <button
+      className={`h-full flex items-center justify-between w-full p-4 pr-10 py-2 font-medium text-gray-900 border-b border-gray-100 md:w-auto md:bg-transparent md:border-0`}
+    >
+      {props.item.elements.label.value}
+      <ChevronDownIcon className="w-4 h-4 ml-1 mt-1" />
+    </button>
+  )
+}
+
+const DropdownMenuItems: FC<DropdownMenuProps> = props => {
+  const siteCodename = useSiteCodename();
+  console.log(mainColorBorderClass[siteCodename]);
+
+  return (
+    <>
+      {props.links.map(link => (
+        <Link
+          key={link.system.codename}
+          {...link.elements.openInANewWindow.value[0] ? { rel: "noopener noreferrer", target: "_blank" } : {}}
+          href={link.elements.externalLink.value ? link.elements.externalLink.value : "/" + link.elements.pageLink.linkedItems[0].elements.url.value}
+          className={`block p-3 bg-gray-200 border-l-transparent border-l-8 hover:border-l-8 hover:border-l-gray-500`}
+        >
+          <div className="font-semibold">{link.elements.label.value}</div>
+          <span className="text-sm text-gray-500">{link.elements.caption.value}</span>
+        </Link>
+      ))}
+    </>
+  )
+}
 
 export const Menu: FC<Props> = props => {
   const siteCodename = useSiteCodename();
@@ -96,7 +98,6 @@ export const Menu: FC<Props> = props => {
   const handleMenuClick = (menuId: string | number) => {
     menuId === activeMenu ? setActiveMenu(-1) : setActiveMenu(menuId);
   }
-
 
   return (
     <div className={`w-screen ${mainColorBgClass[siteCodename]} fixed z-50`} {...createItemSmartLink(props.item.system.id)}>
@@ -118,7 +119,7 @@ export const Menu: FC<Props> = props => {
             </button>
           </div>
           <div>
-            <ul className={`${smallMenuActive ? "flex" : "hidden"} md:flex flex-col gap-4 font-medium md:flex-row h-full`}>
+            <ul className={`${smallMenuActive ? "flex" : "hidden"} flex-col md:flex md:gap-4 font-medium md:flex-row h-full`}>
               <MenuItems items={props.item.elements.subitems.linkedItems} handleClick={handleMenuClick} activeMenu={activeMenu} />
             </ul>
           </div>
