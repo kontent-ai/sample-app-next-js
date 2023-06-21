@@ -30,10 +30,10 @@ const MenuItems: FC<MenuItemsProps> = props => {
   return (
     <>
       {props.items.map((link, i) => (
-        <li key={i} className={` ${"/" + link.elements.pageLink.linkedItems[0]?.elements.url.value === router.asPath ? "" : "border-l-transparent border-t-transparent"}
-        border-l-8 border-t-0 md:border-t-8 md:border-l-0 h-full ${mainColorBgClass[siteCodename]} group md:hover:bg-white grow`} onClick={() => props.handleClick(i)}>
+        <li key={i} className={`${"/" + link.elements.pageLink.linkedItems[0]?.elements.url.value === router.asPath ? "" : "border-l-transparent border-t-transparent"}
+        border-gray-500 border-l-8 border-t-0 md:border-t-8 md:border-l-0 h-full ${mainColorBgClass[siteCodename]} group grow`} onClick={() => props.handleClick(i)}>
           {link.elements.subitems.value.length > 0 ? (
-            <div className={`${i === props.activeMenu ? "bg-white " : ""} h-full`}>
+            <div className={`${i === props.activeMenu ? "bg-white " : ""} md:hover:bg-white h-full`}>
               <DropdownButton item={link} />
               <div
                 className={`${i === props.activeMenu ? "block" : "hidden"} md:group-hover:block absolute z-50 left-0 shadow-sm bg-white border-gray-200 w-full`}
@@ -46,7 +46,7 @@ const MenuItems: FC<MenuItemsProps> = props => {
           ) : (
             <Link
               {...link.elements.openInANewWindow.value[0] ? { rel: "noopener noreferrer", target: "_blank" } : {}}
-              className={`h-full flex items-center justify-between w-full py-2 pl-3 pr-4 font-medium text-gray-900 border-b border-gray-100 md:w-auto md:bg-transparent md:border-0`}
+              className={`h-full flex items-center justify-between w-full py-2 pl-3 pr-4 font-medium text-gray-900 border-b border-gray-100 md:w-auto md:bg-transparent md:border-0 md:hover:bg-white`}
               href={link.elements.externalLink.value ? link.elements.externalLink.value : "/" + link.elements.pageLink.linkedItems[0].elements.url.value}
             >
               {link.elements.label.value}
@@ -71,6 +71,7 @@ const DropdownButton: FC<Props> = props => {
 
 const DropdownMenuItems: FC<DropdownMenuProps> = props => {
   const siteCodename = useSiteCodename();
+  const router = useRouter();
   console.log(mainColorBorderClass[siteCodename]);
 
   return (
@@ -80,7 +81,8 @@ const DropdownMenuItems: FC<DropdownMenuProps> = props => {
           key={link.system.codename}
           {...link.elements.openInANewWindow.value[0] ? { rel: "noopener noreferrer", target: "_blank" } : {}}
           href={link.elements.externalLink.value ? link.elements.externalLink.value : "/" + link.elements.pageLink.linkedItems[0].elements.url.value}
-          className={`block p-3 bg-gray-200 border-l-transparent border-l-8 hover:border-l-8 hover:border-l-gray-500`}
+          className={`${"/" + link.elements.pageLink.linkedItems[0]?.elements.url.value === router.asPath ? "border-l-gray-500 cursor-default" : "border-l-transparent"}
+          block p-3 bg-gray-200 border-l-transparent border-l-8 hover:border-l-8 hover:border-l-gray-500`}
         >
           <div className="font-semibold">{link.elements.label.value}</div>
           <span className="text-sm text-gray-500">{link.elements.caption.value}</span>
