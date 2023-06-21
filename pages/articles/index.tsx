@@ -8,7 +8,7 @@ import { PerCollectionCodenames } from "../../lib/routing";
 import { Content } from "../../components/shared/Content";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { ArticlePageSize } from "../../lib/constants/paging";
+import { ArticlePageSize } from "../../lib/constants/page";
 import { ArticleItem } from "../../components/listingPage/ArticleItem";
 import { mainColorBgClass } from "../../lib/constants/colors";
 import { useSiteCodename } from "../../components/shared/siteCodenameContext";

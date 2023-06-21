@@ -10,7 +10,7 @@ import { Block_Navigation, WSL_Page, Product } from "../../models";
 import { useRouter } from "next/router";
 import { taxonomies } from "../../models/project"
 import { ParsedUrlQueryInput } from "querystring";
-import { ProductsPageSize } from "../../lib/constants/paging";
+import { ProductsPageSize } from "../../lib/constants/page";
 import { ProductItem } from "../../components/listingPage/ProductItem";
 import { mainColorBgClass } from "../../lib/constants/colors";
 

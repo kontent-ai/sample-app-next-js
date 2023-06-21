@@ -6,6 +6,7 @@ import { getArticlesForListing, getItemByCodename, getSiteMenu } from "../../../
 import { siteCodename } from "../../../lib/utils/env";
 import { PerCollectionCodenames } from "../../../lib/routing";
 import ArticlesPage from "..";
+import { ArticlePageSize, notFoundRedirect } from "../../../lib/constants/page";
 
 type Props = Readonly<{
   siteCodename: ValidCollectionCodename;
@@ -16,7 +17,7 @@ type Props = Readonly<{
 }>;
 
 const ArticlesPagingPage: FC<Props> = props => {
-  return <ArticlesPage {...props}/>
+  return <ArticlesPage {...props} />
 }
 
 export const getStaticProps: GetStaticProps<Props> = async context => {
@@ -29,15 +30,32 @@ export const getStaticProps: GetStaticProps<Props> = async context => {
   const pageURLParameter = context.params?.page;
   const pageNumber = !pageURLParameter || isNaN(+pageURLParameter) ? 1 : +pageURLParameter;
 
+  if (pageNumber < 1) {
+    return notFoundRedirect;
+  }
+
+  if (pageNumber === 1) {
+    return {
+      redirect: {
+        destination: '/articles',
+        permanent: true,
+      },
+    }
+  }
+
   const articles = await getArticlesForListing(!!context.preview, pageNumber);
   const siteMenu = await getSiteMenu(!!context.preview);
   const page = await getItemByCodename<WSL_Page>(pageCodename, !!context.preview);
 
   if (page === null) {
-    return {
-      notFound: true
-    };
+    return notFoundRedirect;
   };
+
+  const pageCount = Math.ceil((articles.pagination.totalCount ?? 0) / ArticlePageSize);
+  
+  if (pageNumber > pageCount) {
+    return notFoundRedirect;
+  }
 
   return {
     props: {
@@ -51,10 +69,12 @@ export const getStaticProps: GetStaticProps<Props> = async context => {
 };
 
 export const getStaticPaths = async () => {
-    return {
-      paths: Array.from({ length: 1 }).map((_, i) => ({params:{page: (i+2).toString()} })),
-      fallback: 'blocking',
-    }
+  return {
+    // index.tsx and page number 2 is generated statically
+    // other pages are generated on request using ISR
+    paths: (siteCodename === 'ficto_healthtech_surgical' ? [2] : []).map(pageNumber => ({ params: { page: pageNumber.toString() } })),
+    fallback: 'blocking',
   }
+}
 
 export default ArticlesPagingPage;

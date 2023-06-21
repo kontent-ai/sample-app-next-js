@@ -8,6 +8,7 @@ import { getArticleBySlug, getArticlesForListing, getSiteMenu } from "../../lib/
 import { RichTextElement } from "../../components/shared/RichTextContent";
 import { mainColorBgClass } from "../../lib/constants/colors";
 import { siteCodename } from "../../lib/utils/env";
+import { notFoundRedirect } from "../../lib/constants/page";
 
 type Props = Readonly<{
   article: Article;
@@ -29,12 +30,7 @@ const ArticlePage: FC<Props> = props => (
   </AppPage>
 );
 
-const notFoundRedirect = {
-  redirect: {
-    permanent: false,
-    destination: "/404",
-  },
-};
+
 
 export const getStaticProps: GetStaticProps<Props, { slug: string }> = async context => {
   const siteMenu = await getSiteMenu(!!context.preview);
