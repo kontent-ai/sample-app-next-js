@@ -70,13 +70,19 @@ export const getStaticPaths = async () => {
   const totalCount = await getArticlesCount(false);
   const pagesNumber = Math.ceil((totalCount ?? 0)  / ArticlePageSize);
 
-  const getPagesRange = (n: number) => 
-    n < 2 ? [] : Array.from({length: n - 1}).map((_, i) => i + 2)
+  const getNextPagesRange = (lastPage: number, firstPage: number = 2) => {
+    if(firstPage < 1 || lastPage < firstPage) {
+      return [];
+    }
+
+    const rangeLength = lastPage - firstPage + 1; // for lastPage = 3 and firstPage = 2 => [2, 3]
+
+    return Array.from({length: rangeLength}).map((_, index) => index + firstPage)
+  }
 
   return {
-    // index.tsx and page number 2 is generated statically
-    // other pages are generated on request using ISR
-    paths: getPagesRange(pagesNumber).map(pageNumber => ({ params: { page: pageNumber.toString() } })),
+    // pre-generates all the pages for paging.
+    paths: getNextPagesRange(pagesNumber).map(pageNumber => ({ params: { page: pageNumber.toString() } })),
     fallback: 'blocking',
   }
 }
