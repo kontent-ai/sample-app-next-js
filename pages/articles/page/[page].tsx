@@ -2,7 +2,7 @@ import { FC } from "react";
 import { Article, Block_Navigation, WSL_Page } from "../../../models";
 import { ValidCollectionCodename } from "../../../lib/types/perCollection";
 import { GetStaticProps } from "next";
-import { getArticlesForListing, getItemByCodename, getSiteMenu } from "../../../lib/kontentClient";
+import { getArticlesCount, getArticlesForListing, getItemByCodename, getSiteMenu } from "../../../lib/kontentClient";
 import { siteCodename } from "../../../lib/utils/env";
 import { PerCollectionCodenames } from "../../../lib/routing";
 import ArticlesPage from "..";
@@ -69,10 +69,16 @@ export const getStaticProps: GetStaticProps<Props> = async context => {
 };
 
 export const getStaticPaths = async () => {
+  const totalCount = await getArticlesCount(false);
+  const pagesNumber = Math.ceil((totalCount ?? 0)  / ArticlePageSize);
+
+  const getPagesRange = (n: number) => 
+    n < 2 ? [] : Array.from({length: n-1}).map((x, i) => i + 2)
+
   return {
     // index.tsx and page number 2 is generated statically
     // other pages are generated on request using ISR
-    paths: (siteCodename === 'ficto_healthtech_surgical' ? [2] : []).map(pageNumber => ({ params: { page: pageNumber.toString() } })),
+    paths: getPagesRange(pagesNumber).map(pageNumber => ({ params: { page: pageNumber.toString() } })),
     fallback: 'blocking',
   }
 }

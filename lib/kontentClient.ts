@@ -151,6 +151,19 @@ export const getArticlesForListing = (usePreview: boolean, page?: number, pageSi
       .then(res => res.data);
   }
 
+  export const getArticlesCount = (usePreview: boolean) => deliveryClient
+      .items<Article>()
+      .type(contentTypes.article.codename)
+      .collection(siteCodename)
+      .elementsParameter([])
+      .queryConfig({
+        usePreviewMode: usePreview,
+      })
+      .limitParameter(1)
+      .includeTotalCountParameter()
+      .toPromise()
+      .then(res => res.data.pagination.totalCount)
+
 export const getArticleBySlug = (slug: string, usePreview: boolean) =>
   deliveryClient
     .items<Article>()
