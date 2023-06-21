@@ -30,11 +30,11 @@ export const getStaticProps: GetStaticProps<Props> = async context => {
   const pageURLParameter = context.params?.page;
   const pageNumber = !pageURLParameter || isNaN(+pageURLParameter) ? 1 : +pageURLParameter;
 
-  if (pageNumber < 1) {
+  if(pageNumber < 0){
     return notFoundRedirect;
   }
 
-  if (pageNumber === 1) {
+  if (pageNumber === 1 || pageNumber === 0) {
     return {
       redirect: {
         destination: '/articles',
@@ -50,10 +50,8 @@ export const getStaticProps: GetStaticProps<Props> = async context => {
   if (page === null) {
     return notFoundRedirect;
   };
-
-  const pageCount = Math.ceil((articles.pagination.totalCount ?? 0) / ArticlePageSize);
   
-  if (pageNumber > pageCount) {
+  if (articles.items.length === 0) {
     return notFoundRedirect;
   }
 
@@ -73,7 +71,7 @@ export const getStaticPaths = async () => {
   const pagesNumber = Math.ceil((totalCount ?? 0)  / ArticlePageSize);
 
   const getPagesRange = (n: number) => 
-    n < 2 ? [] : Array.from({length: n-1}).map((x, i) => i + 2)
+    n < 2 ? [] : Array.from({length: n - 1}).map((_, i) => i + 2)
 
   return {
     // index.tsx and page number 2 is generated statically
