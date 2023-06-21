@@ -8,7 +8,6 @@ import { getArticleBySlug, getArticlesForListing, getSiteMenu } from "../../lib/
 import { RichTextElement } from "../../components/shared/RichTextContent";
 import { mainColorBgClass } from "../../lib/constants/colors";
 import { siteCodename } from "../../lib/utils/env";
-import { notFoundRedirect } from "../../lib/constants/page";
 
 type Props = Readonly<{
   article: Article;
@@ -30,18 +29,18 @@ const ArticlePage: FC<Props> = props => (
   </AppPage>
 );
 
-
-
 export const getStaticProps: GetStaticProps<Props, { slug: string }> = async context => {
   const siteMenu = await getSiteMenu(!!context.preview);
   const slug = typeof context.params?.slug === "string" ? context.params.slug : "";
+
   if (!slug) {
-    return notFoundRedirect;
+    return { notFound: true };
   }
 
   const article = await getArticleBySlug(slug, !!context.preview);
+
   if (!article) {
-    return notFoundRedirect;
+    return { notFound: true };
   }
 
   return {
