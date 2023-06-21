@@ -11,7 +11,7 @@ export const Footer: FC<Props> = props => {
 
   return (
     <footer className={`${mainColorBgClass[siteCodename]} w-screen`}>
-      <div className="flex gap-4 items-center mx-auto max-w-screen-xl md:h-16">
+      <div className="flex items-center mx-auto max-w-screen-xl md:h-16">
         <p>Ficto Healthtech - Leading the way in medical advancements...</p>
       </div>
     </footer>
