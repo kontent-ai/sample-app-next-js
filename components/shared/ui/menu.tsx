@@ -72,7 +72,6 @@ const DropdownButton: FC<Props> = props => {
 const DropdownMenuItems: FC<DropdownMenuProps> = props => {
   const siteCodename = useSiteCodename();
   const router = useRouter();
-  console.log(mainColorBorderClass[siteCodename]);
 
   return (
     <>
