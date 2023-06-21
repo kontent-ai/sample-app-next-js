@@ -95,19 +95,19 @@ export const getProductsForListing = (usePreview: boolean, page?: number, catego
     })
     .includeTotalCountParameter()
     .limitParameter(pageSize)
-    
-    if(page){
-      query.skipParameter((page - 1) * pageSize)
-    };
 
-    if(categories){
-      query.anyFilter(`elements.${contentTypes.product.elements.category.codename}`, categories);
-    }
+  if (page) {
+    query.skipParameter((page - 1) * pageSize)
+  };
 
-    return query
-      .toPromise()
-      .then(res => res.data);
+  if (categories) {
+    query.anyFilter(`elements.${contentTypes.product.elements.category.codename}`, categories);
   }
+
+  return query
+    .toPromise()
+    .then(res => res.data);
+}
 
 export const getProductSlugs = () =>
   deliveryClient
@@ -140,16 +140,17 @@ export const getArticlesForListing = (usePreview: boolean, page?: number, pageSi
     })
     .limitParameter(pageSize)
 
-    if(page){
-      query.skipParameter((page - 1) * pageSize)
-    };
+  if (page) {
+    query.skipParameter((page - 1) * pageSize)
+  };
 
-    query.includeTotalCountParameter();
+  query.includeTotalCountParameter();
 
-    return query
-      .toPromise()
-      .then(res => res.data);
-  }
+  return query
+    .toPromise()
+    .then(res => res.data);
+}
+
 
 export const getArticleBySlug = (slug: string, usePreview: boolean) =>
   deliveryClient
@@ -164,6 +165,27 @@ export const getArticleBySlug = (slug: string, usePreview: boolean) =>
 
 export const getSiteMenu = async (usePreview: boolean) => {
   const res = await getItemByCodename<WSL_WebSpotlightRoot>(perCollectionRootItems, usePreview);
-  
+
   return res?.elements.navigation.linkedItems[0];
 }
+
+export const getItemsCount = (usePreview: boolean, contentTypeCodename?: string) => {
+  const query = deliveryClient
+    .items()
+    .collection(siteCodename)
+    .elementsParameter([])
+    .queryConfig({
+      usePreviewMode: usePreview,
+    })
+    .limitParameter(1)
+    .includeTotalCountParameter();
+
+  if (contentTypeCodename) {
+    query.type(contentTypeCodename);
+  }
+
+  return query
+    .toPromise()
+    .then(res => res.data.pagination.totalCount)
+}
+

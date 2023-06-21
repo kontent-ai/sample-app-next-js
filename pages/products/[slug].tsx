@@ -36,25 +36,18 @@ export const getStaticPaths: GetStaticPaths = () => {
     }));
 }
 
-const nonPermanentHomeRedirect: { redirect: Redirect } = {
-  redirect: {
-    permanent: false,
-    destination: '/404'
-  }
-};
-
 export const getStaticProps: GetStaticProps<Props, IParams> = async (context) => {
   const slug = context.params?.slug;
 
   if (!slug) {
-    return nonPermanentHomeRedirect;
+    return { notFound: true };
   };
 
   const product = await getProductDetail(slug, !!context.preview);
   const siteMenu = await getSiteMenu(!!context.preview);
 
   if (!product) {
-    return nonPermanentHomeRedirect;
+    return { notFound: true };
   }
 
   return {

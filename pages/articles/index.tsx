@@ -123,9 +123,7 @@ export const getStaticProps: GetStaticProps<Props> = async context => {
   const page = await getItemByCodename<WSL_Page>(pageCodename, !!context.preview);
 
   if (page === null) {
-    return {
-      notFound: true
-    };
+    return { notFound: true };
   };
 
   return {

@@ -29,23 +29,18 @@ const ArticlePage: FC<Props> = props => (
   </AppPage>
 );
 
-const notFoundRedirect = {
-  redirect: {
-    permanent: false,
-    destination: "/404",
-  },
-};
-
 export const getStaticProps: GetStaticProps<Props, { slug: string }> = async context => {
   const siteMenu = await getSiteMenu(!!context.preview);
   const slug = typeof context.params?.slug === "string" ? context.params.slug : "";
+
   if (!slug) {
-    return notFoundRedirect;
+    return { notFound: true };
   }
 
   const article = await getArticleBySlug(slug, !!context.preview);
+
   if (!article) {
-    return notFoundRedirect;
+    return { notFound: true };
   }
 
   return {
