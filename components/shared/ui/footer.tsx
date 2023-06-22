@@ -10,8 +10,10 @@ export const Footer: FC<Props> = props => {
   const siteCodename = useSiteCodename();
 
   return (
-    <footer className={`w-full grow-0 h-16 px-10 flex flex-auto shrink-0 justify-end items-center ${mainColorBgClass[siteCodename]} ${props.className ?? ""}`}>
-      <p>Ficto Healthtech inc.</p>
+    <footer className={`${mainColorBgClass[siteCodename]} w-screen`}>
+      <div className="flex items-center mx-auto max-w-screen-xl h-16 px-4">
+        <p>Ficto Healthtech - Leading the way in medical advancements...</p>
+      </div>
     </footer>
   );
 }
