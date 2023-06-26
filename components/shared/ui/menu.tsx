@@ -34,7 +34,7 @@ const MenuList: FC<MenuListProps> = props => {
   const siteCodename = useSiteCodename();
 
   return (
-    <ul className={`${props.smallMenuActive ? "flex" : "hidden"} flex-col md:flex md:gap-4 font-medium md:flex-row h-full`}>
+    <ul className={`${props.smallMenuActive ? "flex" : "hidden"} flex-col md:flex font-medium md:flex-row h-full`}>
       {props.items.map((link, i) => (
         <li key={i} className={`${isCurrentNavigationItemActive(link, router) ? "" : "border-l-transparent border-t-transparent"}
         border-gray-500 border-l-8 border-t-0 md:border-t-8 md:border-l-0 h-full ${mainColorBgClass[siteCodename]} group grow`} onClick={() => props.handleClick(i)}>
