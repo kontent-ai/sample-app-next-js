@@ -23,7 +23,7 @@ export const GenericActionComponent: FC<Props> = props => {
             src={image.url}
             alt={props.item.elements.title.value}
             fill
-            className="object-cover"
+            className="object-cover m-0"
           />
         </div>
       )}
