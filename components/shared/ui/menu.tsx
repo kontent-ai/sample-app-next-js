@@ -13,9 +13,10 @@ type Props = Readonly<{
   item: Link;
 }>
 
-type MenuItemsProps = Readonly<{
+type MenuListProps = Readonly<{
   items: Block_Navigation[];
   activeMenu: string | number;
+  smallMenuActive: boolean
   handleClick: (menuId: string | number) => void;
 }>
 
@@ -23,14 +24,20 @@ type DropdownMenuProps = Readonly<{
   links: ReadonlyArray<Link>;
 }>;
 
-const MenuItems: FC<MenuItemsProps> = props => {
-  const siteCodename = useSiteCodename();
+const isCurrentNavigationItemActive = (navigation: Block_Navigation) => {
   const router = useRouter();
 
+  return "/" + navigation.elements.pageLink.linkedItems[0]?.elements.url.value === router.asPath;
+}
+
+
+const MenuList: FC<MenuListProps> = props => {
+  const siteCodename = useSiteCodename();
+
   return (
-    <>
+    <ul className={`${props.smallMenuActive ? "flex" : "hidden"} flex-col md:flex md:gap-4 font-medium md:flex-row h-full`}>
       {props.items.map((link, i) => (
-        <li key={i} className={`${"/" + link.elements.pageLink.linkedItems[0]?.elements.url.value === router.asPath ? "" : "border-l-transparent border-t-transparent"}
+        <li key={i} className={`${isCurrentNavigationItemActive(link) ? "" : "border-l-transparent border-t-transparent"}
         border-gray-500 border-l-8 border-t-0 md:border-t-8 md:border-l-0 h-full ${mainColorBgClass[siteCodename]} group grow`} onClick={() => props.handleClick(i)}>
           {link.elements.subitems.value.length > 0 ? (
             <div className={`${i === props.activeMenu ? "bg-white " : ""} md:hover:bg-white h-full`}>
@@ -38,9 +45,7 @@ const MenuItems: FC<MenuItemsProps> = props => {
               <div
                 className={`${i === props.activeMenu ? "block" : "hidden"} md:group-hover:block absolute z-50 left-0 shadow-sm bg-white border-gray-200 w-full`}
               >
-                <div className="grid gap-2 max-w-screen-xl px-4 py-5 mx-auto text-gray-900 sm:grid-cols-2 md:grid-cols-3 md:px-6">
-                  <DropdownMenuItems links={link.elements.subitems.linkedItems} />
-                </div>
+                <DropdownMenuItems links={link.elements.subitems.linkedItems} />
               </div>
             </div>
           ) : (
@@ -54,7 +59,7 @@ const MenuItems: FC<MenuItemsProps> = props => {
           )}
         </li>
       ))}
-    </>
+    </ul>
   );
 }
 
@@ -70,23 +75,21 @@ const DropdownButton: FC<Props> = props => {
 }
 
 const DropdownMenuItems: FC<DropdownMenuProps> = props => {
-  const router = useRouter();
-
   return (
-    <>
+    <div className="grid gap-2 max-w-screen-xl px-4 py-5 mx-auto text-gray-900 sm:grid-cols-2 md:grid-cols-3 md:px-6">
       {props.links.map(link => (
         <Link
           key={link.system.codename}
           {...link.elements.openInANewWindow.value[0] ? { rel: "noopener noreferrer", target: "_blank" } : {}}
           href={link.elements.externalLink.value ? link.elements.externalLink.value : "/" + link.elements.pageLink.linkedItems[0].elements.url.value}
-          className={`${"/" + link.elements.pageLink.linkedItems[0]?.elements.url.value === router.asPath ? "border-l-gray-500 cursor-default" : "border-l-transparent"}
-          block p-3 bg-gray-200 border-l-transparent border-l-8 hover:border-l-8 hover:border-l-gray-500`}
+          className={`${isCurrentNavigationItemActive(link) ? "border-l-gray-500 cursor-default " : "border-l-transparent hover:border-l-gray-500"}
+          block p-3 bg-gray-200 border-l-8`}
         >
           <div className="font-semibold">{link.elements.label.value}</div>
           <span className="text-sm text-gray-500">{link.elements.caption.value}</span>
         </Link>
       ))}
-    </>
+    </div>
   )
 }
 
@@ -119,9 +122,7 @@ export const Menu: FC<Props> = props => {
             </button>
           </div>
           <div>
-            <ul className={`${smallMenuActive ? "flex" : "hidden"} flex-col md:flex md:gap-4 font-medium md:flex-row h-full`}>
-              <MenuItems items={props.item.elements.subitems.linkedItems} handleClick={handleMenuClick} activeMenu={activeMenu} />
-            </ul>
+            <MenuList smallMenuActive={smallMenuActive} items={props.item.elements.subitems.linkedItems} handleClick={handleMenuClick} activeMenu={activeMenu} />
           </div>
         </div>
       </div>
