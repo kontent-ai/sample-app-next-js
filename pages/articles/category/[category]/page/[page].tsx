@@ -1,12 +1,12 @@
 import { FC } from "react";
-import { Article, Block_Navigation, WSL_Page, contentTypes } from "../../../models";
-import { ValidCollectionCodename } from "../../../lib/types/perCollection";
+import { Article, Block_Navigation, WSL_Page, contentTypes } from "../../../../../models";
+import { ValidCollectionCodename } from "../../../../../lib/types/perCollection";
 import { GetStaticProps } from "next";
-import { getItemsCount, getArticlesForListing, getItemByCodename, getSiteMenu } from "../../../lib/kontentClient";
-import { siteCodename } from "../../../lib/utils/env";
-import { PerCollectionCodenames } from "../../../lib/routing";
+import { getItemsCount, getArticlesForListing, getItemByCodename, getSiteMenu } from "../../../../../lib/kontentClient";
+import { siteCodename } from "../../../../../lib/utils/env";
+import { PerCollectionCodenames } from "../../../../../lib/routing";
 import ArticlesPage from "..";
-import { ArticlePageSize } from "../../../lib/constants/paging";
+import { ArticlePageSize } from "../../../../../lib/constants/paging";
 
 type Props = Readonly<{
   siteCodename: ValidCollectionCodename;
@@ -29,6 +29,8 @@ export const getStaticProps: GetStaticProps<Props> = async context => {
 
   const pageURLParameter = context.params?.page;
   const pageNumber = !pageURLParameter || isNaN(+pageURLParameter) ? 1 : +pageURLParameter;
+  const categoryParameter = context.params?.category;
+  console.log(categoryParameter)
 
   if (pageNumber < 0) {
     return { notFound: true }
@@ -37,7 +39,7 @@ export const getStaticProps: GetStaticProps<Props> = async context => {
   if (pageNumber === 1 || pageNumber === 0) {
     return {
       redirect: {
-        destination: '/articles',
+        destination: `/articles`,
         permanent: true,
       },
     }
@@ -67,21 +69,24 @@ export const getStaticPaths = async () => {
   const totalCount = await getItemsCount(false, contentTypes.article.codename);
   const pagesNumber = Math.ceil((totalCount ?? 0) / ArticlePageSize);
 
-  const getNextPagesRange = (lastPage: number, firstPage: number = 2) => {
+  const getNextPagesRange = (category: string, lastPage: number, firstPage: number = 2) => {
     if (firstPage < 1 || lastPage < firstPage) {
       return [];
     }
 
-    const rangeLength = lastPage - firstPage + 1; // for lastPage = 3 and firstPage = 2 => [2, 3]
+    const rangeLength = lastPage - firstPage + 1;
 
-    return Array.from({ length: rangeLength }).map((_, index) => index + firstPage)
-  }
+    return Array.from({ length: rangeLength }).map((_, index) => index + firstPage).map(pageNumber => ({
+      params: { page: pageNumber.toString(), category },
+    }));
+  };
 
   return {
     // pre-generates all the pages for paging.
-    paths: getNextPagesRange(pagesNumber).map(pageNumber => ({ params: { page: pageNumber.toString() } })),
+    paths: getNextPagesRange('category', pagesNumber),
     fallback: 'blocking',
-  }
-}
+  };
+};
+
 
 export default ArticlesPagingPage;

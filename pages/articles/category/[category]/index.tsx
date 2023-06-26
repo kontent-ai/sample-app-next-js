@@ -1,20 +1,20 @@
-import { FC, useEffect, useState } from "react";
-import { Article, Block_Navigation, WSL_Page } from "../../models";
-import { AppPage } from "../../components/shared/ui/appPage";
-import { ValidCollectionCodename } from "../../lib/types/perCollection";
-import { GetStaticProps } from "next";
-import { getArticlesForListing, getItemByCodename, getSiteMenu } from "../../lib/kontentClient";
-import { PerCollectionCodenames } from "../../lib/routing";
-import { Content } from "../../components/shared/Content";
+import { FC, useEffect, useMemo, useState } from "react";
+import { Article, Block_Navigation, WSL_Page } from "../../../../models";
+import { AppPage } from "../../../../components/shared/ui/appPage";
+import { ValidCollectionCodename } from "../../../../lib/types/perCollection";
+import { GetStaticPaths, GetStaticProps } from "next";
+import { getArticlesForListing, getItemByCodename, getSiteMenu } from "../../../../lib/kontentClient";
+import { PerCollectionCodenames } from "../../../../lib/routing";
+import { Content } from "../../../../components/shared/Content";
 import Link from "next/link";
 import { NextRouter, useRouter } from "next/router";
-import { ArticlePageSize } from "../../lib/constants/paging";
-import { ArticleItem } from "../../components/listingPage/ArticleItem";
-import { mainColorBgClass } from "../../lib/constants/colors";
-import { useSiteCodename } from "../../components/shared/siteCodenameContext";
-import { siteCodename } from "../../lib/utils/env";
-import { taxonomies } from "../../models";
-import { changeUrlQueryString } from "../../lib/utils/changeUrlQueryString";
+import { ArticlePageSize } from "../../../../lib/constants/paging";
+import { ArticleItem } from "../../../../components/listingPage/ArticleItem";
+import { mainColorBgClass } from "../../../../lib/constants/colors";
+import { useSiteCodename } from "../../../../components/shared/siteCodenameContext";
+import { siteCodename } from "../../../../lib/utils/env";
+import { taxonomies } from "../../../../models";
+import { changeUrlQueryString } from "../../../../lib/utils/changeUrlQueryString";
 
 type Props = Readonly<{
   siteCodename: ValidCollectionCodename;
@@ -34,7 +34,7 @@ type LinkButtonProps = {
 }
 
 type FilterOptionProps = Readonly<{
-  options: { [key: string]:  string };
+  options: { [key: string]: string };
   router: NextRouter;
 }>;
 
@@ -56,26 +56,28 @@ const LinkButton: FC<LinkButtonProps> = props => {
   )
 }
 
+const getFilterOptions = () =>
+  Object.fromEntries(Object.entries(taxonomies.article_type.terms).map(([codename, obj]) => [codename, obj.name]));
+
 const FilterOptions: FC<FilterOptionProps> = ({ options, router }) => {
   const [activeFilter, setActiveFilter] = useState<string>();
-  const handleButtonClick = (key: string) => {
-    setActiveFilter(key)
-    changeUrlQueryString({ category: [key] }, router);
+  const handleButtonClick = (category: string) => {
+    router.replace(`/articles/category/${category}`, undefined, {scroll: false, shallow: true});
+    setActiveFilter(category);
   };
 
   const clearFilters = () => {
-    setActiveFilter(undefined);
     changeUrlQueryString({}, router);
-  }
-
-  useEffect(() => console.log(activeFilter),[activeFilter])
+  };
 
   return (
     <div className={"flex flex-row pt-10"}>
       {Object.entries(options).map(([key, value]) => (
         <div key={key} className="mr-4" onClick={() => handleButtonClick(key)}>
-          <input id={key} checked={activeFilter === key} type="checkbox" name="article-type" className="hidden peer" />
-          <label htmlFor={key} className="inline-flex items-center justify-between w-full px-6 py-1 bg-white border border-gray-200 rounded-3xl cursor-pointer peer-checked:border-blue-300 peer-checked:bg-blue-300 hover:bg-gray-100">{value}</label>
+          <Link href={`/articles/category/${key}`}>
+            <input id={key} checked={activeFilter === key} type="checkbox" name="article-type" className="hidden peer" />
+            <label htmlFor={key} className="inline-flex items-center justify-between w-full px-6 py-1 bg-white border border-gray-200 rounded-3xl cursor-pointer peer-checked:border-blue-300 peer-checked:bg-blue-300 hover:bg-gray-100">{value}</label>
+          </Link>
         </div>
       ))}
       <button onClick={clearFilters} className={`px-6 py-1 ${activeFilter === undefined ? "invisible" : ""} bg-blue-600 text-white font-bold rounded-3xl cursor-pointer`}>Clear</button>
@@ -83,11 +85,24 @@ const FilterOptions: FC<FilterOptionProps> = ({ options, router }) => {
   );
 };
 
+
 const ArticlesPage: FC<Props> = props => {
   const router = useRouter();
   const page = typeof router.query.page === 'string' ? + router.query.page : undefined;
+  const category = typeof router.query.category === 'string' ? router.query.category : "all";
   const pageCount = Math.ceil((props.totalCount ?? 0) / ArticlePageSize);
-  const filterOptions = Object.fromEntries(Object.entries(taxonomies.article_type.terms).map(([codename, obj]) => [codename, obj.name]));
+  const filterOptions = getFilterOptions();
+  const filteredArticles = useMemo(() => {
+    if (category === 'all') {
+      return props.articles;
+    } else {
+      return props.articles.filter(
+        article => article.elements.articleType.value[0].codename === category
+      );
+    }
+  }, [props.articles, category]);
+  
+
 
   return <AppPage siteCodename={props.siteCodename} siteMenu={props.siteMenu}>
     {props.page.elements.content.linkedItems.map(piece => (
@@ -95,9 +110,10 @@ const ArticlesPage: FC<Props> = props => {
     ))}
     <div className="px-4 sm:px-0">
       <h2 className="m-0 mt-16">Latest Articles</h2>
-      <FilterOptions options={filterOptions} router={router}/>
+      <FilterOptions options={filterOptions} router={router} />
       <ul className="w-full grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 place-items-center list-none gap-5 pt-4 pl-0 justify-center">
-        {props.articles.map(a => (
+        {filteredArticles.map(a => (
+          a.elements.articleType.value[0].codename &&
           <ArticleItem
             key={a.system.id}
             title={a.elements.title.value}
@@ -115,7 +131,7 @@ const ArticlesPage: FC<Props> = props => {
           <li>
             <LinkButton
               text="Previous"
-              href={!page || page === 2 ? '/articles' : `${page - 1}`}
+              href={!page || page === 2 ? `/articles/category/${category}` : `/articles/category/${category}/page/${page - 1}`}
               disabled={!page}
               roundLeft
             />
@@ -124,14 +140,14 @@ const ArticlesPage: FC<Props> = props => {
           {Array.from({ length: pageCount }).map((_, i) => (<li key={i}>
             <LinkButton
               text={`${i + 1}`}
-              href={i === 0 ? '/articles' : `/articles/page/${i + 1}`}
+              href={i === 0 ? `/articles/category/${category}` : `/articles/category/${category}/page/${i + 1}`}
               highlight={(page ?? 1) === i + 1}
             />
           </li>))}
           <li>
             <LinkButton
               text="Next"
-              href={`/articles/page/${page ? page + 1 : 2}`}
+              href={`/articles/category/${category}/page/${page ? page + 1 : 2}`}
               disabled={(page ?? 1) === pageCount}
               roundRight
             />
@@ -143,6 +159,16 @@ const ArticlesPage: FC<Props> = props => {
   </AppPage>
 }
 
+export const getStaticPaths: GetStaticPaths = async () => {
+  const filterOptions = getFilterOptions();
+  const categories = Object.keys(filterOptions);
+  const paths = categories.map((category) => ({
+    params: { category },
+  }));
+
+  return { paths, fallback: "blocking" };
+};
+
 export const getStaticProps: GetStaticProps<Props> = async context => {
   const pageCodename: PerCollectionCodenames = {
     ficto_healthtech: "articles",
@@ -150,6 +176,7 @@ export const getStaticProps: GetStaticProps<Props> = async context => {
     ficto_healthtech_surgical: "articles_surgical"
   };
   const pageURLParameter = context.params?.page;
+  const category = context.params?.category;
   const pageNumber = !pageURLParameter || isNaN(+pageURLParameter) ? 1 : +pageURLParameter;
   const articles = await getArticlesForListing(!!context.preview, pageNumber);
   const siteMenu = await getSiteMenu(!!context.preview);
