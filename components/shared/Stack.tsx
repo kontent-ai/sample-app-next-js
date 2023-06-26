@@ -12,8 +12,6 @@ type Props = Readonly<{
 
 export const StackComponent: FC<Props> = props => {
   const [actionIndex, setActionIndex] = useState(0);
-  const siteCodename = useSiteCodename();
-
   const currentAction = props.item.elements.stack.linkedItems[actionIndex];
 
   if (!currentAction) {
