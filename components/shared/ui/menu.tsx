@@ -5,7 +5,7 @@ import { useSiteCodename } from "../siteCodenameContext";
 import { Block_Navigation } from "../../../models";
 import { createItemSmartLink } from "../../../lib/utils/smartLinkUtils";
 import { ChevronDownIcon, Bars3Icon } from "@heroicons/react/24/solid";
-import { useRouter } from "next/router";
+import { NextRouter, Router, useRouter } from "next/router";
 
 type Link = Readonly<Block_Navigation>;
 
@@ -24,20 +24,19 @@ type DropdownMenuProps = Readonly<{
   links: ReadonlyArray<Link>;
 }>;
 
-const isCurrentNavigationItemActive = (navigation: Block_Navigation) => {
-  const router = useRouter();
-
-  return "/" + navigation.elements.pageLink.linkedItems[0]?.elements.url.value === router.asPath;
-}
+const isCurrentNavigationItemActive = (navigation: Block_Navigation, router: NextRouter) => (
+  "/" + navigation.elements.pageLink.linkedItems[0]?.elements.url.value === router.asPath
+);
 
 
 const MenuList: FC<MenuListProps> = props => {
+  const router = useRouter();
   const siteCodename = useSiteCodename();
 
   return (
     <ul className={`${props.smallMenuActive ? "flex" : "hidden"} flex-col md:flex md:gap-4 font-medium md:flex-row h-full`}>
       {props.items.map((link, i) => (
-        <li key={i} className={`${isCurrentNavigationItemActive(link) ? "" : "border-l-transparent border-t-transparent"}
+        <li key={i} className={`${isCurrentNavigationItemActive(link, router) ? "" : "border-l-transparent border-t-transparent"}
         border-gray-500 border-l-8 border-t-0 md:border-t-8 md:border-l-0 h-full ${mainColorBgClass[siteCodename]} group grow`} onClick={() => props.handleClick(i)}>
           {link.elements.subitems.value.length > 0 ? (
             <div className={`${i === props.activeMenu ? "bg-white " : ""} md:hover:bg-white h-full`}>
@@ -75,6 +74,8 @@ const DropdownButton: FC<Props> = props => {
 }
 
 const DropdownMenuItems: FC<DropdownMenuProps> = props => {
+  const router = useRouter();
+
   return (
     <div className="grid gap-2 max-w-screen-xl px-4 py-5 mx-auto text-gray-900 sm:grid-cols-2 md:grid-cols-3 md:px-6">
       {props.links.map(link => (
@@ -82,7 +83,7 @@ const DropdownMenuItems: FC<DropdownMenuProps> = props => {
           key={link.system.codename}
           {...link.elements.openInANewWindow.value[0] ? { rel: "noopener noreferrer", target: "_blank" } : {}}
           href={link.elements.externalLink.value ? link.elements.externalLink.value : "/" + link.elements.pageLink.linkedItems[0].elements.url.value}
-          className={`${isCurrentNavigationItemActive(link) ? "border-l-gray-500 cursor-default " : "border-l-transparent hover:border-l-gray-500"}
+          className={`${isCurrentNavigationItemActive(link, router) ? "border-l-gray-500 cursor-default " : "border-l-transparent hover:border-l-gray-500"}
           block p-3 bg-gray-200 border-l-8`}
         >
           <div className="font-semibold">{link.elements.label.value}</div>
