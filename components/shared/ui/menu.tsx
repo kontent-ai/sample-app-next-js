@@ -70,7 +70,6 @@ const DropdownButton: FC<Props> = props => {
 }
 
 const DropdownMenuItems: FC<DropdownMenuProps> = props => {
-  const siteCodename = useSiteCodename();
   const router = useRouter();
 
   return (
