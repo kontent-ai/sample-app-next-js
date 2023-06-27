@@ -11,7 +11,7 @@ type Props = Readonly<{
 
 export const HeroImage: FC<Props> = props => (
   <figure
-    className={`relative m-0 w-full h-[36rem] ${props.className ?? ""}`}
+    className={`relative m-0 w-full h-screen md:h-[36rem] ${props.className ?? ""}`}
     {...createItemSmartLink(props.itemId)}
   >
     <Image
@@ -21,7 +21,7 @@ export const HeroImage: FC<Props> = props => (
       className="object-cover"
       priority
     />
-    <div className="relative w-fit h-full flex flex-col items-center md:items-start justify-end pb-12 px-6">
+    <div className="relative w-fit h-full flex flex-col items-center md:items-start justify-end pb-32 md:pb-12 px-6">
         {props.children}
     </div>
   </figure>

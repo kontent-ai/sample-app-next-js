@@ -4,7 +4,7 @@ import { Article, Block_Navigation } from "../../models"
 import { AppPage } from "../../components/shared/ui/appPage";
 import { HeroImage } from "../../components/landingPage/ui/heroImage";
 import { GetStaticPaths, GetStaticProps } from "next";
-import { getArticleBySlug, getArticlesForListing, getSiteMenu } from "../../lib/kontentClient";
+import { getAllArticles, getArticleBySlug, getArticlesForListing, getSiteMenu } from "../../lib/kontentClient";
 import { RichTextElement } from "../../components/shared/RichTextContent";
 import { mainColorBgClass } from "../../lib/constants/colors";
 import { siteCodename } from "../../lib/utils/env";
@@ -53,7 +53,7 @@ export const getStaticProps: GetStaticProps<Props, { slug: string }> = async con
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const articles = await getArticlesForListing(false);
+  const articles = await getAllArticles(false);
 
   return {
     paths: articles.items.map(a => `/articles/${a.elements.slug.value}`),

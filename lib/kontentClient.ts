@@ -1,9 +1,10 @@
 import { camelCasePropertyNameResolver, createDeliveryClient, DeliveryError, IContentItem } from '@kontent-ai/delivery-sdk';
 import { PerCollectionCodenames } from './routing';
 import { siteCodename } from './utils/env';
-import { Article, contentTypes, Product, WSL_WebSpotlightRoot } from '../models';
+import { Article, ArticleType, contentTypes, Product, WSL_WebSpotlightRoot } from '../models';
 import { perCollectionRootItems } from './constants/menu';
 import { ArticlePageSize, ProductsPageSize } from './constants/paging';
+import { ArticleTypeWithAll } from './utils/articlesListing';
 
 const sourceTrackingHeaderName = 'X-KC-SOURCE';
 
@@ -118,7 +119,6 @@ export const getProductSlugs = () =>
     .toAllPromise()
     .then(res => res.data.items);
 
-
 export const getProductDetail = (slug: string, usePreview: boolean) =>
   deliveryClient
     .items<Product>()
@@ -129,7 +129,13 @@ export const getProductDetail = (slug: string, usePreview: boolean) =>
     .toAllPromise()
     .then(res => res.data.items[0]);
 
-export const getArticlesForListing = (usePreview: boolean, page?: number, pageSize: number = ArticlePageSize) => {
+export const getSiteMenu = async (usePreview: boolean) => {
+  const res = await getItemByCodename<WSL_WebSpotlightRoot>(perCollectionRootItems, usePreview);
+
+  return res?.elements.navigation.linkedItems[0];
+}
+
+export const getArticlesForListing = (usePreview: boolean, page?: number, articleType?: string, pageSize: number = ArticlePageSize) => {
   const query = deliveryClient
     .items<Article>()
     .type(contentTypes.article.codename)
@@ -144,13 +150,26 @@ export const getArticlesForListing = (usePreview: boolean, page?: number, pageSi
     query.skipParameter((page - 1) * pageSize)
   };
 
-  query.includeTotalCountParameter();
+  if (articleType && articleType !== 'all') {
+    query.containsFilter(`elements.${contentTypes.article.elements.article_type.codename}`, [articleType])
+  }
 
+  query.includeTotalCountParameter();
   return query
     .toPromise()
     .then(res => res.data);
 }
 
+export const getAllArticles = (usePreview: boolean) =>
+  deliveryClient
+    .items<Article>()
+    .type(contentTypes.article.codename)
+    .collection(siteCodename)
+    .queryConfig({
+      usePreviewMode: usePreview
+    })
+    .toPromise()
+    .then(res => res.data);
 
 export const getArticleBySlug = (slug: string, usePreview: boolean) =>
   deliveryClient
@@ -163,29 +182,54 @@ export const getArticleBySlug = (slug: string, usePreview: boolean) =>
     .toAllPromise()
     .then(res => res.data.items[0]);
 
-export const getSiteMenu = async (usePreview: boolean) => {
-  const res = await getItemByCodename<WSL_WebSpotlightRoot>(perCollectionRootItems, usePreview);
-
-  return res?.elements.navigation.linkedItems[0];
-}
-
-export const getItemsCount = (usePreview: boolean, contentTypeCodename?: string) => {
-  const query = deliveryClient
+const getCurrentCollectionTotalCountQuery = () => (
+  deliveryClient
     .items()
     .collection(siteCodename)
     .elementsParameter([])
+    .limitParameter(1)
+    .includeTotalCountParameter()
+);
+
+const getItemsCountByTypeQuery = (usePreview: boolean, contentTypeCodename?: string) => {
+  const query = getCurrentCollectionTotalCountQuery()
+    .collection(siteCodename)
     .queryConfig({
       usePreviewMode: usePreview,
     })
-    .limitParameter(1)
-    .includeTotalCountParameter();
 
   if (contentTypeCodename) {
     query.type(contentTypeCodename);
   }
+  return query;
+}
+
+
+export const getItemsTotalCount = (usePreview: boolean, contentTypeCodename?: string) => {
+  const query = getItemsCountByTypeQuery(usePreview, contentTypeCodename);
 
   return query
     .toPromise()
     .then(res => res.data.pagination.totalCount)
 }
 
+export const getArticlesCountByCategory = (usePreview: boolean, articleType: ArticleTypeWithAll) => {
+  const query = getItemsCountByTypeQuery(usePreview, contentTypes.article.codename);
+
+  if (articleType !== 'all') {
+    query.containsFilter(`elements.${contentTypes.article.elements.article_type.codename}`, [articleType])
+  }
+
+  return query
+    .toPromise()
+    .then(res => res.data.pagination.totalCount || 0)
+}
+
+export const getProductTaxonomy = async (usePreview: boolean) =>
+  deliveryClient
+    .taxonomy("product_category")
+    .queryConfig({
+      usePreviewMode: usePreview,
+    })
+    .toPromise()
+    .then(res => res.data.taxonomy.terms);

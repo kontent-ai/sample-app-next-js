@@ -8,11 +8,12 @@ import { ValidCollectionCodename } from "../../lib/types/perCollection";
 import { siteCodename } from "../../lib/utils/env";
 import { Block_Navigation, WSL_Page, Product } from "../../models";
 import { useRouter } from "next/router";
-import { taxonomies } from "../../models/project"
 import { ParsedUrlQueryInput } from "querystring";
 import { ProductsPageSize } from "../../lib/constants/paging";
 import { ProductItem } from "../../components/listingPage/ProductItem";
 import { mainColorBgClass } from "../../lib/constants/colors";
+import { ITaxonomyTerms } from "@kontent-ai/delivery-sdk";
+import { changeUrlQueryString } from "../../lib/utils/changeUrlQueryString";
 
 type Props = Readonly<{
   page: WSL_Page;
@@ -20,6 +21,7 @@ type Props = Readonly<{
   siteCodename: ValidCollectionCodename;
   totalCount: number;
   siteMenu?: Block_Navigation;
+  isPreview: boolean;
 }>;
 
 type ProductListingProps = Readonly<{
@@ -50,12 +52,11 @@ const ProductListing: FC<ProductListingProps> = (props) => {
   )
 }
 
-const FilterOptions = Object.fromEntries(Object.entries(taxonomies.product_category.terms).map(([codename, obj]) => [codename, obj.name]));
-
 export const Products: FC<Props> = props => {
   const router = useRouter();
   const [totalCount, setTotalCount] = useState(props.totalCount);
   const [products, setProducts] = useState<ReadonlyArray<Product> | undefined>(props.products);
+  const [taxonomies, setTaxonomies] = useState<ITaxonomyTerms[]>([]);
   const { page, category } = router.query
 
   const pageNumber = useMemo(() => !page || isNaN(+page) ? 1 : +page, [page])
@@ -81,39 +82,64 @@ export const Products: FC<Props> = props => {
     setTotalCount(newData.totalCount);
   }, [router.asPath])
 
+  const getProductCategories = useCallback(async () => {
+    const response = await fetch(`/api/product-categories?preview=${props.isPreview}`);
+    const productCategories = await response.json();
+
+    setTaxonomies(productCategories);
+  }, [props.isPreview])
+
   useEffect(() => {
     getProducts();
   }, [page, category, getProducts])
 
+  useEffect(() => {
+    getProductCategories();
+  }, [getProductCategories])
+
   const onPreviousClick = () => {
     if (pageNumber === 2) {
       const { page, ...obj } = router.query;
-      changeUrlQueryString(obj);
+      changeUrlQueryString(obj, router);
     } else {
-      changeUrlQueryString({ ...router.query, page: pageNumber - 1 });
+      changeUrlQueryString({ ...router.query, page: pageNumber - 1 }, router);
     }
   }
 
   const onNextClick = () => {
-    changeUrlQueryString({ ...router.query, page: pageNumber + 1 });
+    changeUrlQueryString({ ...router.query, page: pageNumber + 1 }, router);
   }
 
-  const changeUrlQueryString = (query: ParsedUrlQueryInput) => {
-    router.replace({ query: query }, undefined, { scroll: false });
-  }
+  const renderFilterOption = (term: ITaxonomyTerms) => {
+    const onCheckBoxClicked = (isChecked: boolean) => {
+      const newCategories = isChecked
+        ? [...categories, term.codename, ...term.terms.map((t) => t.codename)]
+        : categories.filter((c) => c !== term.codename && !term.terms.map((t) => t.codename).includes(c));
 
-  const renderFilterOption = (optionCodename: string, labelText: string, onClick: (checked: boolean) => void) => {
+      changeUrlQueryString({ category: newCategories }, router);
+    };
+
     return (
-      <li key={optionCodename} className="m-0 p-0 flex flex-row gap-1 items-center min-w-fit">
-        <input
-          id={optionCodename}
-          type="checkbox"
-          checked={categories.includes(optionCodename)}
-          onChange={(event) => onClick(event.target.checked)}
-          className="min-w-4 min-h-4 bg-gray-100 border-gray-300 rounded"
-        />
-        <label htmlFor={optionCodename} className="min-w-fit ml-2 text-sm font-semibold">{labelText}</label>
+      <li key={term.codename} className="m-0 p-0">
+        <div className="flex flex-row items-center min-w-fit">
+          <input
+            id={term.codename}
+            type="checkbox"
+            checked={categories.includes(term.codename)}
+            onChange={(event) => onCheckBoxClicked(event.target.checked)}
+            className="min-w-4 min-h-4 bg-gray-100 border-gray-300 rounded"
+          />
+          <label htmlFor={term.codename} className="ml-2 text-sm font-semibold whitespace-nowrap">
+            {term.name}
+          </label>
+        </div>
+        {term.terms.length > 0 && (
+          <ul className="list-none">
+            {term.terms.map((t) => renderFilterOption(t))}
+          </ul>
+        )}
       </li>
+
     );
   };
 
@@ -128,11 +154,9 @@ export const Products: FC<Props> = props => {
       <div className={"flex flex-col md:flex-row mt-4 md:gap-2"}>
         <div className={`flex flex-col ${mainColorBgClass[props.siteCodename]} p-4`}>
           <h4 className="m-0 py-2">Category</h4>
-          <ul className={`m-0 min-h-full gap-2 p-0`}>
-            {Object.entries(FilterOptions).map(([codename, name]) =>
-              renderFilterOption(codename, name, (checked) => {
-                changeUrlQueryString({ category: checked ? categories.concat(codename) : categories.filter(c => c !== codename) });
-              }))}
+          <ul className={`m-0 min-h-full gap-2 p-0 list-none`}>
+            {taxonomies.map(term =>
+              renderFilterOption(term))}
           </ul>
         </div>
         <ProductListing products={products} />
@@ -150,7 +174,6 @@ export const Products: FC<Props> = props => {
           disabled={isLastPage}
         >Next</button>
       </div>
-
     </AppPage>
   )
 };
@@ -173,7 +196,7 @@ export const getStaticProps: GetStaticProps<Props> = async context => {
   };
 
   return {
-    props: { page, siteCodename, products: products.items, totalCount: products.pagination.totalCount ?? 0, siteMenu },
+    props: { page, siteCodename, products: products.items, totalCount: products.pagination.totalCount ?? 0, siteMenu, isPreview: !!context.preview },
   };
 }
 
