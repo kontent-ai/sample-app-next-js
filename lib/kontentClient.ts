@@ -1,9 +1,10 @@
 import { camelCasePropertyNameResolver, createDeliveryClient, DeliveryError, IContentItem } from '@kontent-ai/delivery-sdk';
 import { PerCollectionCodenames } from './routing';
 import { siteCodename } from './utils/env';
-import { Article, contentTypes, Product, WSL_WebSpotlightRoot } from '../models';
+import { Article, ArticleType, contentTypes, Product, WSL_WebSpotlightRoot } from '../models';
 import { perCollectionRootItems } from './constants/menu';
 import { ArticlePageSize, ProductsPageSize } from './constants/paging';
+import { ArticleTypeWithAll } from './utils/articlesListing';
 
 const sourceTrackingHeaderName = 'X-KC-SOURCE';
 
@@ -181,43 +182,47 @@ export const getSiteMenu = async (usePreview: boolean) => {
   return res?.elements.navigation.linkedItems[0];
 }
 
-export const getItemsCount = (usePreview: boolean, contentTypeCodename?: string) => {
-  const query = deliveryClient
+const getCurrentCollectionTotalCountQuery = () => (
+  deliveryClient
     .items()
     .collection(siteCodename)
     .elementsParameter([])
+    .limitParameter(1)
+    .includeTotalCountParameter()
+);
+
+const getItemsCountByTypeQuery = (usePreview: boolean, contentTypeCodename?: string) => {
+  const query = getCurrentCollectionTotalCountQuery()
+    .collection(siteCodename)
     .queryConfig({
       usePreviewMode: usePreview,
     })
-    .limitParameter(1)
-    .includeTotalCountParameter();
 
   if (contentTypeCodename) {
     query.type(contentTypeCodename);
   }
+  return query;
+}
+
+
+export const getItemsTotalCount = (usePreview: boolean, contentTypeCodename?: string) => {
+  const query = getItemsCountByTypeQuery(usePreview, contentTypeCodename);
 
   return query
     .toPromise()
     .then(res => res.data.pagination.totalCount)
 }
 
-export const getArticlesCountByCategory = (usePreview: boolean, articleType: string) => {
-  const query = deliveryClient
-    .items<Article>()
-    .type(contentTypes.article.codename)
-    .collection(siteCodename)
-    .elementsParameter([])
-    .queryConfig({
-      usePreviewMode: usePreview,
-    })
+export const getArticlesCountByCategory = (usePreview: boolean, articleType: ArticleTypeWithAll) => {
+  const query = getItemsCountByTypeQuery(usePreview, contentTypes.article.codename);
 
-    if(articleType !== 'all') {
-      query.containsFilter(`elements.${contentTypes.article.elements.article_type.codename}`, [articleType])
-    }
+  if (articleType !== 'all') {
+    query.containsFilter(`elements.${contentTypes.article.elements.article_type.codename}`, [articleType])
+  }
 
-    return query
-      .toPromise()
-      .then(res => res.data.items.length)
+  return query
+    .toPromise()
+    .then(res => res.data.pagination.totalCount)
 }
 
 export const getProductTaxonomy = async (usePreview: boolean) =>
