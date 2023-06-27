@@ -16,8 +16,8 @@ export const HeroUnitComponent: FC<Props> = props => {
       url={props.item.elements.backgroundImage.value[0]?.url}
       itemId={props.item.system.id}
     >
-      <div className={`py-1 px-3 w-full md:w-fit ${mainColorBgClass[siteCodename]}  opacity-[85%]`}>
-        <h1 className="m-0 text-3xl tracking-wide font-semibold"  {...createElementSmartLink(contentTypes.hero_unit.elements.title.codename)}>
+      <div className={`py-5 md:py-5 px-3 w-full flex md:w-fit ${mainColorBgClass[siteCodename]}  opacity-[85%]`}>
+        <h1 className="m-0 text-3xl align-text-bottom tracking-wide font-semibold"  {...createElementSmartLink(contentTypes.hero_unit.elements.title.codename)}>
           {props.item.elements.title.value}
         </h1>
       </div>
