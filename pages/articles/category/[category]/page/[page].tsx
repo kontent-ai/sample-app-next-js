@@ -35,14 +35,11 @@ export const getStaticProps: GetStaticProps<Props, ArticleListingUrlQuery> = asy
     return { notFound: true }
   }
 
-  // if (pageNumber === 1 || pageNumber === 0) {
-  //   return {
-  //     redirect: {
-  //       destination: `/articles`,
-  //       permanent: true,
-  //     },
-  //   }
-  // }
+  if (pageNumber === 1 || pageNumber === 0) {
+    return {
+      notFound: true
+    }
+  }
 
   const selectedCategory = context.params?.category;
   if (!isArticleType(selectedCategory)) {
