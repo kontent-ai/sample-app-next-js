@@ -129,6 +129,12 @@ export const getProductDetail = (slug: string, usePreview: boolean) =>
     .toAllPromise()
     .then(res => res.data.items[0]);
 
+export const getSiteMenu = async (usePreview: boolean) => {
+  const res = await getItemByCodename<WSL_WebSpotlightRoot>(perCollectionRootItems, usePreview);
+
+  return res?.elements.navigation.linkedItems[0];
+}
+
 export const getArticlesForListing = (usePreview: boolean, page?: number, articleType?: string, pageSize: number = ArticlePageSize) => {
   const query = deliveryClient
     .items<Article>()
@@ -175,12 +181,6 @@ export const getArticleBySlug = (slug: string, usePreview: boolean) =>
     })
     .toAllPromise()
     .then(res => res.data.items[0]);
-
-export const getSiteMenu = async (usePreview: boolean) => {
-  const res = await getItemByCodename<WSL_WebSpotlightRoot>(perCollectionRootItems, usePreview);
-
-  return res?.elements.navigation.linkedItems[0];
-}
 
 const getCurrentCollectionTotalCountQuery = () => (
   deliveryClient
