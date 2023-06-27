@@ -118,7 +118,6 @@ export const getProductSlugs = () =>
     .toAllPromise()
     .then(res => res.data.items);
 
-
 export const getProductDetail = (slug: string, usePreview: boolean) =>
   deliveryClient
     .items<Product>()
@@ -129,7 +128,7 @@ export const getProductDetail = (slug: string, usePreview: boolean) =>
     .toAllPromise()
     .then(res => res.data.items[0]);
 
-export const getArticlesForListing = (usePreview: boolean, page?: number, pageSize: number = ArticlePageSize) => {
+export const getArticlesForListing = (usePreview: boolean, page?: number, articleType?: string, pageSize: number = ArticlePageSize) => {
   const query = deliveryClient
     .items<Article>()
     .type(contentTypes.article.codename)
@@ -144,13 +143,26 @@ export const getArticlesForListing = (usePreview: boolean, page?: number, pageSi
     query.skipParameter((page - 1) * pageSize)
   };
 
-  query.includeTotalCountParameter();
+  if (articleType && articleType !== 'all') {
+    query.containsFilter(`elements.${contentTypes.article.elements.article_type.codename}`, [articleType])
+  }
 
+  query.includeTotalCountParameter();
   return query
     .toPromise()
     .then(res => res.data);
 }
 
+export const getAllArticles = (usePreview: boolean) =>
+  deliveryClient
+    .items<Article>()
+    .type(contentTypes.article.codename)
+    .collection(siteCodename)
+    .queryConfig({
+      usePreviewMode: usePreview
+    })
+    .toPromise()
+    .then(res => res.data);
 
 export const getArticleBySlug = (slug: string, usePreview: boolean) =>
   deliveryClient
@@ -187,6 +199,25 @@ export const getItemsCount = (usePreview: boolean, contentTypeCodename?: string)
   return query
     .toPromise()
     .then(res => res.data.pagination.totalCount)
+}
+
+export const getArticlesCountByCategory = (usePreview: boolean, articleType: string) => {
+  const query = deliveryClient
+    .items<Article>()
+    .type(contentTypes.article.codename)
+    .collection(siteCodename)
+    .elementsParameter([])
+    .queryConfig({
+      usePreviewMode: usePreview,
+    })
+
+    if(articleType !== 'all') {
+      query.containsFilter(`elements.${contentTypes.article.elements.article_type.codename}`, [articleType])
+    }
+
+    return query
+      .toPromise()
+      .then(res => res.data.items.length)
 }
 
 export const getProductTaxonomy = async (usePreview: boolean) =>

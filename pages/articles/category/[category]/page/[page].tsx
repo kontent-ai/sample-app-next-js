@@ -1,8 +1,8 @@
 import { FC } from "react";
-import { Article, Block_Navigation, WSL_Page, contentTypes } from "../../../../../models";
+import { Article, ArticleType, Block_Navigation, ProductCategory, WSL_Page, contentTypes } from "../../../../../models";
 import { ValidCollectionCodename } from "../../../../../lib/types/perCollection";
 import { GetStaticProps } from "next";
-import { getItemsCount, getArticlesForListing, getItemByCodename, getSiteMenu } from "../../../../../lib/kontentClient";
+import { getItemsCount, getArticlesForListing, getItemByCodename, getSiteMenu, getArticlesCountByCategory } from "../../../../../lib/kontentClient";
 import { siteCodename } from "../../../../../lib/utils/env";
 import { PerCollectionCodenames } from "../../../../../lib/routing";
 import ArticlesPage from "..";
@@ -13,7 +13,7 @@ type Props = Readonly<{
   articles: ReadonlyArray<Article>;
   siteMenu?: Block_Navigation,
   page: WSL_Page,
-  totalCount: number | null
+  itemCount: number
 }>;
 
 const ArticlesPagingPage: FC<Props> = props => {
@@ -29,25 +29,24 @@ export const getStaticProps: GetStaticProps<Props> = async context => {
 
   const pageURLParameter = context.params?.page;
   const pageNumber = !pageURLParameter || isNaN(+pageURLParameter) ? 1 : +pageURLParameter;
-  const categoryParameter = context.params?.category;
-  console.log(categoryParameter)
 
   if (pageNumber < 0) {
     return { notFound: true }
   }
 
-  if (pageNumber === 1 || pageNumber === 0) {
-    return {
-      redirect: {
-        destination: `/articles`,
-        permanent: true,
-      },
-    }
-  }
+  // if (pageNumber === 1 || pageNumber === 0) {
+  //   return {
+  //     redirect: {
+  //       destination: `/articles`,
+  //       permanent: true,
+  //     },
+  //   }
+  // }
 
-  const articles = await getArticlesForListing(!!context.preview, pageNumber);
+  const articles = await getArticlesForListing(!!context.preview, pageNumber, context.params?.category as string ?? 'all');
   const siteMenu = await getSiteMenu(!!context.preview);
   const page = await getItemByCodename<WSL_Page>(pageCodename, !!context.preview);
+  const itemCount = await getArticlesCountByCategory(false, context.params?.category as string)
 
   if (page === null || articles.items.length === 0) {
     return { notFound: true };
@@ -59,31 +58,28 @@ export const getStaticProps: GetStaticProps<Props> = async context => {
       siteCodename,
       siteMenu,
       page,
-      totalCount: articles.pagination.totalCount
+      itemCount
     },
     revalidate: 10,
   };
 };
 
 export const getStaticPaths = async () => {
-  const totalCount = await getItemsCount(false, contentTypes.article.codename);
-  const pagesNumber = Math.ceil((totalCount ?? 0) / ArticlePageSize);
+  const categories: string[] = ['all', 'case_study', 'clinical_trial', 'industry_news', 'research'];
 
-  const getNextPagesRange = (category: string, lastPage: number, firstPage: number = 2) => {
-    if (firstPage < 1 || lastPage < firstPage) {
-      return [];
-    }
-
-    const rangeLength = lastPage - firstPage + 1;
-
-    return Array.from({ length: rangeLength }).map((_, index) => index + firstPage).map(pageNumber => ({
+  const getAllPagesForCategory = async (category: string) => {
+    const totalCount = category === 'all' ? await getItemsCount(false, 'article') : await getArticlesCountByCategory(false, category);
+    const pagesNumber = Math.ceil((totalCount ?? 0) / ArticlePageSize);
+    const pages = Array.from({ length: pagesNumber }).map((_, index) => index + 1);
+    return pages.map(pageNumber => ({
       params: { page: pageNumber.toString(), category },
     }));
   };
 
+  const paths = await Promise.all(categories.map(category => getAllPagesForCategory(category)))
+    .then(categoryPaths => categoryPaths.flat());
   return {
-    // pre-generates all the pages for paging.
-    paths: getNextPagesRange('category', pagesNumber),
+    paths,
     fallback: 'blocking',
   };
 };
