@@ -19,7 +19,7 @@ export const ArticleItem: FC<Props> = props => {
   const siteCodename = useSiteCodename()
 
   return (
-    <li className="m-0 p-0 relative rounded-lg shadow hover:shadow-xl transition-shadow border border-gray-200 cursor-pointer">
+    <li className="m-0 p-0 relative md:rounded-lg shadow hover:shadow-xl transition-shadow border border-gray-200 cursor-pointer">
       <Link href={props.detailUrl} className="no-underline">
         <StandaloneSmartLinkButton itemId={props.itemId} />
         <figure className="w-full relative m-0 h-40">
@@ -27,7 +27,7 @@ export const ArticleItem: FC<Props> = props => {
             src={props.imageUrl}
             alt={props.title}
             fill
-            className="object-cover h-full m-0 p-0 rounded-t-lg"
+            className="object-cover h-full m-0 p-0 md:rounded-t-lg"
           />
         </figure>
         {props.publisingDate && <div className="w-fit p-2 bg-gray-800 text-white opacity-90 font-normal line-clamp-6 absolute right-0 translate-y-[-100%]">
@@ -37,7 +37,7 @@ export const ArticleItem: FC<Props> = props => {
           <h5 className="mb-2 text-xl font-bold tracking-tight text-gray-900 no-underline line-clamp-2 ">{props.title}</h5>
           <p className="mb-0 font-normal text-gray-700 line-clamp-6">{props.description}</p>
         </div>
-        <button className={`${mainColorTextClass} block ml-auto w-fit mb-3 mr-4 font-semibold line-clamp-6 hover:bg-transparent border ${mainColorBgClass[siteCodename]} py-2 px-4 rounded`}>Continue reading</button>
+        <button className={`${mainColorTextClass} block ml-auto w-fit mb-3 mr-4 font-semibold line-clamp-6 hover:bg-transparent border ${mainColorBgClass[siteCodename]} py-2 px-4 md:rounded`}>Continue reading</button>
       </Link>
     </li>
   );
