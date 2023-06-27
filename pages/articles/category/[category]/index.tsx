@@ -1,9 +1,9 @@
 import { FC, useEffect, useMemo, useState } from "react";
-import { Article, Block_Navigation, WSL_Page } from "../../../../models";
+import { Article, ArticleType, Block_Navigation, ProductCategory, WSL_Page } from "../../../../models";
 import { AppPage } from "../../../../components/shared/ui/appPage";
 import { ValidCollectionCodename } from "../../../../lib/types/perCollection";
 import { GetStaticPaths, GetStaticProps } from "next";
-import { getArticlesForListing, getItemByCodename, getSiteMenu } from "../../../../lib/kontentClient";
+import { getArticlesCountByCategory, getArticlesForListing, getItemByCodename, getItemsCount, getSiteMenu } from "../../../../lib/kontentClient";
 import { PerCollectionCodenames } from "../../../../lib/routing";
 import { Content } from "../../../../components/shared/Content";
 import Link from "next/link";
@@ -14,14 +14,14 @@ import { mainColorBgClass } from "../../../../lib/constants/colors";
 import { useSiteCodename } from "../../../../components/shared/siteCodenameContext";
 import { siteCodename } from "../../../../lib/utils/env";
 import { taxonomies } from "../../../../models";
-import { changeUrlQueryString } from "../../../../lib/utils/changeUrlQueryString";
+import { Bars3Icon } from "@heroicons/react/24/solid";
 
 type Props = Readonly<{
   siteCodename: ValidCollectionCodename;
   articles: ReadonlyArray<Article>;
   siteMenu?: Block_Navigation,
   page: WSL_Page,
-  totalCount: number | null
+  itemCount: number;
 }>;
 
 type LinkButtonProps = {
@@ -60,39 +60,37 @@ const getFilterOptions = () =>
   Object.fromEntries(Object.entries(taxonomies.article_type.terms).map(([codename, obj]) => [codename, obj.name]));
 
 const FilterOptions: FC<FilterOptionProps> = ({ options, router }) => {
-  const [activeFilter, setActiveFilter] = useState<string>();
+  const { category } = router.query;
   const handleButtonClick = (category: string) => {
-    router.replace(`/articles/category/${category}`, undefined, {scroll: false, shallow: true});
-    setActiveFilter(category);
+    router.replace(`/articles/category/${category}`, undefined, { scroll: false, shallow: false });
   };
 
   const clearFilters = () => {
-    changeUrlQueryString({}, router);
+    router.replace(`/articles/category/all`, undefined, { scroll: false, shallow: false });
   };
 
   return (
-    <div className={"flex flex-row pt-10"}>
-      {Object.entries(options).map(([key, value]) => (
-        <div key={key} className="mr-4" onClick={() => handleButtonClick(key)}>
-          <Link href={`/articles/category/${key}`}>
-            <input id={key} checked={activeFilter === key} type="checkbox" name="article-type" className="hidden peer" />
+    <>
+      <div className={"invisible md:visible flex flex-row pt-10"}>
+        {Object.entries(options).map(([key, value]) => (
+          <div key={key} className="mr-4" onClick={() => handleButtonClick(key)}>
+            <input id={key} defaultChecked={category === key} type="radio" name="article-type" className="hidden peer" />
             <label htmlFor={key} className="inline-flex items-center justify-between w-full px-6 py-1 bg-white border border-gray-200 rounded-3xl cursor-pointer peer-checked:border-blue-300 peer-checked:bg-blue-300 hover:bg-gray-100">{value}</label>
-          </Link>
-        </div>
-      ))}
-      <button onClick={clearFilters} className={`px-6 py-1 ${activeFilter === undefined ? "invisible" : ""} bg-blue-600 text-white font-bold rounded-3xl cursor-pointer`}>Clear</button>
-    </div>
+          </div>
+        ))}
+        <button onClick={clearFilters} className={`px-6 py-1 ${category === "all" ? "invisible" : ""} bg-blue-600 text-white font-bold rounded-3xl cursor-pointer`}>Clear</button>
+      </div>
+    </>
   );
 };
 
 
 const ArticlesPage: FC<Props> = props => {
   const router = useRouter();
-  const page = typeof router.query.page === 'string' ? + router.query.page : undefined;
+  const page = typeof router.query.page === 'string' ? +router.query.page : undefined;
   const category = typeof router.query.category === 'string' ? router.query.category : "all";
-  const pageCount = Math.ceil((props.totalCount ?? 0) / ArticlePageSize);
   const filterOptions = getFilterOptions();
-  const filteredArticles = useMemo(() => {
+  const getFilteredArticles = () => {
     if (category === 'all') {
       return props.articles;
     } else {
@@ -100,9 +98,10 @@ const ArticlesPage: FC<Props> = props => {
         article => article.elements.articleType.value[0].codename === category
       );
     }
-  }, [props.articles, category]);
-  
+  };
 
+  let filteredArticles = getFilteredArticles();
+  const pageCount = Math.ceil(props.itemCount / ArticlePageSize);
 
   return <AppPage siteCodename={props.siteCodename} siteMenu={props.siteMenu}>
     {props.page.elements.content.linkedItems.map(piece => (
@@ -111,62 +110,78 @@ const ArticlesPage: FC<Props> = props => {
     <div className="px-4 sm:px-0">
       <h2 className="m-0 mt-16">Latest Articles</h2>
       <FilterOptions options={filterOptions} router={router} />
-      <ul className="w-full grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 place-items-center list-none gap-5 pt-4 pl-0 justify-center">
-        {filteredArticles.map(a => (
-          a.elements.articleType.value[0].codename &&
-          <ArticleItem
-            key={a.system.id}
-            title={a.elements.title.value}
-            itemId={a.system.id}
-            description={a.elements.abstract.value}
-            imageUrl={a.elements.heroImage.value[0]?.url}
-            publisingDate={a.elements.publishingDate.value}
-            detailUrl={`/articles/${a.elements.slug.value}`}
-          />
-        ))}
-      </ul>
+      <div className="flex flex-col flex-grow">
+        {filteredArticles.length > 0 ?
+          <ul className="w-full grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 place-items-center list-none gap-5 pt-4 pl-0 justify-center">
+            {filteredArticles.map(a => (
+              a.elements.articleType.value[0].codename &&
+              <ArticleItem
+                key={a.system.id}
+                title={a.elements.title.value}
+                itemId={a.system.id}
+                description={a.elements.abstract.value}
+                imageUrl={a.elements.heroImage.value[0]?.url}
+                publisingDate={a.elements.publishingDate.value}
+                detailUrl={`/articles/${a.elements.slug.value}`}
+              />
+            ))}
+          </ul>
+          :
+          <div className="w-full flex items-center grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 place-items-center gap-5 pt-4 pl-0 justify-center">No articles match this criteria.</div>
+        }
 
-      {pageCount > 1 && <nav>
-        <ul className="mr-14 sm:mr-0 flex flex-row flex-wrap list-none justify-center">
-          <li>
-            <LinkButton
-              text="Previous"
-              href={!page || page === 2 ? `/articles/category/${category}` : `/articles/category/${category}/page/${page - 1}`}
-              disabled={!page}
-              roundLeft
-            />
+        {pageCount > 1 && <nav>
+          <ul className="mr-14 sm:mr-0 flex flex-row flex-wrap list-none justify-center">
+            <li>
+              <LinkButton
+                text="Previous"
+                href={!page || page === 2 ? `/articles/category/${category}` : `/articles/category/${category}/page/${page - 1}`}
+                disabled={!page}
+                roundLeft
+              />
 
-          </li>
-          {Array.from({ length: pageCount }).map((_, i) => (<li key={i}>
-            <LinkButton
-              text={`${i + 1}`}
-              href={i === 0 ? `/articles/category/${category}` : `/articles/category/${category}/page/${i + 1}`}
-              highlight={(page ?? 1) === i + 1}
-            />
-          </li>))}
-          <li>
-            <LinkButton
-              text="Next"
-              href={`/articles/category/${category}/page/${page ? page + 1 : 2}`}
-              disabled={(page ?? 1) === pageCount}
-              roundRight
-            />
-          </li>
-        </ul>
-      </nav>}
-
+            </li>
+            {Array.from({ length: pageCount }).map((_, i) => (<li key={i}>
+              <LinkButton
+                text={`${i + 1}`}
+                href={i === 0 ? `/articles/category/${category}` : `/articles/category/${category}/page/${i + 1}`}
+                highlight={(page ?? 1) === i + 1}
+              />
+            </li>))}
+            <li>
+              <LinkButton
+                text="Next"
+                href={`/articles/category/${category}/page/${page ? page + 1 : 2}`}
+                disabled={(page ?? 1) === pageCount}
+                roundRight
+              />
+            </li>
+          </ul>
+        </nav>}
+      </div>
     </div>
   </AppPage>
 }
 
-export const getStaticPaths: GetStaticPaths = async () => {
-  const filterOptions = getFilterOptions();
-  const categories = Object.keys(filterOptions);
-  const paths = categories.map((category) => ({
-    params: { category },
-  }));
+export const getStaticPaths = async () => {
+  const categories: string[] = ['all', 'case_study', 'clinical_trial', 'industry_news', 'research'];
 
-  return { paths, fallback: "blocking" };
+  const getAllPagesForCategory = async (category: string) => {
+    const totalCount = category === 'all' ? await getItemsCount(false, 'article') : await getArticlesCountByCategory(false, category);
+    const pagesNumber = Math.ceil((totalCount ?? 0) / ArticlePageSize);
+    const pages = Array.from({ length: pagesNumber }).map((_, index) => index + 1);
+    return pages.map(pageNumber => ({
+      params: { page: pageNumber.toString(), category },
+    }));
+  };
+
+  const paths = await Promise.all(categories.map(category => getAllPagesForCategory(category)))
+    .then(categoryPaths => categoryPaths.flat());
+
+  return {
+    paths,
+    fallback: 'blocking',
+  };
 };
 
 export const getStaticProps: GetStaticProps<Props> = async context => {
@@ -176,12 +191,11 @@ export const getStaticProps: GetStaticProps<Props> = async context => {
     ficto_healthtech_surgical: "articles_surgical"
   };
   const pageURLParameter = context.params?.page;
-  const category = context.params?.category;
   const pageNumber = !pageURLParameter || isNaN(+pageURLParameter) ? 1 : +pageURLParameter;
-  const articles = await getArticlesForListing(!!context.preview, pageNumber);
+  const articles = await getArticlesForListing(!!context.preview, pageNumber, context.params?.category as string ?? 'all');
   const siteMenu = await getSiteMenu(!!context.preview);
   const page = await getItemByCodename<WSL_Page>(pageCodename, !!context.preview);
-
+  const itemCount = await getArticlesCountByCategory(false, context.params?.category as string)
   if (page === null) {
     return { notFound: true };
   };
@@ -192,7 +206,7 @@ export const getStaticProps: GetStaticProps<Props> = async context => {
       siteCodename,
       siteMenu,
       page,
-      totalCount: articles.pagination.totalCount
+      itemCount
     },
     revalidate: 10,
   };
