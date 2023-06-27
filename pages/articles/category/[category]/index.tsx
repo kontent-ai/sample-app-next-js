@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import { Article, Block_Navigation, WSL_Page } from "../../../../models";
 import { AppPage } from "../../../../components/shared/ui/appPage";
 import { ValidCollectionCodename } from "../../../../lib/types/perCollection";
@@ -15,6 +15,7 @@ import { useSiteCodename } from "../../../../components/shared/siteCodenameConte
 import { siteCodename } from "../../../../lib/utils/env";
 import { taxonomies } from "../../../../models";
 import { ArticleListingUrlQuery, ArticleTypeWithAll, categoryFilterSource, isArticleType } from "../../../../lib/utils/articlesListing";
+import { Bars3Icon, ChevronDownIcon } from "@heroicons/react/24/solid";
 
 type Props = Readonly<{
   siteCodename: ValidCollectionCodename;
@@ -60,25 +61,40 @@ const getFilterOptions = () =>
   Object.fromEntries(Object.entries(taxonomies.article_type.terms).map(([codename, obj]) => [codename, obj.name]));
 
 const FilterOptions: FC<FilterOptionProps> = ({ options, router }) => {
-  const { category } = router.query;
-  const handleButtonClick = (category: string) => {
-    router.replace(`/articles/category/${category}`, undefined, { scroll: false, shallow: false });
-  };
+  const [category, setCategory] = useState(router.query.category);
+  const [dropdownActive, setDropdownActive] = useState(false);
+  const filterButtons = Object.entries(options).map(([key, value]) => (
+    <li key={key}>{value}</li>
+  ))
 
-  const clearFilters = () => {
-    router.replace(`/articles/category/all`, undefined, { scroll: false, shallow: false });
-  };
+  const handleButtonClick = (key: string) => {
+    key === category ? setCategory("all") : setCategory(key);
+  }
+
+  useEffect(() => {
+    router.push(`/articles/category/${category}`, undefined, { scroll: false, shallow: false });
+  }, [category]);
 
   return (
     <>
+      <div className="flex items-center">
+        <button
+          type="button"
+          className="md:hidden flex justify-center items-center py-3"
+          onClick={() => setDropdownActive(!dropdownActive)}
+        >
+          <ChevronDownIcon className="w-6 h-full" />
+          <span className="font-semibold pb-1 pl-1">Category</span>
+        </button>
+      </div>
+      <ul className={`${dropdownActive ? "flex" : "hidden"} pl-0 md:hidden list-none flex-col font-medium md:flex-row h-full`}>
+        {filterButtons}
+      </ul>
       <div className={"invisible md:visible flex flex-row pt-10"}>
         {Object.entries(options).map(([key, value]) => (
-          <div key={key} className="mr-4" onClick={() => handleButtonClick(key)}>
-            <input id={key} defaultChecked={category === key} type="radio" name="article-type" className="hidden peer" />
-            <label htmlFor={key} className="inline-flex items-center justify-between w-full px-6 py-1 bg-white border border-gray-200 rounded-3xl cursor-pointer peer-checked:border-blue-300 peer-checked:bg-blue-300 hover:bg-gray-100">{value}</label>
-          </div>
+            <button key={key} onClick={() => handleButtonClick(key)} className={`inline-flex items-center justify-between mr-4 w-max px-6 py-1 border ${key === category ? "border-blue-300 bg-blue-300 hover:bg-gray-100" : "border-gray-200 bg-white hover:bg-blue-100"} rounded-3xl cursor-pointer`}>{value}</button>
         ))}
-        <button onClick={clearFilters} className={`px-6 py-1 ${category === "all" ? "invisible" : ""} bg-blue-600 text-white font-bold rounded-3xl cursor-pointer`}>Clear</button>
+        <button onClick={() => handleButtonClick("all")} className={`px-6 py-1 ${category === "all" ? "invisible" : ""} bg-blue-600 text-white font-bold rounded-3xl cursor-pointer`}>Clear</button>
       </div>
     </>
   );

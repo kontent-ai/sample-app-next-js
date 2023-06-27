@@ -62,8 +62,8 @@ export const Menu: FC<Props> = props => {
             <Link href="/" className="flex items-center">
               <span className="font-extrabold">Ficto</span>
               <span>Healthtech</span>
-              { siteCodename === 'ficto_healthtech_surgical' && <span>&nbsp;Surgical</span> }
-              { siteCodename === 'ficto_healthtech_imaging' && <span>&nbsp;Imaging</span> }
+              {siteCodename === 'ficto_healthtech_surgical' && <span>&nbsp;Surgical</span>}
+              {siteCodename === 'ficto_healthtech_imaging' && <span>&nbsp;Imaging</span>}
             </Link>
             <button
               type="button"
