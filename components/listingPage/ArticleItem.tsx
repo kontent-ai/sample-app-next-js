@@ -4,6 +4,7 @@ import Link from "next/link";
 import { StandaloneSmartLinkButton } from "../shared/StandaloneSmartLinkButton";
 import { useSiteCodename } from "../shared/siteCodenameContext";
 import { mainColorBgClass, mainColorTextClass } from "../../lib/constants/colors";
+import { formatDate } from "../../lib/utils/dateTime";
 
 type Props = Readonly<{
   imageUrl: string;
@@ -16,16 +17,6 @@ type Props = Readonly<{
 
 export const ArticleItem: FC<Props> = props => {
   const siteCodename = useSiteCodename()
-
-  const formatDate = (date: string) => (new Date(date))
-    .toLocaleDateString(
-      'en-US',
-      {
-        day: 'numeric',
-        month: 'long',
-        year: 'numeric'
-      }
-    )
 
   return (
     <li className="m-0 p-0 relative rounded-lg shadow hover:shadow-xl transition-shadow border border-gray-200 cursor-pointer">

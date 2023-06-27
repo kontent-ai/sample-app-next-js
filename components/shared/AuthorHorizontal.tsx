@@ -25,7 +25,7 @@ export const AuthorHorizontal: FC<Props> = props => {
           className="object-cover"
         />
       </figure>
-      <div className="flex flex-col">
+      <div className="flex flex-col pl-4">
         <span>
           <span {...createElementSmartLink(contentTypes.author.elements.first_name.codename, true)}>{props.item.elements.firstName.value}</span>
           <span {...createElementSmartLink(contentTypes.author.elements.last_name.codename, true)}>{props.item.elements.lastName.value}</span>

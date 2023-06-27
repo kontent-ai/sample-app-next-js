@@ -8,12 +8,25 @@ import { ArrowTopRightOnSquareIcon } from "@heroicons/react/24/solid";
 import { Block_ContentChunk } from "../models";
 import { ReactNode } from "react";
 
-export const createDefaultResolvers = (element: Elements.RichTextElement, renderRichText: (item: Block_ContentChunk) => ReactNode): Partial<PortableTextReactComponents> => ({
+export const createDefaultResolvers = (element: Elements.RichTextElement, renderRichText: (item: Block_ContentChunk) => ReactNode, insideTable: boolean = false): Partial<PortableTextReactComponents> => ({
   types: {
     image: ({ value }: PortableTextTypeComponentProps<IPortableTextImage>) => {
       const asset = element.images.find(i => i.imageId === value.asset._ref);
       if (!asset) {
         throw new Error(`Asset ${value.asset._ref} not found.`);
+      }
+
+      if (insideTable) {
+        return (
+          <div className="w-28 h-14 relative not-prose">
+            <Image
+              src={value.asset.url}
+              alt={asset.description ?? ""}
+              fill
+              className="object-contain"
+            />
+          </div>
+        )
       }
 
       return (
@@ -23,20 +36,19 @@ export const createDefaultResolvers = (element: Elements.RichTextElement, render
             alt={asset.description ?? ""}
             width={asset.width ?? undefined}
             height={asset.height ?? undefined}
-            className="rounded-3xl"
           />
         </span>
       );
     },
     table: ({ value }: PortableTextTypeComponentProps<IPortableTextTable>) => {
       return (
-        <table>
+        <table className="table-auto">
           <tbody>
             {value.rows.map(r => (
               <tr key={r._key}>
                 {r.cells.map(c => (
                   <td key={c._key}>
-                    <PortableText value={c.content} components={createDefaultResolvers(element, renderRichText)} />
+                    <PortableText value={c.content} components={createDefaultResolvers(element, renderRichText, true)} />
                   </td>
                 ))}
               </tr>
