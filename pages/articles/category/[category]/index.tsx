@@ -15,7 +15,7 @@ import { useSiteCodename } from "../../../../components/shared/siteCodenameConte
 import { siteCodename } from "../../../../lib/utils/env";
 import { taxonomies } from "../../../../models";
 import { ArticleListingUrlQuery, ArticleTypeWithAll, categoryFilterSource, isArticleType } from "../../../../lib/utils/articlesListing";
-import { Bars3Icon, ChevronDownIcon } from "@heroicons/react/24/solid";
+import { ChevronDownIcon } from "@heroicons/react/24/solid";
 
 type Props = Readonly<{
   siteCodename: ValidCollectionCodename;
@@ -61,45 +61,35 @@ const getFilterOptions = () =>
   Object.fromEntries(Object.entries(taxonomies.article_type.terms).map(([codename, obj]) => [codename, obj.name]));
 
 const FilterOptions: FC<FilterOptionProps> = ({ options, router }) => {
-  const [category, setCategory] = useState(router.query.category);
+  const category = router.query.category;
   const [dropdownActive, setDropdownActive] = useState(false);
-  const filterButtons = Object.entries(options).map(([key, value]) => (
-    <li key={key}>{value}</li>
-  ))
-
-  const handleButtonClick = (key: string) => {
-    key === category ? setCategory("all") : setCategory(key);
-  }
-
-  useEffect(() => {
-    router.push(`/articles/category/${category}`, undefined, { scroll: false, shallow: false });
-  }, [category]);
 
   return (
     <>
-      <div className="flex items-center">
+      <div className="md:hidden flex items-center mt-3">
         <button
           type="button"
-          className="md:hidden flex justify-center items-center py-3"
+          className="w-screen flex items-center py-1 px-6"
           onClick={() => setDropdownActive(!dropdownActive)}
         >
-          <ChevronDownIcon className="w-6 h-full" />
-          <span className="font-semibold pb-1 pl-1">Category</span>
+          <ChevronDownIcon className={`w-6 h-full transform ${dropdownActive ? "rotate-180" : ""}`} />
+          <span id="mobileFilterText" className="font-semibold pb-1 pl-1">Category</span>
         </button>
       </div>
-      <ul className={`${dropdownActive ? "flex" : "hidden"} pl-0 md:hidden list-none flex-col font-medium md:flex-row h-full`}>
-        {filterButtons}
-      </ul>
-      <div className={"invisible md:visible flex flex-row pt-10"}>
+      <div
+        className={`${dropdownActive ? "flex" : "hidden"} absolute md:static w-full z-50 flex-col md:flex md:flex-row md:pt-10`}
+      >
         {Object.entries(options).map(([key, value]) => (
-            <button key={key} onClick={() => handleButtonClick(key)} className={`inline-flex items-center justify-between mr-4 w-max px-6 py-1 border ${key === category ? "border-blue-300 bg-blue-300 hover:bg-gray-100" : "border-gray-200 bg-white hover:bg-blue-100"} rounded-3xl cursor-pointer`}>{value}</button>
+          <Link key={key} href={`/articles/category/${key}`} onClick={() => setDropdownActive(!dropdownActive)} scroll={false} className={`inline-flex items-center z-50 md:justify-between md:mr-4 md:w-max px-6 py-1 no-underline ${key === category ? "border-blue-300 bg-blue-300 hover:bg-gray-100" : "border-gray-200 bg-white hover:bg-blue-100"} md:rounded-3xl cursor-pointer`}>{value}</Link>
         ))}
-        <button onClick={() => handleButtonClick("all")} className={`px-6 py-1 ${category === "all" ? "invisible" : ""} bg-blue-600 text-white font-bold rounded-3xl cursor-pointer`}>Clear</button>
+        <Link href={`/articles/category/all`} onClick={() => setDropdownActive(!dropdownActive)} scroll={false} className={`px-6 py-1 ${category === "all" ? "hidden" : ""} bg-blue-600 text-white no-underline font-bold md:rounded-3xl cursor-pointer`}>Clear</Link>
       </div>
+      {/* <ul className={`${dropdownActive ? "flex" : "hidden"} pl-0 md:hidden list-none flex-col font-medium md:flex-row h-full`}>
+        {filterButtons}
+      </ul> */}
     </>
   );
 };
-
 
 const ArticlesPage: FC<Props> = props => {
   const router = useRouter();
@@ -123,12 +113,12 @@ const ArticlesPage: FC<Props> = props => {
     {props.page.elements.content.linkedItems.map(piece => (
       <Content key={piece.system.id} item={piece as any} />
     ))}
-    <div className="px-4 sm:px-0">
-      <h2 className="m-0 mt-16">Latest Articles</h2>
+    <div className="md:px-4">
+      <h2 className="mt-4 px-6 md:px-0 md:mt-16">Latest Articles</h2>
       <FilterOptions options={filterOptions} router={router} />
       <div className="flex flex-col flex-grow">
         {filteredArticles.length > 0 ?
-          <ul className="w-full grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 place-items-center list-none gap-5 pt-4 pl-0 justify-center">
+          <ul className="w-full grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 place-items-center list-none gap-5 md:pt-4 pl-0 justify-center">
             {filteredArticles.map(a => (
               a.elements.articleType.value[0].codename &&
               <ArticleItem
