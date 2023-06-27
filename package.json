@@ -13,7 +13,7 @@
     "@heroicons/react": "^2.0.17",
     "@kontent-ai/delivery-sdk": "^14.0.1",
     "@kontent-ai/management-sdk": "^5.0.0",
-    "@kontent-ai/rich-text-resolver": "^0.0.2",
+    "@kontent-ai/rich-text-resolver": "^0.0.4",
     "@kontent-ai/smart-link": "^3.0.0",
     "@netlify/plugin-nextjs": "^4.36.0",
     "@portabletext/react": "^2.0.2",
