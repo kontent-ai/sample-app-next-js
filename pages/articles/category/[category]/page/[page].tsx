@@ -82,11 +82,11 @@ export const getStaticPaths = async () => {
 
   const paths = await Promise.all(categoryFilterSource.map(category => getAllPagesForCategory(category)))
     .then(categoryPaths => categoryPaths.flat());
+
   return {
     paths,
     fallback: 'blocking',
   };
 };
-
 
 export default ArticlesPagingPage;
