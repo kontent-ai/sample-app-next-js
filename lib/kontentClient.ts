@@ -222,7 +222,7 @@ export const getArticlesCountByCategory = (usePreview: boolean, articleType: Art
 
   return query
     .toPromise()
-    .then(res => res.data.pagination.totalCount)
+    .then(res => res.data.pagination.totalCount || 0)
 }
 
 export const getProductTaxonomy = async (usePreview: boolean) =>
