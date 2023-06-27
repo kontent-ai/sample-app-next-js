@@ -1,9 +1,9 @@
-import { FC, useEffect, useMemo, useState } from "react";
-import { Article, ArticleType, Block_Navigation, ProductCategory, WSL_Page } from "../../../../models";
+import { FC } from "react";
+import { Article, Block_Navigation, WSL_Page } from "../../../../models";
 import { AppPage } from "../../../../components/shared/ui/appPage";
 import { ValidCollectionCodename } from "../../../../lib/types/perCollection";
-import { GetStaticPaths, GetStaticProps } from "next";
-import { getArticlesCountByCategory, getArticlesForListing, getItemByCodename, getItemsCount, getSiteMenu } from "../../../../lib/kontentClient";
+import { GetStaticProps } from "next";
+import { getArticlesCountByCategory, getArticlesForListing, getItemByCodename, getItemsTotalCount, getSiteMenu } from "../../../../lib/kontentClient";
 import { PerCollectionCodenames } from "../../../../lib/routing";
 import { Content } from "../../../../components/shared/Content";
 import Link from "next/link";
@@ -14,7 +14,7 @@ import { mainColorBgClass } from "../../../../lib/constants/colors";
 import { useSiteCodename } from "../../../../components/shared/siteCodenameContext";
 import { siteCodename } from "../../../../lib/utils/env";
 import { taxonomies } from "../../../../models";
-import { Bars3Icon } from "@heroicons/react/24/solid";
+import { ArticleListingUrlQuery, ArticleTypeWithAll, categoryFilterSource, isArticleType } from "../../../../lib/utils/articlesListing";
 
 type Props = Readonly<{
   siteCodename: ValidCollectionCodename;
@@ -164,10 +164,9 @@ const ArticlesPage: FC<Props> = props => {
 }
 
 export const getStaticPaths = async () => {
-  const categories: string[] = ['all', 'case_study', 'clinical_trial', 'industry_news', 'research'];
 
-  const getAllPagesForCategory = async (category: string) => {
-    const totalCount = category === 'all' ? await getItemsCount(false, 'article') : await getArticlesCountByCategory(false, category);
+  const getAllPagesForCategory = async (category: ArticleTypeWithAll) => {
+    const totalCount = category === 'all' ? await getItemsTotalCount(false, 'article') : await getArticlesCountByCategory(false, category);
     const pagesNumber = Math.ceil((totalCount ?? 0) / ArticlePageSize);
     const pages = Array.from({ length: pagesNumber }).map((_, index) => index + 1);
     return pages.map(pageNumber => ({
@@ -175,7 +174,7 @@ export const getStaticPaths = async () => {
     }));
   };
 
-  const paths = await Promise.all(categories.map(category => getAllPagesForCategory(category)))
+  const paths = await Promise.all(categoryFilterSource.map(category => getAllPagesForCategory(category)))
     .then(categoryPaths => categoryPaths.flat());
 
   return {
@@ -184,18 +183,25 @@ export const getStaticPaths = async () => {
   };
 };
 
-export const getStaticProps: GetStaticProps<Props> = async context => {
+export const getStaticProps: GetStaticProps<Props, ArticleListingUrlQuery> = async context => {
   const pageCodename: PerCollectionCodenames = {
     ficto_healthtech: "articles",
     ficto_healthtech_imaging: null,
     ficto_healthtech_surgical: "articles_surgical"
   };
   const pageURLParameter = context.params?.page;
+  const selectedCategory = context.params?.category;
+  if (!isArticleType(selectedCategory)) {
+    return {
+      notFound: true
+    };
+  }
+
   const pageNumber = !pageURLParameter || isNaN(+pageURLParameter) ? 1 : +pageURLParameter;
-  const articles = await getArticlesForListing(!!context.preview, pageNumber, context.params?.category as string ?? 'all');
+  const articles = await getArticlesForListing(!!context.preview, pageNumber, selectedCategory ?? 'all');
   const siteMenu = await getSiteMenu(!!context.preview);
   const page = await getItemByCodename<WSL_Page>(pageCodename, !!context.preview);
-  const itemCount = await getArticlesCountByCategory(false, context.params?.category as string)
+  const itemCount = await getArticlesCountByCategory(false, selectedCategory)
   if (page === null) {
     return { notFound: true };
   };
