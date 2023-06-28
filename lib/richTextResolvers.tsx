@@ -8,7 +8,7 @@ import { ArrowTopRightOnSquareIcon } from "@heroicons/react/24/solid";
 import { Block_ContentChunk } from "../models";
 import { ReactNode } from "react";
 
-export const createDefaultResolvers = (element: Elements.RichTextElement, renderRichText: (item: Block_ContentChunk) => ReactNode, insideTable: boolean = false): Partial<PortableTextReactComponents> => ({
+export const createDefaultResolvers = (element: Elements.RichTextElement, renderRichText: (item: Block_ContentChunk) => ReactNode, isElementInsideTable: boolean = false): Partial<PortableTextReactComponents> => ({
   types: {
     image: ({ value }: PortableTextTypeComponentProps<IPortableTextImage>) => {
       const asset = element.images.find(i => i.imageId === value.asset._ref);
@@ -16,7 +16,7 @@ export const createDefaultResolvers = (element: Elements.RichTextElement, render
         throw new Error(`Asset ${value.asset._ref} not found.`);
       }
 
-      if (insideTable) {
+      if (isElementInsideTable) {
         return (
           <div className="w-28 h-14 relative not-prose">
             <Image
