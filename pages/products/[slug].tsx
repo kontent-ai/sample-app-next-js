@@ -8,7 +8,7 @@ import { getProductDetail, getProductSlugs, getSiteMenu } from "../../lib/konten
 import { ValidCollectionCodename } from "../../lib/types/perCollection";
 import { siteCodename } from "../../lib/utils/env";
 import { createElementSmartLink } from "../../lib/utils/smartLinkUtils";
-import { Block_Navigation,contentTypes,Product  } from "../../models"
+import { Block_Navigation, contentTypes, Product } from "../../models"
 
 
 type Props = Readonly<{
@@ -67,14 +67,18 @@ const ProductDetail: FC<Props> = ({ product, siteCodename, siteMenu }) => (
         {product.elements.title.value}
       </h1>
       <div {...createElementSmartLink(contentTypes.product.elements.product_image.codename)}>
-        <Image
-          src={`${product.elements.productImage.value[0].url}?w=${widthLimit}`}
-          alt={product.elements.productImage.value[0].description || product.elements.productImage.value[0].url.split('/').pop() || "Product image"}
-          width={widthLimit}
-          height={product.elements.productImage.value[0].height || 200}
-          className="object-cover"
-          priority
-        />
+        {
+          product.elements.productImage.value[0] && (
+            <Image
+              src={`${product.elements.productImage.value[0].url}?w=${widthLimit}`}
+              alt={product.elements.productImage.value[0].description || product.elements.productImage.value[0].url.split('/').pop() || "Product image"}
+              width={widthLimit}
+              height={product.elements.productImage.value[0].height || 200}
+              className="object-cover"
+              priority
+            />
+          )
+        }
       </div>
       <div {...createElementSmartLink(contentTypes.product.elements.description.codename)}>
         {product.elements.description.value}

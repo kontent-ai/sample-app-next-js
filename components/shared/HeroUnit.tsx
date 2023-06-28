@@ -14,7 +14,7 @@ export const HeroUnitComponent: FC<Props> = props => {
   const siteCodename = useSiteCodename();
   return (
     <HeroImage
-      url={props.item.elements.backgroundImage.value[0]?.url}
+      url={props.item.elements.backgroundImage.value[0]?.url || ""}
       itemId={props.item.system.id}
     >
       <div className={`py-5 md:py-5 px-3 w-full flex md:w-fit ${mainColorBgClass[siteCodename]}  opacity-[85%]`}>

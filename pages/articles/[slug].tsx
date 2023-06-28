@@ -25,7 +25,7 @@ const ArticlePage: FC<Props> = props => {
       siteMenu={props.siteMenu}
     >
       <HeroImage
-        url={props.article.elements.heroImage.value[0]?.url}
+        url={props.article.elements.heroImage.value[0]?.url || ""}
         itemId={props.article.system.id}
       >
         <div className={`py-1 px-3 w-full md:w-fit ${mainColorBgClass[props.siteCodename]}  opacity-90`}>
@@ -38,7 +38,7 @@ const ArticlePage: FC<Props> = props => {
         </div>
       </HeroImage>
       <div className="max-w-screen-md m-auto">
-        <AuthorHorizontal item={props.article.elements.author.linkedItems[0]} />
+        {props.article.elements.author.linkedItems[0] && <AuthorHorizontal item={props.article.elements.author.linkedItems[0]} />}
         <div className="flex flex-col gap-2">
           <div className="w-fit p-2 bg-gray-800 text-white opacity-90 font-semibold">{props.article.elements.publishingDate.value && formatDate(props.article.elements.publishingDate.value)}</div>
           <div className="flex gap-2" >

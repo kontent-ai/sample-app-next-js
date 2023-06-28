@@ -31,6 +31,10 @@ export const TestimonialComponent: FC<Props> = props => {
 const renderAuthor = (item: Block_Testimonial) => {
   const authorItem = item.elements.author.linkedItems[0];
 
+  if (!authorItem) {
+    throw new Error(`Cannot render author in an unknown format ${item.elements.format.value[0]?.codename}.`)
+  }
+
   switch (item.elements.format.value[0]?.codename) {
     case formatOptions.imageTop:
       return <AuthorHorizontal item={authorItem} />;

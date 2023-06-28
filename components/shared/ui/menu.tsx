@@ -58,7 +58,7 @@ const MenuList: FC<MenuListProps> = props => {
             <Link
               {...link.elements.openInANewWindow.value[0] ? { rel: "noopener noreferrer", target: "_blank" } : {}}
               className="h-full flex items-center justify-between w-full py-2 pl-3 pr-4 font-medium text-gray-900 border-b border-gray-100 md:w-auto md:bg-transparent md:border-0 md:hover:bg-white"
-              href={link.elements.externalLink.value ? link.elements.externalLink.value : "/" + link.elements.pageLink.linkedItems[0].elements.url.value}
+              href={link.elements.externalLink.value ? link.elements.externalLink.value : "/" + link.elements.pageLink.linkedItems[0]?.elements.url.value}
             >
               {link.elements.label.value}
             </Link>
@@ -89,7 +89,7 @@ const DropdownMenuItems: FC<DropdownMenuProps> = props => {
         <li key={link.system.codename}>
           <Link
             {...link.elements.openInANewWindow.value[0] ? { rel: "noopener noreferrer", target: "_blank" } : {}}
-            href={link.elements.externalLink.value ? link.elements.externalLink.value : "/" + link.elements.pageLink.linkedItems[0].elements.url.value}
+            href={link.elements.externalLink.value ? link.elements.externalLink.value : "/" + link.elements.pageLink.linkedItems[0]?.elements.url.value}
             className={`${isCurrentNavigationItemActive(link, router) ? "border-l-gray-500 cursor-default " : "border-l-transparent hover:border-l-gray-500"}
           block p-3 bg-gray-200 border-l-8 h-full`}
           >

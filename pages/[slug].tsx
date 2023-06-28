@@ -33,7 +33,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 }
 
 // `getStaticPaths` requires using `getStaticProps`
-export const getStaticProps: GetStaticProps<never, IParams> = async (context) => {
+export const getStaticProps: GetStaticProps<any, IParams> = async (context) => {
   // TODO break hardcoding
   const slug = context.params?.slug;
 

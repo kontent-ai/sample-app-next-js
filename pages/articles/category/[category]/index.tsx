@@ -114,7 +114,7 @@ const ArticlesPage: FC<Props> = props => {
       return props.articles;
     } else {
       return props.articles.filter(
-        article => article.elements.articleType.value[0].codename === category
+        article => article.elements.articleType.value[0]?.codename === category
       );
     }
   };
