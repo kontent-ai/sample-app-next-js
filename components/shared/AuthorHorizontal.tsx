@@ -8,7 +8,7 @@ type Props = Readonly<{
 }>;
 
 export const AuthorHorizontal: FC<Props> = props => {
-  const fullName = `${props.item.elements.firstName.value} ${props.item.elements.lastName.value}`;
+  const fullName = `${props.item.elements.firstName.value}${props.item.elements.lastName.value}`;
   return (
     <div
       className="flex items-center"
@@ -28,6 +28,7 @@ export const AuthorHorizontal: FC<Props> = props => {
       <div className="flex flex-col pl-4">
         <span>
           <span {...createElementSmartLink(contentTypes.author.elements.first_name.codename, true)}>{props.item.elements.firstName.value}</span>
+          &nbsp;
           <span {...createElementSmartLink(contentTypes.author.elements.last_name.codename, true)}>{props.item.elements.lastName.value}</span>
         </span>
         <em {...createElementSmartLink(contentTypes.author.elements.occupation.codename, true)}>({props.item.elements.occupation.value})</em>
