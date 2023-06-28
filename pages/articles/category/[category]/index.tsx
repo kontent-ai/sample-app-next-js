@@ -81,7 +81,7 @@ const FilterOptions: FC<FilterOptionProps> = ({ options, router }) => {
         className={`${dropdownActive ? "flex" : "hidden"} absolute md:static w-full z-50 flex-col md:flex md:flex-row md:pt-10`}
       >
         {Object.entries(options).map(([key, value]) => (
-          <Link key={key} href={`/articles/category/${key}`} onClick={() => setDropdownActive(!dropdownActive)} scroll={false} className={`inline-flex items-center z-50 md:justify-between md:mr-4 md:w-max px-6 py-1 no-underline ${key === category ? [mainColorBgClass[siteCodename], mainColorBorderClass[siteCodename], "cursor-default"].join(" ") : `border-gray-200 bg-white ${mainColorHoverClass[siteCodename]}`} md:rounded-3xl cursor-pointer`}>{value}</Link>
+          <Link key={key} href={`/articles/category/${key}`} onClick={() => setDropdownActive(!dropdownActive)} scroll={false} className={`inline-flex items-center z-50 md:justify-between md:mr-4 md:w-max px-6 py-1 no-underline ${key === category ? [mainColorBgClass[siteCodename], mainColorBorderClass[siteCodename], "cursor-default"].join(" ") : `border-gray-200 bg-white ${mainColorHoverClass[siteCodename]} cursor-pointer`} md:rounded-3xl`}>{value}</Link>
         ))}
         <Link href={`/articles/category/all`} onClick={() => setDropdownActive(!dropdownActive)} scroll={false} className={`px-6 py-1 ${category === "all" ? "hidden" : ""} bg-gray-500 text-white no-underline font-bold md:rounded-3xl cursor-pointer`}>Clear</Link>
       </div>
