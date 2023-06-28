@@ -7,7 +7,9 @@ import { GetStaticPaths, GetStaticProps } from "next";
 import { getArticleBySlug, getArticlesForListing, getSiteMenu } from "../../lib/kontentClient";
 import { RichTextElement } from "../../components/shared/RichTextContent";
 import { mainColorBgClass } from "../../lib/constants/colors";
-import { siteCodename } from "../../lib/utils/env";
+import { siteCodename } from '../../lib/utils/env';
+import { formatDate } from "../../lib/utils/dateTime";
+import { AuthorHorizontal } from "../../components/shared/AuthorHorizontal";
 
 type Props = Readonly<{
   article: Article;
@@ -15,19 +17,36 @@ type Props = Readonly<{
   siteMenu?: Block_Navigation;
 }>;
 
-const ArticlePage: FC<Props> = props => (
-  <AppPage siteCodename={props.siteCodename} siteMenu={props.siteMenu}>
-    <HeroImage url={props.article.elements.heroImage.value[0]?.url} itemId={props.article.system.id}>
-      <div className={`py-1 px-3 w-full md:w-fit ${mainColorBgClass[props.siteCodename]}  opacity-[85%]`}>
-        <h1 className="m-0 text-3xl tracking-wide font-semibold">{props.article.elements.title.value}</h1>
+const ArticlePage: FC<Props> = props => {
+  return (
+    <AppPage siteCodename={props.siteCodename} siteMenu={props.siteMenu}>
+      <HeroImage url={props.article.elements.heroImage.value[0]?.url} itemId={props.article.system.id}>
+        <div className={`py-1 px-3 w-full md:w-fit ${mainColorBgClass[props.siteCodename]}  opacity-90`}>
+          <h1 className="m-0 text-3xl tracking-wide font-semibold">{props.article.elements.title.value}</h1>
+        </div>
+        <div className="bg-white opacity-90 p-4">
+          <p className="font-semibold">
+            {props.article.elements.abstract.value}
+          </p>
+        </div>
+      </HeroImage>
+      <div className="max-w-screen-md m-auto">
+        <AuthorHorizontal item={props.article.elements.author.linkedItems[0]} />
+        <div className="flex flex-col gap-2">
+          <div className="w-fit p-2 bg-gray-800 text-white opacity-90 font-semibold">{props.article.elements.publishingDate.value && formatDate(props.article.elements.publishingDate.value)}</div>
+          <div className="flex gap-2" >
+            {
+              props.article.elements.articleType.value.length > 0 && props.article.elements.articleType.value.map(type => (
+                <div key={type.codename} className={`w-fit p-2 ${mainColorBgClass[props.siteCodename]} font-semibold`}>{type.name}</div>
+              ))
+            }
+          </div>
+        </div>
+        <RichTextElement element={props.article.elements.content} />
       </div>
-    </HeroImage>
-    <p>
-      {props.article.elements.abstract.value}
-    </p>
-    <RichTextElement element={props.article.elements.content} />
-  </AppPage>
-);
+    </AppPage>
+  );
+};
 
 export const getStaticProps: GetStaticProps<Props, { slug: string }> = async context => {
   const siteMenu = await getSiteMenu(!!context.preview);
