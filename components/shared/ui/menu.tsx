@@ -24,9 +24,10 @@ type DropdownMenuProps = Readonly<{
   links: ReadonlyArray<Link>;
 }>;
 
-const isCurrentNavigationItemActive = (navigation: Block_Navigation, router: NextRouter) => (
-  "/" + navigation.elements.pageLink.linkedItems[0]?.elements.url.value === router.asPath
-);
+const isCurrentNavigationItemActive = (navigation: Block_Navigation, router: NextRouter) => {
+  const urlSubPath = router.asPath.split("/", 2).join("");
+  return (navigation.elements.pageLink.linkedItems[0]?.elements.url.value === urlSubPath);
+};
 
 
 const MenuList: FC<MenuListProps> = props => {
