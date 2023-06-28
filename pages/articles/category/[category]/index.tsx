@@ -15,7 +15,7 @@ import { PerCollectionCodenames } from "../../../../lib/routing";
 import { ValidCollectionCodename } from "../../../../lib/types/perCollection";
 import { ArticleListingUrlQuery, ArticleTypeWithAll, categoryFilterSource, isArticleType } from "../../../../lib/utils/articlesListing";
 import { siteCodename } from "../../../../lib/utils/env";
-import { Article, Block_Navigation, taxonomies,WSL_Page  } from "../../../../models";
+import { Article, Block_Navigation, taxonomies, WSL_Page } from "../../../../models";
 
 
 type Props = Readonly<{
@@ -80,7 +80,7 @@ const FilterOptions: FC<FilterOptionProps> = ({ options, router }) => {
         </button>
       </div>
       <div
-        className={`${dropdownActive ? "flex" : "hidden"} absolute md:static w-full z-50 flex-col md:flex md:flex-row md:pt-10`}
+        className={`${dropdownActive ? "flex" : "hidden"} absolute md:static w-full z-40 flex-col md:flex md:flex-row md:pt-10`}
       >
         {Object.entries(options).map(([key, value]) => (
           <Link
@@ -88,7 +88,7 @@ const FilterOptions: FC<FilterOptionProps> = ({ options, router }) => {
             href={`/articles/category/${key}`}
             onClick={() => setDropdownActive(!dropdownActive)}
             scroll={false}
-            className={`inline-flex items-center z-50 md:justify-between md:mr-4 md:w-max px-6 py-1 no-underline ${key === category ? [mainColorBgClass[siteCodename], mainColorBorderClass[siteCodename], "cursor-default"].join(" ") : `border-gray-200 bg-white ${mainColorHoverClass[siteCodename]} cursor-pointer`} md:rounded-3xl`}
+            className={`inline-flex items-center z-40 md:justify-between md:mr-4 md:w-max px-6 py-1 no-underline ${key === category ? [mainColorBgClass[siteCodename], mainColorBorderClass[siteCodename], "cursor-default"].join(" ") : `border-gray-200 bg-white ${mainColorHoverClass[siteCodename]} cursor-pointer`} md:rounded-3xl`}
           >{value}
           </Link>
         ))}
@@ -123,80 +123,80 @@ const ArticlesPage: FC<Props> = props => {
   const pageCount = Math.ceil(props.itemCount / ArticlePageSize);
 
   return (
-<AppPage
-  siteCodename={props.siteCodename}
-  siteMenu={props.siteMenu}
->
-    {props.page.elements.content.linkedItems.map(piece => (
-      <Content
-        key={piece.system.id}
-        item={piece as any}
-      />
-    ))}
-    <div className="md:px-4">
-      <h2 className="mt-4 px-6 md:px-0 md:mt-16">Latest Articles</h2>
-      <FilterOptions
-        options={filterOptions}
-        router={router}
-      />
-      <div className="flex flex-col flex-grow min-h-[500px]">
-        {filteredArticles.length > 0 ? (
-          <ul className="w-full grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 place-items-center list-none gap-5 md:pt-4 pl-0 justify-center">
-            {filteredArticles.map(article => (
-              article.elements.articleType.value[0]?.codename && (
-              <ArticleItem
-                key={article.system.id}
-                title={article.elements.title.value}
-                itemId={article.system.id}
-                description={article.elements.abstract.value}
-                imageUrl={article.elements.heroImage.value[0]?.url || ""}
-                publisingDate={article.elements.publishingDate.value}
-                detailUrl={`/articles/${article.elements.slug.value}`}
-              />
-            )
-            ))}
-          </ul>
-        )
-          :
-          <div className="w-full flex my-auto grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5 pt-4 pl-0 justify-center font-bold">No articles match this criteria.</div>
-        }
+    <AppPage
+      siteCodename={props.siteCodename}
+      siteMenu={props.siteMenu}
+    >
+      {props.page.elements.content.linkedItems.map(piece => (
+        <Content
+          key={piece.system.id}
+          item={piece as any}
+        />
+      ))}
+      <div className="md:px-4">
+        <h2 className="mt-4 px-6 md:px-0 md:mt-16">Latest Articles</h2>
+        <FilterOptions
+          options={filterOptions}
+          router={router}
+        />
+        <div className="flex flex-col flex-grow min-h-[500px]">
+          {filteredArticles.length > 0 ? (
+            <ul className="w-full grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 place-items-center list-none gap-5 md:pt-4 pl-0 justify-center">
+              {filteredArticles.map(article => (
+                article.elements.articleType.value[0]?.codename && (
+                  <ArticleItem
+                    key={article.system.id}
+                    title={article.elements.title.value}
+                    itemId={article.system.id}
+                    description={article.elements.abstract.value}
+                    imageUrl={article.elements.heroImage.value[0]?.url || ""}
+                    publisingDate={article.elements.publishingDate.value}
+                    detailUrl={`/articles/${article.elements.slug.value}`}
+                  />
+                )
+              ))}
+            </ul>
+          )
+            :
+            <div className="w-full flex my-auto grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5 pt-4 pl-0 justify-center font-bold">No articles match this criteria.</div>
+          }
 
-        {pageCount > 1 && (
-<nav>
-          <ul className="mr-14 sm:mr-0 flex flex-row flex-wrap list-none justify-center">
-            <li>
-              <LinkButton
-                text="Previous"
-                href={!page || page === 2 ? `/articles/category/${category}` : `/articles/category/${category}/page/${page - 1}`}
-                disabled={!page}
-                roundLeft
-              />
+          {pageCount > 1 && (
+            <nav>
+              <ul className="mr-14 sm:mr-0 flex flex-row flex-wrap list-none justify-center">
+                <li>
+                  <LinkButton
+                    text="Previous"
+                    href={!page || page === 2 ? `/articles/category/${category}` : `/articles/category/${category}/page/${page - 1}`}
+                    disabled={!page}
+                    roundLeft
+                  />
 
-            </li>
-            {Array.from({ length: pageCount }).map((_, i) => (
-<li key={i}>
-              <LinkButton
-                text={`${i + 1}`}
-                href={i === 0 ? `/articles/category/${category}` : `/articles/category/${category}/page/${i + 1}`}
-                highlight={(page ?? 1) === i + 1}
-              />
-</li>
-))}
-            <li>
-              <LinkButton
-                text="Next"
-                href={`/articles/category/${category}/page/${page ? page + 1 : 2}`}
-                disabled={(page ?? 1) === pageCount}
-                roundRight
-              />
-            </li>
-          </ul>
-</nav>
-)}
+                </li>
+                {Array.from({ length: pageCount }).map((_, i) => (
+                  <li key={i}>
+                    <LinkButton
+                      text={`${i + 1}`}
+                      href={i === 0 ? `/articles/category/${category}` : `/articles/category/${category}/page/${i + 1}`}
+                      highlight={(page ?? 1) === i + 1}
+                    />
+                  </li>
+                ))}
+                <li>
+                  <LinkButton
+                    text="Next"
+                    href={`/articles/category/${category}/page/${page ? page + 1 : 2}`}
+                    disabled={(page ?? 1) === pageCount}
+                    roundRight
+                  />
+                </li>
+              </ul>
+            </nav>
+          )}
+        </div>
       </div>
-    </div>
-</AppPage>
-)
+    </AppPage>
+  )
 }
 
 export const getStaticPaths = async () => {
