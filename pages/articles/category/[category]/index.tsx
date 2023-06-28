@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useState } from "react";
 import { Article, Block_Navigation, WSL_Page } from "../../../../models";
 import { AppPage } from "../../../../components/shared/ui/appPage";
 import { ValidCollectionCodename } from "../../../../lib/types/perCollection";
@@ -10,7 +10,7 @@ import Link from "next/link";
 import { NextRouter, useRouter } from "next/router";
 import { ArticlePageSize } from "../../../../lib/constants/paging";
 import { ArticleItem } from "../../../../components/listingPage/ArticleItem";
-import { mainColorBgClass } from "../../../../lib/constants/colors";
+import { mainColorBgClass, mainColorBorderClass } from "../../../../lib/constants/colors";
 import { useSiteCodename } from "../../../../components/shared/siteCodenameContext";
 import { siteCodename } from "../../../../lib/utils/env";
 import { taxonomies } from "../../../../models";
@@ -63,6 +63,7 @@ const getFilterOptions = () =>
 const FilterOptions: FC<FilterOptionProps> = ({ options, router }) => {
   const category = router.query.category;
   const [dropdownActive, setDropdownActive] = useState(false);
+  const siteCodename = useSiteCodename();
 
   return (
     <>
@@ -73,20 +74,17 @@ const FilterOptions: FC<FilterOptionProps> = ({ options, router }) => {
           onClick={() => setDropdownActive(!dropdownActive)}
         >
           <ChevronDownIcon className={`w-6 h-full transform ${dropdownActive ? "rotate-180" : ""}`} />
-          <span id="mobileFilterText" className="font-semibold pb-1 pl-1">Category</span>
+          <span className="font-semibold pb-1 pl-1">Category</span>
         </button>
       </div>
       <div
         className={`${dropdownActive ? "flex" : "hidden"} absolute md:static w-full z-50 flex-col md:flex md:flex-row md:pt-10`}
       >
         {Object.entries(options).map(([key, value]) => (
-          <Link key={key} href={`/articles/category/${key}`} onClick={() => setDropdownActive(!dropdownActive)} scroll={false} className={`inline-flex items-center z-50 md:justify-between md:mr-4 md:w-max px-6 py-1 no-underline ${key === category ? "border-blue-300 bg-blue-300 hover:bg-gray-100" : "border-gray-200 bg-white hover:bg-blue-100"} md:rounded-3xl cursor-pointer`}>{value}</Link>
+          <Link key={key} href={`/articles/category/${key}`} onClick={() => setDropdownActive(!dropdownActive)} scroll={false} className={`inline-flex items-center z-50 md:justify-between md:mr-4 md:w-max px-6 py-1 no-underline ${key === category ? [mainColorBgClass[siteCodename], mainColorBorderClass[siteCodename], "cursor-default"].join(" ") : "border-gray-200 bg-white hover:bg-blue-100"} md:rounded-3xl cursor-pointer`}>{value}</Link>
         ))}
         <Link href={`/articles/category/all`} onClick={() => setDropdownActive(!dropdownActive)} scroll={false} className={`px-6 py-1 ${category === "all" ? "hidden" : ""} bg-blue-600 text-white no-underline font-bold md:rounded-3xl cursor-pointer`}>Clear</Link>
       </div>
-      {/* <ul className={`${dropdownActive ? "flex" : "hidden"} pl-0 md:hidden list-none flex-col font-medium md:flex-row h-full`}>
-        {filterButtons}
-      </ul> */}
     </>
   );
 };
