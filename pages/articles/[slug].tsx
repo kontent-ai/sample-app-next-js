@@ -10,9 +10,6 @@ import { mainColorBgClass } from "../../lib/constants/colors";
 import { siteCodename } from '../../lib/utils/env';
 import { formatDate } from "../../lib/utils/dateTime";
 import { AuthorHorizontal } from "../../components/shared/AuthorHorizontal";
-import { AuthorVertical } from "../../components/shared/AuthorVertical";
-import { ProductCategory } from '../../models/taxonomies/productCategory';
-import { useSiteCodename } from "../../components/shared/siteCodenameContext";
 
 type Props = Readonly<{
   article: Article;
@@ -21,7 +18,6 @@ type Props = Readonly<{
 }>;
 
 const ArticlePage: FC<Props> = props => {
-  const siteCodename = useSiteCodename();
   return (
     <AppPage siteCodename={props.siteCodename} siteMenu={props.siteMenu}>
       <HeroImage url={props.article.elements.heroImage.value[0]?.url} itemId={props.article.system.id}>
@@ -41,7 +37,7 @@ const ArticlePage: FC<Props> = props => {
           <div className="flex gap-2" >
             {
               props.article.elements.articleType.value.length > 0 && props.article.elements.articleType.value.map(type => (
-                <div key={type.codename} className={`w-fit p-2 ${mainColorBgClass[siteCodename]} font-semibold`}>{type.name}</div>
+                <div key={type.codename} className={`w-fit p-2 ${mainColorBgClass[props.siteCodename]} font-semibold`}>{type.name}</div>
               ))
             }
           </div>
