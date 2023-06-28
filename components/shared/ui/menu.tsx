@@ -1,11 +1,11 @@
 import Link from "next/link";
 import { FC, useState } from "react";
-import { mainColorBgClass, mainColorBorderClass } from "../../../lib/constants/colors";
+import { mainColorBgClass } from "../../../lib/constants/colors";
 import { useSiteCodename } from "../siteCodenameContext";
 import { Block_Navigation } from "../../../models";
 import { createItemSmartLink } from "../../../lib/utils/smartLinkUtils";
 import { ChevronDownIcon, Bars3Icon } from "@heroicons/react/24/solid";
-import { NextRouter, Router, useRouter } from "next/router";
+import { NextRouter, useRouter } from "next/router";
 
 type Link = Readonly<Block_Navigation>;
 

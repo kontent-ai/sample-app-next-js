@@ -10,7 +10,7 @@ import Link from "next/link";
 import { NextRouter, useRouter } from "next/router";
 import { ArticlePageSize } from "../../../../lib/constants/paging";
 import { ArticleItem } from "../../../../components/listingPage/ArticleItem";
-import { mainColorBgClass, mainColorBorderClass } from "../../../../lib/constants/colors";
+import { mainColorBgClass, mainColorBorderClass, mainColorHoverClass } from "../../../../lib/constants/colors";
 import { useSiteCodename } from "../../../../components/shared/siteCodenameContext";
 import { siteCodename } from "../../../../lib/utils/env";
 import { taxonomies } from "../../../../models";
@@ -81,9 +81,9 @@ const FilterOptions: FC<FilterOptionProps> = ({ options, router }) => {
         className={`${dropdownActive ? "flex" : "hidden"} absolute md:static w-full z-50 flex-col md:flex md:flex-row md:pt-10`}
       >
         {Object.entries(options).map(([key, value]) => (
-          <Link key={key} href={`/articles/category/${key}`} onClick={() => setDropdownActive(!dropdownActive)} scroll={false} className={`inline-flex items-center z-50 md:justify-between md:mr-4 md:w-max px-6 py-1 no-underline ${key === category ? [mainColorBgClass[siteCodename], mainColorBorderClass[siteCodename], "cursor-default"].join(" ") : "border-gray-200 bg-white hover:bg-blue-100"} md:rounded-3xl cursor-pointer`}>{value}</Link>
+          <Link key={key} href={`/articles/category/${key}`} onClick={() => setDropdownActive(!dropdownActive)} scroll={false} className={`inline-flex items-center z-50 md:justify-between md:mr-4 md:w-max px-6 py-1 no-underline ${key === category ? [mainColorBgClass[siteCodename], mainColorBorderClass[siteCodename], "cursor-default"].join(" ") : `border-gray-200 bg-white ${mainColorHoverClass[siteCodename]}`} md:rounded-3xl cursor-pointer`}>{value}</Link>
         ))}
-        <Link href={`/articles/category/all`} onClick={() => setDropdownActive(!dropdownActive)} scroll={false} className={`px-6 py-1 ${category === "all" ? "hidden" : ""} bg-blue-600 text-white no-underline font-bold md:rounded-3xl cursor-pointer`}>Clear</Link>
+        <Link href={`/articles/category/all`} onClick={() => setDropdownActive(!dropdownActive)} scroll={false} className={`px-6 py-1 ${category === "all" ? "hidden" : ""} bg-gray-500 text-white no-underline font-bold md:rounded-3xl cursor-pointer`}>Clear</Link>
       </div>
     </>
   );
@@ -114,7 +114,7 @@ const ArticlesPage: FC<Props> = props => {
     <div className="md:px-4">
       <h2 className="mt-4 px-6 md:px-0 md:mt-16">Latest Articles</h2>
       <FilterOptions options={filterOptions} router={router} />
-      <div className="flex flex-col flex-grow">
+      <div className="flex flex-col flex-grow min-h-[500px]">
         {filteredArticles.length > 0 ?
           <ul className="w-full grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 place-items-center list-none gap-5 md:pt-4 pl-0 justify-center">
             {filteredArticles.map(a => (
@@ -131,7 +131,7 @@ const ArticlesPage: FC<Props> = props => {
             ))}
           </ul>
           :
-          <div className="w-full flex items-center grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 place-items-center gap-5 pt-4 pl-0 justify-center">No articles match this criteria.</div>
+          <div className="w-full flex my-auto grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5 pt-4 pl-0 justify-center font-bold">No articles match this criteria.</div>
         }
 
         {pageCount > 1 && <nav>

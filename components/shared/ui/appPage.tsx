@@ -1,13 +1,13 @@
+import Head from "next/head";
 import { FC, ReactNode } from "react";
-import { Footer } from "./footer";
-import { Menu } from "./menu";
-import { useSmartLink } from "../../../lib/useSmartLink";
+import { perCollectionSEOTitle } from "../../../lib/constants/labels";
 import { ValidCollectionCodename } from "../../../lib/types/perCollection";
-import { SiteCodenameProvider } from "../siteCodenameContext";
+import { useSmartLink } from "../../../lib/useSmartLink";
 import { createItemSmartLink } from "../../../lib/utils/smartLinkUtils";
 import { Block_Navigation } from "../../../models";
-import Head from "next/head";
-import { perCollectionSEOTitle } from "../../../lib/constants/labels";
+import { SiteCodenameProvider } from "../siteCodenameContext";
+import { Footer } from "./footer";
+import { Menu } from "./menu";
 
 type Props = Readonly<{
   children: ReactNode;
