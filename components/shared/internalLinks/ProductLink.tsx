@@ -1,7 +1,8 @@
-import { FC, ReactNode, useEffect, useState } from "react"
-import { Product } from "../../../models";
 import Image from "next/image";
 import { useRouter } from "next/router";
+import { FC, ReactNode, useEffect, useState } from "react"
+
+import { Product } from "../../../models";
 
 type Props = Readonly<{
   children: ReactNode;

@@ -7,8 +7,6 @@ const handler: NextApiHandler = (req, res) => {
   
     // Redirect the user back to the index page.
     // Might be implemented return URL by the query string.
-
-    const redirect = req.query['redirect']
     res.redirect("/");
   }
 

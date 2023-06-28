@@ -1,21 +1,22 @@
-import { FC, useState } from "react";
-import { Article, Block_Navigation, WSL_Page } from "../../../../models";
-import { AppPage } from "../../../../components/shared/ui/appPage";
-import { ValidCollectionCodename } from "../../../../lib/types/perCollection";
+import { ChevronDownIcon } from "@heroicons/react/24/solid";
 import { GetStaticProps } from "next";
-import { getArticlesCountByCategory, getArticlesForListing, getItemByCodename, getItemsTotalCount, getSiteMenu } from "../../../../lib/kontentClient";
-import { PerCollectionCodenames } from "../../../../lib/routing";
-import { Content } from "../../../../components/shared/Content";
 import Link from "next/link";
 import { NextRouter, useRouter } from "next/router";
-import { ArticlePageSize } from "../../../../lib/constants/paging";
+import { FC, useState } from "react";
+
 import { ArticleItem } from "../../../../components/listingPage/ArticleItem";
-import { mainColorBgClass, mainColorBorderClass, mainColorHoverClass } from "../../../../lib/constants/colors";
+import { Content } from "../../../../components/shared/Content";
 import { useSiteCodename } from "../../../../components/shared/siteCodenameContext";
-import { siteCodename } from "../../../../lib/utils/env";
-import { taxonomies } from "../../../../models";
+import { AppPage } from "../../../../components/shared/ui/appPage";
+import { mainColorBgClass, mainColorBorderClass, mainColorHoverClass } from "../../../../lib/constants/colors";
+import { ArticlePageSize } from "../../../../lib/constants/paging";
+import { getArticlesCountByCategory, getArticlesForListing, getItemByCodename, getItemsTotalCount, getSiteMenu } from "../../../../lib/kontentClient";
+import { PerCollectionCodenames } from "../../../../lib/routing";
+import { ValidCollectionCodename } from "../../../../lib/types/perCollection";
 import { ArticleListingUrlQuery, ArticleTypeWithAll, categoryFilterSource, isArticleType } from "../../../../lib/utils/articlesListing";
-import { ChevronDownIcon } from "@heroicons/react/24/solid";
+import { siteCodename } from "../../../../lib/utils/env";
+import { Article, Block_Navigation, taxonomies,WSL_Page  } from "../../../../models";
+
 
 type Props = Readonly<{
   siteCodename: ValidCollectionCodename;
@@ -35,7 +36,7 @@ type LinkButtonProps = {
 }
 
 type FilterOptionProps = Readonly<{
-  options: { [key: string]: string };
+  options: Record<string, string>;
   router: NextRouter;
 }>;
 
@@ -50,7 +51,8 @@ const LinkButton: FC<LinkButtonProps> = props => {
     >
       <button
         disabled={props.disabled}
-        className={`${props.roundRight && 'rounded-r-lg'} ${props.roundLeft && 'rounded-l-lg'} disabled:cursor-not-allowed ${props.highlight ? mainColorBgClass[siteCodename] : 'bg-white'} px-3 py-2 leading-tight text-gray-500 border disabled:bg-gray-200 border-gray-300 enabled:hover:bg-gray-100 enabled:hover:text-gray-700 `}>
+        className={`${props.roundRight && 'rounded-r-lg'} ${props.roundLeft && 'rounded-l-lg'} disabled:cursor-not-allowed ${props.highlight ? mainColorBgClass[siteCodename] : 'bg-white'} px-3 py-2 leading-tight text-gray-500 border disabled:bg-gray-200 border-gray-300 enabled:hover:bg-gray-100 enabled:hover:text-gray-700 `}
+      >
         {props.text}
       </button>
     </Link>
@@ -81,9 +83,22 @@ const FilterOptions: FC<FilterOptionProps> = ({ options, router }) => {
         className={`${dropdownActive ? "flex" : "hidden"} absolute md:static w-full z-50 flex-col md:flex md:flex-row md:pt-10`}
       >
         {Object.entries(options).map(([key, value]) => (
-          <Link key={key} href={`/articles/category/${key}`} onClick={() => setDropdownActive(!dropdownActive)} scroll={false} className={`inline-flex items-center z-50 md:justify-between md:mr-4 md:w-max px-6 py-1 no-underline ${key === category ? [mainColorBgClass[siteCodename], mainColorBorderClass[siteCodename], "cursor-default"].join(" ") : `border-gray-200 bg-white ${mainColorHoverClass[siteCodename]} cursor-pointer`} md:rounded-3xl`}>{value}</Link>
+          <Link
+            key={key}
+            href={`/articles/category/${key}`}
+            onClick={() => setDropdownActive(!dropdownActive)}
+            scroll={false}
+            className={`inline-flex items-center z-50 md:justify-between md:mr-4 md:w-max px-6 py-1 no-underline ${key === category ? [mainColorBgClass[siteCodename], mainColorBorderClass[siteCodename], "cursor-default"].join(" ") : `border-gray-200 bg-white ${mainColorHoverClass[siteCodename]} cursor-pointer`} md:rounded-3xl`}
+          >{value}
+          </Link>
         ))}
-        <Link href={`/articles/category/all`} onClick={() => setDropdownActive(!dropdownActive)} scroll={false} className={`px-6 py-1 ${category === "all" ? "hidden" : ""} bg-gray-500 text-white no-underline font-bold md:rounded-3xl cursor-pointer`}>Clear</Link>
+        <Link
+          href="/articles/category/all"
+          onClick={() => setDropdownActive(!dropdownActive)}
+          scroll={false}
+          className={`px-6 py-1 ${category === "all" ? "hidden" : ""} bg-gray-500 text-white no-underline font-bold md:rounded-3xl cursor-pointer`}
+        >Clear
+        </Link>
       </div>
     </>
   );
@@ -104,37 +119,50 @@ const ArticlesPage: FC<Props> = props => {
     }
   };
 
-  let filteredArticles = getFilteredArticles();
+  const filteredArticles = getFilteredArticles();
   const pageCount = Math.ceil(props.itemCount / ArticlePageSize);
 
-  return <AppPage siteCodename={props.siteCodename} siteMenu={props.siteMenu}>
+  return (
+<AppPage
+  siteCodename={props.siteCodename}
+  siteMenu={props.siteMenu}
+>
     {props.page.elements.content.linkedItems.map(piece => (
-      <Content key={piece.system.id} item={piece as any} />
+      <Content
+        key={piece.system.id}
+        item={piece as any}
+      />
     ))}
     <div className="md:px-4">
       <h2 className="mt-4 px-6 md:px-0 md:mt-16">Latest Articles</h2>
-      <FilterOptions options={filterOptions} router={router} />
+      <FilterOptions
+        options={filterOptions}
+        router={router}
+      />
       <div className="flex flex-col flex-grow min-h-[500px]">
-        {filteredArticles.length > 0 ?
+        {filteredArticles.length > 0 ? (
           <ul className="w-full grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 place-items-center list-none gap-5 md:pt-4 pl-0 justify-center">
-            {filteredArticles.map(a => (
-              a.elements.articleType.value[0].codename &&
+            {filteredArticles.map(article => (
+              article.elements.articleType.value[0]?.codename && (
               <ArticleItem
-                key={a.system.id}
-                title={a.elements.title.value}
-                itemId={a.system.id}
-                description={a.elements.abstract.value}
-                imageUrl={a.elements.heroImage.value[0]?.url}
-                publisingDate={a.elements.publishingDate.value}
-                detailUrl={`/articles/${a.elements.slug.value}`}
+                key={article.system.id}
+                title={article.elements.title.value}
+                itemId={article.system.id}
+                description={article.elements.abstract.value}
+                imageUrl={article.elements.heroImage.value[0]?.url || ""}
+                publisingDate={article.elements.publishingDate.value}
+                detailUrl={`/articles/${article.elements.slug.value}`}
               />
+            )
             ))}
           </ul>
+        )
           :
           <div className="w-full flex my-auto grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5 pt-4 pl-0 justify-center font-bold">No articles match this criteria.</div>
         }
 
-        {pageCount > 1 && <nav>
+        {pageCount > 1 && (
+<nav>
           <ul className="mr-14 sm:mr-0 flex flex-row flex-wrap list-none justify-center">
             <li>
               <LinkButton
@@ -145,13 +173,15 @@ const ArticlesPage: FC<Props> = props => {
               />
 
             </li>
-            {Array.from({ length: pageCount }).map((_, i) => (<li key={i}>
+            {Array.from({ length: pageCount }).map((_, i) => (
+<li key={i}>
               <LinkButton
                 text={`${i + 1}`}
                 href={i === 0 ? `/articles/category/${category}` : `/articles/category/${category}/page/${i + 1}`}
                 highlight={(page ?? 1) === i + 1}
               />
-            </li>))}
+</li>
+))}
             <li>
               <LinkButton
                 text="Next"
@@ -161,10 +191,12 @@ const ArticlesPage: FC<Props> = props => {
               />
             </li>
           </ul>
-        </nav>}
+</nav>
+)}
       </div>
     </div>
-  </AppPage>
+</AppPage>
+)
 }
 
 export const getStaticPaths = async () => {
@@ -202,13 +234,13 @@ export const getStaticProps: GetStaticProps<Props, ArticleListingUrlQuery> = asy
   }
 
   const pageNumber = !pageURLParameter || isNaN(+pageURLParameter) ? 1 : +pageURLParameter;
-  const articles = await getArticlesForListing(!!context.preview, pageNumber, selectedCategory ?? 'all');
+  const articles = await getArticlesForListing(!!context.preview, pageNumber, selectedCategory);
   const siteMenu = await getSiteMenu(!!context.preview);
   const page = await getItemByCodename<WSL_Page>(pageCodename, !!context.preview);
   const itemCount = await getArticlesCountByCategory(false, selectedCategory)
   if (page === null) {
     return { notFound: true };
-  };
+  }
 
   return {
     props: {

@@ -1,10 +1,11 @@
 import { camelCasePropertyNameResolver, createDeliveryClient, DeliveryError, IContentItem } from '@kontent-ai/delivery-sdk';
-import { PerCollectionCodenames } from './routing';
-import { siteCodename } from './utils/env';
-import { Article, ArticleType, contentTypes, Product, WSL_WebSpotlightRoot } from '../models';
+
+import { Article, contentTypes, Product, WSL_WebSpotlightRoot } from '../models';
 import { perCollectionRootItems } from './constants/menu';
 import { ArticlePageSize, ProductsPageSize } from './constants/paging';
+import { PerCollectionCodenames } from './routing';
 import { ArticleTypeWithAll } from './utils/articlesListing';
+import { siteCodename } from './utils/env';
 
 const sourceTrackingHeaderName = 'X-KC-SOURCE';
 
@@ -15,7 +16,7 @@ if (!envId) {
 
 const deliveryClient = createDeliveryClient({
   environmentId: envId,
-  globalHeaders: (_queryConfig) => [
+  globalHeaders: () => [
     {
       header: sourceTrackingHeaderName,
       value: `${process.env.APP_NAME || "n/a"};${process.env.APP_VERSION || "n/a"}`,
@@ -50,7 +51,6 @@ export const getItemByCodename = <ItemType extends IContentItem>(codename: PerCo
       return res.data.item as ItemType
     })
     .catch((error) => {
-      debugger;
       if (error instanceof DeliveryError) {
         // delivery specific error (e.g. item with codename not found...)
         console.error(error.message, error.errorCode);
@@ -99,7 +99,7 @@ export const getProductsForListing = (usePreview: boolean, page?: number, catego
 
   if (page) {
     query.skipParameter((page - 1) * pageSize)
-  };
+  }
 
   if (categories) {
     query.anyFilter(`elements.${contentTypes.product.elements.category.codename}`, categories);
@@ -148,7 +148,7 @@ export const getArticlesForListing = (usePreview: boolean, page?: number, articl
 
   if (page) {
     query.skipParameter((page - 1) * pageSize)
-  };
+  }
 
   if (articleType && articleType !== 'all') {
     query.containsFilter(`elements.${contentTypes.article.elements.article_type.codename}`, [articleType])

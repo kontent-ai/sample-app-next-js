@@ -1,12 +1,13 @@
-import { FC } from "react";
-import { Article, Block_Navigation, WSL_Page } from "../../../../../models";
-import { ValidCollectionCodename } from "../../../../../lib/types/perCollection";
 import { GetStaticProps } from "next";
-import { getItemsTotalCount, getArticlesForListing, getItemByCodename, getSiteMenu, getArticlesCountByCategory } from "../../../../../lib/kontentClient";
-import { siteCodename } from "../../../../../lib/utils/env";
-import { PerCollectionCodenames } from "../../../../../lib/routing";
+import { FC } from "react";
+
 import { ArticlePageSize } from "../../../../../lib/constants/paging";
-import { isArticleType, ArticleTypeWithAll, categoryFilterSource, ArticleListingUrlQuery } from "../../../../../lib/utils/articlesListing";
+import { getArticlesCountByCategory,getArticlesForListing, getItemByCodename, getItemsTotalCount, getSiteMenu } from "../../../../../lib/kontentClient";
+import { PerCollectionCodenames } from "../../../../../lib/routing";
+import { ValidCollectionCodename } from "../../../../../lib/types/perCollection";
+import { ArticleListingUrlQuery,ArticleTypeWithAll, categoryFilterSource, isArticleType } from "../../../../../lib/utils/articlesListing";
+import { siteCodename } from "../../../../../lib/utils/env";
+import { Article, Block_Navigation, WSL_Page } from "../../../../../models";
 import ArticlesPage from "..";
 
 type Props = Readonly<{
@@ -56,7 +57,7 @@ export const getStaticProps: GetStaticProps<Props, ArticleListingUrlQuery> = asy
 
   if (page === null || articles.items.length === 0) {
     return { notFound: true };
-  };
+  }
 
   return {
     props: {

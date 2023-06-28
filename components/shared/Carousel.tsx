@@ -1,8 +1,9 @@
-import { ComponentProps, FC, useState } from "react";
-import { Block_Carousel } from "../../models"
-import { range } from "../../lib/utils/range";
-import { Content } from "./Content";
 import { ArrowLeftIcon, ArrowRightIcon } from "@heroicons/react/24/solid";
+import { ComponentProps, FC, useState } from "react";
+
+import { range } from "../../lib/utils/range";
+import { Block_Carousel } from "../../models"
+import { Content } from "./Content";
 
 type Props = Readonly<{
   item: Block_Carousel;
@@ -48,8 +49,15 @@ export const CarouselComponent: FC<Props> = props => {
       </div>
       {items.length > 1 && (
         <>
-          <Indicator currentIndex={currentIndex} navigateTo={jumpToIndex} totalItems={items.length} />
-          <NextPrev onNext={moveForward} onPrev={moveBackward} />
+          <Indicator
+            currentIndex={currentIndex}
+            navigateTo={jumpToIndex}
+            totalItems={items.length}
+          />
+          <NextPrev
+            onNext={moveForward}
+            onPrev={moveBackward}
+          />
         </>
       )}
     </div>
@@ -144,7 +152,10 @@ const NextPrev: FC<NextPrevProps> = props => (
       onClick={props.onPrev}
     >
       <span className="inline-flex items-center justify-center w-8 h-8 rounded-full sm:w-10 sm:h-10 bg-white/30 group-hover:bg-white/50 group-focus:ring-4 group-focus:ring-white  group-focus:outline-none">
-        <ArrowLeftIcon className="w-5 h-5 text-white sm:w-6 sm:h-6" aria-hidden="true" />
+        <ArrowLeftIcon
+          className="w-5 h-5 text-white sm:w-6 sm:h-6"
+          aria-hidden="true"
+        />
         <span className="sr-only">Previous</span>
       </span>
     </button>
@@ -154,7 +165,10 @@ const NextPrev: FC<NextPrevProps> = props => (
       onClick={props.onNext}
     >
       <span className="inline-flex items-center justify-center w-8 h-8 rounded-full sm:w-10 sm:h-10 bg-white/30 group-hover:bg-white/50 group-focus:ring-4 group-focus:ring-white group-focus:outline-none">
-        <ArrowRightIcon className="w-5 h-5 text-white sm:w-6 sm:h-6" aria-hidden="true" />
+        <ArrowRightIcon
+          className="w-5 h-5 text-white sm:w-6 sm:h-6"
+          aria-hidden="true"
+        />
         <span className="sr-only">Next</span>
       </span>
     </button>

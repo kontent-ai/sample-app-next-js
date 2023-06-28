@@ -1,4 +1,5 @@
 import { NextApiHandler } from "next";
+
 import { getProductTaxonomy } from "../../lib/kontentClient";
 import { parseBoolean } from "../../lib/utils/parseBoolean";
 

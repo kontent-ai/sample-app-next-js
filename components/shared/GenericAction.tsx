@@ -1,7 +1,8 @@
-import { FC } from "react";
-import { GenericAction, contentTypes } from "../../models";
 import Image from "next/image"
+import { FC } from "react";
+
 import { createElementSmartLink, createItemSmartLink } from "../../lib/utils/smartLinkUtils";
+import { contentTypes,GenericAction } from "../../models";
 
 type Props = Readonly<{
   item: GenericAction;
@@ -31,7 +32,10 @@ export const GenericActionComponent: FC<Props> = props => {
         <h3 {...createElementSmartLink(contentTypes.generic_action.elements.title.codename)}>
           {props.item.elements.title.value}
         </h3>
-        <div className="text-justify" {...createElementSmartLink(contentTypes.generic_action.elements.message.codename)}>
+        <div
+          className="text-justify"
+          {...createElementSmartLink(contentTypes.generic_action.elements.message.codename)}
+        >
           {props.item.elements.message.value}
         </div>
       </div>

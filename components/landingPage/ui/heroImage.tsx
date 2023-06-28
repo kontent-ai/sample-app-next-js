@@ -1,5 +1,6 @@
-import { FC, ReactNode } from "react";
 import Image from 'next/image';
+import { FC, ReactNode } from "react";
+
 import { createItemSmartLink } from "../../../lib/utils/smartLinkUtils";
 
 type Props = Readonly<{

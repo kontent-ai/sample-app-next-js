@@ -1,6 +1,7 @@
-import { FC } from "react";
-import { createElementSmartLink, createItemSmartLink } from "../../lib/utils/smartLinkUtils";
 import { useRouter } from "next/router";
+import { FC } from "react";
+
+import { createElementSmartLink, createItemSmartLink } from "../../lib/utils/smartLinkUtils";
 
 type ItemId = Readonly<{
   itemId: string | undefined;
@@ -22,6 +23,7 @@ export const StandaloneSmartLinkButton: FC<Props> = props => {
   return (
     <div
       className="absolute right-0 top-0 w-12 h-12 m-0"
-      {..."itemId" in props ? createItemSmartLink(props.itemId) : createElementSmartLink(props.elementCodename)} />
+      {..."itemId" in props ? createItemSmartLink(props.itemId) : createElementSmartLink(props.elementCodename)}
+    />
   );
 };

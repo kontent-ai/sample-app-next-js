@@ -1,7 +1,8 @@
-import { ComponentType, FC, ReactNode } from "react";
-import { Component_Callout, Block_ContentChunk, contentTypes } from "../../../models";
-import { CalloutComponent } from "./Callout";
 import { IContentItem } from "@kontent-ai/delivery-sdk";
+import { ComponentType, FC, ReactNode } from "react";
+
+import { Block_ContentChunk, Component_Callout, contentTypes } from "../../../models";
+import { CalloutComponent } from "./Callout";
 
 type AcceptedType = AcceptedTypesByCodename[keyof AcceptedTypesByCodename];
 
@@ -10,11 +11,17 @@ type Props = Readonly<{
   renderRichText: (item: Block_ContentChunk) => ReactNode;
 }>;
 
+
+const isSupportedComponentType = (type: string): type is keyof AcceptedTypesByCodename => (
+  Object.keys(componentMap).includes(type)
+);
+
 export const RichTextComponent: FC<Props> = props => {
-  const TargetComponent = componentMap[props.item.system.type as keyof AcceptedTypesByCodename];
-  if (!TargetComponent) {
+  const type = props.item.system.type;
+  if (!isSupportedComponentType(type)) {
     return null;
   }
+  const TargetComponent = componentMap[type as keyof AcceptedTypesByCodename];
   if (props.item.system.type === contentTypes.content_chunk.codename) {
     return <>{props.renderRichText(props.item)}</>;
   }

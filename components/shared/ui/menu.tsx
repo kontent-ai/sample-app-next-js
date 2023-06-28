@@ -1,11 +1,12 @@
+import { Bars3Icon, ChevronDownIcon } from "@heroicons/react/24/solid";
 import Link from "next/link";
-import { FC, useState } from "react";
-import { mainColorBgClass } from "../../../lib/constants/colors";
-import { useSiteCodename } from "../siteCodenameContext";
-import { Block_Navigation } from "../../../models";
-import { createItemSmartLink } from "../../../lib/utils/smartLinkUtils";
-import { ChevronDownIcon, Bars3Icon } from "@heroicons/react/24/solid";
 import { NextRouter, useRouter } from "next/router";
+import { FC, useState } from "react";
+
+import { mainColorBgClass } from "../../../lib/constants/colors";
+import { createItemSmartLink } from "../../../lib/utils/smartLinkUtils";
+import { Block_Navigation } from "../../../models";
+import { useSiteCodename } from "../siteCodenameContext";
 
 type Link = Readonly<Block_Navigation>;
 
@@ -38,8 +39,12 @@ const MenuList: FC<MenuListProps> = props => {
   return (
     <ul className={`${props.smallMenuActive ? "flex" : "hidden"} flex-col md:flex md:gap-4 font-medium md:flex-row h-full`}>
       {props.items.map((link, i) => (
-        <li key={i} className={`${isCurrentNavigationItemActive(link, router) ? "" : "border-l-transparent border-t-transparent"}
-        border-gray-500 border-l-8 border-t-0 md:border-t-8 md:border-l-0 h-full ${mainColorBgClass[siteCodename]} group grow`} onClick={() => props.handleClick(i)}>
+        <li
+          key={i}
+          className={`${isCurrentNavigationItemActive(link, router) ? "" : "border-l-transparent border-t-transparent"}
+        border-gray-500 border-l-8 border-t-0 md:border-t-8 md:border-l-0 h-full ${mainColorBgClass[siteCodename]} group grow`}
+          onClick={() => props.handleClick(i)}
+        >
           {link.elements.subitems.value.length > 0 ? (
             <div className={`${i === props.activeMenu ? "bg-white " : ""} md:hover:bg-white h-full`}>
               <DropdownButton item={link} />
@@ -52,7 +57,7 @@ const MenuList: FC<MenuListProps> = props => {
           ) : (
             <Link
               {...link.elements.openInANewWindow.value[0] ? { rel: "noopener noreferrer", target: "_blank" } : {}}
-              className={`h-full flex items-center justify-between w-full py-2 pl-3 pr-4 font-medium text-gray-900 border-b border-gray-100 md:w-auto md:bg-transparent md:border-0 md:hover:bg-white`}
+              className="h-full flex items-center justify-between w-full py-2 pl-3 pr-4 font-medium text-gray-900 border-b border-gray-100 md:w-auto md:bg-transparent md:border-0 md:hover:bg-white"
               href={link.elements.externalLink.value ? link.elements.externalLink.value : "/" + link.elements.pageLink.linkedItems[0].elements.url.value}
             >
               {link.elements.label.value}
@@ -67,7 +72,7 @@ const MenuList: FC<MenuListProps> = props => {
 const DropdownButton: FC<Props> = props => {
   return (
     <button
-      className={`h-full flex items-center justify-between w-full p-4 py-2 font-medium text-gray-900 border-b border-gray-100 md:w-auto md:bg-transparent md:border-0`}
+      className="h-full flex items-center justify-between w-full p-4 py-2 font-medium text-gray-900 border-b border-gray-100 md:w-auto md:bg-transparent md:border-0"
     >
       {props.item.elements.label.value}
       <ChevronDownIcon className="w-4 h-4 ml-1 mt-1" />
@@ -83,7 +88,6 @@ const DropdownMenuItems: FC<DropdownMenuProps> = props => {
       {props.links.map(link => (
         <li key={link.system.codename}>
           <Link
-            
             {...link.elements.openInANewWindow.value[0] ? { rel: "noopener noreferrer", target: "_blank" } : {}}
             href={link.elements.externalLink.value ? link.elements.externalLink.value : "/" + link.elements.pageLink.linkedItems[0].elements.url.value}
             className={`${isCurrentNavigationItemActive(link, router) ? "border-l-gray-500 cursor-default " : "border-l-transparent hover:border-l-gray-500"}
@@ -103,16 +107,22 @@ export const Menu: FC<Props> = props => {
   const [activeMenu, setActiveMenu] = useState<string | number>(-1);
   const [smallMenuActive, setSmallMenuActive] = useState(false);
 
-  const handleMenuClick = (menuId: string | number) => {
-    menuId === activeMenu ? setActiveMenu(-1) : setActiveMenu(menuId);
-  }
+  const handleMenuClick = (menuId: string | number): void => (
+    setActiveMenu(menuId === activeMenu ? -1 : menuId)
+  )
 
   return (
-    <div className={`w-screen ${mainColorBgClass[siteCodename]} fixed z-50`} {...createItemSmartLink(props.item.system.id)}>
+    <div
+      className={`w-screen ${mainColorBgClass[siteCodename]} fixed z-50`}
+      {...createItemSmartLink(props.item.system.id)}
+    >
       <div className="flex justify-between items-center mx-auto max-w-screen-xl md:h-16">
         <div className="w-screen h-full md:flex justify-between z-50 md:pr-24 xl:pr-12 2xl:pr-0">
           <div className="flex h-full justify-between items-center px-8 py-4">
-            <Link href="/" className="flex items-center">
+            <Link
+              href="/"
+              className="flex items-center"
+            >
               <span className="font-extrabold">Ficto</span>
               <span>Healthtech</span>
               {siteCodename === 'ficto_healthtech_surgical' && <span>&nbsp;Surgical</span>}
@@ -127,7 +137,12 @@ export const Menu: FC<Props> = props => {
             </button>
           </div>
           <div>
-            <MenuList smallMenuActive={smallMenuActive} items={props.item.elements.subitems.linkedItems} handleClick={handleMenuClick} activeMenu={activeMenu} />
+            <MenuList
+              smallMenuActive={smallMenuActive}
+              items={props.item.elements.subitems.linkedItems}
+              handleClick={handleMenuClick}
+              activeMenu={activeMenu}
+            />
           </div>
         </div>
       </div>

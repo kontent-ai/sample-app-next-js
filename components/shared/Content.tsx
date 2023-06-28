@@ -1,12 +1,13 @@
 import { ComponentType, FC } from "react";
-import { Block_CallToAction, Block_Stack, Block_Carousel, Block_HeroUnit, Block_ContentChunk, Block_Testimonial, contentTypes, Block_Grid } from "../../models";
+
+import { Block_CallToAction, Block_Carousel, Block_ContentChunk, Block_Grid, Block_HeroUnit, Block_Stack, Block_Testimonial, contentTypes } from "../../models";
+import { CallToActionComponent } from "./CallToAction";
+import { CarouselComponent } from "./Carousel";
+import { GridComponent } from "./Grid";
 import { HeroUnitComponent } from "./HeroUnit";
 import { RichTextContentComponent } from "./RichTextContent";
-import { TestimonialComponent } from "./Testimonial";
-import { CarouselComponent } from "./Carousel";
-import { CallToActionComponent } from "./CallToAction";
 import { StackComponent } from "./Stack";
-import { GridComponent } from "./Grid";
+import { TestimonialComponent } from "./Testimonial";
 
 type AcceptedType = AcceptedTypesByCodename[keyof AcceptedTypesByCodename];
 
@@ -14,11 +15,16 @@ type Props = Readonly<{
   item: AcceptedType;
 }>;
 
+const isSupportedComponentType = (type: string): type is keyof AcceptedTypesByCodename => (
+  Object.keys(componentMap).includes(type)
+);
+
 export const Content: FC<Props> = props => {
-  const TargetComponent = componentMap[props.item.system.type as keyof AcceptedTypesByCodename];
-  if (!TargetComponent) {
+  const type = props.item.system.type;
+  if (!isSupportedComponentType(type)) {
     return null;
   }
+  const TargetComponent = componentMap[type];
 
   return <TargetComponent item={props.item as any} />;
 }

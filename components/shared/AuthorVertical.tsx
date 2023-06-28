@@ -1,7 +1,8 @@
-import { FC } from "react";
-import { Author, contentTypes } from "../../models"
 import Image from "next/image";
+import { FC } from "react";
+
 import { createElementSmartLink, createItemSmartLink } from "../../lib/utils/smartLinkUtils";
+import { Author, contentTypes } from "../../models"
 
 type Props = Readonly<{
   item: Author;

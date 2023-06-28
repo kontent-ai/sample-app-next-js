@@ -1,12 +1,13 @@
+import { ArrowTopRightOnSquareIcon } from "@heroicons/react/24/solid";
 import { Elements } from "@kontent-ai/delivery-sdk";
 import { IPortableTextComponent, IPortableTextImage, IPortableTextInternalLink, IPortableTextTable } from "@kontent-ai/rich-text-resolver";
 import { PortableText, PortableTextMarkComponentProps, PortableTextReactComponents, PortableTextTypeComponentProps } from "@portabletext/react";
 import Image from "next/image";
-import { RichTextComponent, isAcceptedComponentItem } from "../components/shared/richText/richTextComponent";
-import { InternalLink } from "../components/shared/internalLinks/InternalLink";
-import { ArrowTopRightOnSquareIcon } from "@heroicons/react/24/solid";
-import { Block_ContentChunk } from "../models";
 import { ReactNode } from "react";
+
+import { InternalLink } from "../components/shared/internalLinks/InternalLink";
+import { isAcceptedComponentItem,RichTextComponent } from "../components/shared/richText/richTextComponent";
+import { Block_ContentChunk } from "../models";
 
 export const createDefaultResolvers = (element: Elements.RichTextElement, renderRichText: (item: Block_ContentChunk) => ReactNode, isElementInsideTable: boolean = false): Partial<PortableTextReactComponents> => ({
   types: {
@@ -48,7 +49,10 @@ export const createDefaultResolvers = (element: Elements.RichTextElement, render
               <tr key={r._key}>
                 {r.cells.map(c => (
                   <td key={c._key}>
-                    <PortableText value={c.content} components={createDefaultResolvers(element, renderRichText, true)} />
+                    <PortableText
+                      value={c.content}
+                      components={createDefaultResolvers(element, renderRichText, true)}
+                    />
                   </td>
                 ))}
               </tr>
@@ -58,7 +62,7 @@ export const createDefaultResolvers = (element: Elements.RichTextElement, render
       )
     },
     component: ({ value }: PortableTextTypeComponentProps<IPortableTextComponent>) => {
-      const componentItem = element.linkedItems.find(i => i.system.codename === value?.component._ref);
+      const componentItem = element.linkedItems.find(i => i.system.codename === value.component._ref);
       if (!componentItem) {
         throw new Error("Component item not found, probably not enought depth requested.");
       }
@@ -67,7 +71,10 @@ export const createDefaultResolvers = (element: Elements.RichTextElement, render
       }
 
       return (
-        <RichTextComponent item={componentItem} renderRichText={renderRichText} />
+        <RichTextComponent
+          item={componentItem}
+          renderRichText={renderRichText}
+        />
       );
     },
   },

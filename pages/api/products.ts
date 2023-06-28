@@ -1,4 +1,5 @@
 import { NextApiHandler } from "next";
+
 import { getProductsForListing } from "../../lib/kontentClient";
 
 const handler: NextApiHandler = async (req, res) => {

@@ -1,9 +1,10 @@
-import { FC } from "react";
 import Image from "next/image"
 import Link from "next/link";
-import { StandaloneSmartLinkButton } from "../shared/StandaloneSmartLinkButton";
+import { FC } from "react";
+
 import { mainColorBgClass, mainColorTextClass } from "../../lib/constants/colors";
 import { useSiteCodename } from "../shared/siteCodenameContext";
+import { StandaloneSmartLinkButton } from "../shared/StandaloneSmartLinkButton";
 
 type Props = Readonly<{
   imageUrl: string;
@@ -19,7 +20,10 @@ export const ProductItem: FC<Props> = props => {
 
   return (
     <li className="min-w-full m-0 p-0 relative rounded-lg shadow hover:shadow-xl transition-shadow border border-gray-200 cursor-pointer min-h-full">
-      <Link href={props.detailUrl} className="no-underline p-0 m-0">
+      <Link
+        href={props.detailUrl}
+        className="no-underline p-0 m-0"
+      >
         <StandaloneSmartLinkButton itemId={props.itemId} />
 
         <div className="flex flex-col gap-2">

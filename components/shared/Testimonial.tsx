@@ -1,8 +1,9 @@
 import { FC } from "react";
-import { Block_Testimonial, contentTypes } from "../../models";
-import { AuthorVertical } from "./AuthorVertical";
-import { AuthorHorizontal } from "./AuthorHorizontal";
+
 import { createElementSmartLink, createItemSmartLink } from "../../lib/utils/smartLinkUtils";
+import { Block_Testimonial, contentTypes } from "../../models";
+import { AuthorHorizontal } from "./AuthorHorizontal";
+import { AuthorVertical } from "./AuthorVertical";
 
 type Props = Readonly<{
   item: Block_Testimonial;

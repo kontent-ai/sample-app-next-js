@@ -1,14 +1,15 @@
+import { KontentSmartLinkEvent } from '@kontent-ai/smart-link';
+import { IRefreshMessageData, IRefreshMessageMetadata } from '@kontent-ai/smart-link/types/lib/IFrameCommunicatorTypes';
 import { GetStaticProps, NextPage } from 'next';
+import { useEffect, useState } from 'react';
+
+import { Content } from '../components/shared/Content';
 import { AppPage } from '../components/shared/ui/appPage';
 import { getHomepage, getSiteMenu } from "../lib/kontentClient";
 import { ValidCollectionCodename } from '../lib/types/perCollection';
-import { siteCodename } from '../lib/utils/env';
-import { Content } from '../components/shared/Content';
-import { WSL_WebSpotlightRoot, Block_Navigation } from '../models';
-import { useEffect, useState } from 'react';
-import { KontentSmartLinkEvent } from '@kontent-ai/smart-link';
-import { IRefreshMessageData, IRefreshMessageMetadata } from '@kontent-ai/smart-link/types/lib/IFrameCommunicatorTypes';
 import { useSmartLink } from '../lib/useSmartLink';
+import { siteCodename } from '../lib/utils/env';
+import { Block_Navigation,WSL_WebSpotlightRoot } from '../models';
 
 type Props = Readonly<{
   homepage: WSL_WebSpotlightRoot;
@@ -39,10 +40,17 @@ const Home: NextPage<Props> = props => {
   }, [sdk]);
 
   return (
-    <AppPage itemId={homepage.system.id} siteCodename={props.siteCodename} siteMenu={props.siteMenu}>
+    <AppPage
+      itemId={homepage.system.id}
+      siteCodename={props.siteCodename}
+      siteMenu={props.siteMenu}
+    >
       <div>
         {homepage.elements.content.linkedItems.map(item => (
-          <Content key={item.system.id} item={item as any} />
+          <Content
+            key={item.system.id}
+            item={item as any}
+          />
         ))}
       </div>
     </AppPage>
