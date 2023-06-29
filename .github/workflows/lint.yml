@@ -1,13 +1,9 @@
-name: Build
+name: Lint
 
 on:
   push:
     branches: [main]
   pull_request:
-
-env:
-    NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID: 2cedc519-a547-01ba-dde7-b01e00b909a1
-    KONTENT_COLLECTION_CODENAME: ficto_healthtech_surgical
 
 jobs:
   build:
@@ -23,5 +19,4 @@ jobs:
           node-version-file: ".nvmrc"
       - run: npm ci
       - run: npm run lint
-      - run: npm run build
             
