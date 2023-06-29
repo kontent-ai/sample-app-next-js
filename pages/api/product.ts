@@ -1,4 +1,5 @@
 import { NextApiHandler } from "next";
+
 import { getItemByCodename } from "../../lib/kontentClient";
 import { PerCollection } from "../../lib/types/perCollection";
 

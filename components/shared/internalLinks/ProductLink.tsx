@@ -1,7 +1,8 @@
-import { FC, ReactNode, useEffect, useState } from "react"
-import { Product } from "../../../models";
 import Image from "next/image";
 import { useRouter } from "next/router";
+import { FC, ReactNode, useEffect, useState } from "react"
+
+import { Product } from "../../../models";
 
 type Props = Readonly<{
   children: ReactNode;
@@ -55,7 +56,7 @@ type ProductPreviewProps = Readonly<{
 const ProductPreview: FC<ProductPreviewProps> = props => (
   <>
     <Image
-      src={props.product.elements.productImage.value[0]?.url}
+      src={props.product.elements.productImage.value[0]?.url || ""}
       alt={props.product.elements.productImage.value[0]?.description || props.product.elements.title.value}
       height={200}
       width={props.product.elements.productImage.value[0]?.width || 200}

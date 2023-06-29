@@ -1,4 +1,5 @@
 import { NextApiHandler } from "next";
+
 import { getHomepage } from "../../lib/kontentClient";
 
 const handler: NextApiHandler = async (req, res) => {

@@ -1,9 +1,10 @@
-import { FC } from "react";
-import { Component_Callout } from "../../../models"
-import { useSiteCodename } from "../siteCodenameContext";
-import { mainColorBorderClass } from "../../../lib/constants/colors";
 import { ExclamationTriangleIcon, InformationCircleIcon, LightBulbIcon } from "@heroicons/react/24/solid";
+import { FC } from "react";
+
+import { mainColorBorderClass } from "../../../lib/constants/colors";
+import { Component_Callout } from "../../../models"
 import { RichTextElement } from "../RichTextContent";
+import { useSiteCodename } from "../siteCodenameContext";
 
 type Props = Readonly<{
   item: Component_Callout;

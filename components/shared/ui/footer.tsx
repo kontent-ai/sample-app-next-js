@@ -1,12 +1,13 @@
 import { FC } from "react";
-import { useSiteCodename } from "../siteCodenameContext";
+
 import { mainColorBgClass } from "../../../lib/constants/colors";
+import { useSiteCodename } from "../siteCodenameContext";
 
 type Props = Readonly<{
   className?: string;
 }>;
 
-export const Footer: FC<Props> = props => {
+export const Footer: FC<Props> = () => {
   const siteCodename = useSiteCodename();
 
   return (

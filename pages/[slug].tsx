@@ -1,14 +1,15 @@
 import { GetStaticPaths, GetStaticProps } from "next";
-import { pageCodenames } from '../lib/routing';
-import { getItemByCodename, getSiteMenu } from "../lib/kontentClient";
-import { Block_Navigation, WSL_Page, contentTypes } from "../models";
+import { ParsedUrlQuery } from "querystring";
 import { FC } from "react";
+
 import { Content } from "../components/shared/Content";
 import { AppPage } from "../components/shared/ui/appPage";
-import { ParsedUrlQuery } from "querystring";
+import { getItemByCodename, getSiteMenu } from "../lib/kontentClient";
+import { pageCodenames } from '../lib/routing';
 import { ValidCollectionCodename } from "../lib/types/perCollection";
 import { siteCodename } from "../lib/utils/env";
 import { createElementSmartLink, createFixedAddSmartLink } from "../lib/utils/smartLinkUtils";
+import { Block_Navigation, contentTypes, WSL_Page } from "../models";
 
 type Props = Readonly<{
   page: WSL_Page;
@@ -32,12 +33,11 @@ export const getStaticPaths: GetStaticPaths = async () => {
 }
 
 // `getStaticPaths` requires using `getStaticProps`
-export const getStaticProps: GetStaticProps = async (context) => {
+export const getStaticProps: GetStaticProps<any, IParams> = async (context) => {
   // TODO break hardcoding
-  const { slug } = context.params as IParams;
+  const slug = context.params?.slug;
 
-  const pageCodename = pageCodenames[slug] ?? null;
-  if (pageCodename === null) {
+  if (!slug) {
     return {
       redirect: {
         destination: '/404',
@@ -45,7 +45,8 @@ export const getStaticProps: GetStaticProps = async (context) => {
         permanent: true
       }
     };
-  };
+  }
+  const pageCodename = pageCodenames[slug];
 
   const siteMenu = await getSiteMenu(!!context.preview);
 
@@ -54,7 +55,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
     return {
       notFound: true
     };
-  };
+  }
 
   return {
     props: { page, siteCodename, siteMenu },
@@ -62,13 +63,20 @@ export const getStaticProps: GetStaticProps = async (context) => {
 }
 
 const TopLevelPage: FC<Props> = props => (
-  <AppPage itemId={props.page.system.id} siteCodename={props.siteCodename} siteMenu={props.siteMenu}>
+  <AppPage
+    itemId={props.page.system.id}
+    siteCodename={props.siteCodename}
+    siteMenu={props.siteMenu}
+  >
     <div
       {...createElementSmartLink(contentTypes.page.elements.content.codename)}
       {...createFixedAddSmartLink("end")}
     >
       {props.page.elements.content.linkedItems.map(piece => (
-        <Content key={piece.system.id} item={piece as any} />
+        <Content
+          key={piece.system.id}
+          item={piece as any}
+        />
       ))}
     </div>
   </AppPage>

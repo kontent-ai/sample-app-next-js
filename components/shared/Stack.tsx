@@ -1,9 +1,10 @@
 import { FC, useState } from "react";
+
+import { mainColorBorderClass } from "../../lib/constants/colors";
+import { createElementSmartLink, createItemSmartLink, createRelativeAddSmartLink } from "../../lib/utils/smartLinkUtils";
 import { Block_Stack, contentTypes } from "../../models"
 import { GenericActionComponent } from "./GenericAction";
 import { useSiteCodename } from "./siteCodenameContext";
-import { mainColorBorderClass, mainColorTextClass } from "../../lib/constants/colors";
-import { createElementSmartLink, createItemSmartLink, createRelativeAddSmartLink } from "../../lib/utils/smartLinkUtils";
 import { StandaloneSmartLinkButton } from "./StandaloneSmartLinkButton";
 
 type Props = Readonly<{
@@ -66,8 +67,8 @@ const Headers: FC<HeadersProps> = props => {
           {...createItemSmartLink(header.id, true)}
           {...createRelativeAddSmartLink("after", "bottom-end")}
         >
-          <span className={`hidden md:block`}>{header.label}</span>
-          <span className={`md:hidden font-black text-xl`}>•</span>
+          <span className="hidden md:block">{header.label}</span>
+          <span className="md:hidden font-black text-xl">•</span>
         </li>
       ))}
     </menu>
