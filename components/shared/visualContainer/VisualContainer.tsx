@@ -1,6 +1,7 @@
 import { FC } from "react";
 
-import { Block_HeroUnit, Block_VisualContainer, contentTypes,Fact, Milestone } from "../../../models"
+import { Block_HeroUnit, Block_VisualContainer, contentTypes, Fact, Milestone } from "../../../models"
+import { BuildError } from "../ui/BuildError";
 import { CarouselComponent } from "./Carousel";
 import { GridComponent } from "./Grid";
 import { StackComponent } from "./Stack";
@@ -13,27 +14,38 @@ export const VisualContainer: FC<Props> = props => {
   switch (props.item.elements.visualRepresentation.value[0]?.codename) {
     case visualRepresentation.grid:
       return (
-        <GridComponent
-          items={props.item.elements.items.linkedItems.filter(isMilestone)}
-        />
+        <>
+          {!props.item.elements.items.linkedItems.every(isMilestone) && <BuildError>Grid representation can only have Milestone items. Some items are of a wrong type.</BuildError>}
+          <GridComponent
+            items={props.item.elements.items.linkedItems.filter(isMilestone)}
+          />
+        </>
       );
     case visualRepresentation.stack:
       return (
-        <StackComponent
-          items={props.item.elements.items.linkedItems.filter(isFact)}
-          subtitle={props.item.elements.subtitle.value}
-          title={props.item.elements.title.value}
-          itemId={props.item.system.id}
-        />
+        <>
+          {!props.item.elements.items.linkedItems.every(isFact) && <BuildError>Stack representation can only have Fact items. Some items are of a wrong type.</BuildError>}
+          <StackComponent
+            items={props.item.elements.items.linkedItems.filter(isFact)}
+            subtitle={props.item.elements.subtitle.value}
+            title={props.item.elements.title.value}
+            itemId={props.item.system.id}
+          />
+        </>
       );
     case visualRepresentation.carousel:
       return (
-        <CarouselComponent
-          items={props.item.elements.items.linkedItems.filter(isHeroUnit)}
-        />
+        <>
+          {!props.item.elements.items.linkedItems.every(isHeroUnit) && <BuildError>Carousel representation can only have Hero Unit items. Some items are of a wrong type.</BuildError>}
+          <CarouselComponent
+            items={props.item.elements.items.linkedItems.filter(isHeroUnit)}
+          />
+        </>
       )
     default:
-      throw new Error(`Unsupported visual container item type ${props.item.elements.visualRepresentation.value[0]?.codename}`)
+      return (
+        <BuildError>Visual representation &quot;{props.item.elements.visualRepresentation.value[0]?.name ?? "Missing representation"}&quot; is not supported.</BuildError>
+      );
   }
 };
 
