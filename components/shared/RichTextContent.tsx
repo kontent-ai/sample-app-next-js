@@ -8,9 +8,10 @@ import Image from "next/image";
 import { FC } from "react";
 
 import { createElementSmartLink, createFixedAddSmartLink, createItemSmartLink } from "../../lib/utils/smartLinkUtils";
-import { Block_ContentChunk, Component_Callout, contentTypes } from "../../models";
+import { Block_ContentChunk, Component_Callout, contentTypes, Testimonial } from "../../models";
 import { InternalLink } from "./internalLinks/InternalLink";
 import { CalloutComponent } from "./richText/Callout";
+import { TestimonialComponent } from "./Testimonial";
 
 type Props = Readonly<{
   item: Block_ContentChunk;
@@ -58,7 +59,7 @@ const RichTextValue: FC<RichTextValueProps> = props => (
   />
 );
 
-export const createDefaultResolvers = (element: Elements.RichTextElement, isElementInsideTable: boolean = false): Partial<PortableTextReactComponents> => ({
+const createDefaultResolvers = (element: Elements.RichTextElement, isElementInsideTable: boolean = false): Partial<PortableTextReactComponents> => ({
   types: {
     image: ({ value }: PortableTextTypeComponentProps<IPortableTextImage>) => {
       const asset = element.images.find(i => i.imageId === value.asset._ref);
@@ -117,13 +118,15 @@ export const createDefaultResolvers = (element: Elements.RichTextElement, isElem
         throw new Error("Component item not found, probably not enought depth requested.");
       }
 
-      switch (componentItem.system.codename) {
+      switch (componentItem.system.type) {
         case contentTypes.callout.codename:
           return <CalloutComponent item={componentItem as Component_Callout} />;
         case contentTypes.content_chunk.codename:
           return <RichTextContentComponent item={componentItem as Block_ContentChunk} />;
+        case contentTypes.testimonial.codename:
+          return <TestimonialComponent item={componentItem as Testimonial} />;
         default:
-          return <div>Unsupported content type {componentItem.system.type}</div>;
+          return <div>Unsupported content type &quot;{componentItem.system.type}&quot;</div>;
       }
     },
   },
