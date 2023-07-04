@@ -99,8 +99,7 @@ export const Products: FC<Props> = props => {
 
   const onPreviousClick = () => {
     if (pageNumber === 2) {
-      const { ...obj } = router.query;
-      changeUrlQueryString(obj, router);
+      changeUrlQueryString(Object.fromEntries(Object.entries(router.query).filter(([name]) => name !== "page")), router);
     } else {
       changeUrlQueryString({ ...router.query, page: pageNumber - 1 }, router);
     }
