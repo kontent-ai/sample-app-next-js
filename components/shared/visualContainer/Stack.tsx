@@ -1,19 +1,22 @@
 import { FC, useState } from "react";
 
-import { mainColorBorderClass } from "../../lib/constants/colors";
-import { createElementSmartLink, createItemSmartLink, createRelativeAddSmartLink } from "../../lib/utils/smartLinkUtils";
-import { Block_Stack, contentTypes } from "../../models"
-import { GenericActionComponent } from "./GenericAction";
-import { useSiteCodename } from "./siteCodenameContext";
-import { StandaloneSmartLinkButton } from "./StandaloneSmartLinkButton";
+import { mainColorBorderClass } from "../../../lib/constants/colors";
+import { createElementSmartLink, createItemSmartLink, createRelativeAddSmartLink } from "../../../lib/utils/smartLinkUtils";
+import { contentTypes, Fact } from "../../../models"
+import { FactComponent } from "../GenericAction";
+import { useSiteCodename } from "../siteCodenameContext";
+import { StandaloneSmartLinkButton } from "../StandaloneSmartLinkButton";
 
 type Props = Readonly<{
-  item: Block_Stack;
+  items: ReadonlyArray<Fact>;
+  title: string;
+  subtitle: string;
+  itemId: string;
 }>;
 
 export const StackComponent: FC<Props> = props => {
   const [actionIndex, setActionIndex] = useState(0);
-  const currentAction = props.item.elements.stack.linkedItems[actionIndex];
+  const currentAction = props.items[actionIndex];
 
   if (!currentAction) {
     return null;
@@ -22,26 +25,26 @@ export const StackComponent: FC<Props> = props => {
   return (
     <div
       className="p-7 relative"
-      {...createItemSmartLink(props.item.system.id, true)}
+      {...createItemSmartLink(props.itemId, true)}
     >
-      <h2 {...createElementSmartLink(contentTypes.stack.elements.title.codename)}>
-        {props.item.elements.title.value}
+      <h2 {...createElementSmartLink(contentTypes._visual_container.elements.title.codename)}>
+        {props.title}
       </h2>
-      <div {...createElementSmartLink(contentTypes.stack.elements.message.codename)}>
-        {props.item.elements.message.value}
+      <div {...createElementSmartLink(contentTypes._visual_container.elements.subtitle.codename)}>
+        {props.subtitle}
       </div>
       <section
         className="py-10"
-        {...createElementSmartLink(contentTypes.stack.elements.stack.codename, true)}
+        {...createElementSmartLink(contentTypes._visual_container.elements.items.codename, true)}
       >
-        <StandaloneSmartLinkButton elementCodename={contentTypes.stack.elements.stack.codename} />
+        <StandaloneSmartLinkButton elementCodename={contentTypes._visual_container.elements.items.codename} />
         <Headers
-          headers={props.item.elements.stack.linkedItems.map(item => ({ id: item.system.id, label: item.elements.title.value }))}
+          headers={props.items.map(item => ({ id: item.system.id, label: item.elements.title.value }))}
           onHeaderSelected={setActionIndex}
           selectedHeaderIndex={actionIndex}
         />
         <div>
-          <GenericActionComponent item={currentAction} />
+          <FactComponent item={currentAction} />
         </div>
       </section>
     </div>

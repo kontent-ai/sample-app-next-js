@@ -1,6 +1,6 @@
 import { type IContentItem, type Elements } from '@kontent-ai/delivery-sdk';
 import { type ArticleType } from '../taxonomies/articleType';
-import { type Author } from './author';
+import { type Person } from './person';
 import { type SEOMetadata } from '../content-type-snippets/SEOMetadata';
 
 /**
@@ -16,6 +16,8 @@ export type Article = IContentItem<{
    * Required: false
    * Id: 227c0a71-1a5e-403f-9e49-8c5d7fa4f860
    * Codename: abstract
+   *
+   * Don't make it too long. At this point users decides, whether they want to continue reading!
    */
   abstract: Elements.TextElement;
 
@@ -33,7 +35,7 @@ export type Article = IContentItem<{
    * Id: cbc1433d-6449-4ce8-bdd6-215eb92362c5
    * Codename: author
    */
-  author: Elements.LinkedItemsElement<Author>;
+  author: Elements.LinkedItemsElement<Person>;
 
   /**
    * Content (rich_text)
@@ -72,6 +74,8 @@ export type Article = IContentItem<{
    * Required: true
    * Id: 390ac36a-028a-4bf6-bc1c-f3ab2f0f4e8f
    * Codename: title
+   *
+   * You can use online tools get score on your titles and incrementally improve it.
    */
   title: Elements.TextElement;
 }> &

@@ -40,6 +40,8 @@ export type Product = IContentItem<{
    * Required: false
    * Id: ec77bde2-a08a-4c91-9105-faf43a1899be
    * Codename: product_image
+   *
+   * Use images with no background if possible.
    */
   productImage: Elements.AssetsElement;
 

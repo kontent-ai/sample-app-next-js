@@ -1,20 +1,19 @@
 import { ArrowLeftIcon, ArrowRightIcon } from "@heroicons/react/24/solid";
 import { ComponentProps, FC, useState } from "react";
 
-import { range } from "../../lib/utils/range";
-import { Block_Carousel } from "../../models"
-import { Content } from "./Content";
+import { range } from "../../../lib/utils/range";
+import { Block_HeroUnit } from "../../../models";
+import { Content } from "../Content";
 
 type Props = Readonly<{
-  item: Block_Carousel;
+  items: ReadonlyArray<Block_HeroUnit>;
 }>;
 
 export const CarouselComponent: FC<Props> = props => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [lastMove, setLastMove] = useState<LastMove>("withoutAnimation")
 
-  const items = props.item.elements.elements.linkedItems;
-  const itemsToRender = items.length == 2 ? [...items, ...items] : items;
+  const itemsToRender = props.items.length == 2 ? [...props.items, ...props.items] : props.items;
 
   const wrapIndex = (i: number) => i < 0 ? itemsToRender.length + i : i % itemsToRender.length;
 
@@ -36,7 +35,7 @@ export const CarouselComponent: FC<Props> = props => {
       <div className="relative overflow-hidden rounded-lg">
         {/*This is a placeholder to determine the carousel height, because the real carousel items are absolutely positioned.*/}
         <div className="relative z-0 opacity-0 w-fit">
-          {props.item.elements.elements.linkedItems[0] && <Content item={props.item.elements.elements.linkedItems[0]} />}
+          {props.items[0] && <Content item={props.items[0]} />}
         </div>
         {itemsToRender.map((item, index) => (
           <Item
@@ -47,12 +46,12 @@ export const CarouselComponent: FC<Props> = props => {
           />
         ))}
       </div>
-      {items.length > 1 && (
+      {props.items.length > 1 && (
         <>
           <Indicator
             currentIndex={currentIndex}
             navigateTo={jumpToIndex}
-            totalItems={items.length}
+            totalItems={props.items.length}
           />
           <NextPrev
             onNext={moveForward}

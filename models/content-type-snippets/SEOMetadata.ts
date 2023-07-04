@@ -16,18 +16,18 @@ export type SEOMetadata = IContentItem<{
   seoMetadataDescription: Elements.TextElement;
 
   /**
-   * og:image (text)
+   * Keywords (text)
    * Required: false
-   * Id: 96973c48-0433-46e8-8efd-9e26418dc30a
-   * Codename: seo_metadata__og_image
+   * Id: ee4b0220-7852-4738-84a4-825b0c8b4284
+   * Codename: seo_metadata__keywords
    */
-  seoMetadataOgImage: Elements.TextElement;
+  seoMetadataKeywords: Elements.TextElement;
 
   /**
-   * og:type (text)
+   * Title (text)
    * Required: false
-   * Id: 0ddecb17-cca6-465d-8aa6-7f94945e054c
-   * Codename: seo_metadata__og_type
+   * Id: 661a085e-eb93-437d-9f97-b58a1ec256af
+   * Codename: seo_metadata__title
    */
-  seoMetadataOgType: Elements.TextElement;
+  seoMetadataTitle: Elements.TextElement;
 }>;

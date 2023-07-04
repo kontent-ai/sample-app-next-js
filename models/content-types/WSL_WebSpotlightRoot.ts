@@ -1,12 +1,9 @@
 import { type IContentItem, type Elements } from '@kontent-ai/delivery-sdk';
-import { type Block_CallToAction } from './Block_CallToAction';
-import { type Block_Carousel } from './Block_Carousel';
 import { type Block_ContentChunk } from './Block_ContentChunk';
-import { type Block_Grid } from './Block_Grid';
 import { type Block_HeroUnit } from './Block_HeroUnit';
 import { type Block_Navigation } from './Block_Navigation';
-import { type Block_Stack } from './Block_Stack';
-import { type Block_Testimonial } from './Block_Testimonial';
+import { type Block_VisualContainer } from './Block_VisualContainer';
+import { type Testimonial } from './testimonial';
 import { type WSL_Page } from './WSL_Page';
 
 /**
@@ -24,13 +21,7 @@ export type WSL_WebSpotlightRoot = IContentItem<{
    * Codename: content
    */
   content: Elements.LinkedItemsElement<
-    | Block_CallToAction
-    | Block_Stack
-    | Block_Carousel
-    | Block_HeroUnit
-    | Block_Grid
-    | Block_ContentChunk
-    | Block_Testimonial
+    Block_HeroUnit | Block_ContentChunk | Testimonial | Block_VisualContainer
   >;
 
   /**
@@ -47,7 +38,7 @@ export type WSL_WebSpotlightRoot = IContentItem<{
    * Id: 61be1529-49fc-43b6-ba33-962a360e4c9f
    * Codename: subpages
    */
-  subpages: Elements.LinkedItemsElement<WSL_Page | Block_Navigation>;
+  subpages: Elements.LinkedItemsElement<WSL_Page>;
 
   /**
    * Title (text)

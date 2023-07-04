@@ -8,18 +8,18 @@ import { type IContentItem, type Elements } from '@kontent-ai/delivery-sdk';
  */
 export type Milestone = IContentItem<{
   /**
-   * Subtitle (text)
-   * Required: true
-   * Id: 7b04ac84-cdd9-4e30-b4f6-93ace70f4116
-   * Codename: subtitle
-   */
-  subtitle: Elements.TextElement;
-
-  /**
-   * Title (text)
+   * Achievement (text)
    * Required: true
    * Id: f49769f4-7688-4fee-94e4-16174c03e049
-   * Codename: title
+   * Codename: achievement
    */
-  title: Elements.TextElement;
+  achievement: Elements.TextElement;
+
+  /**
+   * Subject (text)
+   * Required: true
+   * Id: 7b04ac84-cdd9-4e30-b4f6-93ace70f4116
+   * Codename: subject
+   */
+  subject: Elements.TextElement;
 }>;

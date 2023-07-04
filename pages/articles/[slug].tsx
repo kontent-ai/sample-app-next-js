@@ -2,7 +2,7 @@ import { GetStaticPaths, GetStaticProps } from "next";
 import { FC } from "react";
 
 import { HeroImage } from "../../components/landingPage/ui/heroImage";
-import { AuthorHorizontal } from "../../components/shared/AuthorHorizontal";
+import { PersonHorizontal } from "../../components/shared/PersonHorizontal";
 import { RichTextElement } from "../../components/shared/RichTextContent";
 import { AppPage } from "../../components/shared/ui/appPage";
 import { mainColorBgClass } from "../../lib/constants/colors";
@@ -38,7 +38,7 @@ const ArticlePage: FC<Props> = props => {
         </div>
       </HeroImage>
       <div className="max-w-screen-md m-auto">
-        {props.article.elements.author.linkedItems[0] && <AuthorHorizontal item={props.article.elements.author.linkedItems[0]} />}
+        {props.article.elements.author.linkedItems[0] && <PersonHorizontal item={props.article.elements.author.linkedItems[0]} />}
         <div className="flex flex-col gap-2">
           <div className="w-fit p-2 bg-gray-800 text-white opacity-90 font-semibold">{props.article.elements.publishingDate.value && formatDate(props.article.elements.publishingDate.value)}</div>
           <div className="flex gap-2" >
@@ -53,7 +53,10 @@ const ArticlePage: FC<Props> = props => {
             }
           </div>
         </div>
-        <RichTextElement element={props.article.elements.content} />
+        <RichTextElement
+          element={props.article.elements.content}
+          isInsideTable={false}
+        />
       </div>
     </AppPage>
   );

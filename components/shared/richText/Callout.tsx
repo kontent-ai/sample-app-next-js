@@ -18,7 +18,10 @@ export const CalloutComponent: FC<Props> = props => {
       <div className={`w-5 ${createIconColor(props.item)}`}>
         {renderTypeIcon(props.item)}
       </div>
-      <RichTextElement element={props.item.elements.content} />
+      <RichTextElement
+        element={props.item.elements.content}
+        isInsideTable={false}
+      />
     </div>
   );
 }

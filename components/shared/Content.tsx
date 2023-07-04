@@ -1,13 +1,10 @@
 import { ComponentType, FC } from "react";
 
-import { Block_CallToAction, Block_Carousel, Block_ContentChunk, Block_Grid, Block_HeroUnit, Block_Stack, Block_Testimonial, contentTypes } from "../../models";
-import { CallToActionComponent } from "./CallToAction";
-import { CarouselComponent } from "./Carousel";
-import { GridComponent } from "./Grid";
+import { Block_ContentChunk, Block_HeroUnit, Block_VisualContainer, contentTypes,Testimonial } from "../../models";
 import { HeroUnitComponent } from "./HeroUnit";
 import { RichTextContentComponent } from "./RichTextContent";
-import { StackComponent } from "./Stack";
 import { TestimonialComponent } from "./Testimonial";
+import { VisualContainer } from "./visualContainer/VisualContainer";
 
 type AcceptedType = AcceptedTypesByCodename[keyof AcceptedTypesByCodename];
 
@@ -33,20 +30,14 @@ const componentMap: Readonly<{ [key in keyof AcceptedTypesByCodename]: Component
   hero_unit: HeroUnitComponent,
   content_chunk: RichTextContentComponent,
   testimonial: TestimonialComponent,
-  carousel: CarouselComponent,
-  call_to_action: CallToActionComponent,
-  stack: StackComponent,
-  grid: GridComponent
+  _visual_container: VisualContainer,
 };
 
 // Unfortunately, we need to define the relationship manually, because the generator doesn't define it itself. :/
 type AcceptedTypesByCodename = {
   [contentTypes.hero_unit.codename]: Block_HeroUnit;
   [contentTypes.content_chunk.codename]: Block_ContentChunk;
-  [contentTypes.testimonial.codename]: Block_Testimonial;
-  [contentTypes.carousel.codename]: Block_Carousel;
-  [contentTypes.call_to_action.codename]: Block_CallToAction;
-  [contentTypes.stack.codename]: Block_Stack;
-  [contentTypes.grid.codename]: Block_Grid;
+  [contentTypes.testimonial.codename]: Testimonial;
+  [contentTypes._visual_container.codename]: Block_VisualContainer;
 };
 
