@@ -2,7 +2,9 @@ import { type IContentItem, type Elements } from '@kontent-ai/delivery-sdk';
 import { type Block_ContentChunk } from './Block_ContentChunk';
 import { type Block_HeroUnit } from './Block_HeroUnit';
 import { type Block_VisualContainer } from './Block_VisualContainer';
+import { type SEOMetadata } from '../content-type-snippets/SEOMetadata';
 import { type Testimonial } from './testimonial';
+import { type WSL_EmojiGuideline } from '../content-type-snippets/WSL_EmojiGuideline';
 import { type WSL_WebSpotlightRoot } from './WSL_WebSpotlightRoot';
 
 /**
@@ -46,4 +48,6 @@ export type WSL_Page = IContentItem<{
    * Codename: url
    */
   url: Elements.UrlSlugElement;
-}>;
+}> &
+  SEOMetadata &
+  WSL_EmojiGuideline;

@@ -1,4 +1,5 @@
 import { type IContentItem, type Elements } from '@kontent-ai/delivery-sdk';
+import { type Block_EmojiGuideline } from '../content-type-snippets/Block_EmojiGuideline';
 import { type Block_HeroUnit } from './Block_HeroUnit';
 import { type Fact } from './fact';
 import { type Milestone } from './milestone';
@@ -44,4 +45,5 @@ export type Block_VisualContainer = IContentItem<{
    * ⚠You should try to avoid including visual information in the content. This is one of the edge cases that might be viable since this content type is used for website representation only.
    */
   visualRepresentation: Elements.MultipleChoiceElement;
-}>;
+}> &
+  Block_EmojiGuideline;

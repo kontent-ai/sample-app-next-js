@@ -5,6 +5,7 @@ import { type Block_Navigation } from './Block_Navigation';
 import { type Block_VisualContainer } from './Block_VisualContainer';
 import { type SEOMetadata } from '../content-type-snippets/SEOMetadata';
 import { type Testimonial } from './testimonial';
+import { type WSL_EmojiGuideline } from '../content-type-snippets/WSL_EmojiGuideline';
 import { type WSL_Page } from './WSL_Page';
 
 /**
@@ -49,4 +50,5 @@ export type WSL_WebSpotlightRoot = IContentItem<{
    */
   title: Elements.TextElement;
 }> &
-  SEOMetadata;
+  SEOMetadata &
+  WSL_EmojiGuideline;

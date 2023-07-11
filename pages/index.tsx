@@ -14,7 +14,7 @@ import { Block_Navigation,WSL_WebSpotlightRoot } from '../models';
 type Props = Readonly<{
   homepage: WSL_WebSpotlightRoot;
   siteCodename: ValidCollectionCodename;
-  siteMenu?: Block_Navigation;
+  siteMenu: Block_Navigation | null;
 }>;
 
 const Home: NextPage<Props> = props => {
@@ -43,8 +43,9 @@ const Home: NextPage<Props> = props => {
     <AppPage
       item={homepage}
       siteCodename={props.siteCodename}
-      siteMenu={props.siteMenu}
+      siteMenu={props.siteMenu ?? null}
       pageType='WebPage'
+      defaultMetadata={homepage}
     >
       <div>
         {homepage.elements.content.linkedItems.map(item => (
@@ -59,7 +60,7 @@ const Home: NextPage<Props> = props => {
 
 export const getStaticProps: GetStaticProps<Props> = async context => {
   const homepage = await getHomepage(!!context.preview);
-  const siteMenu = await getSiteMenu(!!context.preview);
+  const siteMenu = await getSiteMenu(!!context.preview) ?? null;
 
   if (!homepage) {
     throw new Error("Can't find homepage item.");

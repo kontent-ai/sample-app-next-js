@@ -21,7 +21,7 @@ import { Article, Block_Navigation, SEOMetadata, taxonomies, WSL_Page } from "..
 type Props = Readonly<{
   siteCodename: ValidCollectionCodename;
   articles: ReadonlyArray<Article>;
-  siteMenu?: Block_Navigation,
+  siteMenu: Block_Navigation | null,
   page: WSL_Page,
   itemCount: number;
   defaultMetadata: SEOMetadata;
@@ -128,6 +128,7 @@ const ArticlesPage: FC<Props> = props => {
       siteCodename={props.siteCodename}
       siteMenu={props.siteMenu}
       defaultMetadata={props.defaultMetadata}
+      item={props.page}
       pageType="WebPage"
     >
       {props.page.elements.content.linkedItems.map(piece => (
@@ -238,7 +239,7 @@ export const getStaticProps: GetStaticProps<Props, ArticleListingUrlQuery> = asy
 
   const pageNumber = !pageURLParameter || isNaN(+pageURLParameter) ? 1 : +pageURLParameter;
   const articles = await getArticlesForListing(!!context.preview, pageNumber, selectedCategory);
-  const siteMenu = await getSiteMenu(!!context.preview);
+  const siteMenu = await getSiteMenu(!!context.preview) ?? null;
   const page = await getItemByCodename<WSL_Page>(pageCodename, !!context.preview);
   const itemCount = await getArticlesCountByCategory(false, selectedCategory)
   const defaultMetadata = await getDefaultMetadata(!!context.preview);

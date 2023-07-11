@@ -13,7 +13,7 @@ import ArticlesPage from "..";
 type Props = Readonly<{
   siteCodename: ValidCollectionCodename;
   articles: ReadonlyArray<Article>;
-  siteMenu?: Block_Navigation,
+  siteMenu: Block_Navigation | null,
   page: WSL_Page,
   itemCount: number,
   defaultMetadata: SEOMetadata;
@@ -52,7 +52,7 @@ export const getStaticProps: GetStaticProps<Props, ArticleListingUrlQuery> = asy
 
 
   const articles = await getArticlesForListing(!!context.preview, pageNumber, context.params?.category ?? 'all');
-  const siteMenu = await getSiteMenu(!!context.preview);
+  const siteMenu = await getSiteMenu(!!context.preview) ?? null;
   const page = await getItemByCodename<WSL_Page>(pageCodename, !!context.preview);
   const itemCount = await getArticlesCountByCategory(!!context.preview, selectedCategory);
   const defaultMetadata = await getDefaultMetadata(!!context.preview);
