@@ -8,12 +8,12 @@ import { Content } from "../../components/shared/Content";
 import { AppPage } from "../../components/shared/ui/appPage";
 import { mainColorBgClass } from "../../lib/constants/colors";
 import { ProductsPageSize } from "../../lib/constants/paging";
-import { getItemByCodename, getProductsForListing, getSiteMenu } from "../../lib/kontentClient";
+import { getDefaultMetadata, getItemByCodename, getProductsForListing, getSiteMenu } from "../../lib/kontentClient";
 import { PerCollectionCodenames } from "../../lib/routing";
 import { ValidCollectionCodename } from "../../lib/types/perCollection";
 import { changeUrlQueryString } from "../../lib/utils/changeUrlQueryString";
 import { siteCodename } from "../../lib/utils/env";
-import { Block_Navigation, Product, WSL_Page } from "../../models";
+import { Block_Navigation, Product, SEOMetadata, WSL_Page } from "../../models";
 
 type Props = Readonly<{
   page: WSL_Page;
@@ -22,6 +22,7 @@ type Props = Readonly<{
   totalCount: number;
   siteMenu?: Block_Navigation;
   isPreview: boolean;
+  defaultMetadata: SEOMetadata;
 }>;
 
 type ProductListingProps = Readonly<{
@@ -152,6 +153,8 @@ export const Products: FC<Props> = props => {
     <AppPage
       siteCodename={props.siteCodename}
       siteMenu={props.siteMenu}
+      defaultMetadata={props.defaultMetadata}
+      pageType="WebPage"
     >
       {props.page.elements.content.linkedItems.map(piece => (
         <Content
@@ -201,6 +204,7 @@ export const getStaticProps: GetStaticProps<Props> = async context => {
   const page = await getItemByCodename<WSL_Page>(pageCodename, !!context.preview);
   const products = await getProductsForListing(!!context.preview);
   const siteMenu = await getSiteMenu(!!context.preview);
+  const defaultMetadata = await getDefaultMetadata(!!context.preview);
 
   if (page === null) {
     return {
@@ -209,7 +213,7 @@ export const getStaticProps: GetStaticProps<Props> = async context => {
   }
 
   return {
-    props: { page, siteCodename, products: products.items, totalCount: products.pagination.totalCount ?? 0, siteMenu, isPreview: !!context.preview },
+    props: { page, siteCodename, defaultMetadata: defaultMetadata, products: products.items, totalCount: products.pagination.totalCount ?? 0, siteMenu, isPreview: !!context.preview },
   };
 }
 

@@ -41,9 +41,10 @@ const Home: NextPage<Props> = props => {
 
   return (
     <AppPage
-      itemId={homepage.system.id}
+      item={homepage}
       siteCodename={props.siteCodename}
       siteMenu={props.siteMenu}
+      pageType='WebPage'
     >
       <div>
         {homepage.elements.content.linkedItems.map(item => (

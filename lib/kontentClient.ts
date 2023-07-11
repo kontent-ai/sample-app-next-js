@@ -1,6 +1,6 @@
 import { camelCasePropertyNameResolver, createDeliveryClient, DeliveryError, IContentItem } from '@kontent-ai/delivery-sdk';
 
-import { Article, contentTypes, Product, WSL_WebSpotlightRoot } from '../models';
+import { Article, contentTypes, Product, SEOMetadata, WSL_WebSpotlightRoot } from '../models';
 import { perCollectionRootItems } from './constants/menu';
 import { ArticlePageSize, ProductsPageSize } from './constants/paging';
 import { PerCollectionCodenames } from './routing';
@@ -233,3 +233,17 @@ export const getProductTaxonomy = async (usePreview: boolean) =>
     })
     .toPromise()
     .then(res => res.data.taxonomy.terms);
+
+export const getDefaultMetadata = async (usePreview: boolean) =>
+  deliveryClient
+    .items()
+    .type(homepageTypeCodename)
+    .collection(siteCodename)
+    .queryConfig({
+      usePreviewMode: usePreview,
+      waitForLoadingNewContent: usePreview
+    })
+    .elementsParameter(["seo_metadata__title", "seo_metadata__description", "seo_metadata__keywords"])
+    .depthParameter(10)
+    .toPromise()
+    .then(res => res.data.items[0] as SEOMetadata)

@@ -5,6 +5,7 @@
     "generateModels": "tsc --project scripts/tsconfig.json && node scripts/build/generateModels.mjs",
     "dev": "next dev",
     "lint": "next lint",
+    "lint:fix": "next lint --fix",
     "build": "next build",
     "export": "next export",
     "start": "next start"

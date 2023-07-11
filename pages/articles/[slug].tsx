@@ -6,16 +6,17 @@ import { PersonHorizontal } from "../../components/shared/PersonHorizontal";
 import { RichTextElement } from "../../components/shared/RichTextContent";
 import { AppPage } from "../../components/shared/ui/appPage";
 import { mainColorBgClass } from "../../lib/constants/colors";
-import { getAllArticles, getArticleBySlug, getSiteMenu } from "../../lib/kontentClient";
+import { getAllArticles, getArticleBySlug, getDefaultMetadata, getSiteMenu } from "../../lib/kontentClient";
 import { ValidCollectionCodename } from "../../lib/types/perCollection";
 import { formatDate } from "../../lib/utils/dateTime";
 import { siteCodename } from '../../lib/utils/env';
-import { Article, Block_Navigation } from "../../models"
+import { Article, Block_Navigation, SEOMetadata } from "../../models"
 
 type Props = Readonly<{
   article: Article;
   siteCodename: ValidCollectionCodename;
   siteMenu?: Block_Navigation;
+  defaultMetadata: SEOMetadata;
 }>;
 
 const ArticlePage: FC<Props> = props => {
@@ -23,6 +24,9 @@ const ArticlePage: FC<Props> = props => {
     <AppPage
       siteCodename={props.siteCodename}
       siteMenu={props.siteMenu}
+      defaultMetadata={props.defaultMetadata}
+      item={props.article}
+      pageType="Article"
     >
       <HeroImage
         url={props.article.elements.heroImage.value[0]?.url || ""}
@@ -71,6 +75,7 @@ export const getStaticProps: GetStaticProps<Props, { slug: string }> = async con
   }
 
   const article = await getArticleBySlug(slug, !!context.preview);
+  const defaultMetadata = await getDefaultMetadata(!!context.preview);
 
   if (!article) {
     return { notFound: true };
@@ -80,7 +85,8 @@ export const getStaticProps: GetStaticProps<Props, { slug: string }> = async con
     props: {
       article,
       siteCodename,
-      siteMenu
+      siteMenu,
+      defaultMetadata
     },
   };
 }
