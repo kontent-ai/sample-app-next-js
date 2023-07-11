@@ -7,6 +7,39 @@
  */
 export const contentTypeSnippets = {
   /**
+   * 💡 Emoji guideline
+   */
+  _web_spotlight_root: {
+    codename: '_web_spotlight_root',
+    id: 'c0e99be6-4a78-4f1b-954e-93793109c67e',
+    externalId: undefined,
+    name: '💡 Emoji guideline',
+    elements: {},
+  },
+
+  /**
+   * 🧩 Emoji guideline
+   */
+  _emoji_guideline: {
+    codename: '_emoji_guideline',
+    id: '590e3d38-a5d6-46ab-a3a1-1cc47869c34a',
+    externalId: undefined,
+    name: '🧩 Emoji guideline',
+    elements: {},
+  },
+
+  /**
+   * 🧱 Emoji guideline
+   */
+  emoji_guideline: {
+    codename: 'emoji_guideline',
+    id: '09485dd4-6af3-4483-8e3a-8ab6a83743ed',
+    externalId: undefined,
+    name: '🧱 Emoji guideline',
+    elements: {},
+  },
+
+  /**
    * SEO Metadata
    */
   seo_metadata: {

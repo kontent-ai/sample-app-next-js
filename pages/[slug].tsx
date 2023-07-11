@@ -42,7 +42,6 @@ export const getStaticProps: GetStaticProps<any, IParams> = async (context) => {
     return {
       redirect: {
         destination: '/404',
-        // TODO
         permanent: true
       }
     };
@@ -69,6 +68,7 @@ const TopLevelPage: FC<Props> = props => (
     siteCodename={props.siteCodename}
     siteMenu={props.siteMenu}
     defaultMetadata={props.defaultMetadata}
+    item={props.page}
     pageType="WebPage"
   >
     <div

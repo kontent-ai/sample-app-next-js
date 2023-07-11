@@ -7,6 +7,16 @@
  */
 export const assetFolders = {
   /**
+   * Article images
+   */
+  articleImages: {
+    id: '33fc63b4-58b4-42f5-b125-a789dcf797c4',
+    name: 'Article images',
+    externalId: undefined,
+    folders: {},
+  },
+
+  /**
    * Authors
    */
   authors: {

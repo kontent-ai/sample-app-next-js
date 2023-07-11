@@ -32,7 +32,7 @@ export type Product = IContentItem<{
    * Id: 0d215ac7-1c98-42ac-aec6-7f02ad4f34f9
    * Codename: price
    *
-   * Price in Euros.
+   * Price in Euros.⚠️ Price element is here just for an illustration and should no be in production projects.
    */
   price: Elements.NumberElement;
 

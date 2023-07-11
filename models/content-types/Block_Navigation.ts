@@ -1,4 +1,5 @@
 import { type IContentItem, type Elements } from '@kontent-ai/delivery-sdk';
+import { type Block_EmojiGuideline } from '../content-type-snippets/Block_EmojiGuideline';
 import { type WSL_Page } from './WSL_Page';
 
 /**
@@ -60,4 +61,5 @@ export type Block_Navigation = IContentItem<{
    * Codename: subitems
    */
   subitems: Elements.LinkedItemsElement<Block_Navigation>;
-}>;
+}> &
+  Block_EmojiGuideline;

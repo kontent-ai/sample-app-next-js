@@ -20,7 +20,7 @@ type Props = Readonly<{
   products: ReadonlyArray<Product> | undefined;
   siteCodename: ValidCollectionCodename;
   totalCount: number;
-  siteMenu?: Block_Navigation;
+  siteMenu: Block_Navigation | null;
   isPreview: boolean;
   defaultMetadata: SEOMetadata;
 }>;
@@ -154,6 +154,7 @@ export const Products: FC<Props> = props => {
       siteCodename={props.siteCodename}
       siteMenu={props.siteMenu}
       defaultMetadata={props.defaultMetadata}
+      item={props.page}
       pageType="WebPage"
     >
       {props.page.elements.content.linkedItems.map(piece => (
@@ -203,7 +204,7 @@ export const getStaticProps: GetStaticProps<Props> = async context => {
 
   const page = await getItemByCodename<WSL_Page>(pageCodename, !!context.preview);
   const products = await getProductsForListing(!!context.preview);
-  const siteMenu = await getSiteMenu(!!context.preview);
+  const siteMenu = await getSiteMenu(!!context.preview) ?? null;
   const defaultMetadata = await getDefaultMetadata(!!context.preview);
 
   if (page === null) {
@@ -213,7 +214,7 @@ export const getStaticProps: GetStaticProps<Props> = async context => {
   }
 
   return {
-    props: { page, siteCodename, defaultMetadata: defaultMetadata, products: products.items, totalCount: products.pagination.totalCount ?? 0, siteMenu, isPreview: !!context.preview },
+    props: { page, siteCodename, defaultMetadata, products: products.items, totalCount: products.pagination.totalCount ?? 0, siteMenu, isPreview: !!context.preview },
   };
 }
 

@@ -15,7 +15,7 @@ type Props = Readonly<{
   product: Product;
   siteCodename: ValidCollectionCodename;
   defaultMetadata: SEOMetadata;
-  siteMenu?: Block_Navigation;
+  siteMenu: Block_Navigation | null;
 }>;
 
 interface IParams extends ParsedUrlQuery {
@@ -38,7 +38,7 @@ export const getStaticProps: GetStaticProps<Props, IParams> = async (context) =>
   }
 
   const product = await getProductDetail(slug, !!context.preview);
-  const siteMenu = await getSiteMenu(!!context.preview);
+  const siteMenu = await getSiteMenu(!!context.preview) ?? null;
   const defaultMetadata = await getDefaultMetadata(!!context.preview);
 
   if (!product) {
