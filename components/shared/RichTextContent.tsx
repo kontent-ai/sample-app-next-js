@@ -19,6 +19,7 @@ type Props = Readonly<{
 
 export const RichTextContentComponent: FC<Props> = props => (
   <div
+    className="px-3 md:px-0"
     {...createItemSmartLink(props.item.system.id)}
     {...createElementSmartLink(contentTypes.content_chunk.elements.content.codename)}
     {...createFixedAddSmartLink("end")}
