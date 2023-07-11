@@ -10,12 +10,12 @@ import { useSiteCodename } from "../../../../components/shared/siteCodenameConte
 import { AppPage } from "../../../../components/shared/ui/appPage";
 import { mainColorBgClass, mainColorBorderClass, mainColorHoverClass } from "../../../../lib/constants/colors";
 import { ArticlePageSize } from "../../../../lib/constants/paging";
-import { getArticlesCountByCategory, getArticlesForListing, getItemByCodename, getItemsTotalCount, getSiteMenu } from "../../../../lib/kontentClient";
+import { getArticlesCountByCategory, getArticlesForListing, getDefaultMetadata, getItemByCodename, getItemsTotalCount, getSiteMenu } from "../../../../lib/kontentClient";
 import { PerCollectionCodenames } from "../../../../lib/routing";
 import { ValidCollectionCodename } from "../../../../lib/types/perCollection";
 import { ArticleListingUrlQuery, ArticleTypeWithAll, categoryFilterSource, isArticleType } from "../../../../lib/utils/articlesListing";
 import { siteCodename } from "../../../../lib/utils/env";
-import { Article, Block_Navigation, taxonomies, WSL_Page } from "../../../../models";
+import { Article, Block_Navigation, SEOMetadata, taxonomies, WSL_Page } from "../../../../models";
 
 
 type Props = Readonly<{
@@ -24,6 +24,7 @@ type Props = Readonly<{
   siteMenu?: Block_Navigation,
   page: WSL_Page,
   itemCount: number;
+  defaultMetadata: SEOMetadata;
 }>;
 
 type LinkButtonProps = {
@@ -126,6 +127,8 @@ const ArticlesPage: FC<Props> = props => {
     <AppPage
       siteCodename={props.siteCodename}
       siteMenu={props.siteMenu}
+      defaultMetadata={props.defaultMetadata}
+      pageType="WebPage"
     >
       {props.page.elements.content.linkedItems.map(piece => (
         <Content
@@ -238,6 +241,8 @@ export const getStaticProps: GetStaticProps<Props, ArticleListingUrlQuery> = asy
   const siteMenu = await getSiteMenu(!!context.preview);
   const page = await getItemByCodename<WSL_Page>(pageCodename, !!context.preview);
   const itemCount = await getArticlesCountByCategory(false, selectedCategory)
+  const defaultMetadata = await getDefaultMetadata(!!context.preview);
+
   if (page === null) {
     return { notFound: true };
   }
@@ -248,7 +253,8 @@ export const getStaticProps: GetStaticProps<Props, ArticleListingUrlQuery> = asy
       siteCodename,
       siteMenu,
       page,
-      itemCount
+      itemCount,
+      defaultMetadata
     },
     revalidate: 10,
   };

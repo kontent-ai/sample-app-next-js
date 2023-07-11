@@ -4,17 +4,18 @@ import { FC } from "react";
 
 import { Content } from "../components/shared/Content";
 import { AppPage } from "../components/shared/ui/appPage";
-import { getItemByCodename, getSiteMenu } from "../lib/kontentClient";
+import { getDefaultMetadata, getItemByCodename, getSiteMenu } from "../lib/kontentClient";
 import { pageCodenames } from '../lib/routing';
 import { ValidCollectionCodename } from "../lib/types/perCollection";
 import { siteCodename } from "../lib/utils/env";
 import { createElementSmartLink, createFixedAddSmartLink } from "../lib/utils/smartLinkUtils";
-import { Block_Navigation, contentTypes, WSL_Page } from "../models";
+import { Block_Navigation, contentTypes, SEOMetadata, WSL_Page } from "../models";
 
 type Props = Readonly<{
   page: WSL_Page;
   siteCodename: ValidCollectionCodename;
   siteMenu: Block_Navigation;
+  defaultMetadata: SEOMetadata;
 }>;
 
 interface IParams extends ParsedUrlQuery {
@@ -49,6 +50,7 @@ export const getStaticProps: GetStaticProps<any, IParams> = async (context) => {
   const pageCodename = pageCodenames[slug];
 
   const siteMenu = await getSiteMenu(!!context.preview);
+  const defaultMetadata = await getDefaultMetadata(!!context.preview);
 
   const page = await getItemByCodename<WSL_Page>(pageCodename, !!context.preview);
   if (page === null) {
@@ -58,15 +60,16 @@ export const getStaticProps: GetStaticProps<any, IParams> = async (context) => {
   }
 
   return {
-    props: { page, siteCodename, siteMenu },
+    props: { page, siteCodename, siteMenu, defaultMetadata },
   };
 }
 
 const TopLevelPage: FC<Props> = props => (
   <AppPage
-    itemId={props.page.system.id}
     siteCodename={props.siteCodename}
     siteMenu={props.siteMenu}
+    defaultMetadata={props.defaultMetadata}
+    pageType="WebPage"
   >
     <div
       {...createElementSmartLink(contentTypes.page.elements.content.codename)}

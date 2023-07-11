@@ -92,6 +92,32 @@ export const contentTypes = {
       },
 
       /**
+       * Description (text)
+       */
+      seo_metadata__description: {
+        codename: 'seo_metadata__description',
+        id: '0848a00d-f935-4270-b9b5-ba0b22d7eaa2',
+        externalId: undefined,
+        name: 'Description',
+        required: false,
+        type: 'text',
+        snippetCodename: 'seo_metadata',
+      },
+
+      /**
+       * Keywords (text)
+       */
+      seo_metadata__keywords: {
+        codename: 'seo_metadata__keywords',
+        id: 'ee4b0220-7852-4738-84a4-825b0c8b4284',
+        externalId: undefined,
+        name: 'Keywords',
+        required: false,
+        type: 'text',
+        snippetCodename: 'seo_metadata',
+      },
+
+      /**
        * Navigation (modular_content)
        */
       navigation: {
@@ -128,6 +154,19 @@ export const contentTypes = {
         required: false,
         type: 'text',
         snippetCodename: undefined,
+      },
+
+      /**
+       * Title (text)
+       */
+      seo_metadata__title: {
+        codename: 'seo_metadata__title',
+        id: '661a085e-eb93-437d-9f97-b58a1ec256af',
+        externalId: undefined,
+        name: 'Title',
+        required: false,
+        type: 'text',
+        snippetCodename: 'seo_metadata',
       },
     },
   },
@@ -758,6 +797,32 @@ export const contentTypes = {
       },
 
       /**
+       * Description (text)
+       */
+      seo_metadata__description: {
+        codename: 'seo_metadata__description',
+        id: '0848a00d-f935-4270-b9b5-ba0b22d7eaa2',
+        externalId: undefined,
+        name: 'Description',
+        required: false,
+        type: 'text',
+        snippetCodename: 'seo_metadata',
+      },
+
+      /**
+       * Keywords (text)
+       */
+      seo_metadata__keywords: {
+        codename: 'seo_metadata__keywords',
+        id: 'ee4b0220-7852-4738-84a4-825b0c8b4284',
+        externalId: undefined,
+        name: 'Keywords',
+        required: false,
+        type: 'text',
+        snippetCodename: 'seo_metadata',
+      },
+
+      /**
        * Price (number)
        *
        * Price in Euros.
@@ -811,6 +876,19 @@ export const contentTypes = {
         required: true,
         type: 'text',
         snippetCodename: undefined,
+      },
+
+      /**
+       * Title (text)
+       */
+      seo_metadata__title: {
+        codename: 'seo_metadata__title',
+        id: '661a085e-eb93-437d-9f97-b58a1ec256af',
+        externalId: undefined,
+        name: 'Title',
+        required: false,
+        type: 'text',
+        snippetCodename: 'seo_metadata',
       },
     },
   },

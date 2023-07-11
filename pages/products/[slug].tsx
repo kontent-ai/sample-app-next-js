@@ -4,16 +4,17 @@ import { ParsedUrlQuery } from 'querystring';
 import { FC } from "react";
 
 import { AppPage } from "../../components/shared/ui/appPage";
-import { getProductDetail, getProductSlugs, getSiteMenu } from "../../lib/kontentClient";
+import { getDefaultMetadata, getProductDetail, getProductSlugs, getSiteMenu } from "../../lib/kontentClient";
 import { ValidCollectionCodename } from "../../lib/types/perCollection";
 import { siteCodename } from "../../lib/utils/env";
 import { createElementSmartLink } from "../../lib/utils/smartLinkUtils";
-import { Block_Navigation, contentTypes, Product } from "../../models"
+import { Block_Navigation, contentTypes, Product, SEOMetadata } from "../../models"
 
 
 type Props = Readonly<{
   product: Product;
   siteCodename: ValidCollectionCodename;
+  defaultMetadata: SEOMetadata;
   siteMenu?: Block_Navigation;
 }>;
 
@@ -38,6 +39,7 @@ export const getStaticProps: GetStaticProps<Props, IParams> = async (context) =>
 
   const product = await getProductDetail(slug, !!context.preview);
   const siteMenu = await getSiteMenu(!!context.preview);
+  const defaultMetadata = await getDefaultMetadata(!!context.preview);
 
   if (!product) {
     return { notFound: true };
@@ -47,18 +49,21 @@ export const getStaticProps: GetStaticProps<Props, IParams> = async (context) =>
     props: {
       product,
       siteCodename,
-      siteMenu
+      siteMenu,
+      defaultMetadata
     }
   };
 };
 
 const widthLimit = 300;
 
-const ProductDetail: FC<Props> = ({ product, siteCodename, siteMenu }) => (
+const ProductDetail: FC<Props> = ({ product, siteCodename, siteMenu, defaultMetadata }) => (
   <AppPage
-    itemId={product.system.id}
+    item={product}
     siteCodename={siteCodename}
     siteMenu={siteMenu}
+    defaultMetadata={defaultMetadata}
+    pageType="Product"
   >
     <div>
       <h1
