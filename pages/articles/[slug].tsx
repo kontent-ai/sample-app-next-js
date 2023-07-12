@@ -67,7 +67,7 @@ const ArticlePage: FC<Props> = props => {
 };
 
 export const getStaticProps: GetStaticProps<Props, { slug: string }> = async context => {
-  const siteMenu = await getSiteMenu(!!context.preview) ?? null;
+  const siteMenu = await getSiteMenu(!!context.preview);
   const slug = typeof context.params?.slug === "string" ? context.params.slug : "";
 
   if (!slug) {

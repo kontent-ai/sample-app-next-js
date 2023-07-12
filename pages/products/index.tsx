@@ -204,7 +204,7 @@ export const getStaticProps: GetStaticProps<Props> = async context => {
 
   const page = await getItemByCodename<WSL_Page>(pageCodename, !!context.preview);
   const products = await getProductsForListing(!!context.preview);
-  const siteMenu = await getSiteMenu(!!context.preview) ?? null;
+  const siteMenu = await getSiteMenu(!!context.preview);
   const defaultMetadata = await getDefaultMetadata(!!context.preview);
 
   if (page === null) {

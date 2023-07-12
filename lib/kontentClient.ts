@@ -132,7 +132,7 @@ export const getProductDetail = (slug: string, usePreview: boolean) =>
 export const getSiteMenu = async (usePreview: boolean) => {
   const res = await getItemByCodename<WSL_WebSpotlightRoot>(perCollectionRootItems, usePreview);
 
-  return res?.elements.navigation.linkedItems[0];
+  return res?.elements.navigation.linkedItems[0] ?? null;
 }
 
 export const getArticlesForListing = (usePreview: boolean, page?: number, articleType?: string, pageSize: number = ArticlePageSize) => {

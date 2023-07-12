@@ -9,7 +9,7 @@ import { getHomepage, getSiteMenu } from "../lib/kontentClient";
 import { ValidCollectionCodename } from '../lib/types/perCollection';
 import { useSmartLink } from '../lib/useSmartLink';
 import { siteCodename } from '../lib/utils/env';
-import { Block_Navigation,WSL_WebSpotlightRoot } from '../models';
+import { Block_Navigation, WSL_WebSpotlightRoot } from '../models';
 
 type Props = Readonly<{
   homepage: WSL_WebSpotlightRoot;
@@ -23,12 +23,12 @@ const Home: NextPage<Props> = props => {
   const sdk = useSmartLink();
 
   useEffect(() => {
-    const getHomepage =  async ()  => {
+    const getHomepage = async () => {
       const response = await fetch('/api/homepage');
       const data = await response.json();
-      
+
       setHomepage(data);
-  } 
+    }
 
     sdk?.on(KontentSmartLinkEvent.Refresh, (data: IRefreshMessageData, metadata: IRefreshMessageMetadata, originalRefresh: () => void) => {
       if (metadata.manualRefresh) {
@@ -56,11 +56,12 @@ const Home: NextPage<Props> = props => {
         ))}
       </div>
     </AppPage>
-)};
+  )
+};
 
 export const getStaticProps: GetStaticProps<Props> = async context => {
   const homepage = await getHomepage(!!context.preview);
-  const siteMenu = await getSiteMenu(!!context.preview) ?? null;
+  const siteMenu = await getSiteMenu(!!context.preview);
 
   if (!homepage) {
     throw new Error("Can't find homepage item.");

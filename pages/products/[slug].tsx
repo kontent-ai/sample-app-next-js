@@ -38,7 +38,7 @@ export const getStaticProps: GetStaticProps<Props, IParams> = async (context) =>
   }
 
   const product = await getProductDetail(slug, !!context.preview);
-  const siteMenu = await getSiteMenu(!!context.preview) ?? null;
+  const siteMenu = await getSiteMenu(!!context.preview);
   const defaultMetadata = await getDefaultMetadata(!!context.preview);
 
   if (!product) {

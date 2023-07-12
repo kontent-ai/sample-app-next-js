@@ -239,7 +239,7 @@ export const getStaticProps: GetStaticProps<Props, ArticleListingUrlQuery> = asy
 
   const pageNumber = !pageURLParameter || isNaN(+pageURLParameter) ? 1 : +pageURLParameter;
   const articles = await getArticlesForListing(!!context.preview, pageNumber, selectedCategory);
-  const siteMenu = await getSiteMenu(!!context.preview) ?? null;
+  const siteMenu = await getSiteMenu(!!context.preview);
   const page = await getItemByCodename<WSL_Page>(pageCodename, !!context.preview);
   const itemCount = await getArticlesCountByCategory(false, selectedCategory)
   const defaultMetadata = await getDefaultMetadata(!!context.preview);
