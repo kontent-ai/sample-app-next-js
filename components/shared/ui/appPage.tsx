@@ -10,24 +10,19 @@ import { SiteCodenameProvider } from "../siteCodenameContext";
 import { Footer } from "./footer";
 import { Menu } from "./menu";
 
+type AcceptedItem = WSL_WebSpotlightRoot | Article | Product | WSL_Page;
+
 type Props = Readonly<{
   children: ReactNode;
   siteCodename: ValidCollectionCodename;
-  item: WSL_WebSpotlightRoot | Article | Product | WSL_Page;
+  item: AcceptedItem;
   siteMenu: Block_Navigation | null;
   defaultMetadata: SEOMetadata;
   pageType: "WebPage" | "Article" | "Product",
 }>;
 
-const PageMetadata: FC<Omit<Props, "children" | "siteMenu">> = ({ siteCodename, item, defaultMetadata, pageType }) => {
-  const getMetaTitle = (): string => {
-    const siteTitle = perCollectionSEOTitle[siteCodename];
-    const pageTitle = item.elements.seoMetadataTitle.value;
-
-    return pageTitle && pageTitle !== siteTitle ? `${pageTitle} | ${siteTitle}` : siteTitle;
-  };
-
-  const pageMetaTitle = getMetaTitle();
+const PageMetadata: FC<Pick<Props, "siteCodename" | "item" | "defaultMetadata" | "pageType">> = ({ siteCodename, item, defaultMetadata, pageType }) => {
+  const pageMetaTitle = createMetaTitle(siteCodename, item);
   const pageMetaDescription = item.elements.seoMetadataDescription.value || defaultMetadata.elements.seoMetadataDescription.value;
   const pageMetaKeywords = item.elements.seoMetadataKeywords.value || defaultMetadata.elements.seoMetadataKeywords.value;
 
@@ -64,6 +59,13 @@ const PageMetadata: FC<Omit<Props, "children" | "siteMenu">> = ({ siteCodename, 
     </Head>
   )
 }
+
+const createMetaTitle = (siteCodename: ValidCollectionCodename, item: AcceptedItem): string => {
+  const siteTitle = perCollectionSEOTitle[siteCodename];
+  const pageTitle = item.elements.seoMetadataTitle.value;
+
+  return pageTitle !== siteTitle ? `${pageTitle} | ${siteTitle}` : siteTitle;
+};
 
 export const AppPage: FC<Props> = props => {
   useSmartLink();
