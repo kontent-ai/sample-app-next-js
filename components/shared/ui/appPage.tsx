@@ -34,10 +34,22 @@ const PageMetadata: FC<Omit<Props, "children" | "siteMenu">> = ({ siteCodename, 
   return (
     <Head>
       <title>{pageMetaTitle}</title>
-      <meta name="description" content={pageMetaDescription} />
-      <meta name="keywords" content={pageMetaKeywords} />
-      <meta property="og:title" content={pageMetaTitle} />
-      <meta property="og:description" content={pageMetaDescription} />
+      <meta
+        name="description"
+        content={pageMetaDescription}
+      />
+      <meta
+        name="keywords"
+        content={pageMetaKeywords}
+      />
+      <meta
+        property="og:title"
+        content={pageMetaTitle}
+      />
+      <meta
+        property="og:description"
+        content={pageMetaDescription}
+      />
       <script type="application/ld+json">
         {
           JSON.stringify({
