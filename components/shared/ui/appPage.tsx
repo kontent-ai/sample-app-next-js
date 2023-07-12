@@ -21,6 +21,36 @@ type Props = Readonly<{
   pageType: "WebPage" | "Article" | "Product",
 }>;
 
+export const AppPage: FC<Props> = props => {
+  useSmartLink();
+
+  return (
+    <SiteCodenameProvider siteCodename={props.siteCodename}>
+      <PageMetadata
+        item={props.item}
+        pageType={props.pageType}
+        defaultMetadata={props.defaultMetadata}
+        siteCodename={props.siteCodename}
+      />
+      <div className="min-h-full grow flex flex-col items-center overflow-hidden">
+        {props.siteMenu ? <Menu item={props.siteMenu} /> : <span>Missing top navigation. Please provide a valid navigation item in the web spotlight root.</span>}
+        {/* https://tailwindcss.com/docs/typography-plugin */}
+        <main
+          className="py-14 md:py-20 md:px-4 sm:px-8 max-w-screen-xl grow h-full w-screen"
+          {...createItemSmartLink(props.item.system.id, true)}
+        >
+          <div className="prose w-full max-w-full">
+            {props.children}
+          </div>
+        </main>
+        <Footer />
+      </div>
+    </SiteCodenameProvider>
+  );
+};
+
+AppPage.displayName = "Page";
+
 const PageMetadata: FC<Pick<Props, "siteCodename" | "item" | "defaultMetadata" | "pageType">> = ({ siteCodename, item, defaultMetadata, pageType }) => {
   const pageMetaTitle = createMetaTitle(siteCodename, item);
   const pageMetaDescription = item.elements.seoMetadataDescription.value || defaultMetadata.elements.seoMetadataDescription.value;
@@ -67,32 +97,3 @@ const createMetaTitle = (siteCodename: ValidCollectionCodename, item: AcceptedIt
   return pageTitle !== siteTitle ? `${pageTitle} | ${siteTitle}` : siteTitle;
 };
 
-export const AppPage: FC<Props> = props => {
-  useSmartLink();
-
-  return (
-    <SiteCodenameProvider siteCodename={props.siteCodename}>
-      <PageMetadata
-        item={props.item}
-        pageType={props.pageType}
-        defaultMetadata={props.defaultMetadata}
-        siteCodename={props.siteCodename}
-      />
-      <div className="min-h-full grow flex flex-col items-center overflow-hidden">
-        {props.siteMenu ? <Menu item={props.siteMenu} /> : <span>Missing top navigation. Please provide a valid navigation item in the web spotlight root.</span>}
-        {/* https://tailwindcss.com/docs/typography-plugin */}
-        <main
-          className="py-14 md:py-20 md:px-4 sm:px-8 max-w-screen-xl grow h-full w-screen"
-          {...createItemSmartLink(props.item.system.id, true)}
-        >
-          <div className="prose w-full max-w-full">
-            {props.children}
-          </div>
-        </main>
-        <Footer />
-      </div>
-    </SiteCodenameProvider>
-  );
-};
-
-AppPage.displayName = "Page";
