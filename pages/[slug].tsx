@@ -14,7 +14,7 @@ import { Block_Navigation, contentTypes, SEOMetadata, WSL_Page } from "../models
 type Props = Readonly<{
   page: WSL_Page;
   siteCodename: ValidCollectionCodename;
-  siteMenu: Block_Navigation;
+  siteMenu: Block_Navigation | null;
   defaultMetadata: SEOMetadata;
 }>;
 
@@ -34,7 +34,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 }
 
 // `getStaticPaths` requires using `getStaticProps`
-export const getStaticProps: GetStaticProps<any, IParams> = async (context) => {
+export const getStaticProps: GetStaticProps<Props, IParams> = async (context) => {
   // TODO break hardcoding
   const slug = context.params?.slug;
 

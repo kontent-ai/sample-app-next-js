@@ -2,10 +2,10 @@ import { GetStaticProps } from "next";
 import { FC } from "react";
 
 import { ArticlePageSize } from "../../../../../lib/constants/paging";
-import { getArticlesCountByCategory,getArticlesForListing, getDefaultMetadata, getItemByCodename, getItemsTotalCount, getSiteMenu } from "../../../../../lib/kontentClient";
+import { getArticlesCountByCategory, getArticlesForListing, getDefaultMetadata, getItemByCodename, getItemsTotalCount, getSiteMenu } from "../../../../../lib/kontentClient";
 import { PerCollectionCodenames } from "../../../../../lib/routing";
 import { ValidCollectionCodename } from "../../../../../lib/types/perCollection";
-import { ArticleListingUrlQuery,ArticleTypeWithAll, categoryFilterSource, isArticleType } from "../../../../../lib/utils/articlesListing";
+import { ArticleListingUrlQuery, ArticleTypeWithAll, categoryFilterSource, isArticleType } from "../../../../../lib/utils/articlesListing";
 import { siteCodename } from "../../../../../lib/utils/env";
 import { Article, Block_Navigation, SEOMetadata, WSL_Page } from "../../../../../models";
 import ArticlesPage from "..";
@@ -52,7 +52,7 @@ export const getStaticProps: GetStaticProps<Props, ArticleListingUrlQuery> = asy
 
 
   const articles = await getArticlesForListing(!!context.preview, pageNumber, context.params?.category ?? 'all');
-  const siteMenu = await getSiteMenu(!!context.preview) ?? null;
+  const siteMenu = await getSiteMenu(!!context.preview);
   const page = await getItemByCodename<WSL_Page>(pageCodename, !!context.preview);
   const itemCount = await getArticlesCountByCategory(!!context.preview, selectedCategory);
   const defaultMetadata = await getDefaultMetadata(!!context.preview);
