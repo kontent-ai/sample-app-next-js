@@ -19,7 +19,7 @@ type Props = Readonly<{
 }>;
 
 interface IParams extends ParsedUrlQuery {
-  slug: keyof typeof pageCodenames
+  slug: string
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
@@ -28,24 +28,38 @@ export const getStaticPaths: GetStaticPaths = async () => {
   ))
   return {
     paths,
-    // TODO decide the behavior
-    fallback: false, // can also be true or 'blocking'
+    fallback: 'blocking',
   }
 }
 
+const isValidSlug = (slug: string | undefined): slug is keyof typeof pageCodenames =>
+  Object.keys(pageCodenames).includes(slug || "")
+
 // `getStaticPaths` requires using `getStaticProps`
 export const getStaticProps: GetStaticProps<Props, IParams> = async (context) => {
-  // TODO break hardcoding
   const slug = context.params?.slug;
 
   if (!slug) {
     return {
-      redirect: {
-        destination: '/404',
-        permanent: true
-      }
-    };
+      notFound: true
+    }
   }
+
+  if (slug === "articles") {
+    return {
+      redirect: {
+        destination: `/articles/category/all`,
+        permanent: true,
+      }
+    }
+  }
+
+  if (!isValidSlug(slug)) {
+    return {
+      notFound: true
+    }
+  }
+
   const pageCodename = pageCodenames[slug];
 
   const siteMenu = await getSiteMenu(!!context.preview);
