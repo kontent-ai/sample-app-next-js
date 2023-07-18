@@ -75,7 +75,7 @@ const ProductDetail: FC<Props> = ({ product, siteCodename, siteMenu, defaultMeta
         {
           product.elements.productImage.value[0] && (
             <Image
-              src={`${product.elements.productImage.value[0].url}?w=${widthLimit}`}
+              src={product.elements.productImage.value[0].url}
               alt={product.elements.productImage.value[0].description || product.elements.productImage.value[0].url.split('/').pop() || "Product image"}
               width={widthLimit}
               height={product.elements.productImage.value[0].height || 200}
