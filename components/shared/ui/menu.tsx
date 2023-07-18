@@ -26,7 +26,8 @@ type DropdownMenuProps = Readonly<{
 }>;
 
 const isCurrentNavigationItemActive = (navigation: Block_Navigation, router: NextRouter) => {
-  const pathSegments = router.route.split("/");
+  const pathWithoutQuerystring = router.asPath.replace(/\?.*/, '');;
+  const pathSegments = pathWithoutQuerystring.split("/");
   const topLevelSegment = pathSegments[1];
   return (navigation.elements.pageLink.linkedItems[0]?.elements.url.value === topLevelSegment);
 };
