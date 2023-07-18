@@ -132,6 +132,7 @@ export const Menu: FC<Props> = props => {
               type="button"
               className="md:hidden flex justify-center items-center"
               onClick={() => setSmallMenuActive(!smallMenuActive)}
+              aria-label="Open the menu"
             >
               <Bars3Icon className="w-6 h-6" />
             </button>
