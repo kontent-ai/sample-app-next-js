@@ -26,7 +26,7 @@ type DropdownMenuProps = Readonly<{
 }>;
 
 const isCurrentNavigationItemActive = (navigation: Block_Navigation, router: NextRouter) => {
-  const pathSegments = router.asPath.split("/");
+  const pathSegments = router.route.split("/");
   const topLevelSegment = pathSegments[1];
   return (navigation.elements.pageLink.linkedItems[0]?.elements.url.value === topLevelSegment);
 };
