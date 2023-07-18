@@ -31,14 +31,15 @@ export const ArticleItem: FC<Props> = props => {
             src={props.imageUrl}
             alt={props.title}
             fill
+            sizes="(max-width: 635px) 100vw, (max-width: 1275px) 50vw, 25vw"
             className="object-cover h-full m-0 p-0 md:rounded-t-lg"
           />
         </figure>
         {props.publisingDate && (
-<div className="w-fit p-2 bg-gray-800 text-white opacity-90 font-normal line-clamp-6 absolute right-0 translate-y-[-100%]">
-          <p className="m-0 w-fit">{formatDate(props.publisingDate)}</p>
-</div>
-)}
+          <div className="w-fit p-2 bg-gray-800 text-white opacity-90 font-normal line-clamp-6 absolute right-0 translate-y-[-100%]">
+            <p className="m-0 w-fit">{formatDate(props.publisingDate)}</p>
+          </div>
+        )}
         <div className="p-5">
           <h5 className="mb-2 text-xl font-bold tracking-tight text-gray-900 no-underline line-clamp-2 ">{props.title}</h5>
           <p className="mb-0 font-normal text-gray-700 line-clamp-6">{props.description}</p>

@@ -20,6 +20,7 @@ export const HeroImage: FC<Props> = props => (
       alt="Hero image"
       fill
       className="object-cover"
+      sizes="(max-width: 1200px) 100vw, 80vw"
       priority
     />
     <div className="relative w-fit h-full flex flex-col items-center md:items-start justify-end pb-32 md:pb-12 px-6">

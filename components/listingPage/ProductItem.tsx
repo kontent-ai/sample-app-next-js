@@ -34,6 +34,7 @@ export const ProductItem: FC<Props> = props => {
               src={props.imageUrl}
               alt={props.title}
               fill
+              sizes="(max-width: 635px) 100vw, (max-width: 1534px) 50vw, 25vw"
               className="object-contain h-full w-full m-0 p-0 rounded-t-lg"
             />
           </figure>

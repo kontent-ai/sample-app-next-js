@@ -24,6 +24,7 @@ export const FactComponent: FC<Props> = props => {
             src={image.url}
             alt={props.item.elements.title.value}
             fill
+            sizes="(max-width: 757px) 100vw, 50vw"
             className="object-cover m-0"
           />
         </div>

@@ -23,6 +23,7 @@ export const PersonHorizontal: FC<Props> = props => {
           src={props.item.elements.photograph.value[0]?.url ?? "missing author image url"}
           alt={`Avatar of author ${fullName}.`}
           fill
+          sizes="(max-width: 768px) 50vw, (max-width: 1200px) 25vw, 25vw"
           className="object-cover"
         />
       </figure>
