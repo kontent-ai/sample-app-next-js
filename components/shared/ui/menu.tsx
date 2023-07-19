@@ -5,8 +5,9 @@ import { FC, useState } from "react";
 
 import { mainColorBgClass } from "../../../lib/constants/colors";
 import { createItemSmartLink } from "../../../lib/utils/smartLinkUtils";
-import { Block_Navigation } from "../../../models";
+import { Block_Navigation, contentTypes } from "../../../models";
 import { useSiteCodename } from "../siteCodenameContext";
+import { externalPreviewUrlsMapping } from "../../../lib/constants/menu";
 
 type Link = Readonly<Block_Navigation>;
 
@@ -29,9 +30,24 @@ const isCurrentNavigationItemActive = (navigation: Block_Navigation, router: Nex
   const pathWithoutQuerystring = router.asPath.replace(/\?.*/, '');
   const pathSegments = pathWithoutQuerystring.split("/");
   const topLevelSegment = pathSegments[1];
-  return (navigation.elements.pageLink.linkedItems[0]?.elements.url.value === topLevelSegment);
+  const pageLink = navigation.elements.pageLink.linkedItems[0];
+  return (pageLink?.system.codename === contentTypes.page.codename && pageLink?.elements.url.value === topLevelSegment);
 };
 
+const resolveLink = (link: Readonly<Block_Navigation>) => {
+  if (link.elements.externalLink.value) {
+    return link.elements.externalLink.value;
+  }
+
+  const pageLink = link.elements.pageLink.linkedItems[0];
+  const collectionDomain = externalPreviewUrlsMapping[pageLink?.system.collection ?? ""] || "";
+
+  if (pageLink?.system.type === contentTypes.web_spotlight_root.codename) {
+    return collectionDomain;
+  }
+
+  return collectionDomain + "/" + pageLink?.elements.url.value;
+}
 
 const MenuList: FC<MenuListProps> = props => {
   const router = useRouter();
@@ -59,7 +75,7 @@ const MenuList: FC<MenuListProps> = props => {
             <Link
               {...link.elements.openInANewWindow.value[0] ? { rel: "noopener noreferrer", target: "_blank" } : {}}
               className="h-full flex items-center justify-between w-full py-2 pl-3 pr-4 font-medium text-gray-900 border-b border-gray-100 md:w-auto md:bg-transparent md:border-0 md:hover:bg-white"
-              href={link.elements.externalLink.value ? link.elements.externalLink.value : "/" + link.elements.pageLink.linkedItems[0]?.elements.url.value}
+              href={resolveLink(link)}
             >
               {link.elements.label.value}
             </Link>
@@ -69,6 +85,7 @@ const MenuList: FC<MenuListProps> = props => {
     </ul>
   );
 }
+
 
 const DropdownButton: FC<Props> = props => {
   return (
@@ -90,7 +107,7 @@ const DropdownMenuItems: FC<DropdownMenuProps> = props => {
         <li key={link.system.codename}>
           <Link
             {...link.elements.openInANewWindow.value[0] ? { rel: "noopener noreferrer", target: "_blank" } : {}}
-            href={link.elements.externalLink.value ? link.elements.externalLink.value : "/" + link.elements.pageLink.linkedItems[0]?.elements.url.value}
+            href={resolveLink(link)}
             className={`${isCurrentNavigationItemActive(link, router) ? "border-l-gray-500 cursor-default " : "border-l-transparent hover:border-l-gray-500"}
           block p-3 bg-gray-200 border-l-8 h-full`}
           >
