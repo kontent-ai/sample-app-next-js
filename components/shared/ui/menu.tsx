@@ -4,10 +4,10 @@ import { NextRouter, useRouter } from "next/router";
 import { FC, useState } from "react";
 
 import { mainColorBgClass } from "../../../lib/constants/colors";
+import { externalPreviewUrlsMapping } from "../../../lib/constants/menu";
 import { createItemSmartLink } from "../../../lib/utils/smartLinkUtils";
 import { Block_Navigation, contentTypes } from "../../../models";
 import { useSiteCodename } from "../siteCodenameContext";
-import { externalPreviewUrlsMapping } from "../../../lib/constants/menu";
 
 type Link = Readonly<Block_Navigation>;
 
@@ -31,7 +31,7 @@ const isCurrentNavigationItemActive = (navigation: Block_Navigation, router: Nex
   const pathSegments = pathWithoutQuerystring.split("/");
   const topLevelSegment = pathSegments[1];
   const pageLink = navigation.elements.pageLink.linkedItems[0];
-  return (pageLink?.system.codename === contentTypes.page.codename && pageLink?.elements.url.value === topLevelSegment);
+  return (pageLink?.system.codename === contentTypes.page.codename && pageLink.elements.url.value === topLevelSegment);
 };
 
 const resolveLink = (link: Readonly<Block_Navigation>) => {
