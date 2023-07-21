@@ -6,7 +6,7 @@ export const perCollectionRootItems = {
   ficto_healthtech_surgical: "ficto_healthtech_surgical"
 } as const satisfies PerCollection<string>;
 
-export const externalPreviewUrlsMapping = Object.fromEntries(
+export const externalUrlsMapping = Object.fromEntries(
   process.env.NEXT_PUBLIC_COLLECTION_DOMAINS?.split(",")
     .map(collectionPair => collectionPair.split(":"))
     .map(([collectionCodename, domain]) => [collectionCodename, "https://" + domain])

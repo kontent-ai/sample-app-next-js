@@ -4,7 +4,7 @@ import { NextRouter, useRouter } from "next/router";
 import { FC, useState } from "react";
 
 import { mainColorBgClass } from "../../../lib/constants/colors";
-import { externalPreviewUrlsMapping } from "../../../lib/constants/menu";
+import { externalUrlsMapping } from "../../../lib/constants/menu";
 import { createItemSmartLink } from "../../../lib/utils/smartLinkUtils";
 import { Block_Navigation, contentTypes } from "../../../models";
 import { useSiteCodename } from "../siteCodenameContext";
@@ -40,7 +40,7 @@ const resolveLink = (link: Readonly<Block_Navigation>) => {
   }
 
   const pageLink = link.elements.pageLink.linkedItems[0];
-  const collectionDomain = externalPreviewUrlsMapping[pageLink?.system.collection ?? ""] || "";
+  const collectionDomain = externalUrlsMapping[pageLink?.system.collection ?? ""] || "";
 
   if (pageLink?.system.type === contentTypes.web_spotlight_root.codename) {
     return collectionDomain;
