@@ -31,7 +31,7 @@ const isCurrentNavigationItemActive = (navigation: Block_Navigation, router: Nex
   const pathSegments = pathWithoutQuerystring.split("/");
   const topLevelSegment = pathSegments[1];
   const pageLink = navigation.elements.pageLink.linkedItems[0];
-  return (pageLink?.system.codename === contentTypes.page.codename && pageLink.elements.url.value === topLevelSegment);
+  return pageLink?.system.type === contentTypes.page.codename && pageLink.elements.url.value === topLevelSegment;
 };
 
 const resolveLink = (link: Readonly<Block_Navigation>) => {
@@ -85,7 +85,6 @@ const MenuList: FC<MenuListProps> = props => {
     </ul>
   );
 }
-
 
 const DropdownButton: FC<Props> = props => {
   return (
