@@ -88,7 +88,7 @@ export const getProductsForListing = (usePreview: boolean, page?: number, catego
       contentTypes.product.elements.title.codename,
       contentTypes.product.elements.product_image.codename,
       contentTypes.product.elements.slug.codename,
-      contentTypes.product.elements.category.codename,
+      contentTypes.product.elements.product_category.codename,
       contentTypes.product.elements.price.codename,
     ])
     .queryConfig({
@@ -102,7 +102,7 @@ export const getProductsForListing = (usePreview: boolean, page?: number, catego
   }
 
   if (categories) {
-    query.anyFilter(`elements.${contentTypes.product.elements.category.codename}`, categories);
+    query.anyFilter(`elements.${contentTypes.product.elements.product_category.codename}`, categories);
   }
 
   return query
