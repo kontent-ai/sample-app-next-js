@@ -6,7 +6,7 @@ import { FC, useState } from "react";
 import { mainColorBgClass } from "../../../lib/constants/colors";
 import { externalUrlsMapping } from "../../../lib/constants/menu";
 import { createItemSmartLink } from "../../../lib/utils/smartLinkUtils";
-import { Block_Navigation, contentTypes } from "../../../models";
+import { Block_Navigation, contentTypes, WSL_Page, WSL_WebSpotlightRoot } from "../../../models";
 import { useSiteCodename } from "../siteCodenameContext";
 
 type Link = Readonly<Block_Navigation>;
@@ -26,12 +26,15 @@ type DropdownMenuProps = Readonly<{
   links: ReadonlyArray<Link>;
 }>;
 
+const isPage = (item: WSL_Page | WSL_WebSpotlightRoot): item is WSL_Page =>
+  item.system.type === contentTypes.page.codename;
+
 const isCurrentNavigationItemActive = (navigation: Block_Navigation, router: NextRouter) => {
   const pathWithoutQuerystring = router.asPath.replace(/\?.*/, '');
   const pathSegments = pathWithoutQuerystring.split("/");
   const topLevelSegment = pathSegments[1];
   const pageLink = navigation.elements.pageLink.linkedItems[0];
-  return pageLink?.system.type === contentTypes.page.codename && pageLink.elements.url.value === topLevelSegment;
+  return pageLink && isPage(pageLink) && pageLink.elements.url.value === topLevelSegment;
 };
 
 const resolveLink = (link: Readonly<Block_Navigation>) => {
@@ -42,11 +45,15 @@ const resolveLink = (link: Readonly<Block_Navigation>) => {
   const pageLink = link.elements.pageLink.linkedItems[0];
   const collectionDomain = externalUrlsMapping[pageLink?.system.collection ?? ""] || "";
 
-  if (pageLink?.system.type === contentTypes.web_spotlight_root.codename) {
+  if (!pageLink) {
+    return "/invalid-link";
+  }
+
+  if (!isPage(pageLink)) {
     return collectionDomain;
   }
 
-  return collectionDomain + "/" + pageLink?.elements.url.value;
+  return collectionDomain + "/" + pageLink.elements.url.value;
 }
 
 const MenuList: FC<MenuListProps> = props => {

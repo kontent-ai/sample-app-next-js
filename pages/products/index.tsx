@@ -45,7 +45,7 @@ const ProductListing: FC<ProductListingProps> = (props) => {
           title={p.elements.title.value}
           detailUrl={`products/${p.elements.slug.value}`}
           price={p.elements.price.value}
-          category={p.elements.category.value[0]?.name || ""}
+          category={p.elements.productCategory.value[0]?.name || ""}
           itemId={p.system.id}
         />
       ))}
