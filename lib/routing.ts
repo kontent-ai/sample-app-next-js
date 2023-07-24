@@ -8,10 +8,5 @@ export const pageCodenames = {
     ficto_healthtech_surgical: "about_us_f9c172b",
     ficto_healthtech_imaging: "about_us_f9c172b",
   },
-  // "terms": {
-  //   ficto_healthtech: "terms_and_conditions",
-  //   ficto_healthtech_surgical: null,
-  //   ficto_healthtech_imaging: null,
-  // }
 } as const satisfies Record<string, PerCollectionCodenames>;
 
