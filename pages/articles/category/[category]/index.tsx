@@ -225,7 +225,7 @@ export const getStaticPaths = async () => {
 
 export const getStaticProps: GetStaticProps<Props, ArticleListingUrlQuery> = async context => {
   const pageCodename: PerCollectionCodenames = {
-    ficto_healthtech: "articles_healthtech",
+    ficto_healthtech: "articles",
     ficto_healthtech_imaging: null,
     ficto_healthtech_surgical: "articles_surgical"
   };
