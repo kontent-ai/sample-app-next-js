@@ -3,7 +3,7 @@ import { FC, useState } from "react";
 import { mainColorBorderClass } from "../../../lib/constants/colors";
 import { createElementSmartLink, createItemSmartLink, createRelativeAddSmartLink } from "../../../lib/utils/smartLinkUtils";
 import { contentTypes, Fact } from "../../../models"
-import { FactComponent } from "../GenericAction";
+import { FactComponent } from "../Fact";
 import { useSiteCodename } from "../siteCodenameContext";
 import { StandaloneSmartLinkButton } from "../StandaloneSmartLinkButton";
 

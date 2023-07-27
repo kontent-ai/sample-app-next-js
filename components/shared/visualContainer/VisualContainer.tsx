@@ -1,6 +1,6 @@
 import { FC } from "react";
 
-import { Block_HeroUnit, Block_VisualContainer, contentTypes, Fact, Milestone } from "../../../models"
+import { Block_HeroUnit, Block_VisualContainer, contentTypes, Fact } from "../../../models"
 import { BuildError } from "../ui/BuildError";
 import { CarouselComponent } from "./Carousel";
 import { GridComponent } from "./Grid";
@@ -15,9 +15,9 @@ export const VisualContainer: FC<Props> = props => {
     case visualRepresentation.grid:
       return (
         <>
-          {!props.item.elements.items.linkedItems.every(isMilestone) && <BuildError>Grid representation can only have Milestone items. Some items are of a wrong type.</BuildError>}
+          {!props.item.elements.items.linkedItems.every(isFact) && <BuildError>Grid representation can only have Fact items. Some items are of a wrong type.</BuildError>}
           <GridComponent
-            items={props.item.elements.items.linkedItems.filter(isMilestone)}
+            items={props.item.elements.items.linkedItems.filter(isFact)}
           />
         </>
       );
@@ -55,10 +55,7 @@ const visualRepresentation = {
   stack: "stack",
 } as const;
 
-type VisualContainerItem = Fact | Milestone | Block_HeroUnit;
-
-const isMilestone = (item: VisualContainerItem): item is Milestone =>
-  item.system.type === contentTypes.milestone.codename;
+type VisualContainerItem = Fact | Block_HeroUnit;
 
 const isFact = (item: VisualContainerItem): item is Fact =>
   item.system.type === contentTypes.fact.codename;
