@@ -1,11 +1,11 @@
 import React, { FC } from 'react'
 
 import { mainColorBgClass } from '../../../lib/constants/colors'
-import { Milestone } from '../../../models';
+import { Fact } from '../../../models';
 import { useSiteCodename } from '../siteCodenameContext'
 
 type Props = Readonly<{
-  items: ReadonlyArray<Milestone>;
+  items: ReadonlyArray<Fact>;
 }>;
 
 export const GridComponent: FC<Props> = props => {
@@ -19,8 +19,8 @@ export const GridComponent: FC<Props> = props => {
             className="p-4 flex flex-col text-center items-center"
             key={link.system.id}
           >
-            <div className="font-bold text-3xl">{link.elements.achievement.value}</div>
-            <div>{link.elements.subject.value}</div>
+            <div className="font-bold text-3xl">{link.elements.title.value}</div>
+            <div>{link.elements.message.value}</div>
           </div>
         ))}
       </div>

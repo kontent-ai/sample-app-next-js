@@ -66,7 +66,7 @@ export const getItemByCodename = <ItemType extends IContentItem>(codename: PerCo
 
 const homepageTypeCodename = "web_spotlight_root" as const;
 
-export const getHomepage = (usePreview: boolean) =>
+export const getHomepage = async (usePreview: boolean) =>
   deliveryClient
     .items()
     .type(homepageTypeCodename)
@@ -76,10 +76,10 @@ export const getHomepage = (usePreview: boolean) =>
       waitForLoadingNewContent: usePreview
     })
     .depthParameter(10)
-    .toPromise()
+    .toAllPromise()
     .then(res => res.data.items[0] as WSL_WebSpotlightRoot | undefined)
 
-export const getProductsForListing = (usePreview: boolean, page?: number, categories?: string[], pageSize: number = ProductsPageSize) => {
+export const getProductsForListing = async (usePreview: boolean, page?: number, categories?: string[], pageSize: number = ProductsPageSize) => {
   const query = deliveryClient
     .items<Product>()
     .type(contentTypes.product.codename)
