@@ -7,7 +7,6 @@ export * from './Block_Navigation';
 export * from './Block_VisualContainer';
 export * from './article';
 export * from './fact';
-export * from './milestone';
 export * from './person';
 export * from './product';
 export * from './testimonial';
