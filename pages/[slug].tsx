@@ -45,15 +45,6 @@ export const getStaticProps: GetStaticProps<Props, IParams> = async (context) =>
     }
   }
 
-  if (slug === "articles") {
-    return {
-      redirect: {
-        destination: `/articles/category/all`,
-        permanent: true,
-      }
-    }
-  }
-
   if (!isValidSlug(slug)) {
     return {
       notFound: true
