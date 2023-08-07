@@ -11,7 +11,7 @@ import { AppPage } from "../../../../components/shared/ui/appPage";
 import { mainColorBgClass, mainColorBorderClass, mainColorHoverClass } from "../../../../lib/constants/colors";
 import { ArticlePageSize } from "../../../../lib/constants/paging";
 import { getArticlesCountByCategory, getArticlesForListing, getDefaultMetadata, getItemByCodename, getItemsTotalCount, getSiteMenu } from "../../../../lib/kontentClient";
-import { PerCollectionCodenames } from "../../../../lib/routing";
+import { pageCodenames } from "../../../../lib/routing";
 import { ValidCollectionCodename } from "../../../../lib/types/perCollection";
 import { ArticleListingUrlQuery, ArticleTypeWithAll, categoryFilterSource, isArticleType } from "../../../../lib/utils/articlesListing";
 import { siteCodename } from "../../../../lib/utils/env";
@@ -224,11 +224,7 @@ export const getStaticPaths = async () => {
 };
 
 export const getStaticProps: GetStaticProps<Props, ArticleListingUrlQuery> = async context => {
-  const pageCodename: PerCollectionCodenames = {
-    ficto_healthtech: "articles",
-    ficto_healthtech_imaging: null,
-    ficto_healthtech_surgical: "articles_surgical"
-  };
+  const pageCodename = pageCodenames.articles;
   const pageURLParameter = context.params?.page;
   const selectedCategory = context.params?.category;
   if (!isArticleType(selectedCategory)) {
