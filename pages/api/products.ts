@@ -1,6 +1,7 @@
 import { NextApiHandler } from "next";
 
 import { getProductsForListing } from "../../lib/kontentClient";
+import { parseBoolean } from "../../lib/utils/parseBoolean";
 
 const handler: NextApiHandler = async (req, res) => {
     const page = req.query.page;
@@ -11,8 +12,13 @@ const handler: NextApiHandler = async (req, res) => {
     if(page && isNaN(pageNumber)){
         return res.status(400).json({ error: "The value you provided for page is not a number" }); 
     }
-  
-    const products = await getProductsForListing(false, isNaN(pageNumber) ? undefined : pageNumber, category);
+
+    const usePreview = parseBoolean(req.query.preview);
+    if (usePreview === null) {
+        return res.status(400).json({ error: "Please provide 'preview' query parameter with value 'true' or 'false'." });
+    }
+
+    const products = await getProductsForListing(usePreview, isNaN(pageNumber) ? undefined : pageNumber, category);
   
     return res.status(200).json({ products: products.items, totalCount: products.pagination.totalCount});
   };
