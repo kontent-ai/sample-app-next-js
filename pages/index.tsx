@@ -15,6 +15,7 @@ type Props = Readonly<{
   homepage: WSL_WebSpotlightRoot;
   siteCodename: ValidCollectionCodename;
   siteMenu: Block_Navigation | null;
+  isPreview: boolean;
 }>;
 
 const Home: NextPage<Props> = props => {
@@ -24,7 +25,7 @@ const Home: NextPage<Props> = props => {
 
   useEffect(() => {
     const getHomepage = async () => {
-      const response = await fetch('/api/homepage');
+      const response = await fetch(`/api/homepage?preview=${props.isPreview}`);
       const data = await response.json();
 
       setHomepage(data);
@@ -37,7 +38,7 @@ const Home: NextPage<Props> = props => {
         getHomepage();
       }
     });
-  }, [sdk]);
+  }, [sdk, props.isPreview]);
 
   return (
     <AppPage
@@ -68,7 +69,7 @@ export const getStaticProps: GetStaticProps<Props> = async context => {
   }
 
   return {
-    props: { homepage, siteCodename, siteMenu },
+    props: { homepage, siteCodename, siteMenu, isPreview: !!context.preview },
   };
 }
 

@@ -29,6 +29,23 @@ type ProductListingProps = Readonly<{
   products: ReadonlyArray<Product> | undefined,
 }>
 
+const createQueryStringUrl = (params: Record<string, string | string[] | undefined>) =>
+  Object.keys(params).length > 0 ?
+    Object.entries(params).reduce(
+      (prev, next, index) => {
+        const [paramKey, paramValue] = next;
+        if (!paramValue) {
+          return prev;
+        }
+
+        const newParam = typeof paramValue === 'string'
+          ? `${paramKey}=${paramValue}`
+          : paramValue.map(v => `${paramKey}=${v}`).join('&');
+
+        return prev + (index === 0 ? newParam : `&${newParam}`);
+      }, '?'
+    ) : '';
+
 const ProductListing: FC<ProductListingProps> = (props) => {
   if (!props.products || props.products.length === 0) {
     return (
@@ -75,13 +92,17 @@ export const Products: FC<Props> = props => {
     return category;
   }, [category])
 
+
   const getProducts = useCallback(async () => {
-    const response = await fetch(`/api/${router.asPath}`);
+    const { page, category } = router.query;
+    const queryStringUrl = createQueryStringUrl({ preview: props.isPreview.toString(), page, category })
+
+    const response = await fetch(`/api/products${queryStringUrl}`);
     const newData = await response.json();
 
     setProducts(newData.products);
     setTotalCount(newData.totalCount);
-  }, [router.asPath])
+  }, [router.query, props.isPreview])
 
   const getProductCategories = useCallback(async () => {
     const response = await fetch(`/api/product-categories?preview=${props.isPreview}`);

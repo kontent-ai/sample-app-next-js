@@ -2,6 +2,7 @@ import { NextApiHandler } from "next";
 
 import { getItemByCodename } from "../../lib/kontentClient";
 import { PerCollection } from "../../lib/types/perCollection";
+import { parseBoolean } from "../../lib/utils/parseBoolean";
 
 const handler: NextApiHandler = async (req, res) => {
   const productCodename = req.query.codename;
@@ -18,13 +19,6 @@ const handler: NextApiHandler = async (req, res) => {
 
   return res.status(200).json({ product });
 };
-
-const parseBoolean = (str: string | string[] | undefined) => {
-  if (typeof str !== "string" || !["true", "false"].includes(str)) {
-    return null;
-  }
-  return str === "true";
-}
 
 const forAllCodenames = (value: string): PerCollection<string> => ({
   ficto_healthtech: value,
