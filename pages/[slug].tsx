@@ -5,7 +5,7 @@ import { FC } from "react";
 import { Content } from "../components/shared/Content";
 import { AppPage } from "../components/shared/ui/appPage";
 import { getDefaultMetadata, getItemByCodename, getSiteMenu } from "../lib/kontentClient";
-import { pageCodenames } from '../lib/routing';
+import {pageCodenamesForGenericPrerender } from '../lib/routing';
 import { ValidCollectionCodename } from "../lib/types/perCollection";
 import { siteCodename } from "../lib/utils/env";
 import { createElementSmartLink, createFixedAddSmartLink } from "../lib/utils/smartLinkUtils";
@@ -23,7 +23,7 @@ interface IParams extends ParsedUrlQuery {
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const paths = Object.keys(pageCodenames).map(slug => (
+  const paths = Object.keys(pageCodenamesForGenericPrerender).map(slug => (
     { params: { slug } }
   ))
   return {
@@ -32,8 +32,8 @@ export const getStaticPaths: GetStaticPaths = async () => {
   }
 }
 
-const isValidSlug = (slug: string | undefined): slug is keyof typeof pageCodenames =>
-  Object.keys(pageCodenames).includes(slug || "")
+const isValidSlug = (slug: string | undefined): slug is keyof typeof pageCodenamesForGenericPrerender =>
+  Object.keys(pageCodenamesForGenericPrerender).includes(slug || "")
 
 // `getStaticPaths` requires using `getStaticProps`
 export const getStaticProps: GetStaticProps<Props, IParams> = async (context) => {
@@ -60,7 +60,7 @@ export const getStaticProps: GetStaticProps<Props, IParams> = async (context) =>
     }
   }
 
-  const pageCodename = pageCodenames[slug];
+  const pageCodename = pageCodenamesForGenericPrerender[slug];
 
   const siteMenu = await getSiteMenu(!!context.preview);
   const defaultMetadata = await getDefaultMetadata(!!context.preview);

@@ -9,7 +9,7 @@ import { AppPage } from "../../components/shared/ui/appPage";
 import { mainColorBgClass } from "../../lib/constants/colors";
 import { ProductsPageSize } from "../../lib/constants/paging";
 import { getDefaultMetadata, getItemByCodename, getProductsForListing, getSiteMenu } from "../../lib/kontentClient";
-import { PerCollectionCodenames } from "../../lib/routing";
+import { pageCodenames } from "../../lib/routing";
 import { ValidCollectionCodename } from "../../lib/types/perCollection";
 import { changeUrlQueryString } from "../../lib/utils/changeUrlQueryString";
 import { siteCodename } from "../../lib/utils/env";
@@ -196,11 +196,7 @@ export const Products: FC<Props> = props => {
 };
 
 export const getStaticProps: GetStaticProps<Props> = async context => {
-  const pageCodename: PerCollectionCodenames = {
-    ficto_healthtech: null,
-    ficto_healthtech_imaging: null,
-    ficto_healthtech_surgical: "products_surgical"
-  };
+  const pageCodename = pageCodenames.products
 
   const page = await getItemByCodename<WSL_Page>(pageCodename, !!context.preview);
   const products = await getProductsForListing(!!context.preview);
