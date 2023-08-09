@@ -94,7 +94,7 @@ const FilterOptions: FC<FilterOptionProps> = ({ options, router }) => {
           </Link>
         ))}
         <Link
-          href="/articles/category/all"
+          href="/articles"
           onClick={() => setDropdownActive(!dropdownActive)}
           scroll={false}
           className={`px-6 py-1 ${category === "all" ? "hidden" : ""} bg-gray-500 text-white no-underline font-bold md:rounded-3xl cursor-pointer`}
@@ -171,7 +171,7 @@ const ArticlesPage: FC<Props> = props => {
                 <li>
                   <LinkButton
                     text="Previous"
-                    href={!page || page === 2 ? `/articles/category/${category}` : `/articles/category/${category}/page/${page - 1}`}
+                    href={!page || page === 2 ? category === 'all' ?  '/articles' : `/articles/category/${category}` : `/articles/category/${category}/page/${page - 1}`}
                     disabled={!page}
                     roundLeft
                   />
@@ -181,7 +181,7 @@ const ArticlesPage: FC<Props> = props => {
                   <li key={i}>
                     <LinkButton
                       text={`${i + 1}`}
-                      href={i === 0 ? `/articles/category/${category}` : `/articles/category/${category}/page/${i + 1}`}
+                      href={i === 0 ? category === 'all' ?  '/articles' : `/articles/category/${category}` : `/articles/category/${category}/page/${i + 1}`}
                       highlight={(page ?? 1) === i + 1}
                     />
                   </li>
