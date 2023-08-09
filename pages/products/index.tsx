@@ -30,21 +30,19 @@ type ProductListingProps = Readonly<{
 }>
 
 const createQueryStringUrl = (params: Record<string, string | string[] | undefined>) =>
-  Object.keys(params).length > 0 ?
-    Object.entries(params).reduce(
-      (prev, next, index) => {
-        const [paramKey, paramValue] = next;
+  Object.keys(params).length > 0 ? '?'+
+    Object.entries(params).map(
+      (param) => {
+        const [paramKey, paramValue] = param;
         if (!paramValue) {
-          return prev;
+          return undefined;
         }
 
-        const newParam = typeof paramValue === 'string'
+        return typeof paramValue === 'string'
           ? `${paramKey}=${paramValue}`
           : paramValue.map(v => `${paramKey}=${v}`).join('&');
-
-        return prev + (index === 0 ? newParam : `&${newParam}`);
-      }, '?'
-    ) : '';
+      }, 
+    ).filter(p => p !== undefined).join('&') : '';
 
 const ProductListing: FC<ProductListingProps> = (props) => {
   if (!props.products || props.products.length === 0) {
