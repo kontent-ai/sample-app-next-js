@@ -149,7 +149,7 @@ export const Menu: FC<Props> = props => {
             >
               <span className="font-extrabold">Ficto</span>
               <span>Healthtech</span>
-              {siteCodename === 'ficto_healthtech_surgical' && <span>&nbsp;Surgical</span>}
+              {siteCodename === 'ficto_surgical' && <span>&nbsp;Surgical</span>}
               {siteCodename === 'ficto_healthtech_imaging' && <span>&nbsp;Imaging</span>}
             </Link>
             <button

@@ -1,2 +1,2 @@
 export * from './articleType';
-export * from './productCategory';
+export * from './surgicalProductsCategory';

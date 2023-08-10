@@ -1,11 +1,12 @@
 import { camelCasePropertyNameResolver, createDeliveryClient, DeliveryError, IContentItem } from '@kontent-ai/delivery-sdk';
 
-import { Article, contentTypes, Product, SEOMetadata, WSL_WebSpotlightRoot } from '../models';
+import { Article, SurgicalProduct, SEOMetadata, WSL_WebSpotlightRoot, contentTypeSnippets, taxonomies } from '../models';
 import { perCollectionRootItems } from './constants/menu';
 import { ArticlePageSize, ProductsPageSize } from './constants/paging';
 import { PerCollectionCodenames } from './routing';
 import { ArticleTypeWithAll } from './utils/articlesListing';
 import { siteCodename } from './utils/env';
+import { contentTypes } from '../models/project/contentTypes';
 
 const sourceTrackingHeaderName = 'X-KC-SOURCE';
 
@@ -81,15 +82,15 @@ export const getHomepage = (usePreview: boolean) =>
 
 export const getProductsForListing = async (usePreview: boolean, page?: number, categories?: string[], pageSize: number = ProductsPageSize) => {
   const query = deliveryClient
-    .items<Product>()
-    .type(contentTypes.product.codename)
+    .items<SurgicalProduct>()
+    .type(contentTypes.surgical_product.codename)
     .collection(siteCodename)
     .elementsParameter([
-      contentTypes.product.elements.title.codename,
-      contentTypes.product.elements.product_image.codename,
-      contentTypes.product.elements.slug.codename,
-      contentTypes.product.elements.product_category.codename,
-      contentTypes.product.elements.price.codename,
+      contentTypes.surgical_product.elements.product_base__name.codename,
+      contentTypes.surgical_product.elements.product_base__main_image.codename,
+      contentTypes.surgical_product.elements.slug.codename,
+      contentTypes.surgical_product.elements.product_base__main_image.codename,
+      contentTypes.surgical_product.elements.price.codename,
     ])
     .queryConfig({
       usePreviewMode: usePreview,
@@ -102,7 +103,7 @@ export const getProductsForListing = async (usePreview: boolean, page?: number, 
   }
 
   if (categories) {
-    query.anyFilter(`elements.${contentTypes.product.elements.product_category.codename}`, categories);
+    query.anyFilter(`elements.${contentTypes.surgical_product.elements.surgical_products_category.codename}`, categories);
   }
 
   return query
@@ -112,17 +113,17 @@ export const getProductsForListing = async (usePreview: boolean, page?: number, 
 
 export const getProductSlugs = () =>
   deliveryClient
-    .items<Product>()
-    .type(contentTypes.product.codename)
+    .items<SurgicalProduct>()
+    .type(contentTypes.surgical_product.codename)
     .collection(siteCodename)
-    .elementsParameter([contentTypes.product.elements.slug.codename])
+    .elementsParameter([contentTypes.surgical_product.elements.slug.codename])
     .toAllPromise()
     .then(res => res.data.items);
 
 export const getProductDetail = (slug: string, usePreview: boolean) =>
   deliveryClient
-    .items<Product>()
-    .equalsFilter(`elements.${contentTypes.product.elements.slug.codename}`, slug)
+    .items<SurgicalProduct>()
+    .equalsFilter(`elements.${contentTypes.surgical_product.elements.slug.codename}`, slug)
     .queryConfig({
       usePreviewMode: usePreview,
     })
@@ -227,7 +228,7 @@ export const getArticlesCountByCategory = (usePreview: boolean, articleType: Art
 
 export const getProductTaxonomy = async (usePreview: boolean) =>
   deliveryClient
-    .taxonomy("product_category")
+    .taxonomy(taxonomies.surgical_products_category.codename)
     .queryConfig({
       usePreviewMode: usePreview,
     })

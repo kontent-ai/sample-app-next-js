@@ -8,5 +8,5 @@ export * from './Block_VisualContainer';
 export * from './article';
 export * from './fact';
 export * from './person';
-export * from './product';
+export * from './surgicalProduct';
 export * from './testimonial';

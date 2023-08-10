@@ -13,11 +13,12 @@ import { PerCollectionCodenames } from "../../lib/routing";
 import { ValidCollectionCodename } from "../../lib/types/perCollection";
 import { changeUrlQueryString } from "../../lib/utils/changeUrlQueryString";
 import { siteCodename } from "../../lib/utils/env";
-import { Block_Navigation, Product, SEOMetadata, WSL_Page } from "../../models";
+import { Block_Navigation, SEOMetadata, WSL_Page } from "../../models";
+import { SurgicalProduct } from "../../models";
 
 type Props = Readonly<{
   page: WSL_Page;
-  products: ReadonlyArray<Product> | undefined;
+  products: ReadonlyArray<SurgicalProduct> | undefined;
   siteCodename: ValidCollectionCodename;
   totalCount: number;
   siteMenu: Block_Navigation | null;
@@ -26,7 +27,7 @@ type Props = Readonly<{
 }>;
 
 type ProductListingProps = Readonly<{
-  products: ReadonlyArray<Product> | undefined,
+  products: ReadonlyArray<SurgicalProduct> | undefined,
 }>
 
 const ProductListing: FC<ProductListingProps> = (props) => {
@@ -41,11 +42,11 @@ const ProductListing: FC<ProductListingProps> = (props) => {
       {props.products.map(p => (
         <ProductItem
           key={p.system.id}
-          imageUrl={p.elements.productImage.value[0]?.url || ""}
-          title={p.elements.title.value}
+          imageUrl={p.elements.productBaseMainImage.value[0]?.url || ""}
+          title={p.elements.productBaseName.value}
           detailUrl={`products/${p.elements.slug.value}`}
           price={p.elements.price.value}
-          category={p.elements.productCategory.value[0]?.name || ""}
+          category={p.elements.surgicalProductsCategory?.value[0]?.name || ""}
           itemId={p.system.id}
         />
       ))}
@@ -56,7 +57,7 @@ const ProductListing: FC<ProductListingProps> = (props) => {
 export const Products: FC<Props> = props => {
   const router = useRouter();
   const [totalCount, setTotalCount] = useState(props.totalCount);
-  const [products, setProducts] = useState<ReadonlyArray<Product> | undefined>(props.products);
+  const [products, setProducts] = useState<ReadonlyArray<SurgicalProduct> | undefined>(props.products);
   const [taxonomies, setTaxonomies] = useState<ITaxonomyTerms[]>([]);
   const { page, category } = router.query
 
@@ -199,7 +200,7 @@ export const getStaticProps: GetStaticProps<Props> = async context => {
   const pageCodename: PerCollectionCodenames = {
     ficto_healthtech: null,
     ficto_healthtech_imaging: null,
-    ficto_healthtech_surgical: "products_surgical"
+    ficto_surgical: "products_surgical"
   };
 
   const page = await getItemByCodename<WSL_Page>(pageCodename, !!context.preview);

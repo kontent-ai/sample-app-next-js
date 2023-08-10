@@ -8,11 +8,11 @@ import { getDefaultMetadata, getProductDetail, getProductSlugs, getSiteMenu } fr
 import { ValidCollectionCodename } from "../../lib/types/perCollection";
 import { siteCodename } from "../../lib/utils/env";
 import { createElementSmartLink } from "../../lib/utils/smartLinkUtils";
-import { Block_Navigation, contentTypes, Product, SEOMetadata } from "../../models"
+import { Block_Navigation, contentTypes, SurgicalProduct, SEOMetadata } from "../../models"
 
 
 type Props = Readonly<{
-  product: Product;
+  product: SurgicalProduct;
   siteCodename: ValidCollectionCodename;
   defaultMetadata: SEOMetadata;
   siteMenu: Block_Navigation | null;
@@ -67,26 +67,26 @@ const ProductDetail: FC<Props> = ({ product, siteCodename, siteMenu, defaultMeta
   >
     <div>
       <h1
-        {...createElementSmartLink(contentTypes.product.elements.title.codename)}
+        {...createElementSmartLink(contentTypes.surgical_product.elements.product_base__name.codename)}
       >
-        {product.elements.title.value}
+        {product.elements.productBaseName.value}
       </h1>
-      <div {...createElementSmartLink(contentTypes.product.elements.product_image.codename)}>
+      <div {...createElementSmartLink(contentTypes.surgical_product.elements.product_base__main_image.codename)}>
         {
-          product.elements.productImage.value[0] && (
+          product.elements.productBaseMainImage.value[0] && (
             <Image
-              src={product.elements.productImage.value[0].url}
-              alt={product.elements.productImage.value[0].description || product.elements.productImage.value[0].url.split('/').pop() || "Product image"}
+              src={product.elements.productBaseMainImage.value[0].url}
+              alt={product.elements.productBaseMainImage.value[0].description || product.elements.productBaseMainImage.value[0].url.split('/').pop() || "Product image"}
               width={widthLimit}
-              height={product.elements.productImage.value[0].height || 200}
+              height={product.elements.productBaseMainImage.value[0].height || 200}
               className="object-cover"
               priority
             />
           )
         }
       </div>
-      <div {...createElementSmartLink(contentTypes.product.elements.description.codename)}>
-        {product.elements.description.value}
+      <div {...createElementSmartLink(contentTypes.surgical_product.elements.product_base__description.codename)}>
+        {product.elements.productBaseDescription.value}
       </div>
     </div>
   </AppPage >

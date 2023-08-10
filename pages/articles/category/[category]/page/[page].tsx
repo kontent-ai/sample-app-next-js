@@ -27,7 +27,7 @@ export const getStaticProps: GetStaticProps<Props, ArticleListingUrlQuery> = asy
   const pageCodename: PerCollectionCodenames = {
     ficto_healthtech: "articles",
     ficto_healthtech_imaging: null,
-    ficto_healthtech_surgical: "articles_surgical"
+    ficto_surgical: "articles_surgical"
   };
 
   const pageURLParameter = context.params?.page;
