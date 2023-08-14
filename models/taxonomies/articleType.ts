@@ -5,8 +5,4 @@
  * Id: 02c148a3-4536-587d-aabd-8ac2ae6557c7
  * Codename: article_type
  */
-export type ArticleType =
-  | 'case_study'
-  | 'clinical_trial'
-  | 'industry_news'
-  | 'research';
+export type ArticleType = 'blog_post' | 'industry_news';

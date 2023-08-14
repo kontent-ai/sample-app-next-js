@@ -11,7 +11,7 @@ export const contentTypes = {
    */
   page: {
     codename: 'page',
-    id: '956d5f8c-21ed-4448-8b84-fbbe5eacdd64',
+    id: '9ebc770b-20ae-4234-b1fa-439d70739ddc',
     externalId: undefined,
     name: '💡 Page',
     elements: {
@@ -20,7 +20,7 @@ export const contentTypes = {
        */
       content: {
         codename: 'content',
-        id: '238a7767-619d-4438-8571-d76d1b1aa517',
+        id: '7ead0693-d408-4899-91ba-97242b9fdfba',
         externalId: undefined,
         name: 'Content',
         required: false,
@@ -59,7 +59,7 @@ export const contentTypes = {
        */
       subpages: {
         codename: 'subpages',
-        id: 'fc614ad4-e396-4a4a-8988-a4c6f3d0af15',
+        id: '43eadf14-84d9-4f73-b47b-144ccfc46e9e',
         externalId: undefined,
         name: 'Subpages',
         required: false,
@@ -72,7 +72,7 @@ export const contentTypes = {
        */
       title: {
         codename: 'title',
-        id: '50b342eb-e3cd-4942-babd-410ebfa8d2ff',
+        id: '45619a1e-6583-4449-ac88-07d0a8bf943b',
         externalId: undefined,
         name: 'Title',
         required: false,
@@ -98,7 +98,7 @@ export const contentTypes = {
        */
       url: {
         codename: 'url',
-        id: 'adf3f870-b22a-461e-9c67-0491e3febb1e',
+        id: '8353d934-4b68-4322-b34c-254c732a52ae',
         externalId: undefined,
         name: 'URL',
         required: false,
@@ -113,7 +113,7 @@ export const contentTypes = {
    */
   web_spotlight_root: {
     codename: 'web_spotlight_root',
-    id: 'd1b31599-03ac-4158-abb0-8caac007966f',
+    id: '1cabb98a-da0d-4f1a-95b9-7d4456a9e15f',
     externalId: undefined,
     name: '💡 Web spotlight root',
     elements: {
@@ -122,7 +122,7 @@ export const contentTypes = {
        */
       content: {
         codename: 'content',
-        id: '2224f968-6c01-4059-be4d-9ed506fac40f',
+        id: 'ebaba3e0-c6d4-4f2c-b607-6589ab4c8fbc',
         externalId: undefined,
         name: 'Content',
         required: false,
@@ -174,7 +174,7 @@ export const contentTypes = {
        */
       subpages: {
         codename: 'subpages',
-        id: '72f5055a-1515-4b91-a653-767c3ce003e6',
+        id: 'a0724e65-e39b-4be8-a5ae-0eddd29d346c',
         externalId: undefined,
         name: 'Subpages',
         required: false,
@@ -187,7 +187,7 @@ export const contentTypes = {
        */
       title: {
         codename: 'title',
-        id: '22b4db7c-bacf-4072-b4fe-db4dd187e9a0',
+        id: '95bfcf4e-9c71-4afd-b0f7-1a5ce7a0edf1',
         externalId: undefined,
         name: 'Title',
         required: false,
