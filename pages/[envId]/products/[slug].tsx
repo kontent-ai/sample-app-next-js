@@ -3,12 +3,12 @@ import Image from "next/image";
 import { ParsedUrlQuery } from 'querystring';
 import { FC } from "react";
 
-import { AppPage } from "../../components/shared/ui/appPage";
-import { getDefaultMetadata, getProductDetail, getProductSlugs, getSiteMenu } from "../../lib/kontentClient";
-import { ValidCollectionCodename } from "../../lib/types/perCollection";
-import { siteCodename } from "../../lib/utils/env";
-import { createElementSmartLink } from "../../lib/utils/smartLinkUtils";
-import { Block_Navigation, contentTypes, Product, SEOMetadata } from "../../models"
+import { AppPage } from "../../../components/shared/ui/appPage";
+import { getDefaultMetadata, getProductDetail, getProductSlugs, getSiteMenu } from "../../../lib/kontentClient";
+import { ValidCollectionCodename } from "../../../lib/types/perCollection";
+import { siteCodename } from "../../../lib/utils/env";
+import { createElementSmartLink } from "../../../lib/utils/smartLinkUtils";
+import { Block_Navigation, contentTypes, Product, SEOMetadata } from "../../../models"
 
 
 type Props = Readonly<{
@@ -25,7 +25,7 @@ interface IParams extends ParsedUrlQuery {
 export const getStaticPaths: GetStaticPaths = () => {
   return getProductSlugs()
     .then(products => ({
-      paths: products.map(product => `/products/${product.elements.slug.value}`),
+      paths: products.map(product => `/b0255462-358c-007b-0be0-43ee125ce1f0/products/${product.elements.slug.value}`),
       fallback: 'blocking'
     }));
 }

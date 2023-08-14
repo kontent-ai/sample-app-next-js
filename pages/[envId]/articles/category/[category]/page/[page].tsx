@@ -1,13 +1,13 @@
 import { GetStaticProps } from "next";
 import { FC } from "react";
 
-import { ArticlePageSize } from "../../../../../lib/constants/paging";
-import { getArticlesCountByCategory, getArticlesForListing, getDefaultMetadata, getItemByCodename, getItemsTotalCount, getSiteMenu } from "../../../../../lib/kontentClient";
-import { PerCollectionCodenames } from "../../../../../lib/routing";
-import { ValidCollectionCodename } from "../../../../../lib/types/perCollection";
-import { ArticleListingUrlQuery, ArticleTypeWithAll, categoryFilterSource, isArticleType } from "../../../../../lib/utils/articlesListing";
-import { siteCodename } from "../../../../../lib/utils/env";
-import { Article, Block_Navigation, SEOMetadata, WSL_Page } from "../../../../../models";
+import { ArticlePageSize } from "../../../../../../lib/constants/paging";
+import { getArticlesCountByCategory, getArticlesForListing, getDefaultMetadata, getItemByCodename, getItemsTotalCount, getSiteMenu } from "../../../../../../lib/kontentClient";
+import { PerCollectionCodenames } from "../../../../../../lib/routing";
+import { ValidCollectionCodename } from "../../../../../../lib/types/perCollection";
+import { ArticleListingUrlQuery, ArticleTypeWithAll, categoryFilterSource, isArticleType } from "../../../../../../lib/utils/articlesListing";
+import { siteCodename } from "../../../../../../lib/utils/env";
+import { Article, Block_Navigation, SEOMetadata, WSL_Page } from "../../../../../../models";
 import ArticlesPage from "..";
 
 type Props = Readonly<{
@@ -74,7 +74,7 @@ export const getStaticPaths = async () => {
     const pagesNumber = Math.ceil((totalCount ?? 0) / ArticlePageSize);
     const pages = Array.from({ length: pagesNumber }).map((_, index) => index + 1);
     return pages.map(pageNumber => ({
-      params: { page: pageNumber.toString(), category },
+      params: { envId: 'b0255462-358c-007b-0be0-43ee125ce1f0', page: pageNumber.toString(), category },
     }));
   };
 

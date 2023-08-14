@@ -1,19 +1,19 @@
 import { ITaxonomyTerms } from "@kontent-ai/delivery-sdk";
 import { useRouter } from "next/router";
-import { GetStaticProps } from "next/types";
+import { GetStaticPaths, GetStaticProps } from "next/types";
 import { FC, useCallback, useEffect, useMemo, useState } from "react";
 
-import { ProductItem } from "../../components/listingPage/ProductItem";
-import { Content } from "../../components/shared/Content";
-import { AppPage } from "../../components/shared/ui/appPage";
-import { mainColorBgClass } from "../../lib/constants/colors";
-import { ProductsPageSize } from "../../lib/constants/paging";
-import { getDefaultMetadata, getItemByCodename, getProductsForListing, getSiteMenu } from "../../lib/kontentClient";
-import { pageCodenames } from "../../lib/routing";
-import { ValidCollectionCodename } from "../../lib/types/perCollection";
-import { changeUrlQueryString } from "../../lib/utils/changeUrlQueryString";
-import { siteCodename } from "../../lib/utils/env";
-import { Block_Navigation, Product, SEOMetadata, WSL_Page } from "../../models";
+import { ProductItem } from "../../../components/listingPage/ProductItem";
+import { Content } from "../../../components/shared/Content";
+import { AppPage } from "../../../components/shared/ui/appPage";
+import { mainColorBgClass } from "../../../lib/constants/colors";
+import { ProductsPageSize } from "../../../lib/constants/paging";
+import { getDefaultMetadata, getItemByCodename, getProductsForListing, getSiteMenu } from "../../../lib/kontentClient";
+import { pageCodenames } from "../../../lib/routing";
+import { ValidCollectionCodename } from "../../../lib/types/perCollection";
+import { changeUrlQueryString } from "../../../lib/utils/changeUrlQueryString";
+import { siteCodename } from "../../../lib/utils/env";
+import { Block_Navigation, Product, SEOMetadata, WSL_Page } from "../../../models";
 
 type Props = Readonly<{
   page: WSL_Page;
@@ -232,6 +232,13 @@ export const getStaticProps: GetStaticProps<Props> = async context => {
   return {
     props: { page, siteCodename, defaultMetadata, products: products.items, totalCount: products.pagination.totalCount ?? 0, siteMenu, isPreview: !!context.preview },
   };
+}
+
+export const getStaticPaths: GetStaticPaths = () => {
+  return {
+    paths: ['/b0255462-358c-007b-0be0-43ee125ce1f0/products'],
+    fallback: 'blocking'
+  }
 }
 
 export default Products;

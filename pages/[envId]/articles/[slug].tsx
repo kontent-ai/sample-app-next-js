@@ -1,16 +1,16 @@
 import { GetStaticPaths, GetStaticProps } from "next";
 import { FC } from "react";
 
-import { HeroImage } from "../../components/landingPage/ui/heroImage";
-import { PersonHorizontal } from "../../components/shared/PersonHorizontal";
-import { RichTextElement } from "../../components/shared/RichTextContent";
-import { AppPage } from "../../components/shared/ui/appPage";
-import { mainColorBgClass } from "../../lib/constants/colors";
-import { getAllArticles, getArticleBySlug, getDefaultMetadata, getSiteMenu } from "../../lib/kontentClient";
-import { ValidCollectionCodename } from "../../lib/types/perCollection";
-import { formatDate } from "../../lib/utils/dateTime";
-import { siteCodename } from '../../lib/utils/env';
-import { Article, Block_Navigation, SEOMetadata } from "../../models"
+import { HeroImage } from "../../../components/landingPage/ui/heroImage";
+import { PersonHorizontal } from "../../../components/shared/PersonHorizontal";
+import { RichTextElement } from "../../../components/shared/RichTextContent";
+import { AppPage } from "../../../components/shared/ui/appPage";
+import { mainColorBgClass } from "../../../lib/constants/colors";
+import { getAllArticles, getArticleBySlug, getDefaultMetadata, getSiteMenu } from "../../../lib/kontentClient";
+import { ValidCollectionCodename } from "../../../lib/types/perCollection";
+import { formatDate } from "../../../lib/utils/dateTime";
+import { siteCodename } from '../../../lib/utils/env';
+import { Article, Block_Navigation, SEOMetadata } from "../../../models"
 
 type Props = Readonly<{
   article: Article;
@@ -95,7 +95,8 @@ export const getStaticPaths: GetStaticPaths = async () => {
   const articles = await getAllArticles(false);
 
   return {
-    paths: articles.items.map(a => `/articles/${a.elements.slug.value}`),
+    //paths: articles.items.map(a => `/b0255462-358c-007b-0be0-43ee125ce1f0/articles/${a.elements.slug.value}`),
+    paths: articles.items.map(a => ({params: {slug: a.elements.slug.value, envId: 'b0255462-358c-007b-0be0-43ee125ce1f0'}})),
     fallback: "blocking",
   };
 }
