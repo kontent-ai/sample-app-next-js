@@ -15,7 +15,7 @@ export const HeroUnitComponent: FC<Props> = props => {
   const siteCodename = useSiteCodename();
   return (
     <Link
-      href={props.item.elements.target.value}
+      href={props.item.elements.target.value || "#"}
       className={`no-underline ${props.item.elements.target.value.length === 0 ? "pointer-events-none" : ""}`}
     >
       <HeroImage
