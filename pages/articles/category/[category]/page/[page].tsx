@@ -7,13 +7,13 @@ import { PerCollectionCodenames } from "../../../../../lib/routing";
 import { ValidCollectionCodename } from "../../../../../lib/types/perCollection";
 import { ArticleListingUrlQuery, ArticleTypeWithAll, categoryFilterSource, isArticleType } from "../../../../../lib/utils/articlesListing";
 import { siteCodename } from "../../../../../lib/utils/env";
-import { Article, Block_Navigation, SEOMetadata, WSL_Page } from "../../../../../models";
+import { Article, Nav_NavigationItem, SEOMetadata, WSL_Page } from "../../../../../models";
 import ArticlesPage from "..";
 
 type Props = Readonly<{
   siteCodename: ValidCollectionCodename;
   articles: ReadonlyArray<Article>;
-  siteMenu: Block_Navigation | null,
+  siteMenu: Nav_NavigationItem | null,
   page: WSL_Page,
   itemCount: number,
   defaultMetadata: SEOMetadata;

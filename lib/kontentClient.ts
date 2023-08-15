@@ -1,6 +1,6 @@
 import { camelCasePropertyNameResolver, createDeliveryClient, DeliveryError, IContentItem } from '@kontent-ai/delivery-sdk';
 
-import { Article, contentTypes, Product, SEOMetadata, WSL_WebSpotlightRoot } from '../models';
+import { Article, contentTypes, Product, SEOMetadata,WSL_WebSpotlightRoot } from '../models';
 import { perCollectionRootItems } from './constants/menu';
 import { ArticlePageSize, ProductsPageSize } from './constants/paging';
 import { PerCollectionCodenames } from './routing';
@@ -247,3 +247,25 @@ export const getDefaultMetadata = async (usePreview: boolean) =>
     .depthParameter(10)
     .toPromise()
     .then(res => res.data.items[0] as SEOMetadata)
+
+export const getItemBySlug = async (slug: string, type: string): Promise<IContentItem> => {
+  const items = await deliveryClient.items()
+    .equalsFilter("elements.slug", slug)
+    .type(type)
+    .toAllPromise()
+    .then(response => response.data.items);
+
+  if (items.length === 0) {
+    throw Error(`Could not find item with URL slug "${slug}" of type "${type}"`);
+  }
+
+  if (items.length > 1) {
+    console.warn(`Found more then one items with URL slug "${slug}" of type "${type} - found ${items.length} items. Using the first one.`)
+  }
+
+  const item = items[0];
+  if (!item) {
+    throw Error(`Item by URL slug "${slug}" of type "${type} nof found`);
+  }
+  return item;
+}

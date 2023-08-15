@@ -10,12 +10,12 @@ import { getAllArticles, getArticleBySlug, getDefaultMetadata, getSiteMenu } fro
 import { ValidCollectionCodename } from "../../lib/types/perCollection";
 import { formatDate } from "../../lib/utils/dateTime";
 import { siteCodename } from '../../lib/utils/env';
-import { Article, Block_Navigation, SEOMetadata } from "../../models"
+import { Article, Nav_NavigationItem, SEOMetadata } from "../../models";
 
 type Props = Readonly<{
   article: Article;
   siteCodename: ValidCollectionCodename;
-  siteMenu: Block_Navigation | null;
+  siteMenu: Nav_NavigationItem | null;
   defaultMetadata: SEOMetadata;
 }>;
 

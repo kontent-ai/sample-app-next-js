@@ -1,9 +1,7 @@
 import { ComponentType, FC } from "react";
 
-import { Block_ContentChunk, Block_HeroUnit, Block_VisualContainer, contentTypes,Testimonial } from "../../models";
-import { HeroUnitComponent } from "./HeroUnit";
+import { Block_ContentChunk, Block_VisualContainer,contentTypes } from "../../models";
 import { RichTextContentComponent } from "./RichTextContent";
-import { TestimonialComponent } from "./Testimonial";
 import { VisualContainer } from "./visualContainer/VisualContainer";
 
 type AcceptedType = AcceptedTypesByCodename[keyof AcceptedTypesByCodename];
@@ -27,17 +25,13 @@ export const Content: FC<Props> = props => {
 }
 
 const componentMap: Readonly<{ [key in keyof AcceptedTypesByCodename]: ComponentType<Readonly<{ item: AcceptedTypesByCodename[key] }>> }> = {
-  hero_unit: HeroUnitComponent,
   content_chunk: RichTextContentComponent,
-  testimonial: TestimonialComponent,
-  _visual_container: VisualContainer,
+  visual_container: VisualContainer,
 };
 
 // Unfortunately, we need to define the relationship manually, because the generator doesn't define it itself. :/
 type AcceptedTypesByCodename = {
-  [contentTypes.hero_unit.codename]: Block_HeroUnit;
   [contentTypes.content_chunk.codename]: Block_ContentChunk;
-  [contentTypes.testimonial.codename]: Testimonial;
-  [contentTypes._visual_container.codename]: Block_VisualContainer;
+  [contentTypes.visual_container.codename]: Block_VisualContainer;
 };
 

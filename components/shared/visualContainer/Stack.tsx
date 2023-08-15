@@ -2,7 +2,7 @@ import { FC, useState } from "react";
 
 import { mainColorBorderClass } from "../../../lib/constants/colors";
 import { createElementSmartLink, createItemSmartLink, createRelativeAddSmartLink } from "../../../lib/utils/smartLinkUtils";
-import { contentTypes, Fact } from "../../../models"
+import { contentTypes,Fact } from "../../../models";
 import { FactComponent } from "../Fact";
 import { useSiteCodename } from "../siteCodenameContext";
 import { StandaloneSmartLinkButton } from "../StandaloneSmartLinkButton";
@@ -27,19 +27,19 @@ export const StackComponent: FC<Props> = props => {
       className="p-7 relative"
       {...createItemSmartLink(props.itemId, true)}
     >
-      <h2 {...createElementSmartLink(contentTypes._visual_container.elements.title.codename)}>
+      <h2 {...createElementSmartLink(contentTypes.visual_container.elements.title.codename)}>
         {props.title}
       </h2>
-      <div {...createElementSmartLink(contentTypes._visual_container.elements.subtitle.codename)}>
+      <div {...createElementSmartLink(contentTypes.visual_container.elements.subtitle.codename)}>
         {props.subtitle}
       </div>
       <section
         className="py-10"
-        {...createElementSmartLink(contentTypes._visual_container.elements.items.codename, true)}
+        {...createElementSmartLink(contentTypes.visual_container.elements.items.codename, true)}
       >
-        <StandaloneSmartLinkButton elementCodename={contentTypes._visual_container.elements.items.codename} />
+        <StandaloneSmartLinkButton elementCodename={contentTypes.visual_container.elements.items.codename} />
         <Headers
-          headers={props.items.map(item => ({ id: item.system.id, label: item.elements.title.value }))}
+          headers={props.items.map(item => ({ id: item.system.id, label: item.elements.titleMessageTitle.value }))}
           onHeaderSelected={setActionIndex}
           selectedHeaderIndex={actionIndex}
         />

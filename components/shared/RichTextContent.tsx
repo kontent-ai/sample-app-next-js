@@ -8,10 +8,10 @@ import Image from "next/image";
 import { FC } from "react";
 
 import { createElementSmartLink, createFixedAddSmartLink, createItemSmartLink } from "../../lib/utils/smartLinkUtils";
-import { Block_ContentChunk, Component_Callout, contentTypes, Testimonial } from "../../models";
+import { Block_ContentChunk, Component_Callout,contentTypes } from "../../models";
 import { InternalLink } from "./internalLinks/InternalLink";
 import { CalloutComponent } from "./richText/Callout";
-import { TestimonialComponent } from "./Testimonial";
+import { BuildError } from "./ui/BuildError";
 
 type Props = Readonly<{
   item: Block_ContentChunk;
@@ -122,12 +122,14 @@ const createDefaultResolvers = (element: Elements.RichTextElement, isElementInsi
       switch (componentItem.system.type) {
         case contentTypes.callout.codename:
           return <CalloutComponent item={componentItem as Component_Callout} />;
+        case contentTypes.action.codename:
+          return <BuildError>TODO: Implement for content type &quot;{componentItem.system.type}&quot;</BuildError>;
+        case contentTypes.fact.codename:
+          return <BuildError>TODO: Implement for content type &quot;{componentItem.system.type}&quot;</BuildError>;
         case contentTypes.content_chunk.codename:
           return <RichTextContentComponent item={componentItem as Block_ContentChunk} />;
-        case contentTypes.testimonial.codename:
-          return <TestimonialComponent item={componentItem as Testimonial} />;
         default:
-          return <div>Unsupported content type &quot;{componentItem.system.type}&quot;</div>;
+          return <BuildError>Unsupported content type &quot;{componentItem.system.type}&quot;</BuildError>;
       }
     },
   },

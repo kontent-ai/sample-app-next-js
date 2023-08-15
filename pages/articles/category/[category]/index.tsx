@@ -15,13 +15,13 @@ import { pageCodenames } from "../../../../lib/routing";
 import { ValidCollectionCodename } from "../../../../lib/types/perCollection";
 import { ArticleListingUrlQuery, ArticleTypeWithAll, categoryFilterSource, isArticleType } from "../../../../lib/utils/articlesListing";
 import { siteCodename } from "../../../../lib/utils/env";
-import { Article, Block_Navigation, SEOMetadata, taxonomies, WSL_Page } from "../../../../models";
+import { Article, Nav_NavigationItem, SEOMetadata, taxonomies, WSL_Page } from "../../../../models";
 
 
 type Props = Readonly<{
   siteCodename: ValidCollectionCodename;
   articles: ReadonlyArray<Article>;
-  siteMenu: Block_Navigation | null,
+  siteMenu: Nav_NavigationItem | null,
   page: WSL_Page,
   itemCount: number;
   defaultMetadata: SEOMetadata;

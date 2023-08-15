@@ -5,7 +5,7 @@ import { perCollectionSEOTitle } from "../../../lib/constants/labels";
 import { ValidCollectionCodename } from "../../../lib/types/perCollection";
 import { useSmartLink } from "../../../lib/useSmartLink";
 import { createItemSmartLink } from "../../../lib/utils/smartLinkUtils";
-import { Article, Block_Navigation, Product, SEOMetadata, WSL_Page, WSL_WebSpotlightRoot } from "../../../models";
+import { Article, Nav_NavigationItem,Product, SEOMetadata, WSL_Page, WSL_WebSpotlightRoot } from "../../../models";
 import { SiteCodenameProvider } from "../siteCodenameContext";
 import { Footer } from "./footer";
 import { Menu } from "./menu";
@@ -16,7 +16,7 @@ type Props = Readonly<{
   children: ReactNode;
   siteCodename: ValidCollectionCodename;
   item: AcceptedItem;
-  siteMenu: Block_Navigation | null;
+  siteMenu: Nav_NavigationItem | null;
   defaultMetadata: SEOMetadata;
   pageType: "WebPage" | "Article" | "Product",
 }>;

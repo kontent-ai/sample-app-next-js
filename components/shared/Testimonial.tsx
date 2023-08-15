@@ -1,11 +1,12 @@
 import { FC } from "react";
 
 import { createElementSmartLink, createItemSmartLink } from "../../lib/utils/smartLinkUtils";
-import { contentTypes,Testimonial } from "../../models";
+import { contentTypes } from "../../models";
+import { Fact } from '../../models/content-types/fact';
 import { PersonHorizontal } from "./PersonHorizontal";
 
 type Props = Readonly<{
-  item: Testimonial;
+  item: Fact;
 }>;
 
 export const TestimonialComponent: FC<Props> = props => {
@@ -18,11 +19,11 @@ export const TestimonialComponent: FC<Props> = props => {
     >
       {authorItem && <PersonHorizontal item={authorItem} />}
       <div>
-        <p {...createElementSmartLink(contentTypes.testimonial.elements.title.codename)}>
-          {props.item.elements.title.value}
+        <p {...createElementSmartLink(contentTypes.fact.elements.title___message__title.codename)}>
+          {props.item.elements.titleMessageTitle.value}
         </p>
-        <p {...createElementSmartLink(contentTypes.testimonial.elements.quote.codename)}>
-          {props.item.elements.quote.value}
+        <p {...createElementSmartLink(contentTypes.fact.elements.title___message__message.codename)}>
+          {props.item.elements.titleMessageMessage.value}
         </p>
       </div>
     </section>

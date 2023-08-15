@@ -6,17 +6,17 @@ import { FC, useState } from "react";
 import { mainColorBgClass } from "../../../lib/constants/colors";
 import { externalUrlsMapping } from "../../../lib/constants/menu";
 import { createItemSmartLink } from "../../../lib/utils/smartLinkUtils";
-import { Block_Navigation, contentTypes, WSL_Page, WSL_WebSpotlightRoot } from "../../../models";
+import { Article, contentTypes,Nav_NavigationItem, Product, WSL_Page, WSL_WebSpotlightRoot } from "../../../models";
 import { useSiteCodename } from "../siteCodenameContext";
 
-type Link = Readonly<Block_Navigation>;
+type Link = Readonly<Nav_NavigationItem>;
 
 type Props = Readonly<{
   item: Link;
 }>
 
 type MenuListProps = Readonly<{
-  items: Block_Navigation[];
+  items: Nav_NavigationItem[];
   activeMenu: string | number;
   smallMenuActive: boolean
   handleClick: (menuId: string | number) => void;
@@ -26,23 +26,23 @@ type DropdownMenuProps = Readonly<{
   links: ReadonlyArray<Link>;
 }>;
 
-const isPage = (item: WSL_Page | WSL_WebSpotlightRoot): item is WSL_Page =>
+const isPage = (item: WSL_Page | WSL_WebSpotlightRoot | Product | Article): item is WSL_Page =>
   item.system.type === contentTypes.page.codename;
 
-const isCurrentNavigationItemActive = (navigation: Block_Navigation, router: NextRouter) => {
+const isCurrentNavigationItemActive = (navigation: Nav_NavigationItem, router: NextRouter) => {
   const pathWithoutQuerystring = router.asPath.replace(/\?.*/, '');
   const pathSegments = pathWithoutQuerystring.split("/");
   const topLevelSegment = pathSegments[1];
-  const pageLink = navigation.elements.pageLink.linkedItems[0];
-  return pageLink && isPage(pageLink) && pageLink.elements.url.value === topLevelSegment;
+  const pageLink = navigation.elements.referenceInternalLink.linkedItems[0]
+  return pageLink && isPage(pageLink) && pageLink.elements.slug.value === topLevelSegment;
 };
 
-const resolveLink = (link: Readonly<Block_Navigation>) => {
-  if (link.elements.externalLink.value) {
-    return link.elements.externalLink.value;
+const resolveLink = (link: Readonly<Nav_NavigationItem>) => {
+  if (link.elements.referenceExternalUrl.value) {
+    return link.elements.referenceExternalUrl.value;
   }
 
-  const pageLink = link.elements.pageLink.linkedItems[0];
+  const pageLink = link.elements.referenceInternalLink.linkedItems[0];
   const collectionDomain = externalUrlsMapping[pageLink?.system.collection ?? ""] || "";
 
   if (!pageLink) {
@@ -53,7 +53,7 @@ const resolveLink = (link: Readonly<Block_Navigation>) => {
     return collectionDomain;
   }
 
-  return collectionDomain + "/" + pageLink.elements.url.value;
+  return collectionDomain + "/" + pageLink.elements.slug.value;
 }
 
 const MenuList: FC<MenuListProps> = props => {
@@ -80,11 +80,11 @@ const MenuList: FC<MenuListProps> = props => {
             </div>
           ) : (
             <Link
-              {...link.elements.openInANewWindow.value[0] ? { rel: "noopener noreferrer", target: "_blank" } : {}}
               className="h-full flex items-center justify-between w-full py-2 pl-3 pr-4 font-medium text-gray-900 border-b border-gray-100 md:w-auto md:bg-transparent md:border-0 md:hover:bg-white"
               href={resolveLink(link)}
+              title={link.elements.referenceCaption.value}
             >
-              {link.elements.label.value}
+              {link.elements.referenceLabel.value}
             </Link>
           )}
         </li>
@@ -97,8 +97,9 @@ const DropdownButton: FC<Props> = props => {
   return (
     <button
       className="h-full flex items-center justify-between w-full p-4 py-2 font-medium text-gray-900 border-b border-gray-100 md:w-auto md:bg-transparent md:border-0"
+      title={props.item.elements.referenceCaption.value}
     >
-      {props.item.elements.label.value}
+      {props.item.elements.referenceLabel.value}
       <ChevronDownIcon className="w-4 h-4 ml-1 mt-1" />
     </button>
   )
@@ -112,13 +113,12 @@ const DropdownMenuItems: FC<DropdownMenuProps> = props => {
       {props.links.map(link => (
         <li key={link.system.codename}>
           <Link
-            {...link.elements.openInANewWindow.value[0] ? { rel: "noopener noreferrer", target: "_blank" } : {}}
             href={resolveLink(link)}
             className={`${isCurrentNavigationItemActive(link, router) ? "border-l-gray-500 cursor-default " : "border-l-transparent hover:border-l-gray-500"}
           block p-3 bg-gray-200 border-l-8 h-full`}
           >
-            <div className="font-semibold">{link.elements.label.value}</div>
-            <span className="text-sm text-gray-500">{link.elements.caption.value}</span>
+            <div className="font-semibold">{link.elements.referenceLabel.value}</div>
+            <span className="text-sm text-gray-500">{link.elements.referenceCaption.value}</span>
           </Link>
         </li>
       ))}

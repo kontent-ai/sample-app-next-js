@@ -13,14 +13,14 @@ import { pageCodenames } from "../../lib/routing";
 import { ValidCollectionCodename } from "../../lib/types/perCollection";
 import { changeUrlQueryString } from "../../lib/utils/changeUrlQueryString";
 import { siteCodename } from "../../lib/utils/env";
-import { Block_Navigation, Product, SEOMetadata, WSL_Page } from "../../models";
+import { Nav_NavigationItem, Product, SEOMetadata, WSL_Page } from "../../models";
 
 type Props = Readonly<{
   page: WSL_Page;
   products: ReadonlyArray<Product> | undefined;
   siteCodename: ValidCollectionCodename;
   totalCount: number;
-  siteMenu: Block_Navigation | null;
+  siteMenu: Nav_NavigationItem | null;
   isPreview: boolean;
   defaultMetadata: SEOMetadata;
 }>;

@@ -8,14 +8,14 @@ import { getDefaultMetadata, getProductDetail, getProductSlugs, getSiteMenu } fr
 import { ValidCollectionCodename } from "../../lib/types/perCollection";
 import { siteCodename } from "../../lib/utils/env";
 import { createElementSmartLink } from "../../lib/utils/smartLinkUtils";
-import { Block_Navigation, contentTypes, Product, SEOMetadata } from "../../models"
+import { contentTypes, Nav_NavigationItem, Product, SEOMetadata } from "../../models"
 
 
 type Props = Readonly<{
   product: Product;
   siteCodename: ValidCollectionCodename;
   defaultMetadata: SEOMetadata;
-  siteMenu: Block_Navigation | null;
+  siteMenu: Nav_NavigationItem | null;
 }>;
 
 interface IParams extends ParsedUrlQuery {

@@ -1,12 +1,12 @@
 import { ArrowLeftIcon, ArrowRightIcon } from "@heroicons/react/24/solid";
-import { ComponentProps, FC, useState } from "react";
+import { FC, useState } from "react";
 
 import { range } from "../../../lib/utils/range";
-import { Block_HeroUnit } from "../../../models";
-import { Content } from "../Content";
+import { Fact } from "../../../models";
+import { HeroUnitComponent } from "./HeroUnit";
 
 type Props = Readonly<{
-  items: ReadonlyArray<Block_HeroUnit>;
+  items: ReadonlyArray<Fact>;
 }>;
 
 export const CarouselComponent: FC<Props> = props => {
@@ -33,10 +33,6 @@ export const CarouselComponent: FC<Props> = props => {
   return (
     <div className="relative w-full">
       <div className="relative overflow-hidden rounded-lg">
-        {/*This is a placeholder to determine the carousel height, because the real carousel items are absolutely positioned.*/}
-        <div className="relative z-0 opacity-0 w-fit">
-          {props.items[0] && <Content item={props.items[0]} />}
-        </div>
         {itemsToRender.map((item, index) => (
           <Item
             key={index}
@@ -79,7 +75,7 @@ const calculateItemState = (params: { currentIndex: number; itemIndex: number; l
 };
 
 type ItemProps = Readonly<{
-  item: ComponentProps<typeof Content>["item"];
+  item: Fact;
   shouldAnimate: boolean;
   state: ItemState;
 }>;
@@ -89,7 +85,7 @@ type ItemState = "current" | "next" | "previous" | "hidden" | "nextMovingAway" |
 const Item: FC<ItemProps> = props => (
   <div className={`${createItemAnimationClasses(props.state)} absolute ${props.shouldAnimate ? "transition-transform" : ""} transform inset-0 duration-700 ease-in-out`}>
     <div className="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
-      <Content item={props.item} />
+      <HeroUnitComponent item={props.item} />
     </div>
   </div>
 );
