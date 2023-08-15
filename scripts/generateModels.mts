@@ -28,16 +28,18 @@ const replaceInvalidChars = (str: string) => map(replaceIfNeeded, str)
 const replaceIfNeeded = (char: string, index: number) => {
   const isValid = index === 0 ? isValidFirstChar : isValidChar;
   switch (char.codePointAt(0)) {
-    case 55358:
-      case 0x1F9F1:
-        return "Block_";
-  
-      case 0x1F9E9:
-        return "Component_";
-  
-      case 0x1F4A1:
-        return "WSL_"
-    
+    case 0x1F9F1:
+      return "Block_";
+
+    case 0x1F9E9:
+      return "Component_";
+
+    case 0x1F4A1:
+      return "WSL_"
+
+    case 0xD83E:
+      return "Nav_"
+
     default:
       return isValid(char) ? char : "_";
   }

@@ -1,6 +1,5 @@
 import { type IContentItem, type Elements } from '@kontent-ai/delivery-sdk';
 import { type Block_EmojiGuideline } from '../content-type-snippets/Block_EmojiGuideline';
-import { type Block_HeroUnit } from './Block_HeroUnit';
 import { type Fact } from './fact';
 
 /**
@@ -8,7 +7,7 @@ import { type Fact } from './fact';
  *
  * 🧱 Visual container
  * Id: e23c2808-d953-5914-a526-ab702cc519f5
- * Codename: _visual_container
+ * Codename: visual_container
  */
 export type Block_VisualContainer = IContentItem<{
   /**
@@ -17,7 +16,7 @@ export type Block_VisualContainer = IContentItem<{
    * Id: 081f63c6-9589-5f8d-a9de-bc3b1ceb24e7
    * Codename: items
    */
-  items: Elements.LinkedItemsElement<Fact | Block_HeroUnit>;
+  items: Elements.LinkedItemsElement<Fact>;
 
   /**
    * Subtitle (text)
