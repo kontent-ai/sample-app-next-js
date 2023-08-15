@@ -29,20 +29,21 @@ type ProductListingProps = Readonly<{
   products: ReadonlyArray<Product> | undefined,
 }>
 
-const createQueryStringUrl = (params: Record<string, string | string[] | undefined>) =>
-  Object.keys(params).length > 0 ? '?'+
-    Object.entries(params).map(
-      (param) => {
-        const [paramKey, paramValue] = param;
-        if (!paramValue) {
-          return undefined;
-        }
+const createQueryStringUrl = (params: Record<string, string | string[] | undefined>) => {
+  const queryString = Object.entries(params).map(
+    ([paramKey, paramValue]) => {
+      if (!paramValue) {
+        return undefined;
+      }
 
-        return typeof paramValue === 'string'
-          ? `${paramKey}=${paramValue}`
-          : paramValue.map(v => `${paramKey}=${v}`).join('&');
-      }, 
-    ).filter(p => p !== undefined).join('&') : '';
+      return typeof paramValue === 'string'
+        ? `${paramKey}=${paramValue}`
+        : paramValue.map(v => `${paramKey}=${v}`).join('&');
+    },
+  ).filter(p => p !== undefined).join('&');
+
+  return Object.keys(params).length > 0 ? `?${queryString}` : '';
+}
 
 const ProductListing: FC<ProductListingProps> = (props) => {
   if (!props.products || props.products.length === 0) {

@@ -123,6 +123,14 @@ const ArticlesPage: FC<Props> = props => {
   const filteredArticles = getFilteredArticles();
   const pageCount = Math.ceil(props.itemCount / ArticlePageSize);
 
+  const createPagingButtonLink = (pageNumber: number) => {
+    if(pageNumber > 1) {
+      return `/articles/category/${category}/page/${pageNumber}`
+    }
+
+    return category === 'all' ? '/articles' : `/articles/category/${category}`
+  }
+
   return (
     <AppPage
       siteCodename={props.siteCodename}
@@ -171,7 +179,7 @@ const ArticlesPage: FC<Props> = props => {
                 <li>
                   <LinkButton
                     text="Previous"
-                    href={!page || page === 2 ? category === 'all' ?  '/articles' : `/articles/category/${category}` : `/articles/category/${category}/page/${page - 1}`}
+                    href={createPagingButtonLink((page ?? 0) - 1)}
                     disabled={!page}
                     roundLeft
                   />
@@ -181,7 +189,7 @@ const ArticlesPage: FC<Props> = props => {
                   <li key={i}>
                     <LinkButton
                       text={`${i + 1}`}
-                      href={i === 0 ? category === 'all' ?  '/articles' : `/articles/category/${category}` : `/articles/category/${category}/page/${i + 1}`}
+                      href={createPagingButtonLink(i + 1)}
                       highlight={(page ?? 1) === i + 1}
                     />
                   </li>
