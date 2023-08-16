@@ -217,11 +217,18 @@ export const Products: FC<Props> = props => {
 
 export const getStaticProps: GetStaticProps<Props> = async context => {
   const pageCodename = pageCodenames.products
+  const envId = context.params?.envId;
 
-  const page = await getItemByCodename<WSL_Page>(pageCodename, !!context.preview);
-  const products = await getProductsForListing(!!context.preview);
-  const siteMenu = await getSiteMenu(!!context.preview);
-  const defaultMetadata = await getDefaultMetadata(!!context.preview);
+  if(!envId){
+    return {
+      notFound: true
+    }
+  }
+
+  const page = await getItemByCodename<WSL_Page>(pageCodename, envId as string, !!context.preview);
+  const products = await getProductsForListing(envId as string, !!context.preview);
+  const siteMenu = await getSiteMenu(envId as string, !!context.preview);
+  const defaultMetadata = await getDefaultMetadata(envId as string, !!context.preview);
 
   if (page === null) {
     return {
@@ -236,7 +243,7 @@ export const getStaticProps: GetStaticProps<Props> = async context => {
 
 export const getStaticPaths: GetStaticPaths = () => {
   return {
-    paths: ['/b0255462-358c-007b-0be0-43ee125ce1f0/products'],
+    paths: [{params: {envId: 'b0255462-358c-007b-0be0-43ee125ce1f0'}}],
     fallback: 'blocking'
   }
 }

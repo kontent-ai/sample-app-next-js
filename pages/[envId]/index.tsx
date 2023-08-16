@@ -60,8 +60,16 @@ const Home: NextPage<Props> = props => {
 };
 
 export const getStaticProps: GetStaticProps<Props> = async context => {
-  const homepage = await getHomepage(!!context.preview);
-  const siteMenu = await getSiteMenu(!!context.preview);
+  const envId = context.params?.envId;
+
+  if(!envId){
+    return {
+      notFound: true
+    }
+  }
+
+  const homepage = await getHomepage(!!context.preview, envId as string);
+  const siteMenu = await getSiteMenu(envId as string, !!context.preview);
 
   if (!homepage) {
     throw new Error("Can't find homepage item.");

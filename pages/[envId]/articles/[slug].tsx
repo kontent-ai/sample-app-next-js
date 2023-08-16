@@ -6,7 +6,7 @@ import { PersonHorizontal } from "../../../components/shared/PersonHorizontal";
 import { RichTextElement } from "../../../components/shared/RichTextContent";
 import { AppPage } from "../../../components/shared/ui/appPage";
 import { mainColorBgClass } from "../../../lib/constants/colors";
-import { getAllArticles, getArticleBySlug, getDefaultMetadata, getSiteMenu } from "../../../lib/kontentClient";
+import { envId, getAllArticles, getArticleBySlug, getDefaultMetadata, getSiteMenu } from "../../../lib/kontentClient";
 import { ValidCollectionCodename } from "../../../lib/types/perCollection";
 import { formatDate } from "../../../lib/utils/dateTime";
 import { siteCodename } from '../../../lib/utils/env';
@@ -66,16 +66,26 @@ const ArticlePage: FC<Props> = props => {
   );
 };
 
-export const getStaticProps: GetStaticProps<Props, { slug: string }> = async context => {
-  const siteMenu = await getSiteMenu(!!context.preview);
+export const getStaticProps: GetStaticProps<Props, { slug: string, envId: string }> = async context => {
+  const envId = context.params?.envId;
+
+  if(!envId){
+    return {
+      notFound: true
+    }
+  }
+
+  const siteMenu = await getSiteMenu(envId, !!context.preview);
   const slug = typeof context.params?.slug === "string" ? context.params.slug : "";
 
   if (!slug) {
     return { notFound: true };
   }
 
-  const article = await getArticleBySlug(slug, !!context.preview);
-  const defaultMetadata = await getDefaultMetadata(!!context.preview);
+  
+
+  const article = await getArticleBySlug(slug, envId as string, !!context.preview);
+  const defaultMetadata = await getDefaultMetadata(envId as string, !!context.preview);
 
   if (!article) {
     return { notFound: true };
@@ -92,7 +102,7 @@ export const getStaticProps: GetStaticProps<Props, { slug: string }> = async con
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const articles = await getAllArticles(false);
+  const articles = await getAllArticles(envId as string, false);
 
   return {
     //paths: articles.items.map(a => `/b0255462-358c-007b-0be0-43ee125ce1f0/articles/${a.elements.slug.value}`),

@@ -10,12 +10,17 @@ const handler: NextApiHandler = async (req, res) => {
     return res.status(400).json({ error: "You have to provide 'codename' query parameter with the product's codename." });
   }
 
+  const envId = req.query.envId;
+  if (typeof envId !== "string") {
+    return res.status(400).json({ error: "You have to provide 'envid' query parameter with the project environment id." });
+  }
+
   const usePreview = parseBoolean(req.query.preview);
   if (usePreview === null) {
     return res.status(400).json({ error: "Please provide 'preview' query parameter with value 'true' or 'false'." });
   }
 
-  const product = await getItemByCodename(forAllCodenames(productCodename), usePreview);
+  const product = await getItemByCodename(forAllCodenames(productCodename), envId, usePreview);
 
   return res.status(200).json({ product });
 };

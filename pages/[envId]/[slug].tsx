@@ -50,12 +50,20 @@ export const getStaticProps: GetStaticProps<Props, IParams> = async (context) =>
     }
   }
 
+  const envId = context.params?.envId;
+
+  if(!envId){
+    return {
+      notFound: true
+    }
+  }
+
   const pageCodename = pageCodenames[slug];
 
-  const siteMenu = await getSiteMenu(!!context.preview);
-  const defaultMetadata = await getDefaultMetadata(!!context.preview);
+  const siteMenu = await getSiteMenu(envId as string, !!context.preview);
+  const defaultMetadata = await getDefaultMetadata(envId as string, !!context.preview);
 
-  const page = await getItemByCodename<WSL_Page>(pageCodename, !!context.preview);
+  const page = await getItemByCodename<WSL_Page>(pageCodename, envId as string, !!context.preview);
   if (page === null) {
     return {
       notFound: true

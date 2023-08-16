@@ -18,7 +18,12 @@ const handler: NextApiHandler = async (req, res) => {
         return res.status(400).json({ error: "Please provide 'preview' query parameter with value 'true' or 'false'." });
     }
 
-    const products = await getProductsForListing(usePreview, isNaN(pageNumber) ? undefined : pageNumber, category);
+    const envId = req.query.envId;
+    if (typeof envId !== "string") {
+      return res.status(400).json({ error: "You have to provide 'envid' query parameter with the project environment id." });
+    }
+  
+    const products = await getProductsForListing(envId, usePreview, isNaN(pageNumber) ? undefined : pageNumber, category);
   
     return res.status(200).json({ products: products.items, totalCount: products.pagination.totalCount});
   };

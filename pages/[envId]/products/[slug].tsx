@@ -37,9 +37,17 @@ export const getStaticProps: GetStaticProps<Props, IParams> = async (context) =>
     return { notFound: true };
   }
 
-  const product = await getProductDetail(slug, !!context.preview);
-  const siteMenu = await getSiteMenu(!!context.preview);
-  const defaultMetadata = await getDefaultMetadata(!!context.preview);
+  const envId = context.params?.envId;
+
+  if(!envId){
+    return {
+      notFound: true
+    }
+  }
+
+  const product = await getProductDetail(slug, envId as string, !!context.preview);
+  const siteMenu = await getSiteMenu(envId as string, !!context.preview);
+  const defaultMetadata = await getDefaultMetadata(envId as string, !!context.preview);
 
   if (!product) {
     return { notFound: true };

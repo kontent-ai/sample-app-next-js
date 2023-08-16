@@ -218,7 +218,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
     const pagesNumber = Math.ceil((totalCount ?? 0) / ArticlePageSize);
     const pages = Array.from({ length: pagesNumber }).map((_, index) => index + 1);
     return pages.map(pageNumber => ({
-      params: { envId: '/b0255462-358c-007b-0be0-43ee125ce1f0/', page: pageNumber.toString(), category },
+      params: { envId: 'b0255462-358c-007b-0be0-43ee125ce1f0', page: pageNumber.toString(), category },
     }));
   };
 
@@ -233,6 +233,14 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 export const getStaticProps: GetStaticProps<Props, ArticleListingUrlQuery> = async context => {
   const pageCodename = pageCodenames.articles;
+  const envId = context.params?.envId;
+
+  if(!envId){
+    return {
+      notFound: true
+    }
+  }
+
   const pageURLParameter = context.params?.page;
   const selectedCategory = context.params?.category;
   if (!isArticleType(selectedCategory)) {
@@ -242,11 +250,11 @@ export const getStaticProps: GetStaticProps<Props, ArticleListingUrlQuery> = asy
   }
 
   const pageNumber = !pageURLParameter || isNaN(+pageURLParameter) ? 1 : +pageURLParameter;
-  const articles = await getArticlesForListing(!!context.preview, pageNumber, selectedCategory);
-  const siteMenu = await getSiteMenu(!!context.preview);
-  const page = await getItemByCodename<WSL_Page>(pageCodename, !!context.preview);
-  const itemCount = await getArticlesCountByCategory(false, selectedCategory)
-  const defaultMetadata = await getDefaultMetadata(!!context.preview);
+  const articles = await getArticlesForListing(envId as string, !!context.preview, pageNumber, selectedCategory);
+  const siteMenu = await getSiteMenu(envId as string, !!context.preview);
+  const page = await getItemByCodename<WSL_Page>(pageCodename, envId as string, !!context.preview);
+  const itemCount = await getArticlesCountByCategory(false, selectedCategory, envId as string)
+  const defaultMetadata = await getDefaultMetadata(envId as string, !!context.preview);
 
   if (page === null) {
     return { notFound: true };

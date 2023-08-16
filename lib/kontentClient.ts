@@ -9,12 +9,28 @@ import { siteCodename } from './utils/env';
 
 const sourceTrackingHeaderName = 'X-KC-SOURCE';
 
-const envId = process.env.NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID;
+export const envId = process.env.NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID;
 if (!envId) {
   throw new Error("Missing 'NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID' environment variable.");
 }
 
-const deliveryClient = createDeliveryClient({
+// const deliveryClient = createDeliveryClient({
+//   environmentId: envId,
+//   globalHeaders: () => [
+//     {
+//       header: sourceTrackingHeaderName,
+//       value: `${process.env.APP_NAME || "n/a"};${process.env.APP_VERSION || "n/a"}`,
+//     }
+//   ],
+//   propertyNameResolver: camelCasePropertyNameResolver,
+//   proxy: {
+//     baseUrl: "http://deliver.devkontentmasters.com",
+//     basePreviewUrl: "http://preview-deliver.devkontentmasters.com",
+//   },
+//   previewApiKey: process.env.KONTENT_PREVIEW_API_KEY
+// });
+
+const getDeliveryClient = (envId: string) => createDeliveryClient({
   environmentId: envId,
   globalHeaders: () => [
     {
@@ -30,14 +46,14 @@ const deliveryClient = createDeliveryClient({
   previewApiKey: process.env.KONTENT_PREVIEW_API_KEY
 });
 
-export const getItemByCodename = <ItemType extends IContentItem>(codename: PerCollectionCodenames, usePreview: boolean): Promise<ItemType | null> => {
+export const getItemByCodename = <ItemType extends IContentItem>(codename: PerCollectionCodenames, envId: string, usePreview: boolean): Promise<ItemType | null> => {
   const itemCodename = codename[siteCodename];
 
   if (itemCodename === null) {
     return Promise.resolve(null);
   }
 
-  return deliveryClient
+  return getDeliveryClient(envId)
     .item(itemCodename)
     .queryConfig({
       usePreviewMode: usePreview,
@@ -66,8 +82,8 @@ export const getItemByCodename = <ItemType extends IContentItem>(codename: PerCo
 
 const homepageTypeCodename = "web_spotlight_root" as const;
 
-export const getHomepage = (usePreview: boolean) =>
-  deliveryClient
+export const getHomepage = (usePreview: boolean, envId: string) =>
+  getDeliveryClient(envId)
     .items()
     .type(homepageTypeCodename)
     .collection(siteCodename)
@@ -79,8 +95,8 @@ export const getHomepage = (usePreview: boolean) =>
     .toPromise()
     .then(res => res.data.items[0] as WSL_WebSpotlightRoot | undefined)
 
-export const getProductsForListing = async (usePreview: boolean, page?: number, categories?: string[], pageSize: number = ProductsPageSize) => {
-  const query = deliveryClient
+export const getProductsForListing = async (envId: string, usePreview: boolean, page?: number, categories?: string[], pageSize: number = ProductsPageSize) => {
+  const query = getDeliveryClient(envId)
     .items<Product>()
     .type(contentTypes.product.codename)
     .collection(siteCodename)
@@ -111,7 +127,7 @@ export const getProductsForListing = async (usePreview: boolean, page?: number, 
 }
 
 export const getProductSlugs = () =>
-  deliveryClient
+  getDeliveryClient(envId)
     .items<Product>()
     .type(contentTypes.product.codename)
     .collection(siteCodename)
@@ -119,8 +135,8 @@ export const getProductSlugs = () =>
     .toAllPromise()
     .then(res => res.data.items);
 
-export const getProductDetail = (slug: string, usePreview: boolean) =>
-  deliveryClient
+export const getProductDetail = (slug: string, envId: string, usePreview: boolean) =>
+  getDeliveryClient(envId)
     .items<Product>()
     .equalsFilter(`elements.${contentTypes.product.elements.slug.codename}`, slug)
     .queryConfig({
@@ -129,14 +145,14 @@ export const getProductDetail = (slug: string, usePreview: boolean) =>
     .toAllPromise()
     .then(res => res.data.items[0]);
 
-export const getSiteMenu = async (usePreview: boolean) => {
-  const res = await getItemByCodename<WSL_WebSpotlightRoot>(perCollectionRootItems, usePreview);
+export const getSiteMenu = async (envId: string, usePreview: boolean) => {
+  const res = await getItemByCodename<WSL_WebSpotlightRoot>(perCollectionRootItems, envId, usePreview);
 
   return res?.elements.navigation.linkedItems[0] ?? null;
 }
 
-export const getArticlesForListing = (usePreview: boolean, page?: number, articleType?: string, pageSize: number = ArticlePageSize) => {
-  const query = deliveryClient
+export const getArticlesForListing = (envId: string, usePreview: boolean, page?: number, articleType?: string, pageSize: number = ArticlePageSize) => {
+  const query = getDeliveryClient(envId)
     .items<Article>()
     .type(contentTypes.article.codename)
     .collection(siteCodename)
@@ -160,8 +176,8 @@ export const getArticlesForListing = (usePreview: boolean, page?: number, articl
     .then(res => res.data);
 }
 
-export const getAllArticles = (usePreview: boolean) =>
-  deliveryClient
+export const getAllArticles = (envId: string, usePreview: boolean) =>
+  getDeliveryClient(envId)
     .items<Article>()
     .type(contentTypes.article.codename)
     .collection(siteCodename)
@@ -171,8 +187,8 @@ export const getAllArticles = (usePreview: boolean) =>
     .toPromise()
     .then(res => res.data);
 
-export const getArticleBySlug = (slug: string, usePreview: boolean) =>
-  deliveryClient
+export const getArticleBySlug = (slug: string, envId: string, usePreview: boolean) =>
+  getDeliveryClient(envId)
     .items<Article>()
     .equalsFilter(`elements.${contentTypes.article.elements.slug.codename}`, slug)
     .depthParameter(10)
@@ -182,8 +198,8 @@ export const getArticleBySlug = (slug: string, usePreview: boolean) =>
     .toAllPromise()
     .then(res => res.data.items[0]);
 
-const getCurrentCollectionTotalCountQuery = () => (
-  deliveryClient
+const getCurrentCollectionTotalCountQuery = (eId?: string) => (
+  getDeliveryClient(eId ?? envId)
     .items()
     .collection(siteCodename)
     .elementsParameter([])
@@ -191,8 +207,8 @@ const getCurrentCollectionTotalCountQuery = () => (
     .includeTotalCountParameter()
 );
 
-const getItemsCountByTypeQuery = (usePreview: boolean, contentTypeCodename?: string) => {
-  const query = getCurrentCollectionTotalCountQuery()
+const getItemsCountByTypeQuery = (usePreview: boolean, contentTypeCodename?: string, eId?: string) => {
+  const query = getCurrentCollectionTotalCountQuery(eId)
     .collection(siteCodename)
     .queryConfig({
       usePreviewMode: usePreview,
@@ -206,15 +222,15 @@ const getItemsCountByTypeQuery = (usePreview: boolean, contentTypeCodename?: str
 
 
 export const getItemsTotalCount = (usePreview: boolean, contentTypeCodename?: string) => {
-  const query = getItemsCountByTypeQuery(usePreview, contentTypeCodename);
+  const query = getItemsCountByTypeQuery( usePreview, contentTypeCodename);
 
   return query
     .toPromise()
     .then(res => res.data.pagination.totalCount)
 }
 
-export const getArticlesCountByCategory = (usePreview: boolean, articleType: ArticleTypeWithAll) => {
-  const query = getItemsCountByTypeQuery(usePreview, contentTypes.article.codename);
+export const getArticlesCountByCategory = ( usePreview: boolean, articleType: ArticleTypeWithAll, eId?: string) => {
+  const query = getItemsCountByTypeQuery(usePreview, contentTypes.article.codename, eId);
 
   if (articleType !== 'all') {
     query.containsFilter(`elements.${contentTypes.article.elements.article_type.codename}`, [articleType])
@@ -225,8 +241,8 @@ export const getArticlesCountByCategory = (usePreview: boolean, articleType: Art
     .then(res => res.data.pagination.totalCount || 0)
 }
 
-export const getProductTaxonomy = async (usePreview: boolean) =>
-  deliveryClient
+export const getProductTaxonomy = async (envId: string, usePreview: boolean) =>
+  getDeliveryClient(envId)
     .taxonomy("product_category")
     .queryConfig({
       usePreviewMode: usePreview,
@@ -234,8 +250,8 @@ export const getProductTaxonomy = async (usePreview: boolean) =>
     .toPromise()
     .then(res => res.data.taxonomy.terms);
 
-export const getDefaultMetadata = async (usePreview: boolean) =>
-  deliveryClient
+export const getDefaultMetadata = async (envId: string, usePreview: boolean) =>
+getDeliveryClient(envId)
     .items()
     .type(homepageTypeCodename)
     .collection(siteCodename)

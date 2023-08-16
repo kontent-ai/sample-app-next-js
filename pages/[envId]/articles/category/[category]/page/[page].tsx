@@ -44,12 +44,20 @@ export const getStaticProps: GetStaticProps<Props, ArticleListingUrlQuery> = asy
     };
   }
 
+  const envId = context.params?.envId;
 
-  const articles = await getArticlesForListing(!!context.preview, pageNumber, context.params?.category ?? 'all');
-  const siteMenu = await getSiteMenu(!!context.preview);
-  const page = await getItemByCodename<WSL_Page>(pageCodename, !!context.preview);
-  const itemCount = await getArticlesCountByCategory(!!context.preview, selectedCategory);
-  const defaultMetadata = await getDefaultMetadata(!!context.preview);
+  if(!envId){
+    return {
+      notFound: true
+    }
+  }
+
+
+  const articles = await getArticlesForListing(envId as string, !!context.preview, pageNumber, context.params?.category ?? 'all');
+  const siteMenu = await getSiteMenu(envId as string, !!context.preview);
+  const page = await getItemByCodename<WSL_Page>(pageCodename, envId as string,  !!context.preview);
+  const itemCount = await getArticlesCountByCategory(!!context.preview, selectedCategory, envId as string);
+  const defaultMetadata = await getDefaultMetadata(envId as string, !!context.preview);
 
   if (page === null || articles.items.length === 0) {
     return { notFound: true };

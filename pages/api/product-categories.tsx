@@ -8,8 +8,13 @@ const handler: NextApiHandler = async (req, res) => {
     if (usePreview === null) {
       return res.status(400).json({ error: "Please provide 'preview' query parameter with value 'true' or 'false'." });
     }
+
+    const envId = req.query.envId;
+    if (typeof envId !== "string") {
+      return res.status(400).json({ error: "You have to provide 'envid' query parameter with the project environment id." });
+    }
   
-    const productCategories = await getProductTaxonomy(usePreview);
+    const productCategories = await getProductTaxonomy(envId, usePreview);
   
     return res.status(200).json(productCategories);
   };
