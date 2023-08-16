@@ -23,6 +23,7 @@ type Props = Readonly<{
   siteMenu: Block_Navigation | null;
   isPreview: boolean;
   defaultMetadata: SEOMetadata;
+  envId: string
 }>;
 
 type ProductListingProps = Readonly<{
@@ -59,7 +60,7 @@ const ProductListing: FC<ProductListingProps> = (props) => {
           key={p.system.id}
           imageUrl={p.elements.productImage.value[0]?.url || ""}
           title={p.elements.title.value}
-          detailUrl={`products/${p.elements.slug.value}`}
+          detailUrl={`/products/${p.elements.slug.value}`}
           price={p.elements.price.value}
           category={p.elements.productCategory.value[0]?.name || ""}
           itemId={p.system.id}
@@ -94,21 +95,21 @@ export const Products: FC<Props> = props => {
 
   const getProducts = useCallback(async () => {
     const { page, category } = router.query;
-    const queryStringUrl = createQueryStringUrl({ preview: props.isPreview.toString(), page, category })
+    const queryStringUrl = createQueryStringUrl({ preview: props.isPreview.toString(), page, category, envId: props.envId})
 
     const response = await fetch(`/api/products${queryStringUrl}`);
     const newData = await response.json();
 
     setProducts(newData.products);
     setTotalCount(newData.totalCount);
-  }, [router.query, props.isPreview])
+  }, [router.query, props.isPreview, props.envId])
 
   const getProductCategories = useCallback(async () => {
-    const response = await fetch(`/api/product-categories?preview=${props.isPreview}`);
+    const response = await fetch(`/api/product-categories?preview=${props.isPreview}&envId=${props.envId}`);
     const productCategories = await response.json();
 
     setTaxonomies(productCategories);
-  }, [props.isPreview])
+  }, [props.isPreview, props.envId])
 
   useEffect(() => {
     getProducts();
@@ -237,7 +238,7 @@ export const getStaticProps: GetStaticProps<Props> = async context => {
   }
 
   return {
-    props: { page, siteCodename, defaultMetadata, products: products.items, totalCount: products.pagination.totalCount ?? 0, siteMenu, isPreview: !!context.preview },
+    props: { page, siteCodename, defaultMetadata, products: products.items, totalCount: products.pagination.totalCount ?? 0, siteMenu, isPreview: !!context.preview, envId: envId as string},
   };
 }
 

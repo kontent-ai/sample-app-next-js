@@ -25,7 +25,8 @@ interface IParams extends ParsedUrlQuery {
 export const getStaticPaths: GetStaticPaths = () => {
   return getProductSlugs()
     .then(products => ({
-      paths: products.map(product => `/b0255462-358c-007b-0be0-43ee125ce1f0/products/${product.elements.slug.value}`),
+      // paths: products.map(product => `/b0255462-358c-007b-0be0-43ee125ce1f0/products/${product.elements.slug.value}`),
+      paths: products.map(product => ({params: {envId: 'b0255462-358c-007b-0be0-43ee125ce1f0', slug: product.elements.slug.value}})),
       fallback: 'blocking'
     }));
 }
