@@ -137,7 +137,7 @@ export const Products: FC<Props> = props => {
         ? [...categories, term.codename, ...term.terms.map((t) => t.codename)]
         : categories.filter((c) => c !== term.codename && !term.terms.map((t) => t.codename).includes(c));
 
-      changeUrlQueryString({ category: newCategories }, router);
+      changeUrlQueryString({ category: newCategories }, router, '/products');
     };
 
     return (
