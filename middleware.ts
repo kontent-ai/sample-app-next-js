@@ -1,10 +1,15 @@
 import type { NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
+import { env } from 'process';
  
 // This function can be marked `async` if using `await` inside
 export function middleware(request: NextRequest) {
 
-  const envId = request.cookies.get('envId');
+  let envId = request.cookies.get('envId');
+
+  if (!envId){
+    envId = "b0255462-358c-007b-0be0-43ee125ce1f0";
+  }
 
   if(request.nextUrl.pathname === '/articles'){
     return NextResponse.rewrite(new URL(`/${envId}/articles/category/all`, request.url));
