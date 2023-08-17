@@ -29,9 +29,9 @@ export const HeroUnitComponent: FC<Props> = props => {
       >
         <h1
           className="m-0 text-3xl align-text-bottom tracking-wide font-semibold"
-          {...createElementSmartLink(contentTypes.fact.elements.reference__label.codename)}
+          {...createElementSmartLink(contentTypes.fact.elements.title.codename)}
         >
-          {fact.elements.referenceLabel.value}
+          {fact.elements.title.value}
         </h1>
       </div>
       <div className="py-1 px-3 w-full bg-white opacity-90">
@@ -40,7 +40,7 @@ export const HeroUnitComponent: FC<Props> = props => {
           lang='en'
           {...createElementSmartLink(contentTypes.fact.elements.reference__caption.codename)}
         >
-          {fact.elements.referenceCaption.value}
+          {fact.elements.message.value}
         </h2>
       </div>
     </HeroImage>
@@ -51,6 +51,7 @@ export const HeroUnitComponent: FC<Props> = props => {
       <Link
         href={factUrl || "#"}
         className={`no-underline ${!factUrl ? "pointer-events-none" : ""}`}
+        title={fact.elements.referenceCaption.value}
       >{heroUnit}
       </Link>
     )

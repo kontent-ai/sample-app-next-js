@@ -772,6 +772,32 @@ export const contentTypes = {
       },
 
       /**
+       * Message (text)
+       */
+      message: {
+        codename: 'message',
+        id: 'cb061028-6de8-4c7b-9c7f-882778cdae54',
+        externalId: undefined,
+        name: 'Message',
+        required: true,
+        type: 'text',
+        snippetCodename: undefined,
+      },
+
+      /**
+       * Title (text)
+       */
+      title: {
+        codename: 'title',
+        id: '7125eab7-ce59-47d8-ba52-04db889bd621',
+        externalId: undefined,
+        name: 'Title',
+        required: false,
+        type: 'text',
+        snippetCodename: undefined,
+      },
+
+      /**
        * Fact type (taxonomy)
        *
        * Fact type serves only the purpose of inventory sorting. It does not affect visual representation in any way.

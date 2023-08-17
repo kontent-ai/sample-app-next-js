@@ -39,7 +39,7 @@ export const StackComponent: FC<Props> = props => {
       >
         <StandaloneSmartLinkButton elementCodename={contentTypes.visual_container.elements.items.codename} />
         <Headers
-          headers={props.items.map(item => ({ id: item.system.id, label: item.elements.referenceLabel.value }))}
+          headers={props.items.map(item => ({ id: item.system.id, label: item.elements.title.value }))}
           onHeaderSelected={setActionIndex}
           selectedHeaderIndex={actionIndex}
         />

@@ -28,6 +28,22 @@ export type Fact = IContentItem<{
   image: Elements.AssetsElement;
 
   /**
+   * Message (text)
+   * Required: true
+   * Id: cb061028-6de8-4c7b-9c7f-882778cdae54
+   * Codename: message
+   */
+  message: Elements.TextElement;
+
+  /**
+   * Title (text)
+   * Required: false
+   * Id: 7125eab7-ce59-47d8-ba52-04db889bd621
+   * Codename: title
+   */
+  title: Elements.TextElement;
+
+  /**
    * Fact type (taxonomy)
    * Required: false
    * Id: 9809c224-44b6-4e18-8d40-a175c20517aa

@@ -19,8 +19,8 @@ export const GridComponent: FC<Props> = props => {
             className="p-4 flex flex-col text-center items-center"
             key={link.system.id}
           >
-            <div className="font-bold text-3xl">{link.elements.referenceLabel.value}</div>
-            <div>{link.elements.referenceLabel.value}</div>
+            <div className="font-bold text-3xl">{link.elements.title.value}</div>
+            <div>{link.elements.title.value}</div>
           </div>
         ))}
       </div>

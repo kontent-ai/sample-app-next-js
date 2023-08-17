@@ -22,7 +22,7 @@ export const FactComponent: FC<Props> = props => {
         >
           <Image
             src={image.url}
-            alt={props.item.elements.referenceLabel.value}
+            alt={props.item.elements.title.value}
             fill
             sizes="(max-width: 757px) 100vw, 50vw"
             className="object-cover m-0"
@@ -30,14 +30,14 @@ export const FactComponent: FC<Props> = props => {
         </div>
       )}
       <div className="px-7">
-        <h3 {...createElementSmartLink(contentTypes.fact.elements.reference__label.codename)}>
-          {props.item.elements.referenceLabel.value}
+        <h3 {...createElementSmartLink(contentTypes.fact.elements.title.codename)}>
+          {props.item.elements.title.value}
         </h3>
         <div
           className="text-justify"
           {...createElementSmartLink(contentTypes.fact.elements.reference__caption.codename)}
         >
-          {props.item.elements.referenceCaption.value}
+          {props.item.elements.message.value}
         </div>
       </div>
 
