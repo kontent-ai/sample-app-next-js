@@ -37,7 +37,7 @@ const replaceIfNeeded = (char: string, index: number) => {
     case 0x1F4A1:
       return "WSL_"
 
-    case 0xD83E:
+    case 0x1F9ED:
       return "Nav_"
 
     default:
