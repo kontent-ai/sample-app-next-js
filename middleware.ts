@@ -1,6 +1,5 @@
 import type { NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
-import { env } from 'process';
  
 // This function can be marked `async` if using `await` inside
 export function middleware(request: NextRequest) {
@@ -10,6 +9,8 @@ export function middleware(request: NextRequest) {
   if (!envId){
     envId = "b0255462-358c-007b-0be0-43ee125ce1f0";
   }
+
+  console.log("fdsafads", request.nextUrl.pathname);
 
   if(request.nextUrl.pathname === '/articles'){
     return NextResponse.rewrite(new URL(`/${envId}/articles/category/all`, request.url));
@@ -38,6 +39,6 @@ export const config = {
      * - favicon.ico (favicon file)
      */
     '/',
-    '/((?!api|_next/static|_next/image|favicon.ico).+)',
+    '/((?!api|_next/image|favicon.ico).*)',
   ],
 }
