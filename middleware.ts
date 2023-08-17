@@ -1,4 +1,4 @@
-import type { NextRequest } from 'next/server'
+import { NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
  
 // This function can be marked `async` if using `await` inside
@@ -11,6 +11,10 @@ export function middleware(request: NextRequest) {
   }
 
   console.log("fdsafads", request.nextUrl.pathname);
+
+  if(request.nextUrl.pathname.startsWith('/_next/static')){
+    return NextResponse.next();
+  }
 
   if(request.nextUrl.pathname === '/articles'){
     return NextResponse.rewrite(new URL(`/${envId}/articles/category/all`, request.url));
