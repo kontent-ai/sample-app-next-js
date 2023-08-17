@@ -11,7 +11,7 @@ export const contentTypes = {
    */
   page: {
     codename: 'page',
-    id: '62d2fd7d-404a-4b48-8f48-fb7ae680a3dd',
+    id: '7ddb77f9-f2c3-4310-8ca4-593a66ce8808',
     externalId: undefined,
     name: '💡 Page',
     elements: {
@@ -20,7 +20,7 @@ export const contentTypes = {
        */
       content: {
         codename: 'content',
-        id: '6b8c0806-31e5-4544-8972-8b3b486a7121',
+        id: '23387315-8b63-4354-809a-7eaf4a077148',
         externalId: undefined,
         name: 'Content',
         required: false,
@@ -59,7 +59,7 @@ export const contentTypes = {
        */
       slug: {
         codename: 'slug',
-        id: '7e33180c-94ed-4880-8b92-2de577810e1b',
+        id: '0dfcee1b-bc32-4775-b990-a8f2cdb9a8be',
         externalId: undefined,
         name: 'Slug',
         required: false,
@@ -72,7 +72,7 @@ export const contentTypes = {
        */
       subpages: {
         codename: 'subpages',
-        id: '61ba5c0b-b4db-40f4-aa9c-b67f2c20a9c1',
+        id: 'e5d8e892-69f7-4ad8-b386-8f6f7703aba8',
         externalId: undefined,
         name: 'Subpages',
         required: false,
@@ -85,7 +85,7 @@ export const contentTypes = {
        */
       title: {
         codename: 'title',
-        id: 'bb93490c-13de-43c4-a9ab-ec0f93b7324d',
+        id: '3e79c713-841e-45f5-ab33-191864f04405',
         externalId: undefined,
         name: 'Title',
         required: false,
@@ -113,7 +113,7 @@ export const contentTypes = {
    */
   web_spotlight_root: {
     codename: 'web_spotlight_root',
-    id: 'b5157974-9062-4e13-a7ca-37938122e1d7',
+    id: 'ab387b8f-ec50-4876-9ecb-d175aef67003',
     externalId: undefined,
     name: '💡 Web spotlight root',
     elements: {
@@ -122,7 +122,7 @@ export const contentTypes = {
        */
       content: {
         codename: 'content',
-        id: '9dc587ef-e659-4e91-ae60-f6e54202c567',
+        id: '9f9bf380-8fdf-48e0-9808-1e1fc067dc1d',
         externalId: undefined,
         name: 'Content',
         required: false,
@@ -174,7 +174,7 @@ export const contentTypes = {
        */
       subpages: {
         codename: 'subpages',
-        id: 'ee6b535e-ac3b-4998-953d-bbdacac72d94',
+        id: 'd94c4178-d6fe-442d-a205-ff1c52c22b35',
         externalId: undefined,
         name: 'Subpages',
         required: false,
@@ -187,7 +187,7 @@ export const contentTypes = {
        */
       title: {
         codename: 'title',
-        id: 'e30455a4-7293-4736-bceb-9725d43889f1',
+        id: '69bd8e1b-f164-48b8-8351-77eb98488de1',
         externalId: undefined,
         name: 'Title',
         required: false,
@@ -261,7 +261,7 @@ export const contentTypes = {
        */
       reference__caption: {
         codename: 'reference__caption',
-        id: '54de4828-32f7-452f-86ba-70638bbcffcd',
+        id: '22581583-a2a6-4d72-a0bf-f0eb55e541eb',
         externalId: undefined,
         name: 'Caption',
         required: false,
@@ -272,11 +272,11 @@ export const contentTypes = {
       /**
        * Content item link (modular_content)
        *
-       * Link to the content item supported be presentational channel (using URL slug)
+       * Link to a supported content item, resolution can vary based on presentation layer.
        */
-      reference__internal_link: {
-        codename: 'reference__internal_link',
-        id: 'a8fd4d08-1693-47fb-a271-4bd3e46b983e',
+      reference__content_item_link: {
+        codename: 'reference__content_item_link',
+        id: '4a90e2f3-517d-4092-9fdc-bbfb196ef250',
         externalId: undefined,
         name: 'Content item link',
         required: false,
@@ -287,11 +287,11 @@ export const contentTypes = {
       /**
        * External URI (text)
        *
-       * Higher priority then content item link
+       * Link to an external resource, has higher resolution priority than item link.
        */
-      reference__external_url: {
-        codename: 'reference__external_url',
-        id: '89c29a87-0cf8-4e1f-b93f-0a5beed41b39',
+      reference__external_uri: {
+        codename: 'reference__external_uri',
+        id: '6e1192e9-dd9e-4a04-bb51-445c771353c6',
         externalId: undefined,
         name: 'External URI',
         required: false,
@@ -304,7 +304,7 @@ export const contentTypes = {
        */
       reference__label: {
         codename: 'reference__label',
-        id: 'fd7551bf-8d5f-4da1-9ac6-693645f8d750',
+        id: 'af93c504-7db2-44cb-863a-59a0e9364e6e',
         externalId: undefined,
         name: 'Label',
         required: false,
@@ -421,7 +421,7 @@ export const contentTypes = {
    */
   action: {
     codename: 'action',
-    id: 'ff3f3ef3-f658-4f6b-bbbd-230327878367',
+    id: '32395d41-ee0d-499a-8cd6-23b3d9f267e9',
     externalId: undefined,
     name: 'Action',
     elements: {
@@ -430,7 +430,7 @@ export const contentTypes = {
        */
       reference__caption: {
         codename: 'reference__caption',
-        id: '54de4828-32f7-452f-86ba-70638bbcffcd',
+        id: '22581583-a2a6-4d72-a0bf-f0eb55e541eb',
         externalId: undefined,
         name: 'Caption',
         required: false,
@@ -441,11 +441,11 @@ export const contentTypes = {
       /**
        * Content item link (modular_content)
        *
-       * Link to the content item supported be presentational channel (using URL slug)
+       * Link to a supported content item, resolution can vary based on presentation layer.
        */
-      reference__internal_link: {
-        codename: 'reference__internal_link',
-        id: 'a8fd4d08-1693-47fb-a271-4bd3e46b983e',
+      reference__content_item_link: {
+        codename: 'reference__content_item_link',
+        id: '4a90e2f3-517d-4092-9fdc-bbfb196ef250',
         externalId: undefined,
         name: 'Content item link',
         required: false,
@@ -456,11 +456,11 @@ export const contentTypes = {
       /**
        * External URI (text)
        *
-       * Higher priority then content item link
+       * Link to an external resource, has higher resolution priority than item link.
        */
-      reference__external_url: {
-        codename: 'reference__external_url',
-        id: '89c29a87-0cf8-4e1f-b93f-0a5beed41b39',
+      reference__external_uri: {
+        codename: 'reference__external_uri',
+        id: '6e1192e9-dd9e-4a04-bb51-445c771353c6',
         externalId: undefined,
         name: 'External URI',
         required: false,
@@ -469,16 +469,55 @@ export const contentTypes = {
       },
 
       /**
+       * Image (asset)
+       */
+      image: {
+        codename: 'image',
+        id: '452e8309-8387-410e-8a4f-18db9c98dd04',
+        externalId: undefined,
+        name: 'Image',
+        required: false,
+        type: 'asset',
+        snippetCodename: undefined,
+      },
+
+      /**
        * Label (text)
        */
       reference__label: {
         codename: 'reference__label',
-        id: 'fd7551bf-8d5f-4da1-9ac6-693645f8d750',
+        id: 'af93c504-7db2-44cb-863a-59a0e9364e6e',
         externalId: undefined,
         name: 'Label',
         required: false,
         type: 'text',
         snippetCodename: 'reference',
+      },
+
+      /**
+       * Message (text)
+       */
+      title___message__message: {
+        codename: 'title___message__message',
+        id: '9f4ebd8f-1e71-4273-8348-777d6dbf197f',
+        externalId: undefined,
+        name: 'Message',
+        required: false,
+        type: 'text',
+        snippetCodename: 'title___message',
+      },
+
+      /**
+       * Title (text)
+       */
+      title___message__title: {
+        codename: 'title___message__title',
+        id: '5cf411ef-3d13-484a-80c4-591d2c16d2c5',
+        externalId: undefined,
+        name: 'Title',
+        required: false,
+        type: 'text',
+        snippetCodename: 'title___message',
       },
     },
   },
@@ -655,7 +694,7 @@ export const contentTypes = {
        */
       author: {
         codename: 'author',
-        id: 'db132f67-3b62-43d4-b091-bb74521d8aba',
+        id: '619dfb25-be91-42de-8f71-83168743612d',
         externalId: undefined,
         name: 'Author',
         required: false,
@@ -668,7 +707,7 @@ export const contentTypes = {
        */
       reference__caption: {
         codename: 'reference__caption',
-        id: '54de4828-32f7-452f-86ba-70638bbcffcd',
+        id: '22581583-a2a6-4d72-a0bf-f0eb55e541eb',
         externalId: undefined,
         name: 'Caption',
         required: false,
@@ -679,11 +718,11 @@ export const contentTypes = {
       /**
        * Content item link (modular_content)
        *
-       * Link to the content item supported be presentational channel (using URL slug)
+       * Link to a supported content item, resolution can vary based on presentation layer.
        */
-      reference__internal_link: {
-        codename: 'reference__internal_link',
-        id: 'a8fd4d08-1693-47fb-a271-4bd3e46b983e',
+      reference__content_item_link: {
+        codename: 'reference__content_item_link',
+        id: '4a90e2f3-517d-4092-9fdc-bbfb196ef250',
         externalId: undefined,
         name: 'Content item link',
         required: false,
@@ -694,11 +733,11 @@ export const contentTypes = {
       /**
        * External URI (text)
        *
-       * Higher priority then content item link
+       * Link to an external resource, has higher resolution priority than item link.
        */
-      reference__external_url: {
-        codename: 'reference__external_url',
-        id: '89c29a87-0cf8-4e1f-b93f-0a5beed41b39',
+      reference__external_uri: {
+        codename: 'reference__external_uri',
+        id: '6e1192e9-dd9e-4a04-bb51-445c771353c6',
         externalId: undefined,
         name: 'External URI',
         required: false,
@@ -724,38 +763,12 @@ export const contentTypes = {
        */
       reference__label: {
         codename: 'reference__label',
-        id: 'fd7551bf-8d5f-4da1-9ac6-693645f8d750',
+        id: 'af93c504-7db2-44cb-863a-59a0e9364e6e',
         externalId: undefined,
         name: 'Label',
         required: false,
         type: 'text',
         snippetCodename: 'reference',
-      },
-
-      /**
-       * Message (text)
-       */
-      title___message__message: {
-        codename: 'title___message__message',
-        id: 'f67acf88-b4e6-46af-afb1-213419dce742',
-        externalId: undefined,
-        name: 'Message',
-        required: false,
-        type: 'text',
-        snippetCodename: 'title___message',
-      },
-
-      /**
-       * Title (text)
-       */
-      title___message__title: {
-        codename: 'title___message__title',
-        id: 'b03b13f3-b44a-425f-a51b-75e1390cfa7d',
-        externalId: undefined,
-        name: 'Title',
-        required: false,
-        type: 'text',
-        snippetCodename: 'title___message',
       },
 
       /**
@@ -765,7 +778,7 @@ export const contentTypes = {
        */
       type: {
         codename: 'type',
-        id: 'fcca0c9f-d619-48f4-835e-e50697724c5a',
+        id: '9809c224-44b6-4e18-8d40-a175c20517aa',
         externalId: undefined,
         name: 'Type',
         required: false,

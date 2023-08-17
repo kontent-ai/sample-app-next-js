@@ -1,6 +1,6 @@
 import { FC } from "react";
 
-import { Block_VisualContainer } from "../../../models";
+import { Block_VisualContainer, contentTypes } from "../../../models";
 import { BuildError } from "../ui/BuildError";
 import { CarouselComponent } from "./Carousel";
 import { GridComponent } from "./Grid";
@@ -12,6 +12,7 @@ type Props = Readonly<{
 }>;
 
 export const VisualContainer: FC<Props> = props => {
+  debugger;
   switch (props.item.elements.visualRepresentation.value[0]?.codename) {
     case visualRepresentation.grid:
       return (
@@ -29,19 +30,18 @@ export const VisualContainer: FC<Props> = props => {
         />
       );
     case visualRepresentation.hero_unit:
-
+      debugger;
       if (props.item.elements.items.linkedItems.length === 1) {
         const fact = props.item.elements.items.linkedItems[0];
-
         return (
 
           !fact
             ? <BuildError>Visual container {props.item.system.codename} does not contain any Fact.</BuildError>
             : (
-<HeroUnitComponent
-  item={fact}
-/>
-)
+              <HeroUnitComponent
+                item={fact}
+              />
+            )
 
         )
       }
@@ -59,6 +59,7 @@ export const VisualContainer: FC<Props> = props => {
   }
 };
 
+// https://kontent-ai.atlassian.net/browse/DEVREL-955
 const visualRepresentation = {
   grid: "grid",
   stack: "stack",

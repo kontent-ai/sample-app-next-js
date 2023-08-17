@@ -19,11 +19,11 @@ export const TestimonialComponent: FC<Props> = props => {
     >
       {authorItem && <PersonHorizontal item={authorItem} />}
       <div>
-        <p {...createElementSmartLink(contentTypes.fact.elements.title___message__title.codename)}>
-          {props.item.elements.titleMessageTitle.value}
+        <p {...createElementSmartLink(contentTypes.fact.elements.reference__label.codename)}>
+          {props.item.elements.referenceLabel.value}
         </p>
-        <p {...createElementSmartLink(contentTypes.fact.elements.title___message__message.codename)}>
-          {props.item.elements.titleMessageMessage.value}
+        <p {...createElementSmartLink(contentTypes.fact.elements.reference__caption.codename)}>
+          {props.item.elements.referenceCaption.value}
         </p>
       </div>
     </section>

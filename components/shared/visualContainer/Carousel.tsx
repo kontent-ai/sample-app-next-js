@@ -4,6 +4,7 @@ import { FC, useState } from "react";
 import { range } from "../../../lib/utils/range";
 import { Fact } from "../../../models";
 import { HeroUnitComponent } from "./HeroUnit";
+import { Content } from "../Content";
 
 type Props = Readonly<{
   items: ReadonlyArray<Fact>;
@@ -33,6 +34,10 @@ export const CarouselComponent: FC<Props> = props => {
   return (
     <div className="relative w-full">
       <div className="relative overflow-hidden rounded-lg">
+        {/*This is a placeholder to determine the carousel height, because the real carousel items are absolutely positioned.*/}
+        <div className="relative z-0 opacity-0 w-fit">
+        {props.items[0] && <HeroUnitComponent item={props.items[0]} />}
+        </div>
         {itemsToRender.map((item, index) => (
           <Item
             key={index}

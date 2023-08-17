@@ -194,12 +194,12 @@ describe("resolveReference", () => {
         name: "Caption",
         value: "Caption"
       },
-      referenceExternalUrl: {
+      referenceExternalUri: {
         type: ElementType.Text,
         name: "External URI",
         value: ""
       },
-      referenceInternalLink: {
+      referenceContentItemLink: {
         type: ElementType.ModularContent,
         name: "Content item link",
         value: [],
@@ -211,7 +211,7 @@ describe("resolveReference", () => {
 
   it("Resolve external URL", () => {
     const inputClone: Reference = JSON.parse(JSON.stringify(referenceTemplate));
-    inputClone.elements.referenceExternalUrl.value = "https://example.com";
+    inputClone.elements.referenceExternalUri.value = "https://example.com";
     const result = resolveReference(inputClone);
 
     expect(result).toBe("https://example.com");
@@ -219,8 +219,8 @@ describe("resolveReference", () => {
 
   it("Resolve internal URL", () => {
     const inputClone: Reference = JSON.parse(JSON.stringify(referenceTemplate));
-    inputClone.elements.referenceInternalLink.value = [internalLinkItem.system.codename];
-    inputClone.elements.referenceInternalLink.linkedItems = [internalLinkItem];
+    inputClone.elements.referenceContentItemLink.value = [internalLinkItem.system.codename];
+    inputClone.elements.referenceContentItemLink.linkedItems = [internalLinkItem];
     const result = resolveReference(inputClone);
 
     expect(result).toBe("/about-us");
@@ -228,9 +228,9 @@ describe("resolveReference", () => {
 
   it("External URL takes precedence over internal URL", () => {
     const inputClone: Reference = JSON.parse(JSON.stringify(referenceTemplate));
-    inputClone.elements.referenceExternalUrl.value = "https://example.com";
-    inputClone.elements.referenceInternalLink.value = [internalLinkItem.system.codename];
-    inputClone.elements.referenceInternalLink.linkedItems = [internalLinkItem];
+    inputClone.elements.referenceExternalUri.value = "https://example.com";
+    inputClone.elements.referenceContentItemLink.value = [internalLinkItem.system.codename];
+    inputClone.elements.referenceContentItemLink.linkedItems = [internalLinkItem];
     const result = resolveReference(inputClone);
 
     expect(result).toBe("https://example.com");
@@ -238,10 +238,10 @@ describe("resolveReference", () => {
 
   it("Page from other domain is resolved correctly", () => {
     const inputClone: Reference = JSON.parse(JSON.stringify(referenceTemplate));
-    inputClone.elements.referenceInternalLink.value = [internalLinkItem.system.codename];
-    inputClone.elements.referenceInternalLink.linkedItems = [internalLinkItem];
+    inputClone.elements.referenceContentItemLink.value = [internalLinkItem.system.codename];
+    inputClone.elements.referenceContentItemLink.linkedItems = [internalLinkItem];
 
-    process.env.NEXT_PUBLIC_OTHER_COLLECTIONS_DOMAINS = `${inputClone.elements.referenceInternalLink.linkedItems[0]?.system.collection}:otherdomain.com`
+    process.env.NEXT_PUBLIC_OTHER_COLLECTIONS_DOMAINS = `${inputClone.elements.referenceContentItemLink.linkedItems[0]?.system.collection}:otherdomain.com`
     const result = resolveReference(inputClone);
 
     expect(result).toBe("https://otherdomain.com/about-us");

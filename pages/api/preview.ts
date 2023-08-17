@@ -1,6 +1,6 @@
 import { NextApiHandler } from "next";
 
-import { resolveUrlPath } from "../../lib/routing";
+import { ResolutionContext, resolveUrlPath } from "../../lib/routing";
 
 const handler: NextApiHandler = async (req, res) => {
   if (req.query.secret !== 'mySuperSecret' || !req.query.slug || !req.query.type) {
@@ -10,7 +10,10 @@ const handler: NextApiHandler = async (req, res) => {
   // Enable Preview Mode by setting the cookies
   res.setPreviewData({})
 
-  const path = await resolveUrlPath(req.query.slug.toString(), req.query.type.toString());
+  const path = await resolveUrlPath({
+    type: req.query.type.toString(),
+    slug: req.query.slug.toString()
+  } as ResolutionContext);
 
   // Redirect to the path from the fetched post
   res.redirect(path);

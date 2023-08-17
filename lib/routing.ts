@@ -106,18 +106,18 @@ const isWSRoot = (item: WSL_Page | WSL_WebSpotlightRoot | Product | Article): it
   item.system.type === contentTypes.web_spotlight_root.codename;
 
 export const resolveReference = (reference: Reference) => {
-  if (reference.elements.referenceExternalUrl.value) {
-    return reference.elements.referenceExternalUrl.value;
+  if (reference.elements.referenceExternalUri.value) {
+    return reference.elements.referenceExternalUri.value;
   }
 
-  const referencedItem = reference.elements.referenceInternalLink.linkedItems[0];
+  const referencedItem = reference.elements.referenceContentItemLink.linkedItems[0];
 
   if (!referencedItem) {
-    console.error(`Linked item not found when resolving item with codename ${reference.system.codename}`);
+    console.info(`Linked item not found when resolving item with codename ${reference.system.codename} of type  ${reference.system.type}`);
     return "#";
   }
 
-  const collectionDomain = getExternalUrlsMapping()[referencedItem?.system.collection ?? ""] || "";
+  const collectionDomain = getExternalUrlsMapping()[referencedItem.system.collection] || "";
 
   const slug = isWSRoot(referencedItem)
     ? "/"

@@ -15,39 +15,46 @@ type Props = Readonly<{
 export const HeroUnitComponent: FC<Props> = props => {
   const siteCodename = useSiteCodename();
   const fact = props.item;
-  const factUrl = resolveReference(fact);
-  return (
-    <Link
-      href={factUrl || "#"}
-      className={`no-underline ${!factUrl ? "pointer-events-none" : ""}`}
+  const factUrl = fact.elements.referenceExternalUri.value || fact.elements.referenceContentItemLink.linkedItems.length > 0
+    ? resolveReference(fact)
+    : null;
+  const heroUnit = (
+    <HeroImage
+      url={fact.elements.image.value[0]?.url || ""}
+      itemId={props.item.system.id}
     >
-      <HeroImage
-        url={fact.elements.image.value[0]?.url || ""}
-        itemId={props.item.system.id}
+      <div
+        className={`py-5 md:py-5 px-3 w-full flex md:w-fit ${mainColorBgClass[siteCodename]}  opacity-[85%]`}
+        {...createItemSmartLink(fact.system.id)}
       >
-        <div
-          className={`py-5 md:py-5 px-3 w-full flex md:w-fit ${mainColorBgClass[siteCodename]}  opacity-[85%]`}
-          {...createItemSmartLink(fact.system.id)}
+        <h1
+          className="m-0 text-3xl align-text-bottom tracking-wide font-semibold"
+          {...createElementSmartLink(contentTypes.fact.elements.reference__label.codename)}
         >
-          <h1
-            className="m-0 text-3xl align-text-bottom tracking-wide font-semibold"
-            {...createElementSmartLink(contentTypes.fact.elements.title___message__title.codename)}
-          >
-            {fact.elements.titleMessageTitle.value}
-          </h1>
-        </div>
-        <div className="py-1 px-3 w-full bg-white opacity-90">
-          <h2
-            className="m-0 text-xl font-medium break-words hyphens-auto"
-            lang='en'
-            {...createElementSmartLink(contentTypes.fact.elements.title___message__message.codename)}
-          >
-            {fact.elements.titleMessageMessage.value}
-          </h2>
-        </div>
-      </HeroImage>
-    </Link>
+          {fact.elements.referenceLabel.value}
+        </h1>
+      </div>
+      <div className="py-1 px-3 w-full bg-white opacity-90">
+        <h2
+          className="m-0 text-xl font-medium break-words hyphens-auto"
+          lang='en'
+          {...createElementSmartLink(contentTypes.fact.elements.reference__caption.codename)}
+        >
+          {fact.elements.referenceCaption.value}
+        </h2>
+      </div>
+    </HeroImage>
   );
+
+  return factUrl
+    ? (
+      <Link
+        href={factUrl || "#"}
+        className={`no-underline ${!factUrl ? "pointer-events-none" : ""}`}
+      >{heroUnit}
+      </Link>
+    )
+    : heroUnit;
 }
 
 HeroUnitComponent.displayName = "HeroUnitComponent";

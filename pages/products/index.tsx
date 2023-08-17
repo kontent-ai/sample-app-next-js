@@ -13,7 +13,7 @@ import { pageCodenames, resolveUrlPath } from "../../lib/routing";
 import { ValidCollectionCodename } from "../../lib/types/perCollection";
 import { changeUrlQueryString } from "../../lib/utils/changeUrlQueryString";
 import { siteCodename } from "../../lib/utils/env";
-import { Nav_NavigationItem, Product, SEOMetadata, WSL_Page, contentTypes } from "../../models";
+import { Nav_NavigationItem, Product, SEOMetadata, WSL_Page } from "../../models";
 
 type Props = Readonly<{
   page: WSL_Page;

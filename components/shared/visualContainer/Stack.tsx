@@ -2,7 +2,7 @@ import { FC, useState } from "react";
 
 import { mainColorBorderClass } from "../../../lib/constants/colors";
 import { createElementSmartLink, createItemSmartLink, createRelativeAddSmartLink } from "../../../lib/utils/smartLinkUtils";
-import { contentTypes,Fact } from "../../../models";
+import { contentTypes, Fact } from "../../../models";
 import { FactComponent } from "../Fact";
 import { useSiteCodename } from "../siteCodenameContext";
 import { StandaloneSmartLinkButton } from "../StandaloneSmartLinkButton";
@@ -39,7 +39,7 @@ export const StackComponent: FC<Props> = props => {
       >
         <StandaloneSmartLinkButton elementCodename={contentTypes.visual_container.elements.items.codename} />
         <Headers
-          headers={props.items.map(item => ({ id: item.system.id, label: item.elements.titleMessageTitle.value }))}
+          headers={props.items.map(item => ({ id: item.system.id, label: item.elements.referenceLabel.value }))}
           onHeaderSelected={setActionIndex}
           selectedHeaderIndex={actionIndex}
         />

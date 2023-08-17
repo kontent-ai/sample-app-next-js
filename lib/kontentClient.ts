@@ -8,6 +8,7 @@ import { ArticleTypeWithAll } from './utils/articlesListing';
 import { siteCodename } from './utils/env';
 
 const sourceTrackingHeaderName = 'X-KC-SOURCE';
+const defaultDepth = 10;
 
 const envId = process.env.NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID;
 if (!envId) {
@@ -42,7 +43,7 @@ export const getItemByCodename = <ItemType extends IContentItem>(codename: PerCo
     .queryConfig({
       usePreviewMode: usePreview,
     })
-    .depthParameter(10)
+    .depthParameter(defaultDepth)
     .toPromise()
     .then(res => {
       if (res.response.status === 404) {
@@ -75,7 +76,7 @@ export const getHomepage = (usePreview: boolean) =>
       usePreviewMode: usePreview,
       waitForLoadingNewContent: usePreview
     })
-    .depthParameter(10)
+    .depthParameter(defaultDepth)
     .toPromise()
     .then(res => res.data.items[0] as WSL_WebSpotlightRoot | undefined)
 
@@ -175,7 +176,7 @@ export const getArticleBySlug = (slug: string, usePreview: boolean) =>
   deliveryClient
     .items<Article>()
     .equalsFilter(`elements.${contentTypes.article.elements.slug.codename}`, slug)
-    .depthParameter(10)
+    .depthParameter(defaultDepth)
     .queryConfig({
       usePreviewMode: usePreview,
     })
@@ -244,7 +245,7 @@ export const getDefaultMetadata = async (usePreview: boolean) =>
       waitForLoadingNewContent: usePreview
     })
     .elementsParameter(["seo_metadata__title", "seo_metadata__description", "seo_metadata__keywords"])
-    .depthParameter(10)
+    .depthParameter(defaultDepth)
     .toPromise()
     .then(res => res.data.items[0] as SEOMetadata)
 

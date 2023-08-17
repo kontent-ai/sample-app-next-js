@@ -44,7 +44,7 @@ export const contentTypeSnippets = {
    */
   reference: {
     codename: 'reference',
-    id: '48ffbeba-062f-4d41-9bfc-5cee5c3e47d0',
+    id: '510b73ca-4108-4235-bd42-e9d7c22ffaec',
     externalId: undefined,
     name: 'Reference',
     elements: {
@@ -53,7 +53,7 @@ export const contentTypeSnippets = {
        */
       reference__label: {
         codename: 'reference__label',
-        id: 'fd7551bf-8d5f-4da1-9ac6-693645f8d750',
+        id: 'af93c504-7db2-44cb-863a-59a0e9364e6e',
         externalId: undefined,
         name: 'Label',
         required: false,
@@ -65,7 +65,7 @@ export const contentTypeSnippets = {
        */
       reference__caption: {
         codename: 'reference__caption',
-        id: '54de4828-32f7-452f-86ba-70638bbcffcd',
+        id: '22581583-a2a6-4d72-a0bf-f0eb55e541eb',
         externalId: undefined,
         name: 'Caption',
         required: false,
@@ -75,11 +75,11 @@ export const contentTypeSnippets = {
       /**
        * External URI (text)
        *
-       * Higher priority then content item link
+       * Link to an external resource, has higher resolution priority than item link.
        */
-      reference__external_url: {
-        codename: 'reference__external_url',
-        id: '89c29a87-0cf8-4e1f-b93f-0a5beed41b39',
+      reference__external_uri: {
+        codename: 'reference__external_uri',
+        id: '6e1192e9-dd9e-4a04-bb51-445c771353c6',
         externalId: undefined,
         name: 'External URI',
         required: false,
@@ -89,11 +89,11 @@ export const contentTypeSnippets = {
       /**
        * Content item link (modular_content)
        *
-       * Link to the content item supported be presentational channel (using URL slug)
+       * Link to a supported content item, resolution can vary based on presentation layer.
        */
-      reference__internal_link: {
-        codename: 'reference__internal_link',
-        id: 'a8fd4d08-1693-47fb-a271-4bd3e46b983e',
+      reference__content_item_link: {
+        codename: 'reference__content_item_link',
+        id: '4a90e2f3-517d-4092-9fdc-bbfb196ef250',
         externalId: undefined,
         name: 'Content item link',
         required: false,
@@ -150,20 +150,20 @@ export const contentTypeSnippets = {
   },
 
   /**
-   * Title & Message
+   * Title & message
    */
   title___message: {
     codename: 'title___message',
-    id: 'fb2b5e89-48e9-4e58-8550-46e9a5706d89',
+    id: '70b793f6-7517-43f0-86f4-cacc44da73c3',
     externalId: undefined,
-    name: 'Title & Message',
+    name: 'Title & message',
     elements: {
       /**
        * Title (text)
        */
       title___message__title: {
         codename: 'title___message__title',
-        id: 'b03b13f3-b44a-425f-a51b-75e1390cfa7d',
+        id: '5cf411ef-3d13-484a-80c4-591d2c16d2c5',
         externalId: undefined,
         name: 'Title',
         required: false,
@@ -175,7 +175,7 @@ export const contentTypeSnippets = {
        */
       title___message__message: {
         codename: 'title___message__message',
-        id: 'f67acf88-b4e6-46af-afb1-213419dce742',
+        id: '9f4ebd8f-1e71-4273-8348-777d6dbf197f',
         externalId: undefined,
         name: 'Message',
         required: false,

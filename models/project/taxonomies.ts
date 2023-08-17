@@ -51,34 +51,34 @@ export const taxonomies = {
    */
   fact_type: {
     codename: 'fact_type',
-    id: 'c71e8cf8-5c3e-48a6-849c-184146874a27',
+    id: 'aa3a8989-f8da-4a6e-bd9a-aacd862ea19b',
     externalId: undefined,
     name: 'Fact type',
     terms: {
       card: {
         codename: 'card',
-        id: '85910564-4930-4dce-ba8c-92be00fddf07',
+        id: '29659a90-1a0e-438d-b6e2-8f1e5126e8c6',
         externalId: undefined,
         name: 'Card',
         terms: {},
       },
       hero_unit: {
         codename: 'hero_unit',
-        id: 'a2abdfc2-be95-4be5-9f6b-0ffd368f0f09',
+        id: '9d5eeec9-5f53-4c70-8bcd-a4e6062cf790',
         externalId: undefined,
         name: 'Hero unit',
         terms: {},
       },
       milestone: {
         codename: 'milestone',
-        id: 'aa491c9a-10fc-48de-b6e6-d44cf87e749c',
+        id: '541fdbb9-9f32-492f-83b4-26dcf6113a3e',
         externalId: undefined,
         name: 'Milestone',
         terms: {},
       },
       testimonial: {
         codename: 'testimonial',
-        id: '64cf93de-f523-45e2-ba41-6539c7b66a5b',
+        id: '5060e472-a661-4c8b-89eb-1f43466f1cf2',
         externalId: undefined,
         name: 'Testimonial',
         terms: {},

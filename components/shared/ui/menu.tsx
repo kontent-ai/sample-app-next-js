@@ -4,10 +4,10 @@ import { NextRouter, useRouter } from "next/router";
 import { FC, useState } from "react";
 
 import { mainColorBgClass } from "../../../lib/constants/colors";
+import { ResolutionContext, resolveReference, resolveUrlPath } from "../../../lib/routing";
 import { createItemSmartLink } from "../../../lib/utils/smartLinkUtils";
 import { Article, contentTypes, Nav_NavigationItem, Product, WSL_Page, WSL_WebSpotlightRoot } from "../../../models";
 import { useSiteCodename } from "../siteCodenameContext";
-import { ResolutionContext, resolveReference, resolveUrlPath } from "../../../lib/routing";
 
 type Link = Readonly<Nav_NavigationItem>;
 
@@ -33,7 +33,7 @@ const isCurrentNavigationItemActive = (navigation: Nav_NavigationItem, router: N
   const pathWithoutQuerystring = router.asPath.replace(/\?.*/, '');
   const pathSegments = pathWithoutQuerystring.split("/");
   const topLevelSegment = pathSegments[1];
-  const pageLink = navigation.elements.referenceInternalLink.linkedItems[0]
+  const pageLink = navigation.elements.referenceContentItemLink.linkedItems[0]
   return pageLink && isPage(pageLink) && pageLink.elements.slug.value === topLevelSegment;
 };
 
