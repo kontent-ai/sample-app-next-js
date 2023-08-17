@@ -3,6 +3,7 @@ import { NextApiHandler } from "next";
 import { ResolutionContext, resolveUrlPath } from "../../lib/routing";
 
 const handler: NextApiHandler = async (req, res) => {
+  // TODO move secret to env variables
   if (req.query.secret !== 'mySuperSecret' || !req.query.slug || !req.query.type) {
     return res.status(401).json({ message: 'Invalid preview token, or no slug and type provided.' })
   }
