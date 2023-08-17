@@ -7,35 +7,35 @@
  */
 export const contentTypeSnippets = {
   /**
-   * 💡 Emoji guideline
+   * 💡 Spotlight guidelines
    */
-  _emoji_guideline_90c26f3: {
-    codename: '_emoji_guideline_90c26f3',
+  spotlight_guidelines: {
+    codename: 'spotlight_guidelines',
     id: '90c26f3d-2866-5955-b65e-f52ad8a0a481',
     externalId: 'bulbSnippet-35260293-daeb-4de7-b7d3-7f771538e262',
-    name: '💡 Emoji guideline',
+    name: '💡 Spotlight guidelines',
     elements: {},
   },
 
   /**
-   * 🧩 Emoji guideline
+   * 🧩 Component guidelines
    */
-  _emoji_guideline_0de9f7c: {
-    codename: '_emoji_guideline_0de9f7c',
+  component_guidelines: {
+    codename: 'component_guidelines',
     id: '0de9f7c1-1ce0-591d-b93f-fe4859efd627',
     externalId: 'puzzleSnippet-92638968-f2bd-4843-bd17-e86dd3926a92',
-    name: '🧩 Emoji guideline',
+    name: '🧩 Component guidelines',
     elements: {},
   },
 
   /**
-   * 🧱 Emoji guideline
+   * 🧱 Visual component guidelines
    */
-  _emoji_guideline: {
-    codename: '_emoji_guideline',
+  visual_component_guidelines: {
+    codename: 'visual_component_guidelines',
     id: 'f6739376-35b8-598f-8643-2f4f12992fe3',
     externalId: 'brickSnippet-d8d5c03f-7672-4e2d-8968-770c5b69e2c8',
-    name: '🧱 Emoji guideline',
+    name: '🧱 Visual component guidelines',
     elements: {},
   },
 
@@ -143,41 +143,6 @@ export const contentTypeSnippets = {
         id: 'a0f7ffe0-5e94-532f-a86e-d77761eb35af',
         externalId: 'keywords-2b4ba0dc-10f1-4da9-b559-3c374c45517d',
         name: 'Keywords',
-        required: false,
-        type: 'text',
-      },
-    },
-  },
-
-  /**
-   * Title & message
-   */
-  title___message: {
-    codename: 'title___message',
-    id: '70b793f6-7517-43f0-86f4-cacc44da73c3',
-    externalId: undefined,
-    name: 'Title & message',
-    elements: {
-      /**
-       * Title (text)
-       */
-      title___message__title: {
-        codename: 'title___message__title',
-        id: '5cf411ef-3d13-484a-80c4-591d2c16d2c5',
-        externalId: undefined,
-        name: 'Title',
-        required: false,
-        type: 'text',
-      },
-
-      /**
-       * Message (text)
-       */
-      title___message__message: {
-        codename: 'title___message__message',
-        id: '9f4ebd8f-1e71-4273-8348-777d6dbf197f',
-        externalId: undefined,
-        name: 'Message',
         required: false,
         type: 'text',
       },

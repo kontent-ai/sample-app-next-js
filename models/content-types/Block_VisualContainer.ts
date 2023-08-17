@@ -1,5 +1,5 @@
 import { type IContentItem, type Elements } from '@kontent-ai/delivery-sdk';
-import { type Block_EmojiGuideline } from '../content-type-snippets/Block_EmojiGuideline';
+import { type Block_VisualComponentGuidelines } from '../content-type-snippets/Block_VisualComponentGuidelines';
 import { type Fact } from './fact';
 
 /**
@@ -44,4 +44,4 @@ export type Block_VisualContainer = IContentItem<{
    */
   visualRepresentation: Elements.MultipleChoiceElement;
 }> &
-  Block_EmojiGuideline;
+  Block_VisualComponentGuidelines;

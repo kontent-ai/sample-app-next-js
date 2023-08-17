@@ -493,32 +493,6 @@ export const contentTypes = {
         type: 'text',
         snippetCodename: 'reference',
       },
-
-      /**
-       * Message (text)
-       */
-      title___message__message: {
-        codename: 'title___message__message',
-        id: '9f4ebd8f-1e71-4273-8348-777d6dbf197f',
-        externalId: undefined,
-        name: 'Message',
-        required: false,
-        type: 'text',
-        snippetCodename: 'title___message',
-      },
-
-      /**
-       * Title (text)
-       */
-      title___message__title: {
-        codename: 'title___message__title',
-        id: '5cf411ef-3d13-484a-80c4-591d2c16d2c5',
-        externalId: undefined,
-        name: 'Title',
-        required: false,
-        type: 'text',
-        snippetCodename: 'title___message',
-      },
     },
   },
 

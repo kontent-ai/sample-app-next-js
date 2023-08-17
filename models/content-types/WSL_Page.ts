@@ -4,7 +4,7 @@ import { type Block_ContentChunk } from './Block_ContentChunk';
 import { type Block_VisualContainer } from './Block_VisualContainer';
 import { type Product } from './product';
 import { type SEOMetadata } from '../content-type-snippets/SEOMetadata';
-import { type WSL_EmojiGuideline } from '../content-type-snippets/WSL_EmojiGuideline';
+import { type WSL_SpotlightGuidelines } from '../content-type-snippets/WSL_SpotlightGuidelines';
 import { type WSL_WebSpotlightRoot } from './WSL_WebSpotlightRoot';
 
 /**
@@ -51,5 +51,5 @@ export type WSL_Page = IContentItem<{
    */
   title: Elements.TextElement;
 }> &
-  WSL_EmojiGuideline &
+  WSL_SpotlightGuidelines &
   SEOMetadata;
