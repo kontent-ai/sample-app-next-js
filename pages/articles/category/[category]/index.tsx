@@ -11,7 +11,7 @@ import { AppPage } from "../../../../components/shared/ui/appPage";
 import { mainColorBgClass, mainColorBorderClass, mainColorHoverClass } from "../../../../lib/constants/colors";
 import { ArticlePageSize } from "../../../../lib/constants/paging";
 import { getArticlesCountByCategory, getArticlesForListing, getDefaultMetadata, getItemByCodename, getItemsTotalCount, getSiteMenu } from "../../../../lib/kontentClient";
-import { pageCodenames } from "../../../../lib/routing";
+import { PerCollectionCodenames, ResolutionContext, pageCodenames, resolveUrlPath } from "../../../../lib/routing";
 import { ValidCollectionCodename } from "../../../../lib/types/perCollection";
 import { ArticleListingUrlQuery, ArticleTypeWithAll, categoryFilterSource, isArticleType } from "../../../../lib/utils/articlesListing";
 import { siteCodename } from "../../../../lib/utils/env";
@@ -47,7 +47,10 @@ const LinkButton: FC<LinkButtonProps> = props => {
   return (
     <Link
       scroll={false}
-      href={props.disabled ? '/articles' : props.href}
+      href={props.disabled ? resolveUrlPath({
+        type: "article",
+        term: "all"
+      }) : props.href}
       className="h-full"
     >
       <button
@@ -86,7 +89,10 @@ const FilterOptions: FC<FilterOptionProps> = ({ options, router }) => {
         {Object.entries(options).map(([key, value]) => (
           <Link
             key={key}
-            href={`/articles/category/${key}`}
+            href={resolveUrlPath({
+              type: "article",
+              term: key
+            } as ResolutionContext)}
             onClick={() => setDropdownActive(!dropdownActive)}
             scroll={false}
             className={`inline-flex items-center z-40 md:justify-between md:mr-4 md:w-max px-6 py-1 no-underline ${key === category ? [mainColorBgClass[siteCodename], mainColorBorderClass[siteCodename], "cursor-default"].join(" ") : `border-gray-200 bg-white ${mainColorHoverClass[siteCodename]} cursor-pointer`} md:rounded-3xl`}
@@ -94,7 +100,10 @@ const FilterOptions: FC<FilterOptionProps> = ({ options, router }) => {
           </Link>
         ))}
         <Link
-          href="/articles"
+          href={resolveUrlPath({
+            type: "article",
+            term: "all"
+          })}
           onClick={() => setDropdownActive(!dropdownActive)}
           scroll={false}
           className={`px-6 py-1 ${category === "all" ? "hidden" : ""} bg-gray-500 text-white no-underline font-bold md:rounded-3xl cursor-pointer`}
@@ -162,8 +171,11 @@ const ArticlesPage: FC<Props> = props => {
                     itemId={article.system.id}
                     description={article.elements.abstract.value}
                     imageUrl={article.elements.heroImage.value[0]?.url || ""}
-                    publisingDate={article.elements.publishingDate.value}
-                    detailUrl={`/articles/${article.elements.slug.value}`}
+                    publishingDate={article.elements.publishingDate.value}
+                    detailUrl={resolveUrlPath({
+                      type: "article",
+                      slug: article.elements.slug.value
+                    })}
                   />
                 )
               ))}
@@ -179,7 +191,16 @@ const ArticlesPage: FC<Props> = props => {
                 <li>
                   <LinkButton
                     text="Previous"
-                    href={createPagingButtonLink((page ?? 0) - 1)}
+                    href={!page || page === 2
+                      ? resolveUrlPath({
+                        type: "article",
+                        term: "all"
+                      })
+                      : resolveUrlPath({
+                        type: "article",
+                        term: category,
+                        page: page - 1
+                      } as ResolutionContext)}
                     disabled={!page}
                     roundLeft
                   />
@@ -189,7 +210,11 @@ const ArticlesPage: FC<Props> = props => {
                   <li key={i}>
                     <LinkButton
                       text={`${i + 1}`}
-                      href={createPagingButtonLink(i + 1)}
+                      href={resolveUrlPath({
+                        type: "article",
+                        term: category,
+                        page: i === 0 ? undefined : i - 1
+                      } as ResolutionContext)}
                       highlight={(page ?? 1) === i + 1}
                     />
                   </li>
@@ -197,7 +222,11 @@ const ArticlesPage: FC<Props> = props => {
                 <li>
                   <LinkButton
                     text="Next"
-                    href={`/articles/category/${category}/page/${page ? page + 1 : 2}`}
+                    href={resolveUrlPath({
+                      type: "article",
+                      term: category,
+                      page: page ? page + 1 : 2
+                    } as ResolutionContext)}
                     disabled={(page ?? 1) === pageCount}
                     roundRight
                   />

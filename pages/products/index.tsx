@@ -9,11 +9,11 @@ import { AppPage } from "../../components/shared/ui/appPage";
 import { mainColorBgClass } from "../../lib/constants/colors";
 import { ProductsPageSize } from "../../lib/constants/paging";
 import { getDefaultMetadata, getItemByCodename, getProductsForListing, getSiteMenu } from "../../lib/kontentClient";
-import { pageCodenames } from "../../lib/routing";
+import { pageCodenames, resolveUrlPath } from "../../lib/routing";
 import { ValidCollectionCodename } from "../../lib/types/perCollection";
 import { changeUrlQueryString } from "../../lib/utils/changeUrlQueryString";
 import { siteCodename } from "../../lib/utils/env";
-import { Nav_NavigationItem, Product, SEOMetadata, WSL_Page } from "../../models";
+import { Nav_NavigationItem, Product, SEOMetadata, WSL_Page, contentTypes } from "../../models";
 
 type Props = Readonly<{
   page: WSL_Page;
@@ -59,7 +59,10 @@ const ProductListing: FC<ProductListingProps> = (props) => {
           key={p.system.id}
           imageUrl={p.elements.productImage.value[0]?.url || ""}
           title={p.elements.title.value}
-          detailUrl={`products/${p.elements.slug.value}`}
+          detailUrl={resolveUrlPath({
+            type: "product",
+            slug: p.elements.slug.value
+          })}
           price={p.elements.price.value}
           category={p.elements.productCategory.value[0]?.name || ""}
           itemId={p.system.id}

@@ -4,10 +4,10 @@ import { NextRouter, useRouter } from "next/router";
 import { FC, useState } from "react";
 
 import { mainColorBgClass } from "../../../lib/constants/colors";
-import { externalUrlsMapping } from "../../../lib/constants/menu";
 import { createItemSmartLink } from "../../../lib/utils/smartLinkUtils";
-import { Article, contentTypes,Nav_NavigationItem, Product, WSL_Page, WSL_WebSpotlightRoot } from "../../../models";
+import { Article, contentTypes, Nav_NavigationItem, Product, WSL_Page, WSL_WebSpotlightRoot } from "../../../models";
 import { useSiteCodename } from "../siteCodenameContext";
+import { ResolutionContext, resolveReference, resolveUrlPath } from "../../../lib/routing";
 
 type Link = Readonly<Nav_NavigationItem>;
 
@@ -37,25 +37,6 @@ const isCurrentNavigationItemActive = (navigation: Nav_NavigationItem, router: N
   return pageLink && isPage(pageLink) && pageLink.elements.slug.value === topLevelSegment;
 };
 
-const resolveLink = (link: Readonly<Nav_NavigationItem>) => {
-  if (link.elements.referenceExternalUrl.value) {
-    return link.elements.referenceExternalUrl.value;
-  }
-
-  const pageLink = link.elements.referenceInternalLink.linkedItems[0];
-  const collectionDomain = externalUrlsMapping[pageLink?.system.collection ?? ""] || "";
-
-  if (!pageLink) {
-    return "/invalid-link";
-  }
-
-  if (!isPage(pageLink)) {
-    return collectionDomain;
-  }
-
-  return collectionDomain + "/" + pageLink.elements.slug.value;
-}
-
 const MenuList: FC<MenuListProps> = props => {
   const router = useRouter();
   const siteCodename = useSiteCodename();
@@ -81,7 +62,7 @@ const MenuList: FC<MenuListProps> = props => {
           ) : (
             <Link
               className="h-full flex items-center justify-between w-full py-2 pl-3 pr-4 font-medium text-gray-900 border-b border-gray-100 md:w-auto md:bg-transparent md:border-0 md:hover:bg-white"
-              href={resolveLink(link)}
+              href={resolveReference(link)}
               title={link.elements.referenceCaption.value}
             >
               {link.elements.referenceLabel.value}
@@ -113,7 +94,7 @@ const DropdownMenuItems: FC<DropdownMenuProps> = props => {
       {props.links.map(link => (
         <li key={link.system.codename}>
           <Link
-            href={resolveLink(link)}
+            href={resolveReference(link)}
             className={`${isCurrentNavigationItemActive(link, router) ? "border-l-gray-500 cursor-default " : "border-l-transparent hover:border-l-gray-500"}
           block p-3 bg-gray-200 border-l-8 h-full`}
           >
@@ -144,7 +125,9 @@ export const Menu: FC<Props> = props => {
         <div className="w-screen h-full md:flex justify-between z-50 md:pr-24 xl:pr-12 2xl:pr-0">
           <div className="flex h-full justify-between items-center px-8 py-4">
             <Link
-              href="/"
+              href={resolveUrlPath({
+                type: "web_spotlight_root"
+              } as ResolutionContext)}
               className="flex items-center"
             >
               <span className="font-extrabold">Ficto</span>

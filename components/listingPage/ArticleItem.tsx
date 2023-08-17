@@ -12,7 +12,7 @@ type Props = Readonly<{
   title: string;
   detailUrl: string;
   description: string,
-  publisingDate: string | null,
+  publishingDate: string | null,
   itemId?: string;
 }>;
 
@@ -35,9 +35,9 @@ export const ArticleItem: FC<Props> = props => {
             className="object-cover h-full m-0 p-0 md:rounded-t-lg"
           />
         </figure>
-        {props.publisingDate && (
+        {props.publishingDate && (
           <div className="w-fit p-2 bg-gray-800 text-white opacity-90 font-normal line-clamp-6 absolute right-0 translate-y-[-100%]">
-            <p className="m-0 w-fit">{formatDate(props.publisingDate)}</p>
+            <p className="m-0 w-fit">{formatDate(props.publishingDate)}</p>
           </div>
         )}
         <div className="p-5">

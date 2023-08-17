@@ -1,4 +1,4 @@
-import { Article, contentTypes, Product, WSL_Page, WSL_WebSpotlightRoot } from "../models";
+import { Article, contentTypes, Product, taxonomies, WSL_Page, WSL_WebSpotlightRoot } from "../models";
 import { Reference } from '../models/content-type-snippets/reference';
 import { PerCollection } from "./types/perCollection";
 
@@ -22,28 +22,83 @@ export const pageCodenames = {
   },
 } as const satisfies Record<string, PerCollectionCodenames>;
 
-export const resolveUrlPath = (urlSlug: string, type: string) => {
+const getExternalUrlsMapping = () => Object.fromEntries(
+  process.env.NEXT_PUBLIC_OTHER_COLLECTIONS_DOMAINS?.split(",")
+    .map(collectionPair => collectionPair.split(":"))
+    .map(([collectionCodename, domain]) => [collectionCodename, "https://" + domain]) ?? []
+);
 
-  // Possible to extend load more context to use i.e. taxonomy to define more complex routing.
-  // const item = await getItemBySlug(urlSlug, type);
 
-  switch (type) {
+type RecursiveTaxonomyCodenames<T extends { readonly terms: unknown }> = keyof T["terms"] extends infer TermCodenames
+  ? TermCodenames extends keyof T["terms"]
+  ? T["terms"][TermCodenames] extends infer ChildTerm extends { readonly terms: unknown }
+  ? RecursiveTaxonomyCodenames<ChildTerm> | TermCodenames
+  : never
+  : never
+  : never;
+
+type ArticleListingPathOptions = {
+  type: typeof contentTypes.article.codename;
+  term: keyof typeof taxonomies.article_type.terms | "all",
+  page?: number
+}
+
+type ProductListingPathOptions = {
+  type: typeof contentTypes.product.codename;
+  terms: ReadonlyArray<RecursiveTaxonomyCodenames<typeof taxonomies.product_category>>
+  page?: number
+}
+
+type GenericContentTypeOptions = {
+  type: typeof contentTypes.page.codename
+  | typeof contentTypes.article.codename
+  | typeof contentTypes.product.codename,
+  slug: string
+}
+
+type WebSpotlightRootOptions = {
+  type: typeof contentTypes.web_spotlight_root.codename
+}
+
+export type ResolutionContext = GenericContentTypeOptions
+  | ArticleListingPathOptions
+  | ProductListingPathOptions
+  | GenericContentTypeOptions
+  | WebSpotlightRootOptions;
+
+export const resolveUrlPath = (context: ResolutionContext) => {
+
+  switch (context.type) {
     case contentTypes.web_spotlight_root.codename: {
       return `/`;
     }
     case contentTypes.page.codename: {
       // Possible to extend Page content type by i.e taxonomy to define more complex routing.
-      return `/${urlSlug}`;
+      return `/${context.slug}`;
     }
     case contentTypes.article.codename: {
-      return `/articles/${urlSlug}`;
+      if ("term" in context) {
+        if (context.term === "all" && !context.page) {
+          return "/articles"
+        }
+
+        return `/articles/categories/${context.term}${context.page ? `/page/${context.page}` : ""}`
+      }
+
+      return `/articles/${context.slug}`;
 
     }
     case contentTypes.product.codename: {
-      return `/products/${urlSlug}`;
+      if ("terms" in context) {
+        const categoriesQuery = context.terms.map(term => `category=${term}`).join("&");
+        const pageQuery = context.page ? `&page=${context.page}` : "";
+        return `/products?${categoriesQuery}${pageQuery}`
+      }
+
+      return `/products/${context.slug}`;
     }
     default:
-      throw Error(`Not supported resolution for items of type ${type}`);
+      throw Error(`Not supported resolution for options ${JSON.stringify(context)}`);
   }
 }
 
@@ -62,9 +117,16 @@ export const resolveReference = (reference: Reference) => {
     return "#";
   }
 
-  if (isWSRoot(referencedItem)) {
-    return resolveUrlPath("/", referencedItem.system.type)
-  }
+  const collectionDomain = getExternalUrlsMapping()[referencedItem?.system.collection ?? ""] || "";
 
-  return resolveUrlPath(referencedItem.elements.slug.value, referencedItem.system.type);
+  const slug = isWSRoot(referencedItem)
+    ? "/"
+    : referencedItem.elements.slug.value; // expecting "slug" codename
+
+  const urlPath = resolveUrlPath({
+    type: referencedItem.system.type,
+    slug
+  } as GenericContentTypeOptions);
+
+  return collectionDomain + urlPath;
 }
