@@ -1,6 +1,6 @@
 import { FC } from "react";
 
-import { Block_VisualContainer, contentTypes } from "../../../models";
+import { Block_VisualContainer } from "../../../models";
 import { BuildError } from "../ui/BuildError";
 import { CarouselComponent } from "./Carousel";
 import { GridComponent } from "./Grid";
@@ -12,7 +12,6 @@ type Props = Readonly<{
 }>;
 
 export const VisualContainer: FC<Props> = props => {
-  debugger;
   switch (props.item.elements.visualRepresentation.value[0]?.codename) {
     case visualRepresentation.grid:
       return (
@@ -30,7 +29,6 @@ export const VisualContainer: FC<Props> = props => {
         />
       );
     case visualRepresentation.hero_unit:
-      debugger;
       if (props.item.elements.items.linkedItems.length === 1) {
         const fact = props.item.elements.items.linkedItems[0];
         return (

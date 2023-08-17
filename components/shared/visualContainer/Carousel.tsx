@@ -4,7 +4,6 @@ import { FC, useState } from "react";
 import { range } from "../../../lib/utils/range";
 import { Fact } from "../../../models";
 import { HeroUnitComponent } from "./HeroUnit";
-import { Content } from "../Content";
 
 type Props = Readonly<{
   items: ReadonlyArray<Fact>;
