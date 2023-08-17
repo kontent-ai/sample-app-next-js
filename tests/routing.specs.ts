@@ -45,7 +45,7 @@ describe("resolveUrlPath", () => {
         type: "article",
         term: "research"
       } as ResolutionContext,
-      "/articles/categories/research"
+      "/articles/category/research"
     ],
     [
       {
@@ -67,7 +67,7 @@ describe("resolveUrlPath", () => {
         term: "all",
         page: 3
       } as ResolutionContext,
-      "/articles/categories/all/page/3"
+      "/articles/category/all/page/3"
     ],
     [
       {
@@ -75,7 +75,7 @@ describe("resolveUrlPath", () => {
         term: "research",
         page: 3
       } as ResolutionContext,
-      "/articles/categories/research/page/3"
+      "/articles/category/research/page/3"
     ],
     [
       {

@@ -82,7 +82,7 @@ export const resolveUrlPath = (context: ResolutionContext) => {
           return "/articles"
         }
 
-        return `/articles/categories/${context.term}${context.page ? `/page/${context.page}` : ""}`
+        return `/articles/category/${context.term}${context.page ? `/page/${context.page}` : ""}`
       }
 
       return `/articles/${context.slug}`;
