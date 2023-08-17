@@ -4,8 +4,7 @@ import { FC } from "react";
 
 import { Content } from "../components/shared/Content";
 import { AppPage } from "../components/shared/ui/appPage";
-import { getDefaultMetadata, getItemByCodename, getSiteMenu } from "../lib/kontentClient";
-import { pageCodenames } from '../lib/routing';
+import { getDefaultMetadata, getItemBySlug, getPagesSlugs, getSiteMenu } from "../lib/kontentClient";
 import { ValidCollectionCodename } from "../lib/types/perCollection";
 import { siteCodename } from "../lib/utils/env";
 import { createElementSmartLink, createFixedAddSmartLink } from "../lib/utils/smartLinkUtils";
@@ -21,10 +20,10 @@ type Props = Readonly<{
 interface IParams extends ParsedUrlQuery {
   slug: string
 }
-const pageCodenamesForGenericPrerender: ReadonlyArray<keyof typeof pageCodenames> = ['about-us'];
-
 export const getStaticPaths: GetStaticPaths = async () => {
-  const paths = pageCodenamesForGenericPrerender.map(slug => (
+  const slugs = await getPagesSlugs();
+
+  const paths = slugs.map(slug => (
     { params: { slug } }
   ))
   return {
@@ -33,10 +32,6 @@ export const getStaticPaths: GetStaticPaths = async () => {
   }
 }
 
-const isValidSlug = (slug: string | undefined): slug is keyof typeof pageCodenames =>
-  Object.keys(pageCodenames).includes(slug || "")
-
-// `getStaticPaths` requires using `getStaticProps`
 export const getStaticProps: GetStaticProps<Props, IParams> = async (context) => {
   const slug = context.params?.slug;
 
@@ -46,18 +41,21 @@ export const getStaticProps: GetStaticProps<Props, IParams> = async (context) =>
     }
   }
 
-  if (!isValidSlug(slug)) {
-    return {
-      notFound: true
-    }
-  }
-
-  const pageCodename = pageCodenames[slug];
+  // TODO fixed by rebase
+  // if (slug === "articles") {
+  //   return {
+  //     redirect: {
+  //       destination: `/articles/category/all`,
+  //       permanent: true,
+  //     }
+  //   }
+  // }
 
   const siteMenu = await getSiteMenu(!!context.preview);
   const defaultMetadata = await getDefaultMetadata(!!context.preview);
 
-  const page = await getItemByCodename<WSL_Page>(pageCodename, !!context.preview);
+  const page = await getItemBySlug<WSL_Page>(slug, contentTypes.page.codename, !!context.preview);
+
   if (page === null) {
     return {
       notFound: true

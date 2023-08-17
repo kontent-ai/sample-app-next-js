@@ -17,7 +17,7 @@ type Props = Readonly<{
   item: Block_ContentChunk;
 }>;
 
-export const RichTextContentComponent: FC<Props> = props => (
+export const ContentChunk: FC<Props> = props => (
   <div
     className="px-3 md:px-0"
     {...createItemSmartLink(props.item.system.id)}
@@ -116,18 +116,17 @@ const createDefaultResolvers = (element: Elements.RichTextElement, isElementInsi
     component: ({ value }: PortableTextTypeComponentProps<IPortableTextComponent>) => {
       const componentItem = element.linkedItems.find(i => i.system.codename === value.component._ref);
       if (!componentItem) {
-        throw new Error("Component item not found, probably not enought depth requested.");
+        throw new Error("Component item not found, probably not enough depth requested.");
       }
 
       switch (componentItem.system.type) {
         case contentTypes.callout.codename:
           return <CalloutComponent item={componentItem as Component_Callout} />;
         case contentTypes.action.codename:
-          return <BuildError>TODO: Implement for content type &quot;{componentItem.system.type}&quot;</BuildError>;
         case contentTypes.fact.codename:
           return <BuildError>TODO: Implement for content type &quot;{componentItem.system.type}&quot;</BuildError>;
         case contentTypes.content_chunk.codename:
-          return <RichTextContentComponent item={componentItem as Block_ContentChunk} />;
+          return <ContentChunk item={componentItem as Block_ContentChunk} />;
         default:
           return <BuildError>Unsupported content type &quot;{componentItem.system.type}&quot;</BuildError>;
       }

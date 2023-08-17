@@ -2,12 +2,11 @@ import { GetStaticProps } from "next";
 import { FC } from "react";
 
 import { ArticlePageSize } from "../../../../../lib/constants/paging";
-import { getArticlesCountByCategory, getArticlesForListing, getDefaultMetadata, getItemByCodename, getItemsTotalCount, getSiteMenu } from "../../../../../lib/kontentClient";
-import { PerCollectionCodenames } from "../../../../../lib/routing";
+import { getArticlesCountByCategory, getArticlesForListing, getDefaultMetadata, getItemBySlug, getItemsTotalCount, getSiteMenu } from "../../../../../lib/kontentClient";
 import { ValidCollectionCodename } from "../../../../../lib/types/perCollection";
 import { ArticleListingUrlQuery, ArticleTypeWithAll, categoryFilterSource, isArticleType } from "../../../../../lib/utils/articlesListing";
 import { siteCodename } from "../../../../../lib/utils/env";
-import { Article, Nav_NavigationItem, SEOMetadata, WSL_Page } from "../../../../../models";
+import { Article, contentTypes,Nav_NavigationItem, SEOMetadata, WSL_Page } from "../../../../../models";
 import ArticlesPage from "..";
 
 type Props = Readonly<{
@@ -24,12 +23,6 @@ const ArticlesPagingPage: FC<Props> = props => {
 }
 
 export const getStaticProps: GetStaticProps<Props, ArticleListingUrlQuery> = async context => {
-  const pageCodename: PerCollectionCodenames = {
-    ficto_healthtech: "articles",
-    ficto_healthtech_imaging: null,
-    ficto_healthtech_surgical: "articles_surgical"
-  };
-
   const pageURLParameter = context.params?.page;
   const pageNumber = !pageURLParameter || isNaN(+pageURLParameter) ? 1 : +pageURLParameter;
 
@@ -47,7 +40,7 @@ export const getStaticProps: GetStaticProps<Props, ArticleListingUrlQuery> = asy
 
   const articles = await getArticlesForListing(!!context.preview, pageNumber, context.params?.category ?? 'all');
   const siteMenu = await getSiteMenu(!!context.preview);
-  const page = await getItemByCodename<WSL_Page>(pageCodename, !!context.preview);
+  const page = await getItemBySlug<WSL_Page>("articles", contentTypes.page.codename, !!context.preview);
   const itemCount = await getArticlesCountByCategory(!!context.preview, selectedCategory);
   const defaultMetadata = await getDefaultMetadata(!!context.preview);
 

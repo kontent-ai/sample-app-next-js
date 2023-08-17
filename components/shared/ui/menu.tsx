@@ -40,7 +40,6 @@ const isCurrentNavigationItemActive = (navigation: Nav_NavigationItem, router: N
 const MenuList: FC<MenuListProps> = props => {
   const router = useRouter();
   const siteCodename = useSiteCodename();
-
   return (
     <ul className={`${props.smallMenuActive ? "flex" : "hidden"} flex-col md:flex md:gap-4 font-medium md:flex-row h-full`}>
       {props.items.map((link, i) => (

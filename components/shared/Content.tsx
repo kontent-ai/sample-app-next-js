@@ -1,7 +1,7 @@
 import { ComponentType, FC } from "react";
 
 import { Block_ContentChunk, Block_VisualContainer, contentTypes } from "../../models";
-import { RichTextContentComponent } from "./RichTextContent";
+import { ContentChunk as ContentChunk } from "./ContentChunk";
 import { VisualContainer } from "./visualContainer/VisualContainer";
 
 type AcceptedType = AcceptedTypesByCodename[keyof AcceptedTypesByCodename];
@@ -25,7 +25,7 @@ export const Content: FC<Props> = props => {
 }
 
 const componentMap: Readonly<{ [key in keyof AcceptedTypesByCodename]: ComponentType<Readonly<{ item: AcceptedTypesByCodename[key] }>> }> = {
-  content_chunk: RichTextContentComponent,
+  content_chunk: ContentChunk,
   visual_container: VisualContainer,
 };
 

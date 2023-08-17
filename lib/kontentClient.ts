@@ -1,9 +1,7 @@
 import { camelCasePropertyNameResolver, createDeliveryClient, DeliveryError, IContentItem } from '@kontent-ai/delivery-sdk';
 
-import { Article, contentTypes, Product, SEOMetadata,WSL_WebSpotlightRoot } from '../models';
-import { perCollectionRootItems } from './constants/menu';
+import { Article, contentTypes, Product, SEOMetadata, WSL_Page, WSL_WebSpotlightRoot } from '../models';
 import { ArticlePageSize, ProductsPageSize } from './constants/paging';
-import { PerCollectionCodenames } from './routing';
 import { ArticleTypeWithAll } from './utils/articlesListing';
 import { siteCodename } from './utils/env';
 
@@ -31,15 +29,9 @@ const deliveryClient = createDeliveryClient({
   previewApiKey: process.env.KONTENT_PREVIEW_API_KEY
 });
 
-export const getItemByCodename = <ItemType extends IContentItem>(codename: PerCollectionCodenames, usePreview: boolean): Promise<ItemType | null> => {
-  const itemCodename = codename[siteCodename];
-
-  if (itemCodename === null) {
-    return Promise.resolve(null);
-  }
-
+export const getItemByCodename = <ItemType extends IContentItem>(codename: string, usePreview: boolean): Promise<ItemType | null> => {
   return deliveryClient
-    .item(itemCodename)
+    .item<ItemType>(codename)
     .queryConfig({
       usePreviewMode: usePreview,
     })
@@ -49,7 +41,7 @@ export const getItemByCodename = <ItemType extends IContentItem>(codename: PerCo
       if (res.response.status === 404) {
         return null;
       }
-      return res.data.item as ItemType
+      return res.data.item
     })
     .catch((error) => {
       if (error instanceof DeliveryError) {
@@ -126,14 +118,24 @@ export const getProductDetail = (slug: string, usePreview: boolean) =>
     .equalsFilter(`elements.${contentTypes.product.elements.slug.codename}`, slug)
     .queryConfig({
       usePreviewMode: usePreview,
+      waitForLoadingNewContent: usePreview
+
     })
     .toAllPromise()
     .then(res => res.data.items[0]);
 
 export const getSiteMenu = async (usePreview: boolean) => {
-  const res = await getItemByCodename<WSL_WebSpotlightRoot>(perCollectionRootItems, usePreview);
-
-  return res?.elements.navigation.linkedItems[0] ?? null;
+  return deliveryClient.items<WSL_WebSpotlightRoot>()
+    .type(contentTypes.web_spotlight_root.codename)
+    .collection(siteCodename)
+    .queryConfig({
+      usePreviewMode: usePreview,
+      waitForLoadingNewContent: usePreview
+    })
+    .depthParameter(defaultDepth)
+    .toAllPromise()
+    .then(res => res.data.items[0] || null)
+    .then(item => item?.elements.navigation.linkedItems[0] || null)
 }
 
 export const getArticlesForListing = (usePreview: boolean, page?: number, articleType?: string, pageSize: number = ArticlePageSize) => {
@@ -144,6 +146,7 @@ export const getArticlesForListing = (usePreview: boolean, page?: number, articl
     .orderByDescending(`elements.${contentTypes.article.elements.publishing_date.codename}`)
     .queryConfig({
       usePreviewMode: usePreview,
+      waitForLoadingNewContent: usePreview
     })
     .limitParameter(pageSize)
 
@@ -179,6 +182,7 @@ export const getArticleBySlug = (slug: string, usePreview: boolean) =>
     .depthParameter(defaultDepth)
     .queryConfig({
       usePreviewMode: usePreview,
+      waitForLoadingNewContent: usePreview
     })
     .toAllPromise()
     .then(res => res.data.items[0]);
@@ -197,6 +201,7 @@ const getItemsCountByTypeQuery = (usePreview: boolean, contentTypeCodename?: str
     .collection(siteCodename)
     .queryConfig({
       usePreviewMode: usePreview,
+      waitForLoadingNewContent: usePreview
     })
 
   if (contentTypeCodename) {
@@ -231,6 +236,7 @@ export const getProductTaxonomy = async (usePreview: boolean) =>
     .taxonomy("product_category")
     .queryConfig({
       usePreviewMode: usePreview,
+      waitForLoadingNewContent: usePreview
     })
     .toPromise()
     .then(res => res.data.taxonomy.terms);
@@ -249,15 +255,22 @@ export const getDefaultMetadata = async (usePreview: boolean) =>
     .toPromise()
     .then(res => res.data.items[0] as SEOMetadata)
 
-export const getItemBySlug = async (slug: string, type: string): Promise<IContentItem> => {
-  const items = await deliveryClient.items()
+export const getItemBySlug = async <T extends IContentItem>(slug: string, type: string, usePreview: boolean = false): Promise<T | null> => {
+  const items = await deliveryClient.items<T>()
     .equalsFilter("elements.slug", slug)
     .type(type)
+    .collection(siteCodename)
+    .queryConfig({
+      usePreviewMode: usePreview,
+      waitForLoadingNewContent: usePreview
+    })
+    .depthParameter(defaultDepth)
     .toAllPromise()
     .then(response => response.data.items);
 
   if (items.length === 0) {
-    throw Error(`Could not find item with URL slug "${slug}" of type "${type}"`);
+    console.warn(`Could not find item with URL slug "${slug}" of type "${type}"`);
+    return null;
   }
 
   if (items.length > 1) {
@@ -270,3 +283,12 @@ export const getItemBySlug = async (slug: string, type: string): Promise<IConten
   }
   return item;
 }
+
+export const getPagesSlugs = () =>
+  deliveryClient
+    .items<WSL_Page>()
+    .type(contentTypes.page.codename)
+    .collection(siteCodename)
+    .elementsParameter([contentTypes.page.elements.slug.codename])
+    .toAllPromise()
+    .then(res => res.data.items.map(item => item.elements.slug.value));

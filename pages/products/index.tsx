@@ -8,12 +8,12 @@ import { Content } from "../../components/shared/Content";
 import { AppPage } from "../../components/shared/ui/appPage";
 import { mainColorBgClass } from "../../lib/constants/colors";
 import { ProductsPageSize } from "../../lib/constants/paging";
-import { getDefaultMetadata, getItemByCodename, getProductsForListing, getSiteMenu } from "../../lib/kontentClient";
-import { pageCodenames, resolveUrlPath } from "../../lib/routing";
+import { getDefaultMetadata, getItemBySlug, getProductsForListing, getSiteMenu } from "../../lib/kontentClient";
+import { resolveUrlPath } from "../../lib/routing";
 import { ValidCollectionCodename } from "../../lib/types/perCollection";
 import { changeUrlQueryString } from "../../lib/utils/changeUrlQueryString";
 import { siteCodename } from "../../lib/utils/env";
-import { Nav_NavigationItem, Product, SEOMetadata, WSL_Page } from "../../models";
+import { contentTypes,Nav_NavigationItem, Product, SEOMetadata, WSL_Page } from "../../models";
 
 type Props = Readonly<{
   page: WSL_Page;
@@ -219,9 +219,8 @@ export const Products: FC<Props> = props => {
 };
 
 export const getStaticProps: GetStaticProps<Props> = async context => {
-  const pageCodename = pageCodenames.products
-
-  const page = await getItemByCodename<WSL_Page>(pageCodename, !!context.preview);
+  // We might want to bound listing pages to something else than URL slug
+  const page = await getItemBySlug<WSL_Page>("products", contentTypes.page.codename, !!context.preview);
   const products = await getProductsForListing(!!context.preview);
   const siteMenu = await getSiteMenu(!!context.preview);
   const defaultMetadata = await getDefaultMetadata(!!context.preview);
@@ -231,7 +230,8 @@ export const getStaticProps: GetStaticProps<Props> = async context => {
       notFound: true
     };
   }
-
+  
+  // TODO consider rendering content and adjust metadata
   return {
     props: { page, siteCodename, defaultMetadata, products: products.items, totalCount: products.pagination.totalCount ?? 0, siteMenu, isPreview: !!context.preview },
   };

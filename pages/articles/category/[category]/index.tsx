@@ -10,12 +10,12 @@ import { useSiteCodename } from "../../../../components/shared/siteCodenameConte
 import { AppPage } from "../../../../components/shared/ui/appPage";
 import { mainColorBgClass, mainColorBorderClass, mainColorHoverClass } from "../../../../lib/constants/colors";
 import { ArticlePageSize } from "../../../../lib/constants/paging";
-import { getArticlesCountByCategory, getArticlesForListing, getDefaultMetadata, getItemByCodename, getItemsTotalCount, getSiteMenu } from "../../../../lib/kontentClient";
-import { PerCollectionCodenames, ResolutionContext, pageCodenames, resolveUrlPath } from "../../../../lib/routing";
+import { getArticlesCountByCategory, getArticlesForListing, getDefaultMetadata, getItemBySlug, getItemsTotalCount, getSiteMenu } from "../../../../lib/kontentClient";
+import { ResolutionContext, resolveUrlPath } from "../../../../lib/routing";
 import { ValidCollectionCodename } from "../../../../lib/types/perCollection";
 import { ArticleListingUrlQuery, ArticleTypeWithAll, categoryFilterSource, isArticleType } from "../../../../lib/utils/articlesListing";
 import { siteCodename } from "../../../../lib/utils/env";
-import { Article, Nav_NavigationItem, SEOMetadata, taxonomies, WSL_Page } from "../../../../models";
+import { Article, contentTypes, Nav_NavigationItem, SEOMetadata, taxonomies, WSL_Page } from "../../../../models";
 
 
 type Props = Readonly<{
@@ -243,7 +243,7 @@ const ArticlesPage: FC<Props> = props => {
 export const getStaticPaths = async () => {
 
   const getAllPagesForCategory = async (category: ArticleTypeWithAll) => {
-    const totalCount = category === 'all' ? await getItemsTotalCount(false, 'article') : await getArticlesCountByCategory(false, category);
+    const totalCount = category === 'all' ? await getItemsTotalCount(false, contentTypes.article.codename) : await getArticlesCountByCategory(false, category);
     const pagesNumber = Math.ceil((totalCount ?? 0) / ArticlePageSize);
     const pages = Array.from({ length: pagesNumber }).map((_, index) => index + 1);
     return pages.map(pageNumber => ({
@@ -261,7 +261,6 @@ export const getStaticPaths = async () => {
 };
 
 export const getStaticProps: GetStaticProps<Props, ArticleListingUrlQuery> = async context => {
-  const pageCodename = pageCodenames.articles;
   const pageURLParameter = context.params?.page;
   const selectedCategory = context.params?.category;
   if (!isArticleType(selectedCategory)) {
@@ -273,7 +272,7 @@ export const getStaticProps: GetStaticProps<Props, ArticleListingUrlQuery> = asy
   const pageNumber = !pageURLParameter || isNaN(+pageURLParameter) ? 1 : +pageURLParameter;
   const articles = await getArticlesForListing(!!context.preview, pageNumber, selectedCategory);
   const siteMenu = await getSiteMenu(!!context.preview);
-  const page = await getItemByCodename<WSL_Page>(pageCodename, !!context.preview);
+  const page = await getItemBySlug<WSL_Page>("articles", contentTypes.page.codename, !!context.preview);
   const itemCount = await getArticlesCountByCategory(false, selectedCategory)
   const defaultMetadata = await getDefaultMetadata(!!context.preview);
 
