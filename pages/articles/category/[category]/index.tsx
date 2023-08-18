@@ -132,14 +132,6 @@ const ArticlesPage: FC<Props> = props => {
   const filteredArticles = getFilteredArticles();
   const pageCount = Math.ceil(props.itemCount / ArticlePageSize);
 
-  const createPagingButtonLink = (pageNumber: number) => {
-    if(pageNumber > 1) {
-      return `/articles/category/${category}/page/${pageNumber}`
-    }
-
-    return category === 'all' ? '/articles' : `/articles/category/${category}`
-  }
-
   return (
     <AppPage
       siteCodename={props.siteCodename}

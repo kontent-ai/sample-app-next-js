@@ -44,7 +44,7 @@ export type ResolutionContext = GenericContentTypeOptions
   | GenericContentTypeOptions
   | WebSpotlightRootOptions;
 
-export const reservedListingSlugs: Record<string, string> = {
+export const reservedListingSlugs = {
   articles: "articles",
   products: "products"
 };

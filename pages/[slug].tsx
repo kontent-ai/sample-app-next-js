@@ -5,11 +5,11 @@ import { FC } from "react";
 import { Content } from "../components/shared/Content";
 import { AppPage } from "../components/shared/ui/appPage";
 import { getDefaultMetadata, getItemBySlug, getPagesSlugs, getSiteMenu } from "../lib/kontentClient";
+import { reservedListingSlugs } from "../lib/routing";
 import { ValidCollectionCodename } from "../lib/types/perCollection";
 import { siteCodename } from "../lib/utils/env";
 import { createElementSmartLink, createFixedAddSmartLink } from "../lib/utils/smartLinkUtils";
 import { contentTypes, Nav_NavigationItem, SEOMetadata, WSL_Page } from "../models";
-import { reservedListingSlugs } from "../lib/routing";
 
 type Props = Readonly<{
   page: WSL_Page;
