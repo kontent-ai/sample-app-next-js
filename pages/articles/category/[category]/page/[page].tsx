@@ -3,6 +3,7 @@ import { FC } from "react";
 
 import { ArticlePageSize } from "../../../../../lib/constants/paging";
 import { getArticlesCountByCategory, getArticlesForListing, getDefaultMetadata, getItemBySlug, getItemsTotalCount, getSiteMenu } from "../../../../../lib/kontentClient";
+import { reservedListingSlugs } from "../../../../../lib/routing";
 import { ValidCollectionCodename } from "../../../../../lib/types/perCollection";
 import { ArticleListingUrlQuery, ArticleTypeWithAll, categoryFilterSource, isArticleType } from "../../../../../lib/utils/articlesListing";
 import { siteCodename } from "../../../../../lib/utils/env";
@@ -40,7 +41,7 @@ export const getStaticProps: GetStaticProps<Props, ArticleListingUrlQuery> = asy
 
   const articles = await getArticlesForListing(!!context.preview, pageNumber, context.params?.category ?? 'all');
   const siteMenu = await getSiteMenu(!!context.preview);
-  const page = await getItemBySlug<WSL_Page>("articles", contentTypes.page.codename, !!context.preview);
+  const page = await getItemBySlug<WSL_Page>(reservedListingSlugs.articles, contentTypes.page.codename, !!context.preview);
   const itemCount = await getArticlesCountByCategory(!!context.preview, selectedCategory);
   const defaultMetadata = await getDefaultMetadata(!!context.preview);
 

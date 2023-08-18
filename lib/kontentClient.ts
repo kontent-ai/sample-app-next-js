@@ -76,7 +76,7 @@ export const getProductsForListing = async (usePreview: boolean, page?: number, 
   const query = deliveryClient
     .items<Product>()
     .type(contentTypes.product.codename)
-    .collection(siteCodename)
+    .collections([siteCodename, "default"])
     .elementsParameter([
       contentTypes.product.elements.title.codename,
       contentTypes.product.elements.product_image.codename,
@@ -107,7 +107,7 @@ export const getProductItemsWithSlugs = () =>
   deliveryClient
     .items<Product>()
     .type(contentTypes.product.codename)
-    .collection(siteCodename)
+    .collections([siteCodename, "default"])
     .elementsParameter([contentTypes.product.elements.slug.codename])
     .toAllPromise()
     .then(res => res.data.items)
@@ -142,7 +142,7 @@ export const getArticlesForListing = (usePreview: boolean, page?: number, articl
   const query = deliveryClient
     .items<Article>()
     .type(contentTypes.article.codename)
-    .collection(siteCodename)
+    .collections([siteCodename, "default"])
     .orderByDescending(`elements.${contentTypes.article.elements.publishing_date.codename}`)
     .queryConfig({
       usePreviewMode: usePreview,
@@ -168,7 +168,7 @@ export const getAllArticles = (usePreview: boolean) =>
   deliveryClient
     .items<Article>()
     .type(contentTypes.article.codename)
-    .collection(siteCodename)
+    .collections([siteCodename, "default"])
     .queryConfig({
       usePreviewMode: usePreview
     })
@@ -259,7 +259,7 @@ export const getItemBySlug = async <T extends IContentItem>(slug: string, type: 
   const items = await deliveryClient.items<T>()
     .equalsFilter("elements.slug", slug)
     .type(type)
-    .collection(siteCodename)
+    .collections([siteCodename, "default"])
     .queryConfig({
       usePreviewMode: usePreview,
       waitForLoadingNewContent: usePreview
@@ -288,7 +288,7 @@ export const getPagesSlugs = () =>
   deliveryClient
     .items<WSL_Page>()
     .type(contentTypes.page.codename)
-    .collection(siteCodename)
+    .collections([siteCodename, "default"])
     .elementsParameter([contentTypes.page.elements.slug.codename])
     .toAllPromise()
     .then(res => res.data.items.map(item => item.elements.slug.value));

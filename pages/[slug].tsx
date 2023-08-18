@@ -9,6 +9,7 @@ import { ValidCollectionCodename } from "../lib/types/perCollection";
 import { siteCodename } from "../lib/utils/env";
 import { createElementSmartLink, createFixedAddSmartLink } from "../lib/utils/smartLinkUtils";
 import { contentTypes, Nav_NavigationItem, SEOMetadata, WSL_Page } from "../models";
+import { reservedListingSlugs } from "../lib/routing";
 
 type Props = Readonly<{
   page: WSL_Page;
@@ -23,7 +24,10 @@ interface IParams extends ParsedUrlQuery {
 export const getStaticPaths: GetStaticPaths = async () => {
   const slugs = await getPagesSlugs();
 
-  const paths = slugs.map(slug => (
+  const paths = slugs
+  .filter(item => item != reservedListingSlugs.articles)
+  .filter(item => item != reservedListingSlugs.products)
+  .map(slug => (
     { params: { slug } }
   ))
   return {

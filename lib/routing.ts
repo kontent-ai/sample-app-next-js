@@ -44,6 +44,11 @@ export type ResolutionContext = GenericContentTypeOptions
   | GenericContentTypeOptions
   | WebSpotlightRootOptions;
 
+export const reservedListingSlugs: Record<string, string> = {
+  articles: "articles",
+  products: "products"
+};
+
 export const resolveUrlPath = (context: ResolutionContext) => {
 
   switch (context.type) {
@@ -57,23 +62,23 @@ export const resolveUrlPath = (context: ResolutionContext) => {
     case contentTypes.article.codename: {
       if ("term" in context) {
         if (context.term === "all" && !context.page) {
-          return "/articles"
+          return `/${reservedListingSlugs.articles}`
         }
 
-        return `/articles/category/${context.term}${context.page ? `/page/${context.page}` : ""}`
+        return `/${reservedListingSlugs.articles}/category/${context.term}${context.page ? `/page/${context.page}` : ""}`
       }
 
-      return `/articles/${context.slug}`;
+      return `/${reservedListingSlugs.articles}/${context.slug}`;
 
     }
     case contentTypes.product.codename: {
       if ("terms" in context) {
         const categoriesQuery = context.terms.map(term => `category=${term}`).join("&");
         const pageQuery = context.page ? `&page=${context.page}` : "";
-        return `/products?${categoriesQuery}${pageQuery}`
+        return `/${reservedListingSlugs.products}?${categoriesQuery}${pageQuery}`
       }
 
-      return `/products/${context.slug}`;
+      return `/${reservedListingSlugs.products}/${context.slug}`;
     }
     default:
       throw Error(`Not supported resolution for options ${JSON.stringify(context)}`);
