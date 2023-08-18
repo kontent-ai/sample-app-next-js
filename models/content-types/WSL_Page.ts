@@ -30,6 +30,8 @@ export type WSL_Page = IContentItem<{
    * Required: false
    * Id: 0dfcee1b-bc32-4775-b990-a8f2cdb9a8be
    * Codename: slug
+   *
+   * There are two reserved URLSlugs - "articles" and "producs" => these tow automatically include article/product  listing and ignore content property
    */
   slug: Elements.UrlSlugElement;
 

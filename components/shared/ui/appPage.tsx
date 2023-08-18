@@ -5,7 +5,7 @@ import { perCollectionSEOTitle } from "../../../lib/constants/labels";
 import { ValidCollectionCodename } from "../../../lib/types/perCollection";
 import { useSmartLink } from "../../../lib/useSmartLink";
 import { createItemSmartLink } from "../../../lib/utils/smartLinkUtils";
-import { Article, Nav_NavigationItem,Product, SEOMetadata, WSL_Page, WSL_WebSpotlightRoot } from "../../../models";
+import { Article, Nav_NavigationItem, Product, SEOMetadata, WSL_Page, WSL_WebSpotlightRoot } from "../../../models";
 import { SiteCodenameProvider } from "../siteCodenameContext";
 import { Footer } from "./footer";
 import { Menu } from "./menu";

@@ -1,5 +1,6 @@
 import { type IContentItem, type Elements } from '@kontent-ai/delivery-sdk';
 import { type ArticleType } from '../taxonomies/articleType';
+import { type ArticleTypeNew } from '../taxonomies/articleTypeNew';
 import { type Person } from './person';
 import { type SEOMetadata } from '../content-type-snippets/SEOMetadata';
 
@@ -78,5 +79,13 @@ export type Article = IContentItem<{
    * You can use online tools get score on your titles and incrementally improve it.
    */
   title: Elements.TextElement;
+
+  /**
+   * Article type (new) (taxonomy)
+   * Required: true
+   * Id: cc163930-9863-47fb-b158-2d3c95c3990a
+   * Codename: type
+   */
+  type: Elements.TaxonomyElement<ArticleTypeNew>;
 }> &
   SEOMetadata;

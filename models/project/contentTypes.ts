@@ -56,6 +56,8 @@ export const contentTypes = {
 
       /**
        * Slug (url_slug)
+       *
+       * There are two reserved URLSlugs - "articles" and "producs" => these tow automatically include article/product  listing and ignore content property
        */
       slug: {
         codename: 'slug',
@@ -527,7 +529,7 @@ export const contentTypes = {
         codename: 'article_type',
         id: 'c505fded-9c1f-5583-8cf2-dfa4763d2f2a',
         externalId: 'articleType-cb380e8d-da66-40df-98d2-30e50e3df4e9',
-        name: 'Article type',
+        name: 'Article type (deprecating)',
         required: false,
         type: 'taxonomy',
         snippetCodename: undefined,
@@ -650,6 +652,19 @@ export const contentTypes = {
         required: false,
         type: 'text',
         snippetCodename: 'seo_metadata',
+      },
+
+      /**
+       * Article type (new) (taxonomy)
+       */
+      type: {
+        codename: 'type',
+        id: 'cc163930-9863-47fb-b158-2d3c95c3990a',
+        externalId: undefined,
+        name: 'Type',
+        required: true,
+        type: 'taxonomy',
+        snippetCodename: undefined,
       },
     },
   },
@@ -874,16 +889,29 @@ export const contentTypes = {
     name: 'Product',
     elements: {
       /**
+       * Surgical product category (taxonomy)
+       */
+      category: {
+        codename: 'category',
+        id: 'c03158ef-98ea-41f5-afdd-dc6cba88f999',
+        externalId: undefined,
+        name: 'Category',
+        required: true,
+        type: 'taxonomy',
+        snippetCodename: undefined,
+      },
+
+      /**
        * Description (text)
        */
-      description: {
-        codename: 'description',
-        id: '283ff3b9-c4c5-511b-bb4b-50cf94b827bc',
-        externalId: 'description-90141638-10c1-435e-928c-3c9b3d5bceea',
+      product_base__description: {
+        codename: 'product_base__description',
+        id: '4b5078e3-a8f9-4078-82b7-e712eff00136',
+        externalId: undefined,
         name: 'Description',
         required: false,
         type: 'text',
-        snippetCodename: undefined,
+        snippetCodename: 'product_base',
       },
 
       /**
@@ -900,6 +928,19 @@ export const contentTypes = {
       },
 
       /**
+       * Description (deprecating) (text)
+       */
+      description: {
+        codename: 'description',
+        id: '283ff3b9-c4c5-511b-bb4b-50cf94b827bc',
+        externalId: 'description-90141638-10c1-435e-928c-3c9b3d5bceea',
+        name: 'Description (deprecating)',
+        required: false,
+        type: 'text',
+        snippetCodename: undefined,
+      },
+
+      /**
        * Keywords (text)
        */
       seo_metadata__keywords: {
@@ -910,6 +951,32 @@ export const contentTypes = {
         required: false,
         type: 'text',
         snippetCodename: 'seo_metadata',
+      },
+
+      /**
+       * Main image (asset)
+       */
+      product_base__main_image: {
+        codename: 'product_base__main_image',
+        id: 'aac1b39d-44fb-429c-8ef2-30de28895682',
+        externalId: undefined,
+        name: 'Main image',
+        required: false,
+        type: 'asset',
+        snippetCodename: 'product_base',
+      },
+
+      /**
+       * Name (text)
+       */
+      product_base__name: {
+        codename: 'product_base__name',
+        id: 'ab4c9424-3b74-4814-8cbe-5ab046d21992',
+        externalId: undefined,
+        name: 'Name',
+        required: true,
+        type: 'text',
+        snippetCodename: 'product_base',
       },
 
       /**
@@ -934,14 +1001,14 @@ export const contentTypes = {
         codename: 'product_category',
         id: '5dac4e43-bea4-5373-b628-4006485b87a7',
         externalId: 'category-006b0b49-a667-4c5e-a2f0-25e0acaa3146',
-        name: 'Product category',
+        name: 'Product category (deprecating)',
         required: true,
         type: 'taxonomy',
         snippetCodename: undefined,
       },
 
       /**
-       * Product image (asset)
+       * Product image (deprecating) (asset)
        *
        * Use images with no background if possible.
        */
@@ -949,7 +1016,7 @@ export const contentTypes = {
         codename: 'product_image',
         id: '502b68a2-2d68-512a-b1f0-460c8bc38fe6',
         externalId: 'productImage-29116c9e-2c55-490f-8726-8b4494af1fbe',
-        name: 'Product image',
+        name: 'Product image (deprecating)',
         required: false,
         type: 'asset',
         snippetCodename: undefined,
@@ -971,19 +1038,6 @@ export const contentTypes = {
       /**
        * Title (text)
        */
-      title: {
-        codename: 'title',
-        id: '599d56c3-0840-5967-a869-1d41419775a4',
-        externalId: 'title-aec8f49f-6f4a-4bde-90e0-055fe0636847',
-        name: 'Title',
-        required: true,
-        type: 'text',
-        snippetCodename: undefined,
-      },
-
-      /**
-       * Title (text)
-       */
       seo_metadata__title: {
         codename: 'seo_metadata__title',
         id: 'd278379c-9f60-58f8-92e0-0e665033dd95',
@@ -992,6 +1046,19 @@ export const contentTypes = {
         required: false,
         type: 'text',
         snippetCodename: 'seo_metadata',
+      },
+
+      /**
+       * Title (deprecating) (text)
+       */
+      title: {
+        codename: 'title',
+        id: '599d56c3-0840-5967-a869-1d41419775a4',
+        externalId: 'title-aec8f49f-6f4a-4bde-90e0-055fe0636847',
+        name: 'Title (deprecating)',
+        required: true,
+        type: 'text',
+        snippetCodename: undefined,
       },
     },
   },

@@ -29,14 +29,61 @@ export const contentTypeSnippets = {
   },
 
   /**
-   * 🧱 Visual component guidelines
+   * 🧱 Block guidelines
    */
   visual_component_guidelines: {
     codename: 'visual_component_guidelines',
     id: 'f6739376-35b8-598f-8643-2f4f12992fe3',
     externalId: 'brickSnippet-d8d5c03f-7672-4e2d-8968-770c5b69e2c8',
-    name: '🧱 Visual component guidelines',
+    name: '🧱 Block guidelines',
     elements: {},
+  },
+
+  /**
+   * Product base
+   */
+  product_base: {
+    codename: 'product_base',
+    id: '4d23f6ce-47f0-4312-bdbd-74dcb8d45342',
+    externalId: undefined,
+    name: 'Product base',
+    elements: {
+      /**
+       * Name (text)
+       */
+      product_base__name: {
+        codename: 'product_base__name',
+        id: 'ab4c9424-3b74-4814-8cbe-5ab046d21992',
+        externalId: undefined,
+        name: 'Name',
+        required: true,
+        type: 'text',
+      },
+
+      /**
+       * Description (text)
+       */
+      product_base__description: {
+        codename: 'product_base__description',
+        id: '4b5078e3-a8f9-4078-82b7-e712eff00136',
+        externalId: undefined,
+        name: 'Description',
+        required: false,
+        type: 'text',
+      },
+
+      /**
+       * Main image (asset)
+       */
+      product_base__main_image: {
+        codename: 'product_base__main_image',
+        id: 'aac1b39d-44fb-429c-8ef2-30de28895682',
+        externalId: undefined,
+        name: 'Main image',
+        required: false,
+        type: 'asset',
+      },
+    },
   },
 
   /**

@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { FC, ReactNode, useEffect, useState } from "react"
 
 import { resolveUrlPath } from "../../../lib/routing";
-import { Product } from "../../../models";
+import { contentTypes,Product } from "../../../models";
 
 type Props = Readonly<{
   children: ReactNode;
@@ -25,7 +25,7 @@ export const ProductLink: FC<Props> = props => {
     <span className="relative group/popoverTarget">
       <a
         href={resolveUrlPath({
-          type: "product",
+          type: contentTypes.product.codename,
           slug: props.urlSlug
         })}
         className="text-red-300"

@@ -47,6 +47,32 @@ export const taxonomies = {
   },
 
   /**
+   * Article type (new)
+   */
+  article_type_2273459: {
+    codename: 'article_type_2273459',
+    id: '22734591-ab75-4912-9940-45935ce36488',
+    externalId: undefined,
+    name: 'Article type (new)',
+    terms: {
+      post: {
+        codename: 'post',
+        id: 'a2706bd1-0b1a-4512-b0a7-434c974f217c',
+        externalId: undefined,
+        name: 'Blog post',
+        terms: {},
+      },
+      news: {
+        codename: 'news',
+        id: '912a5b9f-a7b0-4949-b337-369fc463ffa4',
+        externalId: undefined,
+        name: 'Industry news',
+        terms: {},
+      },
+    },
+  },
+
+  /**
    * Fact type
    */
   fact_type: {
@@ -136,6 +162,54 @@ export const taxonomies = {
             externalId:
               'precisionInstruments-80085799-e17c-428f-9fbc-cb0fb578eeb3',
             name: 'Precision instruments',
+            terms: {},
+          },
+        },
+      },
+    },
+  },
+
+  /**
+   * Surgical product category
+   */
+  surgical_product_category: {
+    codename: 'surgical_product_category',
+    id: 'f5b4664d-d982-4ce9-8f68-0b94670371da',
+    externalId: undefined,
+    name: 'Surgical product category',
+    terms: {
+      cutting: {
+        codename: 'cutting',
+        id: '345b87cb-f2a5-464c-a6f6-2810604f8dad',
+        externalId: undefined,
+        name: 'Cutting',
+        terms: {},
+      },
+      grasping: {
+        codename: 'grasping',
+        id: '4a4bdd99-347a-42f8-9e43-2f85c54fefdd',
+        externalId: undefined,
+        name: 'Grasping',
+        terms: {},
+      },
+      retracting: {
+        codename: 'retracting',
+        id: '43cfd78d-be5e-486e-97ab-445a991c9d1c',
+        externalId: undefined,
+        name: 'Retracting',
+        terms: {
+          hand_held: {
+            codename: 'hand_held',
+            id: '1ac73328-920c-4a19-bc88-a1610c287abd',
+            externalId: undefined,
+            name: 'Hand held',
+            terms: {},
+          },
+          self_retaining: {
+            codename: 'self_retaining',
+            id: '6117967c-a86e-4a8d-bcf4-03cb1b570518',
+            externalId: undefined,
+            name: 'Self retaining',
             terms: {},
           },
         },
