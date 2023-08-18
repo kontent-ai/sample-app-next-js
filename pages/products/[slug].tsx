@@ -4,7 +4,7 @@ import { ParsedUrlQuery } from 'querystring';
 import { FC } from "react";
 
 import { AppPage } from "../../components/shared/ui/appPage";
-import { getDefaultMetadata, getProductDetail, getProductSlugs, getSiteMenu } from "../../lib/kontentClient";
+import { getDefaultMetadata, getProductDetail, getProductItemsWithSlugs, getSiteMenu } from "../../lib/kontentClient";
 import { ValidCollectionCodename } from "../../lib/types/perCollection";
 import { siteCodename } from "../../lib/utils/env";
 import { createElementSmartLink } from "../../lib/utils/smartLinkUtils";
@@ -23,7 +23,7 @@ interface IParams extends ParsedUrlQuery {
 }
 
 export const getStaticPaths: GetStaticPaths = () => {
-  return getProductSlugs()
+  return getProductItemsWithSlugs()
     .then(products => ({
       paths: products.map(product => `/products/${product.elements.slug.value}`),
       fallback: 'blocking'

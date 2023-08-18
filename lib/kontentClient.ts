@@ -23,8 +23,8 @@ const deliveryClient = createDeliveryClient({
   ],
   propertyNameResolver: camelCasePropertyNameResolver,
   proxy: {
-    baseUrl: "http://deliver.devkontentmasters.com",
-    basePreviewUrl: "http://preview-deliver.devkontentmasters.com",
+    baseUrl: "https://deliver.devkontentmasters.com",
+    basePreviewUrl: "https://preview-deliver.devkontentmasters.com",
   },
   previewApiKey: process.env.KONTENT_PREVIEW_API_KEY
 });
@@ -103,14 +103,14 @@ export const getProductsForListing = async (usePreview: boolean, page?: number, 
     .then(res => res.data);
 }
 
-export const getProductSlugs = () =>
+export const getProductItemsWithSlugs = () =>
   deliveryClient
     .items<Product>()
     .type(contentTypes.product.codename)
     .collection(siteCodename)
     .elementsParameter([contentTypes.product.elements.slug.codename])
     .toAllPromise()
-    .then(res => res.data.items);
+    .then(res => res.data.items)
 
 export const getProductDetail = (slug: string, usePreview: boolean) =>
   deliveryClient

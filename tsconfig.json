@@ -27,6 +27,7 @@
   ],
   "exclude": [
     "scripts/*.ts",
-    "node_modules"
+    "node_modules",
+    "tests"
   ]
 }
