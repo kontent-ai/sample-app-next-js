@@ -12,7 +12,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
       <Component {...pageProps} />
       <Head>
         {/* default title */}
-        <title>{perCollectionSEOTitle.ficto_healthtech}</title>
+        <title>Ficto</title>
         <link
           rel="icon"
           href="/favicon.png"

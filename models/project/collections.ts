@@ -36,9 +36,9 @@ export const collections = {
   /**
    * Ficto Surgical
    */
-  ficto_healthtech_surgical: {
-    codename: 'ficto_healthtech_surgical',
-    id: 'f67d2de9-50dd-54e5-a0ec-0af456e1f534',
+  ficto_surgical: {
+    codename: 'ficto_surgical',
+    id: 'b77e2cf9-e408-4a60-9dc9-b50260c5ef21',
     name: 'Ficto Surgical',
   },
 } as const;

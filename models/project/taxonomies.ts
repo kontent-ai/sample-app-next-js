@@ -73,6 +73,39 @@ export const taxonomies = {
   },
 
   /**
+   * Imaging technology
+   */
+  imaging_technology: {
+    codename: 'imaging_technology',
+    id: '9b4ad3e0-fcc0-43f5-8b85-74286a260141',
+    externalId: undefined,
+    name: 'Imaging technology',
+    terms: {
+      mri: {
+        codename: 'mri',
+        id: '5d880f37-7c91-4e34-bfe4-1519555e2dd9',
+        externalId: undefined,
+        name: 'MRI',
+        terms: {},
+      },
+      pet: {
+        codename: 'pet',
+        id: '84b21533-bd6b-4a6f-84fc-c8f37846be5d',
+        externalId: undefined,
+        name: 'PET',
+        terms: {},
+      },
+      x_ray: {
+        codename: 'x_ray',
+        id: '017ef898-74d2-4c48-a450-b3d3c6a61e89',
+        externalId: undefined,
+        name: 'X-Ray',
+        terms: {},
+      },
+    },
+  },
+
+  /**
    * Product category
    */
   product_category: {

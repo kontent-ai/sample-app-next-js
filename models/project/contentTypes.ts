@@ -791,6 +791,82 @@ export const contentTypes = {
   },
 
   /**
+   * Imaging solution
+   */
+  imaging_solution: {
+    codename: 'imaging_solution',
+    id: '6bf0eff1-fe6a-4180-8d2d-5e020f54db18',
+    externalId: undefined,
+    name: 'Imaging solution',
+    elements: {
+      /**
+       * Description (text)
+       */
+      product_base__description: {
+        codename: 'product_base__description',
+        id: '4b5078e3-a8f9-4078-82b7-e712eff00136',
+        externalId: undefined,
+        name: 'Description',
+        required: false,
+        type: 'text',
+        snippetCodename: 'product_base',
+      },
+
+      /**
+       * Imaging technology (taxonomy)
+       */
+      imaging_technology: {
+        codename: 'imaging_technology',
+        id: '4697ff5c-393e-4ff3-ae09-ebcee4d2eb2b',
+        externalId: undefined,
+        name: 'Imaging technology',
+        required: true,
+        type: 'taxonomy',
+        snippetCodename: undefined,
+      },
+
+      /**
+       * Main image (asset)
+       */
+      product_base__main_image: {
+        codename: 'product_base__main_image',
+        id: 'aac1b39d-44fb-429c-8ef2-30de28895682',
+        externalId: undefined,
+        name: 'Main image',
+        required: false,
+        type: 'asset',
+        snippetCodename: 'product_base',
+      },
+
+      /**
+       * Name (text)
+       */
+      product_base__name: {
+        codename: 'product_base__name',
+        id: 'ab4c9424-3b74-4814-8cbe-5ab046d21992',
+        externalId: undefined,
+        name: 'Name',
+        required: true,
+        type: 'text',
+        snippetCodename: 'product_base',
+      },
+
+      /**
+       * Showcase (rich_text)
+       */
+      showcase: {
+        codename: 'showcase',
+        id: 'eca7b868-5f7e-4bab-a744-88c299ff5992',
+        externalId: undefined,
+        name: 'Showcase',
+        required: false,
+        type: 'rich_text',
+        snippetCodename: undefined,
+      },
+    },
+  },
+
+  /**
    * Person
    */
   person: {
