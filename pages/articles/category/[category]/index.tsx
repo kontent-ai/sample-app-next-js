@@ -124,7 +124,7 @@ const ArticlesPage: FC<Props> = props => {
       return props.articles;
     } else {
       return props.articles.filter(
-        article => article.elements.articleType.value.some(type => type.codename === category)
+        article => article.elements.type.value.some(type => type.codename === category)
       );
     }
   };
@@ -156,20 +156,18 @@ const ArticlesPage: FC<Props> = props => {
           {filteredArticles.length > 0 ? (
             <ul className="w-full grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 place-items-center list-none gap-5 md:pt-4 pl-0 justify-center">
               {filteredArticles.map(article => (
-                article.elements.articleType.value[0]?.codename && (
-                  <ArticleItem
-                    key={article.system.id}
-                    title={article.elements.title.value}
-                    itemId={article.system.id}
-                    description={article.elements.abstract.value}
-                    imageUrl={article.elements.heroImage.value[0]?.url || ""}
-                    publishingDate={article.elements.publishingDate.value}
-                    detailUrl={resolveUrlPath({
-                      type: "article",
-                      slug: article.elements.slug.value
-                    })}
-                  />
-                )
+                <ArticleItem
+                  key={article.system.id}
+                  title={article.elements.title.value}
+                  itemId={article.system.id}
+                  description={article.elements.abstract.value}
+                  imageUrl={article.elements.heroImage.value[0]?.url || ""}
+                  publishingDate={article.elements.publishingDate.value}
+                  detailUrl={resolveUrlPath({
+                    type: "article",
+                    slug: article.elements.slug.value
+                  })}
+                />
               ))}
             </ul>
           )
@@ -205,7 +203,7 @@ const ArticlesPage: FC<Props> = props => {
                       href={resolveUrlPath({
                         type: "article",
                         term: category,
-                        page: i === 0 ? undefined : i - 1
+                        page: i + 1 > 1 ? i + 1 : undefined
                       } as ResolutionContext)}
                       highlight={(page ?? 1) === i + 1}
                     />

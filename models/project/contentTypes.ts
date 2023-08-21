@@ -523,19 +523,6 @@ export const contentTypes = {
       },
 
       /**
-       * Article type (taxonomy)
-       */
-      article_type: {
-        codename: 'article_type',
-        id: 'c505fded-9c1f-5583-8cf2-dfa4763d2f2a',
-        externalId: 'articleType-cb380e8d-da66-40df-98d2-30e50e3df4e9',
-        name: 'Article type (deprecating)',
-        required: false,
-        type: 'taxonomy',
-        snippetCodename: undefined,
-      },
-
-      /**
        * Author (modular_content)
        */
       author: {
@@ -655,14 +642,14 @@ export const contentTypes = {
       },
 
       /**
-       * Article type (new) (taxonomy)
+       * Article type (taxonomy)
        */
       type: {
         codename: 'type',
         id: 'cc163930-9863-47fb-b158-2d3c95c3990a',
         externalId: undefined,
         name: 'Type',
-        required: true,
+        required: false,
         type: 'taxonomy',
         snippetCodename: undefined,
       },

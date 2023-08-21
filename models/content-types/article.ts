@@ -1,6 +1,5 @@
 import { type IContentItem, type Elements } from '@kontent-ai/delivery-sdk';
 import { type ArticleType } from '../taxonomies/articleType';
-import { type ArticleTypeNew } from '../taxonomies/articleTypeNew';
 import { type Person } from './person';
 import { type SEOMetadata } from '../content-type-snippets/SEOMetadata';
 
@@ -21,14 +20,6 @@ export type Article = IContentItem<{
    * Don't make it too long. At this point users decides, whether they want to continue reading!
    */
   abstract: Elements.TextElement;
-
-  /**
-   * Article type (taxonomy)
-   * Required: false
-   * Id: c505fded-9c1f-5583-8cf2-dfa4763d2f2a
-   * Codename: article_type
-   */
-  articleType: Elements.TaxonomyElement<ArticleType>;
 
   /**
    * Author (modular_content)
@@ -81,11 +72,11 @@ export type Article = IContentItem<{
   title: Elements.TextElement;
 
   /**
-   * Article type (new) (taxonomy)
-   * Required: true
+   * Article type (taxonomy)
+   * Required: false
    * Id: cc163930-9863-47fb-b158-2d3c95c3990a
    * Codename: type
    */
-  type: Elements.TaxonomyElement<ArticleTypeNew>;
+  type: Elements.TaxonomyElement<ArticleType>;
 }> &
   SEOMetadata;

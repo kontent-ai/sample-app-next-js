@@ -47,7 +47,7 @@ const ArticlePage: FC<Props> = props => {
           <div className="w-fit p-2 bg-gray-800 text-white opacity-90 font-semibold">{props.article.elements.publishingDate.value && formatDate(props.article.elements.publishingDate.value)}</div>
           <div className="flex gap-2" >
             {
-              props.article.elements.articleType.value.length > 0 && props.article.elements.articleType.value.map(type => (
+              props.article.elements.type.value.length > 0 && props.article.elements.type.value.map(type => (
                 <div
                   key={type.codename}
                   className={`w-fit p-2 ${mainColorBgClass[props.siteCodename]} font-semibold`}

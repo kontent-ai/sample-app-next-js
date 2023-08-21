@@ -27,7 +27,7 @@ export const getStaticProps: GetStaticProps<Props, ArticleListingUrlQuery> = asy
   const pageURLParameter = context.params?.page;
   const pageNumber = !pageURLParameter || isNaN(+pageURLParameter) ? 1 : +pageURLParameter;
 
-  if (pageNumber < 0) {
+  if (pageNumber <= 0) {
     return { notFound: true }
   }
 

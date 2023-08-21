@@ -9,10 +9,8 @@ export type ArticleListingUrlQuery = Readonly<{
   export const categoryFilterSource =
     Object.keys({
       "all": null,
-      "case_study": null,
-      "clinical_trial": null,
-      "industry_news": null,
-      "research": null,
+      "news": null,
+      "post": null,
     } as const satisfies Record<ArticleTypeWithAll, null>) as ArticleTypeWithAll[];
   
   

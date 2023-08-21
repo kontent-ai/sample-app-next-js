@@ -155,7 +155,7 @@ export const getArticlesForListing = (usePreview: boolean, page?: number, articl
   }
 
   if (articleType && articleType !== 'all') {
-    query.containsFilter(`elements.${contentTypes.article.elements.article_type.codename}`, [articleType])
+    query.containsFilter(`elements.${contentTypes.article.elements.type.codename}`, [articleType])
   }
 
   query.includeTotalCountParameter();
@@ -223,7 +223,7 @@ export const getArticlesCountByCategory = (usePreview: boolean, articleType: Art
   const query = getItemsCountByTypeQuery(usePreview, contentTypes.article.codename);
 
   if (articleType !== 'all') {
-    query.containsFilter(`elements.${contentTypes.article.elements.article_type.codename}`, [articleType])
+    query.containsFilter(`elements.${contentTypes.article.elements.type.codename}`, [articleType])
   }
 
   return query

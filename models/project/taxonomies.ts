@@ -11,49 +11,9 @@ export const taxonomies = {
    */
   article_type: {
     codename: 'article_type',
-    id: '02c148a3-4536-587d-aabd-8ac2ae6557c7',
-    externalId: 'articleType-7fbd6882-2a33-40a3-9aec-ad1547655cc8',
-    name: 'Article type',
-    terms: {
-      case_study: {
-        codename: 'case_study',
-        id: 'f16a7522-5633-51ed-869a-7262327b8453',
-        externalId: 'caseStudy-84cfc929-3fc6-4eb2-95e1-7d043b5bfd1c',
-        name: 'Case study',
-        terms: {},
-      },
-      clinical_trial: {
-        codename: 'clinical_trial',
-        id: '3d7edad5-3c2e-5376-9b3c-81e346fb4f5b',
-        externalId: 'clinicalTrial-a63c6b90-5853-425b-aef8-06ffb7e4e970',
-        name: 'Clinical trial',
-        terms: {},
-      },
-      industry_news: {
-        codename: 'industry_news',
-        id: 'ba02e54f-dcfb-5f03-8a7b-1a7441d28cb7',
-        externalId: 'industryNews-4abee914-15e7-4a63-88dd-1387fb33400a',
-        name: 'Industry news',
-        terms: {},
-      },
-      research: {
-        codename: 'research',
-        id: '26f96c2a-c196-578d-844e-79f1f3e97e34',
-        externalId: 'research-d55709dc-6a01-4edd-a52e-57465ae29e8f',
-        name: 'Research',
-        terms: {},
-      },
-    },
-  },
-
-  /**
-   * Article type (new)
-   */
-  article_type_2273459: {
-    codename: 'article_type_2273459',
     id: '22734591-ab75-4912-9940-45935ce36488',
     externalId: undefined,
-    name: 'Article type (new)',
+    name: 'Article type',
     terms: {
       post: {
         codename: 'post',
