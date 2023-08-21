@@ -140,6 +140,13 @@ export const Menu: FC<Props> = props => {
       className={`w-full ${mainColorBgClass[siteCodename]} fixed z-50`}
       {...createItemSmartLink(props.item.system.id)}
     >
+      {/* SEE CTC-2120 */}
+      <div className="bg-red-600 text-white p-2 text-xl grid place-items-center">
+        <div>
+          <strong>For internal use only!</strong>
+        </div>
+      </div>
+      
       <div className="flex justify-between items-center mx-auto max-w-screen-xl md:h-16 pr-4">
         <div className="w-screen h-full md:flex justify-between z-50 md:pr-24 xl:pr-12 2xl:pr-0">
           <div className="flex h-full justify-between items-center px-8 py-4">
