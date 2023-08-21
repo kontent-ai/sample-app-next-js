@@ -57,14 +57,14 @@ const ProductListing: FC<ProductListingProps> = (props) => {
       {props.products.map(p => (
         <ProductItem
           key={p.system.id}
-          imageUrl={p.elements.productImage.value[0]?.url || ""}
-          title={p.elements.title.value}
+          imageUrl={p.elements.productBaseMainImage.value[0]?.url || ""}
+          title={p.elements.productBaseName.value}
           detailUrl={resolveUrlPath({
             type: "product",
             slug: p.elements.slug.value
           })}
           price={p.elements.price.value}
-          category={p.elements.productCategory.value[0]?.name || ""}
+          category={p.elements.category.value[0]?.name || ""}
           itemId={p.system.id}
         />
       ))}

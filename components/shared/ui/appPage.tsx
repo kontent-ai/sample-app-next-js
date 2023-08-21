@@ -5,7 +5,7 @@ import { perCollectionSEOTitle } from "../../../lib/constants/labels";
 import { ValidCollectionCodename } from "../../../lib/types/perCollection";
 import { useSmartLink } from "../../../lib/useSmartLink";
 import { createItemSmartLink } from "../../../lib/utils/smartLinkUtils";
-import { Article, Nav_NavigationItem, Product, SEOMetadata, WSL_Page, WSL_WebSpotlightRoot } from "../../../models";
+import { Article, contentTypes,Nav_NavigationItem, Product, SEOMetadata, WSL_Page, WSL_WebSpotlightRoot } from "../../../models";
 import { SiteCodenameProvider } from "../siteCodenameContext";
 import { Footer } from "./footer";
 import { Menu } from "./menu";
@@ -51,6 +51,9 @@ export const AppPage: FC<Props> = props => {
 
 AppPage.displayName = "Page";
 
+const isProduct = (item: AcceptedItem): item is Product =>
+  item.system.type === contentTypes.product.codename;
+
 const PageMetadata: FC<Pick<Props, "siteCodename" | "item" | "defaultMetadata" | "pageType">> = ({ siteCodename, item, defaultMetadata, pageType }) => {
   const pageMetaTitle = createMetaTitle(siteCodename, item);
   const pageMetaDescription = item.elements.seoMetadataDescription.value || defaultMetadata.elements.seoMetadataDescription.value;
@@ -80,7 +83,8 @@ const PageMetadata: FC<Pick<Props, "siteCodename" | "item" | "defaultMetadata" |
           JSON.stringify({
             "@context": "http://schema.org",
             "@type": pageType,
-            name: item.elements.seoMetadataTitle.value || item.elements.title.value,
+            name: item.elements.seoMetadataTitle.value
+              || (isProduct(item) ? item.elements.productBaseName.value : item.elements.title.value),
             description: pageMetaDescription,
             keywords: pageMetaKeywords
           })

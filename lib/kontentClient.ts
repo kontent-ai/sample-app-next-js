@@ -78,10 +78,10 @@ export const getProductsForListing = async (usePreview: boolean, page?: number, 
     .type(contentTypes.product.codename)
     .collections([siteCodename, "default"])
     .elementsParameter([
-      contentTypes.product.elements.title.codename,
-      contentTypes.product.elements.product_image.codename,
+      contentTypes.product.elements.product_base__name.codename,
+      contentTypes.product.elements.product_base__main_image.codename,
+      contentTypes.product.elements.category.codename,
       contentTypes.product.elements.slug.codename,
-      contentTypes.product.elements.product_category.codename,
       contentTypes.product.elements.price.codename,
     ])
     .queryConfig({
@@ -95,7 +95,7 @@ export const getProductsForListing = async (usePreview: boolean, page?: number, 
   }
 
   if (categories) {
-    query.anyFilter(`elements.${contentTypes.product.elements.product_category.codename}`, categories);
+    query.anyFilter(`elements.${contentTypes.product.elements.category.codename}`, categories);
   }
 
   return query

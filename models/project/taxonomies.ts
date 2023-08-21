@@ -77,9 +77,57 @@ export const taxonomies = {
    */
   product_category: {
     codename: 'product_category',
+    id: 'f5b4664d-d982-4ce9-8f68-0b94670371da',
+    externalId: undefined,
+    name: 'Product category',
+    terms: {
+      cutting: {
+        codename: 'cutting',
+        id: '345b87cb-f2a5-464c-a6f6-2810604f8dad',
+        externalId: undefined,
+        name: 'Cutting',
+        terms: {},
+      },
+      grasping: {
+        codename: 'grasping',
+        id: '4a4bdd99-347a-42f8-9e43-2f85c54fefdd',
+        externalId: undefined,
+        name: 'Grasping',
+        terms: {},
+      },
+      retracting: {
+        codename: 'retracting',
+        id: '43cfd78d-be5e-486e-97ab-445a991c9d1c',
+        externalId: undefined,
+        name: 'Retracting',
+        terms: {
+          hand_held: {
+            codename: 'hand_held',
+            id: '1ac73328-920c-4a19-bc88-a1610c287abd',
+            externalId: undefined,
+            name: 'Hand held',
+            terms: {},
+          },
+          self_retaining: {
+            codename: 'self_retaining',
+            id: '6117967c-a86e-4a8d-bcf4-03cb1b570518',
+            externalId: undefined,
+            name: 'Self retaining',
+            terms: {},
+          },
+        },
+      },
+    },
+  },
+
+  /**
+   * Product category (Old)
+   */
+  product_category_old: {
+    codename: 'product_category_old',
     id: '54634713-6a9f-5b20-a724-693b2372499e',
     externalId: 'productCategory-0c888f24-363c-4c63-986c-829cdfeabe17',
-    name: 'Product category',
+    name: 'Product category (Old)',
     terms: {
       clothing: {
         codename: 'clothing',
@@ -122,54 +170,6 @@ export const taxonomies = {
             externalId:
               'precisionInstruments-80085799-e17c-428f-9fbc-cb0fb578eeb3',
             name: 'Precision instruments',
-            terms: {},
-          },
-        },
-      },
-    },
-  },
-
-  /**
-   * Surgical product category
-   */
-  surgical_product_category: {
-    codename: 'surgical_product_category',
-    id: 'f5b4664d-d982-4ce9-8f68-0b94670371da',
-    externalId: undefined,
-    name: 'Surgical product category',
-    terms: {
-      cutting: {
-        codename: 'cutting',
-        id: '345b87cb-f2a5-464c-a6f6-2810604f8dad',
-        externalId: undefined,
-        name: 'Cutting',
-        terms: {},
-      },
-      grasping: {
-        codename: 'grasping',
-        id: '4a4bdd99-347a-42f8-9e43-2f85c54fefdd',
-        externalId: undefined,
-        name: 'Grasping',
-        terms: {},
-      },
-      retracting: {
-        codename: 'retracting',
-        id: '43cfd78d-be5e-486e-97ab-445a991c9d1c',
-        externalId: undefined,
-        name: 'Retracting',
-        terms: {
-          hand_held: {
-            codename: 'hand_held',
-            id: '1ac73328-920c-4a19-bc88-a1610c287abd',
-            externalId: undefined,
-            name: 'Hand held',
-            terms: {},
-          },
-          self_retaining: {
-            codename: 'self_retaining',
-            id: '6117967c-a86e-4a8d-bcf4-03cb1b570518',
-            externalId: undefined,
-            name: 'Self retaining',
             terms: {},
           },
         },

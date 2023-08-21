@@ -60,15 +60,15 @@ type ProductPreviewProps = Readonly<{
 const ProductPreview: FC<ProductPreviewProps> = props => (
   <>
     <Image
-      src={props.product.elements.productImage.value[0]?.url || ""}
-      alt={props.product.elements.productImage.value[0]?.description || props.product.elements.title.value}
+      src={props.product.elements.productBaseMainImage.value[0]?.url || ""}
+      alt={props.product.elements.productBaseMainImage.value[0]?.description || props.product.elements.productBaseName.value}
       height={200}
-      width={props.product.elements.productImage.value[0]?.width || 200}
+      width={props.product.elements.productBaseMainImage.value[0]?.width || 200}
       className="object-contain"
     />
     <span className="block w-full h-0 border-gray-200 border-b-2 my-3" />
     <span className="flex justify-center">
-      {props.product.elements.title.value}
+      {props.product.elements.productBaseName.value}
     </span>
     <span className="flex justify-center">
       Price: {props.product.elements.price.value}€

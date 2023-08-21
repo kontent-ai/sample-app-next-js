@@ -876,7 +876,7 @@ export const contentTypes = {
     name: 'Product',
     elements: {
       /**
-       * Surgical product category (taxonomy)
+       * Product category (taxonomy)
        */
       category: {
         codename: 'category',
@@ -912,19 +912,6 @@ export const contentTypes = {
         required: false,
         type: 'text',
         snippetCodename: 'seo_metadata',
-      },
-
-      /**
-       * Description (deprecating) (text)
-       */
-      description: {
-        codename: 'description',
-        id: '283ff3b9-c4c5-511b-bb4b-50cf94b827bc',
-        externalId: 'description-90141638-10c1-435e-928c-3c9b3d5bceea',
-        name: 'Description (deprecating)',
-        required: false,
-        type: 'text',
-        snippetCodename: undefined,
       },
 
       /**
@@ -982,34 +969,6 @@ export const contentTypes = {
       },
 
       /**
-       * Product category (taxonomy)
-       */
-      product_category: {
-        codename: 'product_category',
-        id: '5dac4e43-bea4-5373-b628-4006485b87a7',
-        externalId: 'category-006b0b49-a667-4c5e-a2f0-25e0acaa3146',
-        name: 'Product category (deprecating)',
-        required: true,
-        type: 'taxonomy',
-        snippetCodename: undefined,
-      },
-
-      /**
-       * Product image (deprecating) (asset)
-       *
-       * Use images with no background if possible.
-       */
-      product_image: {
-        codename: 'product_image',
-        id: '502b68a2-2d68-512a-b1f0-460c8bc38fe6',
-        externalId: 'productImage-29116c9e-2c55-490f-8726-8b4494af1fbe',
-        name: 'Product image (deprecating)',
-        required: false,
-        type: 'asset',
-        snippetCodename: undefined,
-      },
-
-      /**
        * Slug (url_slug)
        */
       slug: {
@@ -1033,19 +992,6 @@ export const contentTypes = {
         required: false,
         type: 'text',
         snippetCodename: 'seo_metadata',
-      },
-
-      /**
-       * Title (deprecating) (text)
-       */
-      title: {
-        codename: 'title',
-        id: '599d56c3-0840-5967-a869-1d41419775a4',
-        externalId: 'title-aec8f49f-6f4a-4bde-90e0-055fe0636847',
-        name: 'Title (deprecating)',
-        required: true,
-        type: 'text',
-        snippetCodename: undefined,
       },
     },
   },
