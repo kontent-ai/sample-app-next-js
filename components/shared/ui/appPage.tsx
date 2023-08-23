@@ -36,7 +36,7 @@ export const AppPage: FC<Props> = props => {
         {props.siteMenu ? <Menu item={props.siteMenu} /> : <span>Missing top navigation. Please provide a valid navigation item in the web spotlight root.</span>}
         {/* https://tailwindcss.com/docs/typography-plugin */}
         <main
-          className="grow h-full w-screen bg-slate-50"
+          className="grow h-full w-screen bg-slate-50 scroll-smooth"
           {...createItemSmartLink(props.item.system.id, true)}
         >
           <div className="prose w-full max-w-screen-xl mx-auto">

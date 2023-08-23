@@ -1,8 +1,8 @@
 import Image from "next/image";
 import { FC, ReactNode } from "react";
 
-import { mainColorBgClass } from "../../../lib/constants/colors";
 import { createItemSmartLink } from "../../../lib/utils/smartLinkUtils";
+import { mainColorMdBgClass } from "../../../lib/constants/colors";
 import { useSiteCodename } from "../../shared/siteCodenameContext";
 
 type Props = Readonly<{
@@ -14,7 +14,6 @@ type Props = Readonly<{
 
 export const HeroImage: FC<Props> = (props) => {
   const siteCodename = useSiteCodename();
-  const mdMainColorBg = "md:" + mainColorBgClass[siteCodename];
 
   return (
     <>
@@ -35,7 +34,7 @@ export const HeroImage: FC<Props> = (props) => {
           />
         </div>
         <div
-          className={`${mdMainColorBg} relative w-fit h-full flex max-w-3xl flex-col items-center md:items-start justify-end min-[900px]:justify-center pt-20 pb-32 md:pb-12 pr-6 min-[900px]:px-6`}
+          className={`${mainColorMdBgClass[siteCodename]} relative w-fit h-full flex max-w-3xl flex-col items-center md:items-start justify-end min-[900px]:justify-center pt-20 pb-32 md:pb-12 pr-6 min-[900px]:px-6`}
         >
           {props.children}
         </div>

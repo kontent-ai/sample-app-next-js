@@ -4,6 +4,7 @@ import { IPortableTextComponent, IPortableTextImage, IPortableTextInternalLink, 
 import { nodeParse } from "@kontent-ai/rich-text-resolver/dist/cjs/src/parser/node";
 import { transformToPortableText } from "@kontent-ai/rich-text-resolver/dist/cjs/src/transformers/portable-text-transformer";
 import { PortableText, PortableTextMarkComponentProps, PortableTextReactComponents, PortableTextTypeComponentProps } from "@portabletext/react";
+import { PortableTextBlock } from '@portabletext/types'
 import Image from "next/image";
 import { FC } from "react";
 
@@ -61,6 +62,9 @@ const RichTextValue: FC<RichTextValueProps> = props => (
     components={createDefaultResolvers(props.element, props.isInsideTable)}
   />
 );
+
+const sanitizeFirstSpan = (block: PortableTextBlock): string =>
+  block.children[0]?.text.toString().toLowerCase().replace(/[^\w]/g,"_")
 
 const createDefaultResolvers = (element: Elements.RichTextElement, isElementInsideTable: boolean = false): Partial<PortableTextReactComponents> => ({
   types: {
@@ -176,7 +180,13 @@ const createDefaultResolvers = (element: Elements.RichTextElement, isElementInsi
     },
   },
   block: {
-    h3: ({children}) => <h3 className="text-4xl">{children}</h3>
+    // TODO for anchor funcitonality, discuss whether this is a good approach, potential issue with ID conflict
+    h1: ({value, children}) => <h1 className="text-6xl" id={sanitizeFirstSpan(value)}>{children}</h1>,
+    h2: ({value, children}) => <h2 className="text-5xl" id={sanitizeFirstSpan(value)}>{children}</h2>,
+    h3: ({children, value}) => <h3 className="text-4xl" id={sanitizeFirstSpan(value)}>{children}</h3>,
+    h4: ({value, children}) => <h4 className="text-3xl" id={sanitizeFirstSpan(value)}>{children}</h4>,
+    h5: ({value, children}) => <h5 className="text-2xl" id={sanitizeFirstSpan(value)}>{children}</h5>,
+    h6: ({value, children}) => <h6 className="text-xl" id={sanitizeFirstSpan(value)}>{children}</h6>,
   }
 });
 

@@ -11,7 +11,7 @@ type Props = Readonly<{
   item: Block_VisualContainer;
 }>;
 
-export const VisualContainer: FC<Props> = props => {
+const VisualRepresentation: FC<Props> = (props) => {
   switch (props.item.elements.visualRepresentation.value[0]?.codename) {
     case visualRepresentation.grid:
       return (
@@ -33,31 +33,37 @@ export const VisualContainer: FC<Props> = props => {
     case visualRepresentation.hero_unit:
       if (props.item.elements.items.linkedItems.length === 1) {
         const fact = props.item.elements.items.linkedItems[0];
-        return (
-
-          !fact
-            ? <BuildError>Visual container {props.item.system.codename} does not contain any Fact.</BuildError>
-            : (
-              <HeroUnitComponent
-                item={fact}
-              />
-            )
-
-        )
+        return !fact ? (
+          <BuildError>
+            Visual container {props.item.system.codename} does not contain any
+            Fact.
+          </BuildError>
+        ) : (
+          <HeroUnitComponent item={fact} />
+        );
       }
 
       return (
-        <CarouselComponent
-          items={props.item.elements.items.linkedItems}
-        />
-
-      )
+        <CarouselComponent items={props.item.elements.items.linkedItems} />
+      );
     default:
       return (
-        <BuildError>Visual representation &quot;{props.item.elements.visualRepresentation.value[0]?.name ?? "Missing representation"}&quot; is not supported.</BuildError>
+        <BuildError>
+          Visual representation &quot;
+          {props.item.elements.visualRepresentation.value[0]?.name ??
+            "Missing representation"}
+          &quot; is not supported.
+        </BuildError>
       );
   }
 };
+
+export const VisualContainer: FC<Props> = (props) => (
+  // wrapper for anchor functionality, works by passing the item codename to Reference -> External link element
+  <div id={props.item.system.codename}>
+    <VisualRepresentation item={props.item} />
+  </div>
+);
 
 // https://kontent-ai.atlassian.net/browse/DEVREL-955
 const visualRepresentation = {
