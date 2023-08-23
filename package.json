@@ -11,7 +11,6 @@
     "start": "next start"
   },
   "dependencies": {
-    "@auth0/nextjs-auth0": "^3.1.0",
     "@heroicons/react": "^2.0.17",
     "@kontent-ai/delivery-sdk": "^14.0.1",
     "@kontent-ai/rich-text-resolver": "^0.0.4",
@@ -20,6 +19,7 @@
     "@vercel/analytics": "^1.0.0",
     "auth0-js": "^9.22.1",
     "cookie": "^0.5.0",
+    "cookies-next": "^3.0.0",
     "next": "13.0.0",
     "react": "18.2.0",
     "react-dom": "18.2.0"

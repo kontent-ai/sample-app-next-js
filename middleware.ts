@@ -10,7 +10,10 @@ export function middleware(request: NextRequest) {
     envId = "b0255462-358c-007b-0be0-43ee125ce1f0";
   }
 
-  console.log("fdsafads", request.nextUrl.pathname);
+
+  if(request.nextUrl.pathname === '/envid' ||  request.nextUrl.pathname === '/callback'){
+    return NextResponse.next();
+  }
 
   if(request.nextUrl.pathname.startsWith('/_next/static')){
     return NextResponse.next();
