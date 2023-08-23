@@ -17,6 +17,8 @@ export const VisualContainer: FC<Props> = props => {
       return (
         <GridComponent
           items={props.item.elements.items.linkedItems}
+          subtitle={props.item.elements.subtitle.value}
+          title={props.item.elements.title.value}
         />
       );
     case visualRepresentation.stack:

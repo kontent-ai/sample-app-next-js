@@ -1,6 +1,7 @@
 import { type IContentItem, type Elements } from '@kontent-ai/delivery-sdk';
 import { type Article } from '../content-types/article';
 import { type Product } from '../content-types/product';
+import { type Solution } from '../content-types/solution';
 import { type WSL_Page } from '../content-types/WSL_Page';
 import { type WSL_WebSpotlightRoot } from '../content-types/WSL_WebSpotlightRoot';
 
@@ -29,7 +30,7 @@ export type Reference = IContentItem<{
    * Link to a supported content item, resolution can vary based on presentation layer.
    */
   referenceContentItemLink: Elements.LinkedItemsElement<
-    WSL_WebSpotlightRoot | WSL_Page | Product | Article
+    WSL_WebSpotlightRoot | WSL_Page | Product | Article | Solution
   >;
 
   /**

@@ -8,7 +8,9 @@ import Image from "next/image";
 import { FC } from "react";
 
 import { createElementSmartLink, createFixedAddSmartLink, createItemSmartLink } from "../../lib/utils/smartLinkUtils";
-import { Block_ContentChunk, Component_Callout,contentTypes } from "../../models";
+import { Action, Block_ContentChunk, Component_Callout,contentTypes,Fact } from "../../models";
+import { FactComponent } from "./Fact";
+import { CTAButton } from "./internalLinks/CTAButton";
 import { InternalLink } from "./internalLinks/InternalLink";
 import { CalloutComponent } from "./richText/Callout";
 import { BuildError } from "./ui/BuildError";
@@ -19,7 +21,7 @@ type Props = Readonly<{
 
 export const ContentChunk: FC<Props> = props => (
   <div
-    className="px-3 md:px-0"
+    className="px-10 py-5"
     {...createItemSmartLink(props.item.system.id)}
     {...createElementSmartLink(contentTypes.content_chunk.elements.content.codename)}
     {...createFixedAddSmartLink("end")}
@@ -123,8 +125,9 @@ const createDefaultResolvers = (element: Elements.RichTextElement, isElementInsi
         case contentTypes.callout.codename:
           return <CalloutComponent item={componentItem as Component_Callout} />;
         case contentTypes.action.codename:
+          return <CTAButton reference={componentItem as Action} />
         case contentTypes.fact.codename:
-          return <BuildError>TODO: Implement for content type &quot;{componentItem.system.type}&quot;</BuildError>;
+          return <FactComponent item={componentItem as Fact} />;
         case contentTypes.content_chunk.codename:
           return <ContentChunk item={componentItem as Block_ContentChunk} />;
         default:
@@ -172,5 +175,8 @@ const createDefaultResolvers = (element: Elements.RichTextElement, isElementInsi
       );
     },
   },
+  block: {
+    h3: ({children}) => <h3 className="text-4xl">{children}</h3>
+  }
 });
 

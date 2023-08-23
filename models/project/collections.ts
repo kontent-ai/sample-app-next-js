@@ -27,9 +27,9 @@ export const collections = {
   /**
    * Ficto Imaging
    */
-  ficto_healthtech_imaging: {
-    codename: 'ficto_healthtech_imaging',
-    id: '4fc9b159-8a85-581f-8803-e606528dbfdd',
+  ficto_imaging: {
+    codename: 'ficto_imaging',
+    id: '6f912e48-4bcc-4bdd-a176-393e74a65419',
     name: 'Ficto Imaging',
   },
 

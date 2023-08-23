@@ -7,6 +7,6 @@ export * from './Block_VisualContainer';
 export * from './action';
 export * from './article';
 export * from './fact';
-export * from './imagingSolution';
 export * from './person';
 export * from './product';
+export * from './solution';

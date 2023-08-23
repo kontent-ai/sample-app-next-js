@@ -1,4 +1,4 @@
-import { Article, contentTypes, Product, taxonomies, WSL_Page, WSL_WebSpotlightRoot } from "../models";
+import { Article, contentTypes, Product, Solution, taxonomies, WSL_Page, WSL_WebSpotlightRoot } from "../models";
 import { Reference } from '../models/content-type-snippets/reference';
 
 const getExternalUrlsMapping = () => Object.fromEntries(
@@ -30,10 +30,10 @@ type ProductListingPathOptions = {
 type GenericContentTypeOptions = {
   type: typeof contentTypes.page.codename
   | typeof contentTypes.article.codename
-  | typeof contentTypes.product.codename,
+  | typeof contentTypes.product.codename
+  | typeof contentTypes.solution.codename,
   slug: string
 }
-
 type WebSpotlightRootOptions = {
   type: typeof contentTypes.web_spotlight_root.codename
 }
@@ -80,12 +80,15 @@ export const resolveUrlPath = (context: ResolutionContext) => {
 
       return `/${reservedListingSlugs.products}/${context.slug}`;
     }
+    case contentTypes.solution.codename: {
+      return `/solutions/${context.slug}`
+    }
     default:
       throw Error(`Not supported resolution for options ${JSON.stringify(context)}`);
   }
 }
 
-const isWSRoot = (item: WSL_Page | WSL_WebSpotlightRoot | Product | Article): item is WSL_WebSpotlightRoot =>
+const isWSRoot = (item: WSL_Page | WSL_WebSpotlightRoot | Product | Article | Solution): item is WSL_WebSpotlightRoot =>
   item.system.type === contentTypes.web_spotlight_root.codename;
 
 export const resolveReference = (reference: Reference) => {
@@ -96,7 +99,7 @@ export const resolveReference = (reference: Reference) => {
   const referencedItem = reference.elements.referenceContentItemLink.linkedItems[0];
 
   if (!referencedItem) {
-    console.info(`Linked item not found when resolving item with codename ${reference.system.codename} of type  ${reference.system.type}`);
+    console.info(`Linked item not found when resolving item with codename ${reference.system.codename} of type ${reference.system.type}`);
     return "#";
   }
 

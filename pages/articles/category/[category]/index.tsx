@@ -156,18 +156,20 @@ const ArticlesPage: FC<Props> = props => {
           {filteredArticles.length > 0 ? (
             <ul className="w-full grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 place-items-center list-none gap-5 md:pt-4 pl-0 justify-center">
               {filteredArticles.map(article => (
-                <ArticleItem
-                  key={article.system.id}
-                  title={article.elements.title.value}
-                  itemId={article.system.id}
-                  description={article.elements.abstract.value}
-                  imageUrl={article.elements.heroImage.value[0]?.url || ""}
-                  publishingDate={article.elements.publishingDate.value}
-                  detailUrl={resolveUrlPath({
-                    type: "article",
-                    slug: article.elements.slug.value
-                  })}
-                />
+                article.elements.type.value[0]?.codename && (
+                  <ArticleItem
+                    key={article.system.id}
+                    title={article.elements.title.value}
+                    itemId={article.system.id}
+                    description={article.elements.abstract.value}
+                    imageUrl={article.elements.heroImage.value[0]?.url || ""}
+                    publishingDate={article.elements.publishingDate.value}
+                    detailUrl={resolveUrlPath({
+                      type: "article",
+                      slug: article.elements.slug.value
+                    })}
+                  />
+                )
               ))}
             </ul>
           )

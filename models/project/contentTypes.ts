@@ -791,82 +791,6 @@ export const contentTypes = {
   },
 
   /**
-   * Imaging solution
-   */
-  imaging_solution: {
-    codename: 'imaging_solution',
-    id: '6bf0eff1-fe6a-4180-8d2d-5e020f54db18',
-    externalId: undefined,
-    name: 'Imaging solution',
-    elements: {
-      /**
-       * Description (text)
-       */
-      product_base__description: {
-        codename: 'product_base__description',
-        id: '4b5078e3-a8f9-4078-82b7-e712eff00136',
-        externalId: undefined,
-        name: 'Description',
-        required: false,
-        type: 'text',
-        snippetCodename: 'product_base',
-      },
-
-      /**
-       * Imaging technology (taxonomy)
-       */
-      imaging_technology: {
-        codename: 'imaging_technology',
-        id: '4697ff5c-393e-4ff3-ae09-ebcee4d2eb2b',
-        externalId: undefined,
-        name: 'Imaging technology',
-        required: true,
-        type: 'taxonomy',
-        snippetCodename: undefined,
-      },
-
-      /**
-       * Main image (asset)
-       */
-      product_base__main_image: {
-        codename: 'product_base__main_image',
-        id: 'aac1b39d-44fb-429c-8ef2-30de28895682',
-        externalId: undefined,
-        name: 'Main image',
-        required: false,
-        type: 'asset',
-        snippetCodename: 'product_base',
-      },
-
-      /**
-       * Name (text)
-       */
-      product_base__name: {
-        codename: 'product_base__name',
-        id: 'ab4c9424-3b74-4814-8cbe-5ab046d21992',
-        externalId: undefined,
-        name: 'Name',
-        required: true,
-        type: 'text',
-        snippetCodename: 'product_base',
-      },
-
-      /**
-       * Showcase (rich_text)
-       */
-      showcase: {
-        codename: 'showcase',
-        id: 'eca7b868-5f7e-4bab-a744-88c299ff5992',
-        externalId: undefined,
-        name: 'Showcase',
-        required: false,
-        type: 'rich_text',
-        snippetCodename: undefined,
-      },
-    },
-  },
-
-  /**
    * Person
    */
   person: {
@@ -877,6 +801,8 @@ export const contentTypes = {
     elements: {
       /**
        * Bio (rich_text)
+       *
+       * Write a biography that highlights the person's background and achievements. Don't forget to include relevant professional and educational information.
        */
       bio: {
         codename: 'bio',
@@ -916,6 +842,8 @@ export const contentTypes = {
 
       /**
        * Occupation (text)
+       *
+       * Include relevant details about their job title or area of expertise.
        */
       occupation: {
         codename: 'occupation',
@@ -929,6 +857,8 @@ export const contentTypes = {
 
       /**
        * Photograph (asset)
+       *
+       * Use a clear, professional and high quality image.
        */
       photograph: {
         codename: 'photograph',
@@ -1051,6 +981,134 @@ export const contentTypes = {
         codename: 'slug',
         id: 'cb72527a-b7c5-5591-9a80-8415a799d4a6',
         externalId: 'slug-00ac4349-6d09-4b2f-9cf9-e90b5e19a2ff',
+        name: 'Slug',
+        required: false,
+        type: 'url_slug',
+        snippetCodename: undefined,
+      },
+
+      /**
+       * Title (text)
+       */
+      seo_metadata__title: {
+        codename: 'seo_metadata__title',
+        id: 'd278379c-9f60-58f8-92e0-0e665033dd95',
+        externalId: 'title-897b2878-2b80-48ea-a328-16e25a384bb7',
+        name: 'Title',
+        required: false,
+        type: 'text',
+        snippetCodename: 'seo_metadata',
+      },
+    },
+  },
+
+  /**
+   * Solution
+   */
+  solution: {
+    codename: 'solution',
+    id: '6bf0eff1-fe6a-4180-8d2d-5e020f54db18',
+    externalId: undefined,
+    name: 'Solution',
+    elements: {
+      /**
+       * Description (text)
+       */
+      product_base__description: {
+        codename: 'product_base__description',
+        id: '4b5078e3-a8f9-4078-82b7-e712eff00136',
+        externalId: undefined,
+        name: 'Description',
+        required: false,
+        type: 'text',
+        snippetCodename: 'product_base',
+      },
+
+      /**
+       * Description (text)
+       */
+      seo_metadata__description: {
+        codename: 'seo_metadata__description',
+        id: '0ae36299-95cb-54d7-9be9-7d76ee6f4be0',
+        externalId: 'description-67490da2-0356-44cc-a7ed-e47afc5487a9',
+        name: 'Description',
+        required: false,
+        type: 'text',
+        snippetCodename: 'seo_metadata',
+      },
+
+      /**
+       * Imaging technology (taxonomy)
+       */
+      imaging_technology: {
+        codename: 'imaging_technology',
+        id: '4697ff5c-393e-4ff3-ae09-ebcee4d2eb2b',
+        externalId: undefined,
+        name: 'Imaging technology',
+        required: true,
+        type: 'taxonomy',
+        snippetCodename: undefined,
+      },
+
+      /**
+       * Keywords (text)
+       */
+      seo_metadata__keywords: {
+        codename: 'seo_metadata__keywords',
+        id: 'a0f7ffe0-5e94-532f-a86e-d77761eb35af',
+        externalId: 'keywords-2b4ba0dc-10f1-4da9-b559-3c374c45517d',
+        name: 'Keywords',
+        required: false,
+        type: 'text',
+        snippetCodename: 'seo_metadata',
+      },
+
+      /**
+       * Main image (asset)
+       */
+      product_base__main_image: {
+        codename: 'product_base__main_image',
+        id: 'aac1b39d-44fb-429c-8ef2-30de28895682',
+        externalId: undefined,
+        name: 'Main image',
+        required: false,
+        type: 'asset',
+        snippetCodename: 'product_base',
+      },
+
+      /**
+       * Name (text)
+       */
+      product_base__name: {
+        codename: 'product_base__name',
+        id: 'ab4c9424-3b74-4814-8cbe-5ab046d21992',
+        externalId: undefined,
+        name: 'Name',
+        required: true,
+        type: 'text',
+        snippetCodename: 'product_base',
+      },
+
+      /**
+       * Showcase (rich_text)
+       */
+      showcase: {
+        codename: 'showcase',
+        id: 'eca7b868-5f7e-4bab-a744-88c299ff5992',
+        externalId: undefined,
+        name: 'Showcase',
+        required: false,
+        type: 'rich_text',
+        snippetCodename: undefined,
+      },
+
+      /**
+       * Slug (url_slug)
+       */
+      slug: {
+        codename: 'slug',
+        id: 'ade61cc3-981f-4cb0-8b8a-515f90de5721',
+        externalId: undefined,
         name: 'Slug',
         required: false,
         type: 'url_slug',

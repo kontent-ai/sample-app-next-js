@@ -1,62 +1,54 @@
-import Link from "next/link";
 import { FC } from "react";
 
-import { mainColorBgClass } from "../../../lib/constants/colors";
-import { resolveReference } from "../../../lib/routing";
-import { createElementSmartLink, createItemSmartLink } from "../../../lib/utils/smartLinkUtils";
+import {
+  createElementSmartLink,
+  createItemSmartLink,
+} from "../../../lib/utils/smartLinkUtils";
 import { contentTypes, Fact } from "../../../models";
 import { HeroImage } from "../../landingPage/ui/heroImage";
-import { useSiteCodename } from "../siteCodenameContext";
+import { CTAButton } from "../internalLinks/CTAButton";
 
 type Props = Readonly<{
   item: Fact;
 }>;
 
-export const HeroUnitComponent: FC<Props> = props => {
-  const siteCodename = useSiteCodename();
+export const HeroUnitComponent: FC<Props> = (props) => {
   const fact = props.item;
-  const factUrl = fact.elements.referenceExternalUri.value || fact.elements.referenceContentItemLink.linkedItems.length > 0
-    ? resolveReference(fact)
-    : null;
-  const heroUnit = (
+
+  return (
     <HeroImage
       url={fact.elements.image.value[0]?.url || ""}
       itemId={props.item.system.id}
     >
-      <div
-        className={`py-5 md:py-5 px-3 w-full flex md:w-fit ${mainColorBgClass[siteCodename]}  opacity-[85%]`}
-        {...createItemSmartLink(fact.system.id)}
-      >
-        <h1
-          className="m-0 text-3xl align-text-bottom tracking-wide font-semibold"
-          {...createElementSmartLink(contentTypes.fact.elements.title.codename)}
+      <div className="p-5 text-white bg-indigo-950 bg-opacity-70 w-full">
+        <div
+          className="flex md:w-fit"
+          {...createItemSmartLink(fact.system.id)}
         >
-          {fact.elements.title.value}
-        </h1>
-      </div>
-      <div className="py-1 px-3 w-full bg-white opacity-90">
-        <h2
-          className="m-0 text-xl font-medium break-words hyphens-auto"
-          lang='en'
-          {...createElementSmartLink(contentTypes.fact.elements.reference__caption.codename)}
-        >
-          {fact.elements.message.value}
-        </h2>
+          <h1
+            className="text-5xl min-[900px]:text-8xl pb-7 align-text-bottom tracking-wide font-semibold"
+            {...createElementSmartLink(
+              contentTypes.fact.elements.title.codename
+            )}
+          >
+            {fact.elements.title.value}
+          </h1>
+        </div>
+        <div className="text-2xl">
+          <h2
+            className="break-words hyphens-auto"
+            lang="en"
+            {...createElementSmartLink(
+              contentTypes.fact.elements.reference__caption.codename
+            )}
+          >
+            {fact.elements.message.value}
+          </h2>
+        </div>
+        {fact.elements.referenceLabel.value && <CTAButton reference={fact} />}
       </div>
     </HeroImage>
   );
-
-  return factUrl
-    ? (
-      <Link
-        href={factUrl || "#"}
-        className={`no-underline ${!factUrl ? "pointer-events-none" : ""}`}
-        title={fact.elements.referenceCaption.value}
-      >{heroUnit}
-      </Link>
-    )
-    : heroUnit;
-}
+};
 
 HeroUnitComponent.displayName = "HeroUnitComponent";
-

@@ -32,11 +32,8 @@ export const CarouselComponent: FC<Props> = props => {
 
   return (
     <div className="relative w-full">
-      <div className="relative overflow-hidden rounded-lg">
         {/*This is a placeholder to determine the carousel height, because the real carousel items are absolutely positioned.*/}
-        <div className="relative z-0 opacity-0 w-fit">
         {props.items[0] && <HeroUnitComponent item={props.items[0]} />}
-        </div>
         {itemsToRender.map((item, index) => (
           <Item
             key={index}
@@ -45,7 +42,6 @@ export const CarouselComponent: FC<Props> = props => {
             item={item}
           />
         ))}
-      </div>
       {props.items.length > 1 && (
         <>
           <Indicator
@@ -88,9 +84,7 @@ type ItemState = "current" | "next" | "previous" | "hidden" | "nextMovingAway" |
 
 const Item: FC<ItemProps> = props => (
   <div className={`${createItemAnimationClasses(props.state)} absolute ${props.shouldAnimate ? "transition-transform" : ""} transform inset-0 duration-700 ease-in-out`}>
-    <div className="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
       <HeroUnitComponent item={props.item} />
-    </div>
   </div>
 );
 
@@ -147,7 +141,7 @@ const NextPrev: FC<NextPrevProps> = props => (
   <>
     <button
       type="button"
-      className="absolute top-0 left-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
+      className="absolute top-0 left-0 z-30 flex ml-[-5%] items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
       onClick={props.onPrev}
     >
       <span className="inline-flex items-center justify-center w-8 h-8 rounded-full sm:w-10 sm:h-10 bg-white/30 group-hover:bg-white/50 group-focus:ring-4 group-focus:ring-white  group-focus:outline-none">
@@ -160,7 +154,7 @@ const NextPrev: FC<NextPrevProps> = props => (
     </button>
     <button
       type="button"
-      className="absolute top-0 right-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
+      className="absolute top-0 right-0 z-30 flex mr-[-5%] items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
       onClick={props.onNext}
     >
       <span className="inline-flex items-center justify-center w-8 h-8 rounded-full sm:w-10 sm:h-10 bg-white/30 group-hover:bg-white/50 group-focus:ring-4 group-focus:ring-white group-focus:outline-none">

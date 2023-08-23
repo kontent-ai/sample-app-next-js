@@ -1,6 +1,6 @@
 import { camelCasePropertyNameResolver, createDeliveryClient, DeliveryError, IContentItem } from '@kontent-ai/delivery-sdk';
 
-import { Article, contentTypes, Product, SEOMetadata, WSL_Page, WSL_WebSpotlightRoot } from '../models';
+import { Article, contentTypes, Product, SEOMetadata, Solution, WSL_Page, WSL_WebSpotlightRoot } from '../models';
 import { ArticlePageSize, ProductsPageSize } from './constants/paging';
 import { ArticleTypeWithAll } from './utils/articlesListing';
 import { siteCodename } from './utils/env';
@@ -123,6 +123,26 @@ export const getProductDetail = (slug: string, usePreview: boolean) =>
     })
     .toAllPromise()
     .then(res => res.data.items[0]);
+
+export const getSolutionsWithSlugs = () =>
+    deliveryClient
+      .items<Solution>()
+      .type(contentTypes.solution.codename)
+      .collections([siteCodename, "default"])
+      .elementsParameter([contentTypes.solution.elements.slug.codename])
+      .toAllPromise()
+      .then(res => res.data.items)
+
+export const getSolutionDetail = (slug: string, usePreview: boolean) =>
+    deliveryClient
+      .items<Solution>()
+      .equalsFilter(`elements.${contentTypes.solution.elements.slug.codename}`, slug)
+      .queryConfig({
+        usePreviewMode: usePreview,
+        waitForLoadingNewContent: usePreview
+      })
+      .toAllPromise()
+      .then(res => res.data.items[0]);
 
 export const getSiteMenu = async (usePreview: boolean) => {
   return deliveryClient.items<WSL_WebSpotlightRoot>()

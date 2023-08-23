@@ -4,6 +4,7 @@ import { type Block_ContentChunk } from './Block_ContentChunk';
 import { type Block_VisualContainer } from './Block_VisualContainer';
 import { type Product } from './product';
 import { type SEOMetadata } from '../content-type-snippets/SEOMetadata';
+import { type Solution } from './solution';
 import { type WSL_SpotlightGuidelines } from '../content-type-snippets/WSL_SpotlightGuidelines';
 import { type WSL_WebSpotlightRoot } from './WSL_WebSpotlightRoot';
 
@@ -42,7 +43,7 @@ export type WSL_Page = IContentItem<{
    * Codename: subpages
    */
   subpages: Elements.LinkedItemsElement<
-    WSL_Page | WSL_WebSpotlightRoot | Article | Product
+    WSL_Page | WSL_WebSpotlightRoot | Article | Product | Solution
   >;
 
   /**
