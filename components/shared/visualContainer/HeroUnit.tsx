@@ -1,5 +1,6 @@
 import { FC } from "react";
 
+import { mainColorBgClass } from "../../../lib/constants/colors";
 import {
   createElementSmartLink,
   createItemSmartLink,
@@ -7,6 +8,7 @@ import {
 import { contentTypes, Fact } from "../../../models";
 import { HeroImage } from "../../landingPage/ui/heroImage";
 import { CTAButton } from "../internalLinks/CTAButton";
+import { useSiteCodename } from "../siteCodenameContext";
 
 type Props = Readonly<{
   item: Fact;
@@ -14,13 +16,14 @@ type Props = Readonly<{
 
 export const HeroUnitComponent: FC<Props> = (props) => {
   const fact = props.item;
+  const siteCodename = useSiteCodename();
 
   return (
     <HeroImage
       url={fact.elements.image.value[0]?.url || ""}
       itemId={props.item.system.id}
     >
-      <div className="p-5 text-white bg-indigo-950 bg-opacity-70 w-full">
+      <div className={`p-5 text-white ${mainColorBgClass[siteCodename]} bg-opacity-70 w-full`}>
         <div
           className="flex md:w-fit"
           {...createItemSmartLink(fact.system.id)}

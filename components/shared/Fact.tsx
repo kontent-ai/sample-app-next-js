@@ -2,12 +2,14 @@ import Image from "next/image";
 import { FC } from "react";
 
 import { sanitizeAnchor } from "../../lib/anchors";
+import { mainColorAfterBgClass } from "../../lib/constants/colors";
 import {
   createElementSmartLink,
   createItemSmartLink,
 } from "../../lib/utils/smartLinkUtils";
 import { contentTypes, Fact } from "../../models";
 import { CTAButton } from "./internalLinks/CTAButton";
+import { useSiteCodename } from "./siteCodenameContext";
 
 type Props = Readonly<{
   item: Fact;
@@ -21,6 +23,7 @@ const shouldReverse = () => {
 
 export const FactComponent: FC<Props> = (props) => {
   const image = props.item.elements.image.value[0];
+  const siteCodename = useSiteCodename();
   const reverse = shouldReverse();
   const authorElements = props.item.elements.author.linkedItems[0]?.elements;
   const { firstName, lastName, occupation } = authorElements ?? {};
@@ -36,7 +39,7 @@ export const FactComponent: FC<Props> = (props) => {
         <div
           className={`w-full md:w-1/2 h-[400px] relative drop-shadow-lg after:absolute ${
             reverse ? "after:left-3" : "after:right-3"
-          } after:top-3 after:bg-indigo-900 after:bg-no-repeat after:w-full after:bg-contain after:h-full after:rounded-lg after:z-[1]`}
+          } after:top-3 ${mainColorAfterBgClass[siteCodename]} after:bg-no-repeat after:w-full after:bg-contain after:h-full after:rounded-lg after:z-[1]`}
           {...createElementSmartLink(contentTypes.fact.elements.image.codename)}
         >
           <Image

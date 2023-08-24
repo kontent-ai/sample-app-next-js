@@ -5,6 +5,7 @@ import { NextRouter, useRouter } from "next/router";
 import { FC, useEffect, useState } from "react";
 
 import { mainColorBgClass } from "../../../lib/constants/colors";
+import { perCollectionSiteName } from "../../../lib/constants/labels";
 import {
   ResolutionContext,
   resolveReference,
@@ -186,18 +187,15 @@ export const Menu: FC<Props> = (props) => {
               className="flex items-center"
             >
               <span className="pr-3">
-                <Image 
+                <Image
                   src="/logo.png" 
                   alt="logo" 
-                  width={30}
+                  width={30} 
                   height={30} 
                 />
               </span>
               <span className="font-bold">Ficto</span>
-              {siteCodename === "ficto_surgical" && (
-                <span>&nbsp;| Surgical</span>
-              )}
-              {siteCodename === "ficto_imaging" && <span>&nbsp;| Imaging</span>}
+              <span>&nbsp;{perCollectionSiteName[siteCodename]}</span>
             </Link>
             <button
               type="button"
