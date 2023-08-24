@@ -7,3 +7,23 @@ html {
     --scroll-behavior: smooth!important;
     scroll-behavior: smooth!important;
     }
+
+.chunk h1, .chunk h2, .chunk h3, .fact {
+    border-left: 4px solid indigo;
+    padding-left: 30px;
+    margin-left: -40px;
+}
+
+.factSwapped {
+    border-left: none;
+    border-right: 4px solid indigo;
+}
+
+.chunk h1:hover, .chunk h2:hover, .chunk h3:hover, .fact:hover {
+    border-color: rgb(182, 160, 198)
+}
+
+.heading {
+    text-decoration: none;
+    font-weight: 400;
+}

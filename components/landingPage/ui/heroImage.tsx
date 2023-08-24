@@ -1,8 +1,8 @@
 import Image from "next/image";
 import { FC, ReactNode } from "react";
 
-import { createItemSmartLink } from "../../../lib/utils/smartLinkUtils";
 import { mainColorMdBgClass } from "../../../lib/constants/colors";
+import { createItemSmartLink } from "../../../lib/utils/smartLinkUtils";
 import { useSiteCodename } from "../../shared/siteCodenameContext";
 
 type Props = Readonly<{

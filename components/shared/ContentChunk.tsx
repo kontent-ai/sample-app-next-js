@@ -1,15 +1,36 @@
 import { ArrowTopRightOnSquareIcon } from "@heroicons/react/24/solid";
 import { Elements } from "@kontent-ai/delivery-sdk";
-import { IPortableTextComponent, IPortableTextImage, IPortableTextInternalLink, IPortableTextItem, IPortableTextTable } from "@kontent-ai/rich-text-resolver";
+import {
+  IPortableTextComponent,
+  IPortableTextImage,
+  IPortableTextInternalLink,
+  IPortableTextItem,
+  IPortableTextTable,
+} from "@kontent-ai/rich-text-resolver";
 import { nodeParse } from "@kontent-ai/rich-text-resolver/dist/cjs/src/parser/node";
 import { transformToPortableText } from "@kontent-ai/rich-text-resolver/dist/cjs/src/transformers/portable-text-transformer";
-import { PortableText, PortableTextMarkComponentProps, PortableTextReactComponents, PortableTextTypeComponentProps } from "@portabletext/react";
-import { PortableTextBlock } from '@portabletext/types'
+import {
+  PortableText,
+  PortableTextMarkComponentProps,
+  PortableTextReactComponents,
+  PortableTextTypeComponentProps,
+} from "@portabletext/react";
+import { PortableTextBlock } from "@portabletext/types";
 import Image from "next/image";
 import { FC } from "react";
 
-import { createElementSmartLink, createFixedAddSmartLink, createItemSmartLink } from "../../lib/utils/smartLinkUtils";
-import { Action, Block_ContentChunk, Component_Callout,contentTypes,Fact } from "../../models";
+import {
+  createElementSmartLink,
+  createFixedAddSmartLink,
+  createItemSmartLink,
+} from "../../lib/utils/smartLinkUtils";
+import {
+  Action,
+  Block_ContentChunk,
+  Component_Callout,
+  contentTypes,
+  Fact,
+} from "../../models";
 import { FactComponent } from "./Fact";
 import { CTAButton } from "./internalLinks/CTAButton";
 import { InternalLink } from "./internalLinks/InternalLink";
@@ -20,11 +41,13 @@ type Props = Readonly<{
   item: Block_ContentChunk;
 }>;
 
-export const ContentChunk: FC<Props> = props => (
+export const ContentChunk: FC<Props> = (props) => (
   <div
-    className="px-10 py-5"
+    className="px-10 py-5 chunk"
     {...createItemSmartLink(props.item.system.id)}
-    {...createElementSmartLink(contentTypes.content_chunk.elements.content.codename)}
+    {...createElementSmartLink(
+      contentTypes.content_chunk.elements.content.codename
+    )}
     {...createFixedAddSmartLink("end")}
   >
     <RichTextElement
@@ -39,7 +62,7 @@ type ElementProps = Readonly<{
   isInsideTable: boolean;
 }>;
 
-export const RichTextElement: FC<ElementProps> = props => {
+export const RichTextElement: FC<ElementProps> = (props) => {
   const portableText = transformToPortableText(nodeParse(props.element.value));
 
   return (
@@ -56,7 +79,7 @@ type RichTextValueProps = Readonly<{
   isInsideTable: boolean;
 }>;
 
-const RichTextValue: FC<RichTextValueProps> = props => (
+const RichTextValue: FC<RichTextValueProps> = (props) => (
   <PortableText
     value={props.value}
     components={createDefaultResolvers(props.element, props.isInsideTable)}
@@ -64,12 +87,15 @@ const RichTextValue: FC<RichTextValueProps> = props => (
 );
 
 const sanitizeFirstSpan = (block: PortableTextBlock): string =>
-  block.children[0]?.text.toString().toLowerCase().replace(/[^\w]/g,"_")
+  block.children[0]?.text.toString().toLowerCase().replace(/[^\w]/g, "_");
 
-const createDefaultResolvers = (element: Elements.RichTextElement, isElementInsideTable: boolean = false): Partial<PortableTextReactComponents> => ({
+const createDefaultResolvers = (
+  element: Elements.RichTextElement,
+  isElementInsideTable: boolean = false
+): Partial<PortableTextReactComponents> => ({
   types: {
     image: ({ value }: PortableTextTypeComponentProps<IPortableTextImage>) => {
-      const asset = element.images.find(i => i.imageId === value.asset._ref);
+      const asset = element.images.find((i) => i.imageId === value.asset._ref);
       if (!asset) {
         throw new Error(`Asset ${value.asset._ref} not found.`);
       }
@@ -84,7 +110,7 @@ const createDefaultResolvers = (element: Elements.RichTextElement, isElementInsi
               className="object-contain"
             />
           </div>
-        )
+        );
       }
 
       return (
@@ -102,9 +128,9 @@ const createDefaultResolvers = (element: Elements.RichTextElement, isElementInsi
       return (
         <table className="table-auto">
           <tbody>
-            {value.rows.map(r => (
+            {value.rows.map((r) => (
               <tr key={r._key}>
-                {r.cells.map(c => (
+                {r.cells.map((c) => (
                   <td key={c._key}>
                     <RichTextValue
                       isInsideTable
@@ -117,50 +143,55 @@ const createDefaultResolvers = (element: Elements.RichTextElement, isElementInsi
             ))}
           </tbody>
         </table>
-      )
+      );
     },
-    component: ({ value }: PortableTextTypeComponentProps<IPortableTextComponent>) => {
-      const componentItem = element.linkedItems.find(i => i.system.codename === value.component._ref);
+    component: ({
+      value,
+    }: PortableTextTypeComponentProps<IPortableTextComponent>) => {
+      const componentItem = element.linkedItems.find(
+        (i) => i.system.codename === value.component._ref
+      );
       if (!componentItem) {
-        throw new Error("Component item not found, probably not enough depth requested.");
+        throw new Error(
+          "Component item not found, probably not enough depth requested."
+        );
       }
 
       switch (componentItem.system.type) {
         case contentTypes.callout.codename:
           return <CalloutComponent item={componentItem as Component_Callout} />;
         case contentTypes.action.codename:
-          return <CTAButton reference={componentItem as Action} />
+          return <CTAButton reference={componentItem as Action} />;
         case contentTypes.fact.codename:
           return <FactComponent item={componentItem as Fact} />;
         case contentTypes.content_chunk.codename:
           return <ContentChunk item={componentItem as Block_ContentChunk} />;
         default:
-          return <BuildError>Unsupported content type &quot;{componentItem.system.type}&quot;</BuildError>;
+          return (
+            <BuildError>
+              Unsupported content type &quot;{componentItem.system.type}&quot;
+            </BuildError>
+          );
       }
     },
   },
   marks: {
-    sub: props => (
-      <sub>
-        {props.children}
-      </sub>
-    ),
-    sup: props => (
-      <sup>
-        {props.children}
-      </sup>
-    ),
-    internalLink: ({ value, children }: PortableTextMarkComponentProps<IPortableTextInternalLink>) => {
-      const link = element.links.find(l => l.linkId === value?.reference._ref);
+    sub: (props) => <sub>{props.children}</sub>,
+    sup: (props) => <sup>{props.children}</sup>,
+    internalLink: ({
+      value,
+      children,
+    }: PortableTextMarkComponentProps<IPortableTextInternalLink>) => {
+      const link = element.links.find(
+        (l) => l.linkId === value?.reference._ref
+      );
       if (!link) {
-        throw new Error("Cannot find link reference in links. This should never happen.");
+        throw new Error(
+          "Cannot find link reference in links. This should never happen."
+        );
       }
 
-      return (
-        <InternalLink link={link}>
-          {children}
-        </InternalLink>
-      );
+      return <InternalLink link={link}>{children}</InternalLink>;
     },
     link: ({ value, children }) => {
       const target = (value?.href || "").startsWith("http")
@@ -174,19 +205,77 @@ const createDefaultResolvers = (element: Elements.RichTextElement, isElementInsi
           title={value?.title}
         >
           {children}
-          {!!value["data-new-window"] && <ArrowTopRightOnSquareIcon className="w-5 inline-block ml-1" />}
+          {!!value["data-new-window"] && (
+            <ArrowTopRightOnSquareIcon className="w-5 inline-block ml-1" />
+          )}
         </a>
       );
     },
   },
   block: {
     // TODO for anchor funcitonality, discuss whether this is a good approach, potential issue with ID conflict
-    h1: ({value, children}) => <h1 className="text-6xl" id={sanitizeFirstSpan(value)}>{children}</h1>,
-    h2: ({value, children}) => <h2 className="text-5xl" id={sanitizeFirstSpan(value)}>{children}</h2>,
-    h3: ({children, value}) => <h3 className="text-4xl" id={sanitizeFirstSpan(value)}>{children}</h3>,
-    h4: ({value, children}) => <h4 className="text-3xl" id={sanitizeFirstSpan(value)}>{children}</h4>,
-    h5: ({value, children}) => <h5 className="text-2xl" id={sanitizeFirstSpan(value)}>{children}</h5>,
-    h6: ({value, children}) => <h6 className="text-xl" id={sanitizeFirstSpan(value)}>{children}</h6>,
-  }
+    h1: ({ value, children }) => (
+      <h1 
+        className="scroll-mt-[80px] text-6xl" 
+        id={sanitizeFirstSpan(value)}
+      >
+        <a
+          className="no-underline font-normal"
+          href={`#${sanitizeFirstSpan(value)}`}
+        >
+          {children}
+        </a>
+      </h1>
+    ),
+    h2: ({ value, children }) => (
+      <h2 
+        className="scroll-mt-[80px] text-5xl" 
+        id={sanitizeFirstSpan(value)}
+      >
+        <a
+          className="no-underline font-normal"
+          href={`#${sanitizeFirstSpan(value)}`}
+        >
+          {children}
+        </a>
+      </h2>
+    ),
+    h3: ({ value, children }) => (
+      <h3 
+        className="scroll-mt-[80px] text-4xl" 
+        id={sanitizeFirstSpan(value)}
+      >
+        <a
+          className="no-underline font-normal"
+          href={`#${sanitizeFirstSpan(value)}`}
+        >
+          {children}
+        </a>
+      </h3>
+    ),
+    h4: ({ value, children }) => (
+      <h4 
+        className="text-3xl" 
+        id={sanitizeFirstSpan(value)}
+      >
+        {children}
+      </h4>
+    ),
+    h5: ({ value, children }) => (
+      <h5 
+        className="text-2xl" 
+        id={sanitizeFirstSpan(value)}
+      >
+        {children}
+      </h5>
+    ),
+    h6: ({ value, children }) => (
+      <h6 
+        className="text-xl" 
+        id={sanitizeFirstSpan(value)}
+      >
+        {children}
+      </h6>
+    ),
+  },
 });
-

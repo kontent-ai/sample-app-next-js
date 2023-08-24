@@ -7,6 +7,7 @@ const getExternalUrlsMapping = () => Object.fromEntries(
     .map(([collectionCodename, domain]) => [collectionCodename, "https://" + domain]) ?? []
 );
 
+// union type of all nested terms codenames
 type RecursiveTaxonomyCodenames<T extends { readonly terms: unknown }> = keyof T["terms"] extends infer TermCodenames
   ? TermCodenames extends keyof T["terms"]
   ? T["terms"][TermCodenames] extends infer ChildTerm extends { readonly terms: unknown }

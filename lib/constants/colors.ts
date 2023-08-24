@@ -14,8 +14,8 @@ export const mainColorBgClass: PerCollection<string> = {
 
 export const mainColorMdBgClass: PerCollection<string> = {
   ficto_healthtech: "md:bg-green-300",
-  ficto_healthtech_imaging: "md:bg-indigo-950",
-  ficto_healthtech_surgical: "md:bg-blue-300",
+  ficto_imaging: "md:bg-indigo-950",
+  ficto_surgical: "md:bg-blue-300",
 }
 
 export const mainColorBorderClass: PerCollection<string> = {

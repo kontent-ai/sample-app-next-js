@@ -33,7 +33,7 @@ export const StackComponent: FC<Props> = (props) => {
     >
       {props.title && (
         <h3
-          className="text-4xl"
+          className="text-4xl heading"
           {...createElementSmartLink(
             contentTypes.visual_container.elements.title.codename
           )}

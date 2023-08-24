@@ -21,8 +21,7 @@ const shouldReverse = () => {
 export const FactComponent: FC<Props> = (props) => {
   const image = props.item.elements.image.value[0];
   const reverse = shouldReverse();
-  const authorElements =
-    props.item.elements.author.linkedItems[0]?.elements;
+  const authorElements = props.item.elements.author.linkedItems[0]?.elements;
   const { firstName, lastName, occupation } = authorElements ?? {};
 
   return (
@@ -34,7 +33,9 @@ export const FactComponent: FC<Props> = (props) => {
     >
       {image && (
         <div
-          className="w-full md:w-1/2 h-[400px] relative overflow-hidden drop-shadow-lg"
+          className={`w-full md:w-1/2 h-[400px] relative drop-shadow-lg after:absolute ${
+            reverse ? "after:left-3" : "after:right-3"
+          } after:top-3 after:bg-indigo-900 after:bg-no-repeat after:w-full after:bg-contain after:h-full after:rounded-lg after:z-[1]`}
           {...createElementSmartLink(contentTypes.fact.elements.image.codename)}
         >
           <Image
@@ -42,16 +43,26 @@ export const FactComponent: FC<Props> = (props) => {
             alt={props.item.elements.title.value}
             fill
             sizes="(max-width: 757px) 100vw, 50vw"
-            className="object-cover m-0 rounded-lg"
+            className="object-cover m-0 rounded-lg z-10"
           />
         </div>
       )}
-      <div className="md:w-1/2 pl-2 pr-10 md:px-7">
+      <div
+        className={`md:w-1/2 pl-2 pr-10 relative  ${
+          reverse ? "md:pl-0" : "md:pl-20"
+        }`}
+      >
         <h3
-          className="text-3xl"
+          className="text-4xl fact"
+          id={props.item.system.codename} // TODO barvy do konstant
           {...createElementSmartLink(contentTypes.fact.elements.title.codename)}
         >
-          {props.item.elements.title.value}
+          <a 
+            className="heading" 
+            href={"#" + props.item.system.codename}
+          >
+            {props.item.elements.title.value}
+          </a>
         </h3>
         <div
           className="text-justify"

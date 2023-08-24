@@ -30,6 +30,7 @@
     "@netlify/plugin-nextjs": "^4.36.0",
     "@tailwindcss/typography": "^0.5.9",
     "@types/jest": "^29.5.3",
+    "@portabletext/types": "^2.0.6",
     "@types/node": "^18.11.8",
     "@types/react": "^18.0.24",
     "autoprefixer": "^10.4.14",
