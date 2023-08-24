@@ -2,10 +2,10 @@ import { ArrowTopRightOnSquareIcon } from "@heroicons/react/24/solid";
 import { Elements } from "@kontent-ai/delivery-sdk";
 import { IPortableTextComponent, IPortableTextImage, IPortableTextInternalLink, IPortableTextItem, IPortableTextTable, nodeParse, transformToPortableText } from "@kontent-ai/rich-text-resolver";
 import { PortableText,PortableTextMarkComponentProps, PortableTextReactComponents, PortableTextTypeComponentProps } from "@portabletext/react";
-import { PortableTextBlock } from "@portabletext/types";
 import Image from "next/image";
 import { FC } from "react";
 
+import { sanitizeFirstChildText } from "../../../lib/anchors";
 import { Action, Block_ContentChunk,Component_Callout, contentTypes, Fact } from "../../../models";
 import { ContentChunk } from "../ContentChunk";
 import { FactComponent } from "../Fact";
@@ -148,11 +148,11 @@ export const createDefaultResolvers = (
     h1: ({ value, children }) => (
       <h1
         className="scroll-mt-[80px] text-6xl"
-        id={sanitizeFirstSpan(value)}
+        id={sanitizeFirstChildText(value)}
       >
         <a
           className="no-underline font-normal"
-          href={`#${sanitizeFirstSpan(value)}`}
+          href={`#${sanitizeFirstChildText(value)}`}
         >
           {children}
         </a>
@@ -161,11 +161,11 @@ export const createDefaultResolvers = (
     h2: ({ value, children }) => (
       <h2
         className="scroll-mt-[80px] text-5xl"
-        id={sanitizeFirstSpan(value)}
+        id={sanitizeFirstChildText(value)}
       >
         <a
           className="no-underline font-normal"
-          href={`#${sanitizeFirstSpan(value)}`}
+          href={`#${sanitizeFirstChildText(value)}`}
         >
           {children}
         </a>
@@ -174,11 +174,11 @@ export const createDefaultResolvers = (
     h3: ({ value, children }) => (
       <h3
         className="scroll-mt-[80px] text-4xl"
-        id={sanitizeFirstSpan(value)}
+        id={sanitizeFirstChildText(value)}
       >
         <a
           className="no-underline font-normal"
-          href={`#${sanitizeFirstSpan(value)}`}
+          href={`#${sanitizeFirstChildText(value)}`}
         >
           {children}
         </a>
@@ -187,7 +187,7 @@ export const createDefaultResolvers = (
     h4: ({ value, children }) => (
       <h4
         className="text-3xl"
-        id={sanitizeFirstSpan(value)}
+        id={sanitizeFirstChildText(value)}
       >
         {children}
       </h4>
@@ -195,7 +195,7 @@ export const createDefaultResolvers = (
     h5: ({ value, children }) => (
       <h5
         className="text-2xl"
-        id={sanitizeFirstSpan(value)}
+        id={sanitizeFirstChildText(value)}
       >
         {children}
       </h5>
@@ -203,7 +203,7 @@ export const createDefaultResolvers = (
     h6: ({ value, children }) => (
       <h6
         className="text-xl"
-        id={sanitizeFirstSpan(value)}
+        id={sanitizeFirstChildText(value)}
       >
         {children}
       </h6>
@@ -235,6 +235,3 @@ const RichTextValue: FC<RichTextValueProps> = (props) => (
     components={createDefaultResolvers(props.element, props.isInsideTable)}
   />
 );
-
-const sanitizeFirstSpan = (block: PortableTextBlock): string =>
-  block.children[0]?.text.toString().toLowerCase().replace(/[^\w]/g, "_");

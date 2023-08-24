@@ -1,5 +1,6 @@
 import { FC } from "react";
 
+import { sanitizeAnchor } from "../../../lib/anchors";
 import { Block_VisualContainer } from "../../../models";
 import { BuildError } from "../ui/BuildError";
 import { CarouselComponent } from "./Carousel";
@@ -60,7 +61,7 @@ const VisualRepresentation: FC<Props> = (props) => {
 
 export const VisualContainer: FC<Props> = (props) => (
   // wrapper for anchor functionality, works by passing the item codename to Reference -> External link element
-  <div id={props.item.system.codename}>
+  <div id={sanitizeAnchor(props.item.system.codename)}>
     <VisualRepresentation item={props.item} />
   </div>
 );

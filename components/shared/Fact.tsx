@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { FC } from "react";
 
+import { sanitizeAnchor } from "../../lib/anchors";
 import {
   createElementSmartLink,
   createItemSmartLink,
@@ -54,7 +55,7 @@ export const FactComponent: FC<Props> = (props) => {
       >
         <h3
           className="text-4xl fact"
-          id={props.item.system.codename} // TODO barvy do konstant
+          id={sanitizeAnchor(props.item.system.codename)} // TODO barvy do konstant
           {...createElementSmartLink(contentTypes.fact.elements.title.codename)}
         >
           <a 
