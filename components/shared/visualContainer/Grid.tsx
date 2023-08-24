@@ -15,7 +15,7 @@ type Props = Readonly<{
 export const GridComponent: FC<Props> = (props) => {
   const createGridItem = (item: Fact) => (
     <div
-      className="group border- hover:scale-110 transform transition-all duration-300 ease-in-out md:p-4 flex flex-col items-center"
+      className="md:p-4 flex flex-col items-center"
       key={item.system.id}
     >
       {item.elements.image.value[0] && (
@@ -67,7 +67,7 @@ export const GridComponent: FC<Props> = (props) => {
           item.elements.referenceLabel.value ? (
             <Link
               key={item.system.codename}
-              className="no-underline font-normal"
+              className="no-underline font-normal group hover:scale-110 transform transition-all duration-300 ease-in-out"
               href={resolveReference(item)}
             >
               {createGridItem(item)}
