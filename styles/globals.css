@@ -2,28 +2,27 @@
 @tailwind components;
 @tailwind utilities;
 
-html {
-    /* for better anchor link experience */
-    --scroll-behavior: smooth!important;
-    scroll-behavior: smooth!important;
+@layer base{
+    html {
+        /* for better anchor link experience */
+        --scroll-behavior: smooth;
+        scroll-behavior: smooth;
+        }
+
+    .chunk h1, .chunk h2, .chunk h3, .fact {
+        @apply border-l-4;
+        @apply border-gray-500;
+        @apply pl-7;
+        @apply -ml-10;
     }
 
-.chunk h1, .chunk h2, .chunk h3, .fact {
-    border-left: 4px solid indigo;
-    padding-left: 30px;
-    margin-left: -40px;
-}
+    .factSwapped {
+        border-left: none;
+        border-right: 4px solid;
+        @apply border-gray-500;
+    }
 
-.factSwapped {
-    border-left: none;
-    border-right: 4px solid indigo;
-}
-
-.chunk h1:hover, .chunk h2:hover, .chunk h3:hover, .fact:hover {
-    border-color: rgb(182, 160, 198)
-}
-
-.heading {
-    text-decoration: none;
-    font-weight: 400;
+    .chunk h1:hover, .chunk h2:hover, .chunk h3:hover, .fact:hover {
+        @apply border-gray-300 
+    }
 }
