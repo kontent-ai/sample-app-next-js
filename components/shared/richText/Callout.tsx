@@ -3,8 +3,8 @@ import { FC } from "react";
 
 import { mainColorBorderClass } from "../../../lib/constants/colors";
 import { Component_Callout } from "../../../models"
-import { RichTextElement } from "../ContentChunk";
 import { useSiteCodename } from "../siteCodenameContext";
+import { RichTextElement } from "./RichTextElement";
 
 type Props = Readonly<{
   item: Component_Callout;

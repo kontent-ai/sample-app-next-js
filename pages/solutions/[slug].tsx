@@ -3,7 +3,7 @@ import { ParsedUrlQuery } from "querystring";
 import { FC } from "react";
 
 import { HeroImage } from "../../components/landingPage/ui/heroImage";
-import { RichTextElement } from "../../components/shared/ContentChunk";
+import { RichTextElement } from "../../components/shared/richText/RichTextElement";
 import { AppPage } from "../../components/shared/ui/appPage";
 import { mainColorBgClass } from "../../lib/constants/colors";
 import {

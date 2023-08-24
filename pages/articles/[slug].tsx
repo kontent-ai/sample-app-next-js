@@ -2,8 +2,8 @@ import { GetStaticPaths, GetStaticProps } from "next";
 import { FC } from "react";
 
 import { HeroImage } from "../../components/landingPage/ui/heroImage";
-import { RichTextElement } from "../../components/shared/ContentChunk";
 import { PersonHorizontal } from "../../components/shared/PersonHorizontal";
+import { RichTextElement } from "../../components/shared/richText/RichTextElement";
 import { AppPage } from "../../components/shared/ui/appPage";
 import { mainColorBgClass } from "../../lib/constants/colors";
 import { getAllArticles, getArticleBySlug, getDefaultMetadata, getSiteMenu } from "../../lib/kontentClient";
