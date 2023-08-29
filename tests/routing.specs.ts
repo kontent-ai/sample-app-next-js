@@ -43,23 +43,23 @@ describe("resolveUrlPath", () => {
     [
       {
         type: "article",
-        term: "research"
+        term: "news"
       } as ResolutionContext,
-      "/articles/category/research"
+      "/articles/category/news"
     ],
     [
       {
         type: "product",
-        terms: ["tools"]
+        terms: ["cutting"]
       } as ResolutionContext,
-      "/products?category=tools"
+      "/products?category=cutting"
     ],
     [
       {
         type: "product",
-        terms: ["tools", "equipment"]
+        terms: ["cutting", "grasping"]
       } as ResolutionContext,
-      "/products?category=tools&category=equipment"
+      "/products?category=cutting&category=grasping"
     ],
     [
       {
@@ -72,26 +72,26 @@ describe("resolveUrlPath", () => {
     [
       {
         type: "article",
-        term: "research",
+        term: "news",
         page: 3
       } as ResolutionContext,
-      "/articles/category/research/page/3"
+      "/articles/category/news/page/3"
     ],
     [
       {
         type: "product",
-        terms: ["tools"],
+        terms: ["cutting"],
         page: 3
       } as ResolutionContext,
-      "/products?category=tools&page=3"
+      "/products?category=cutting&page=3"
     ],
     [
       {
         type: "product",
-        terms: ["tools", "equipment"],
+        terms: ["cutting", "hand_held"],
         page: 3
       } as ResolutionContext,
-      "/products?category=tools&category=equipment&page=3"
+      "/products?category=cutting&category=hand_held&page=3"
     ],
   ])("resolves correctly for %s", (context: ResolutionContext, expected: string) => {
     const result = resolveUrlPath(context);
