@@ -20,6 +20,7 @@ const VisualRepresentation: FC<Props> = (props) => {
           items={props.item.elements.items.linkedItems}
           subtitle={props.item.elements.subtitle.value}
           title={props.item.elements.title.value}
+          codename={props.item.system.codename}
         />
       );
     case visualRepresentation.stack:
@@ -29,6 +30,7 @@ const VisualRepresentation: FC<Props> = (props) => {
           subtitle={props.item.elements.subtitle.value}
           title={props.item.elements.title.value}
           itemId={props.item.system.id}
+          codename={props.item.system.codename}
         />
       );
     case visualRepresentation.hero_unit:

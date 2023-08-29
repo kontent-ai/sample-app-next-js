@@ -17,7 +17,7 @@ type Props = Readonly<{
 
 export const ContentChunk: FC<Props> = (props) => (
   <div
-    className="px-10 py-5 chunk"
+    className="px-10 py-5 vis-container"
     {...createItemSmartLink(props.item.system.id)}
     {...createElementSmartLink(
       contentTypes.content_chunk.elements.content.codename

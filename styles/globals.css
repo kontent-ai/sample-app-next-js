@@ -5,24 +5,43 @@
 @layer base{
     html {
         /* for better anchor link experience */
-        --scroll-behavior: smooth;
-        scroll-behavior: smooth;
-        }
-
-    .chunk h1, .chunk h2, .chunk h3, .fact {
-        @apply border-l-4;
-        @apply border-gray-500;
-        @apply pl-7;
-        @apply -ml-10;
+        --scroll-behavior: smooth!important;
+        scroll-behavior: smooth!important;
     }
 
-    .factSwapped {
-        border-left: none;
-        border-right: 4px solid;
-        @apply border-gray-500;
+    .heading a {
+        @apply border-l-4 pl-7 -ml-10 font-normal scroll-m-20 no-underline;
     }
 
-    .chunk h1:hover, .chunk h2:hover, .chunk h3:hover, .fact:hover {
-        @apply border-gray-300 
+    .heading a:hover {
+        @apply border-gray-300;
+    }
+
+    .heading a.fact {
+        @apply border-none -ml-8
+    }
+    
+    h1.heading {
+        @apply text-6xl;
+    }
+
+    h2.heading {
+        @apply text-5xl;
+    }
+
+    h3.heading {
+        @apply text-4xl;
+    }
+
+    h4.heading {
+        @apply text-3xl;
+    }
+
+    h5.heading {
+        @apply text-2xl
+    }
+
+    h6.heading {
+        @apply text-xl
     }
 }

@@ -2,17 +2,21 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { FC } from "react";
 
+import { mainColorAnchor } from "../../../lib/constants/colors";
 import { resolveReference } from "../../../lib/routing";
 import { createElementSmartLink } from "../../../lib/utils/smartLinkUtils";
 import { contentTypes, Fact } from "../../../models";
+import { useSiteCodename } from "../siteCodenameContext";
 
 type Props = Readonly<{
   items: ReadonlyArray<Fact>;
   title: string;
   subtitle: string;
+  codename: string;
 }>;
 
 export const GridComponent: FC<Props> = (props) => {
+  const siteCodename = useSiteCodename();
   const createGridItem = (item: Fact) => (
     <div
       className="md:p-4 flex flex-col items-center"
@@ -44,15 +48,21 @@ export const GridComponent: FC<Props> = (props) => {
   );
 
   return (
-    <div className="px-10 w-full relative">
+    <div className="vis-container px-10 w-full relative">
       {props.title && (
         <h3
-          className="text-4xl font-normal"
+          className="heading"
+          id={props.codename}
           {...createElementSmartLink(
             contentTypes.visual_container.elements.title.codename
           )}
         >
-          {props.title}
+          <a
+            className={mainColorAnchor[siteCodename]}
+            href={"#" + props.codename}
+          >
+            {props.title}
+          </a>
         </h3>
       )}
       <div

@@ -53,3 +53,9 @@ export const calloutTypeColor = {
   info: "text-blue-400",
   lightbulb: "text-green-400",
 }
+
+export const mainColorAnchor: PerCollection<string> = {
+  ficto_healthtech: "border-emerald-800",
+  ficto_imaging: "border-indigo-800",
+  ficto_surgical: "border-rose-800",
+}

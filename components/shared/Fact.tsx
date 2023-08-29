@@ -1,7 +1,6 @@
 import Image from "next/image";
 import { FC } from "react";
 
-import { sanitizeAnchor } from "../../lib/anchors";
 import { mainColorAfterBgClass } from "../../lib/constants/colors";
 import {
   createElementSmartLink,
@@ -52,17 +51,17 @@ export const FactComponent: FC<Props> = (props) => {
         </div>
       )}
       <div
-        className={`md:w-1/2 pl-2 pr-10 relative  ${
+        className={`md:w-1/2 pl-2 pr-10 relative ${
           reverse ? "md:pl-0" : "md:pl-20"
         }`}
       >
         <h3
-          className="text-4xl fact"
-          id={sanitizeAnchor(props.item.system.codename)} // TODO barvy do konstant
+          className="heading scroll-mt-20"
+          id={props.item.system.codename}
           {...createElementSmartLink(contentTypes.fact.elements.title.codename)}
         >
-          <a 
-            className="heading" 
+          <a
+            className="fact"
             href={"#" + props.item.system.codename}
           >
             {props.item.elements.title.value}

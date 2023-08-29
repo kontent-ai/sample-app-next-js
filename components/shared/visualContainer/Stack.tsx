@@ -1,6 +1,9 @@
 import { FC, useState } from "react";
 
-import { mainColorBorderClass } from "../../../lib/constants/colors";
+import {
+  mainColorAnchor,
+  mainColorBorderClass,
+} from "../../../lib/constants/colors";
 import {
   createElementSmartLink,
   createItemSmartLink,
@@ -16,11 +19,13 @@ type Props = Readonly<{
   title: string;
   subtitle: string;
   itemId: string;
+  codename: string;
 }>;
 
 export const StackComponent: FC<Props> = (props) => {
   const [actionIndex, setActionIndex] = useState(0);
   const currentAction = props.items[actionIndex];
+  const siteCodename = useSiteCodename();
 
   if (!currentAction) {
     return null;
@@ -28,17 +33,23 @@ export const StackComponent: FC<Props> = (props) => {
 
   return (
     <div
-      className="px-3 md:px-10 relative"
+      className="vis-container px-3 md:px-10 relative"
       {...createItemSmartLink(props.itemId, true)}
     >
       {props.title && (
         <h3
-          className="text-4xl heading"
+          id={props.codename}
+          className="heading"
           {...createElementSmartLink(
             contentTypes.visual_container.elements.title.codename
           )}
         >
-          {props.title}
+          <a
+            className={mainColorAnchor[siteCodename]}
+            href={"#" + props.codename}
+          >
+            {props.title}
+          </a>
         </h3>
       )}
       <div

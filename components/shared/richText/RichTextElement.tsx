@@ -1,29 +1,49 @@
 import { ArrowTopRightOnSquareIcon } from "@heroicons/react/24/solid";
 import { Elements } from "@kontent-ai/delivery-sdk";
-import { IPortableTextComponent, IPortableTextImage, IPortableTextInternalLink, IPortableTextItem, IPortableTextTable, nodeParse, transformToPortableText } from "@kontent-ai/rich-text-resolver";
-import { PortableText,PortableTextMarkComponentProps, PortableTextReactComponents, PortableTextTypeComponentProps } from "@portabletext/react";
+import {
+  IPortableTextComponent,
+  IPortableTextImage,
+  IPortableTextInternalLink,
+  IPortableTextItem,
+  IPortableTextTable,
+  nodeParse,
+  transformToPortableText,
+} from "@kontent-ai/rich-text-resolver";
+import {
+  PortableText,
+  PortableTextMarkComponentProps,
+  PortableTextReactComponents,
+  PortableTextTypeComponentProps,
+} from "@portabletext/react";
 import Image from "next/image";
 import { FC } from "react";
 
 import { sanitizeFirstChildText } from "../../../lib/anchors";
-import { Action, Block_ContentChunk,Component_Callout, contentTypes, Fact } from "../../../models";
+import { mainColorAnchor } from "../../../lib/constants/colors";
+import {
+  Action,
+  Block_ContentChunk,
+  Component_Callout,
+  contentTypes,
+  Fact,
+} from "../../../models";
 import { ContentChunk } from "../ContentChunk";
 import { FactComponent } from "../Fact";
 import { CTAButton } from "../internalLinks/CTAButton";
 import { InternalLink } from "../internalLinks/InternalLink";
+import { useSiteCodename } from "../siteCodenameContext";
 import { BuildError } from "../ui/BuildError";
 import { CalloutComponent } from "./Callout";
-
 
 type ElementProps = Readonly<{
   element: Elements.RichTextElement;
   isInsideTable: boolean;
 }>;
 
-
 export const createDefaultResolvers = (
   element: Elements.RichTextElement,
-  isElementInsideTable: boolean = false
+  isElementInsideTable: boolean = false,
+  siteCodename: keyof typeof mainColorAnchor
 ): Partial<PortableTextReactComponents> => ({
   types: {
     image: ({ value }: PortableTextTypeComponentProps<IPortableTextImage>) => {
@@ -145,13 +165,14 @@ export const createDefaultResolvers = (
     },
   },
   block: {
+    // TODO don't resolve when block contains link type markdef
     h1: ({ value, children }) => (
       <h1
-        className="scroll-mt-[80px] text-6xl"
+        className="scroll-mt-20 heading"
         id={sanitizeFirstChildText(value)}
       >
         <a
-          className="no-underline font-normal"
+          className={mainColorAnchor[siteCodename]}
           href={`#${sanitizeFirstChildText(value)}`}
         >
           {children}
@@ -160,11 +181,11 @@ export const createDefaultResolvers = (
     ),
     h2: ({ value, children }) => (
       <h2
-        className="scroll-mt-[80px] text-5xl"
+        className="scroll-mt-20 heading"
         id={sanitizeFirstChildText(value)}
       >
         <a
-          className="no-underline font-normal"
+          className={mainColorAnchor[siteCodename]}
           href={`#${sanitizeFirstChildText(value)}`}
         >
           {children}
@@ -173,11 +194,11 @@ export const createDefaultResolvers = (
     ),
     h3: ({ value, children }) => (
       <h3
-        className="scroll-mt-[80px] text-4xl"
+        className="scroll-mt-20 heading"
         id={sanitizeFirstChildText(value)}
       >
         <a
-          className="no-underline font-normal"
+          className={mainColorAnchor[siteCodename]}
           href={`#${sanitizeFirstChildText(value)}`}
         >
           {children}
@@ -186,39 +207,54 @@ export const createDefaultResolvers = (
     ),
     h4: ({ value, children }) => (
       <h4
-        className="text-3xl"
+        className="scroll-mt-20 heading"
         id={sanitizeFirstChildText(value)}
       >
-        {children}
+        <a
+          className={mainColorAnchor[siteCodename]}
+          href={`#${sanitizeFirstChildText(value)}`}
+        >
+          {children}
+        </a>
       </h4>
     ),
     h5: ({ value, children }) => (
       <h5
-        className="text-2xl"
+        className="scroll-mt-20 heading"
         id={sanitizeFirstChildText(value)}
       >
-        {children}
+        <a
+          className={mainColorAnchor[siteCodename]}
+          href={`#${sanitizeFirstChildText(value)}`}
+        >
+          {children}
+        </a>
       </h5>
     ),
     h6: ({ value, children }) => (
       <h6
-        className="text-xl"
+        className="scroll-mt-20 heading"
         id={sanitizeFirstChildText(value)}
       >
-        {children}
+        <a
+          className={mainColorAnchor[siteCodename]}
+          href={`#${sanitizeFirstChildText(value)}`}
+        >
+          {children}
+        </a>
       </h6>
     ),
   },
 });
 
-
 export const RichTextElement: FC<ElementProps> = (props) => {
   const portableText = transformToPortableText(nodeParse(props.element.value));
+  const siteCodename = useSiteCodename();
 
   return (
     <PortableText
       value={portableText}
-      components={createDefaultResolvers(props.element, false)}
+      components={createDefaultResolvers(props.element, false, siteCodename)}
     />
   );
 };
@@ -229,9 +265,17 @@ type RichTextValueProps = Readonly<{
   isInsideTable: boolean;
 }>;
 
-const RichTextValue: FC<RichTextValueProps> = (props) => (
-  <PortableText
-    value={props.value}
-    components={createDefaultResolvers(props.element, props.isInsideTable)}
-  />
-);
+const RichTextValue: FC<RichTextValueProps> = (props) => {
+  const siteCodename = useSiteCodename();
+
+  return (
+    <PortableText
+      value={props.value}
+      components={createDefaultResolvers(
+        props.element,
+        props.isInsideTable,
+        siteCodename
+      )}
+    />
+  );
+};
