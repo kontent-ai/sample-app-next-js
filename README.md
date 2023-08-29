@@ -10,17 +10,17 @@
 
 Ficto Healthtech
 
-[![Vercel](https://therealsujitk-vercel-badge.vercel.app/?app=health-tech&style=for-the-badge&logo=false)](https://ficto-healthtech.vercel.app)
+[![Vercel](https://therealsujitk-vercel-badge.vercel.app/?app=ficto-healthtech&style=for-the-badge&logo=false)](https://ficto-healthtech.vercel.app)
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/aa724fef-9fda-4a85-8f6b-4a58f6f3763e/deploy-status)](https://app.netlify.com/sites/new-sample-app/deploys)
 
 Ficto Healthtech Imaging
 
-[![Vercel](https://therealsujitk-vercel-badge.vercel.app/?app=health-tech-imaging&style=for-the-badge&logo=false)](https://ficto-healthtech-imaging.vercel.app)
+[![Vercel](https://therealsujitk-vercel-badge.vercel.app/?app=ficto-healthtech-imaging&style=for-the-badge&logo=false)](https://ficto-healthtech-imaging.vercel.app)
 
 Ficto Healthtech Surgical
 
-[![Vercel](https://therealsujitk-vercel-badge.vercel.app/?app=health-tech-surgical&style=for-the-badge&logo=false)](https://ficto-healthtech-surgical.vercel.app)
+[![Vercel](https://therealsujitk-vercel-badge.vercel.app/?app=ficto-healthtech-surgical&style=for-the-badge&logo=false)](https://ficto-healthtech-surgical.vercel.app)
 
 ## Getting Started
 
