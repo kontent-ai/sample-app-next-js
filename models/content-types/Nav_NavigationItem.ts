@@ -14,6 +14,8 @@ export type Nav_NavigationItem = IContentItem<{
    * Required: false
    * Id: 2a2104ce-cb8d-5d6b-a90f-a78183efc478
    * Codename: subitems
+   *
+   * Fill with further Navigation items to create a hierarchical menu.
    */
   subitems: Elements.LinkedItemsElement<Nav_NavigationItem>;
 }> &

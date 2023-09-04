@@ -40,6 +40,53 @@ export const contentTypeSnippets = {
   },
 
   /**
+   * Metadata
+   */
+  metadata: {
+    codename: 'metadata',
+    id: '3ad33660-1d2b-578b-8b3e-129f2a2e552f',
+    externalId: 'SEOMetadata-2e4a04aa-55bd-48ae-a1c7-b303fde97a5d',
+    name: 'Metadata',
+    elements: {
+      /**
+       * Title (text)
+       */
+      metadata__title: {
+        codename: 'metadata__title',
+        id: 'd278379c-9f60-58f8-92e0-0e665033dd95',
+        externalId: 'title-897b2878-2b80-48ea-a328-16e25a384bb7',
+        name: 'Title',
+        required: false,
+        type: 'text',
+      },
+
+      /**
+       * Description (text)
+       */
+      metadata__description: {
+        codename: 'metadata__description',
+        id: '0ae36299-95cb-54d7-9be9-7d76ee6f4be0',
+        externalId: 'description-67490da2-0356-44cc-a7ed-e47afc5487a9',
+        name: 'Description',
+        required: false,
+        type: 'text',
+      },
+
+      /**
+       * Keywords (text)
+       */
+      metadata__keywords: {
+        codename: 'metadata__keywords',
+        id: 'a0f7ffe0-5e94-532f-a86e-d77761eb35af',
+        externalId: 'keywords-2b4ba0dc-10f1-4da9-b559-3c374c45517d',
+        name: 'Keywords',
+        required: false,
+        type: 'text',
+      },
+    },
+  },
+
+  /**
    * Product base
    */
   product_base: {
@@ -50,6 +97,8 @@ export const contentTypeSnippets = {
     elements: {
       /**
        * Name (text)
+       *
+       * Include key product attributes, such as brand name or model.
        */
       product_base__name: {
         codename: 'product_base__name',
@@ -62,6 +111,8 @@ export const contentTypeSnippets = {
 
       /**
        * Description (text)
+       *
+       * Write a description that highlights the product's features and benefits. Use persuasive language to convey the value.
        */
       product_base__description: {
         codename: 'product_base__description',
@@ -74,6 +125,8 @@ export const contentTypeSnippets = {
 
       /**
        * Main image (asset)
+       *
+       * Use high-quality product images. Ensure the image represents the product's color and size.
        */
       product_base__main_image: {
         codename: 'product_base__main_image',
@@ -145,53 +198,6 @@ export const contentTypeSnippets = {
         name: 'Content item link',
         required: false,
         type: 'modular_content',
-      },
-    },
-  },
-
-  /**
-   * SEO Metadata
-   */
-  seo_metadata: {
-    codename: 'seo_metadata',
-    id: '3ad33660-1d2b-578b-8b3e-129f2a2e552f',
-    externalId: 'SEOMetadata-2e4a04aa-55bd-48ae-a1c7-b303fde97a5d',
-    name: 'SEO Metadata',
-    elements: {
-      /**
-       * Title (text)
-       */
-      seo_metadata__title: {
-        codename: 'seo_metadata__title',
-        id: 'd278379c-9f60-58f8-92e0-0e665033dd95',
-        externalId: 'title-897b2878-2b80-48ea-a328-16e25a384bb7',
-        name: 'Title',
-        required: false,
-        type: 'text',
-      },
-
-      /**
-       * Description (text)
-       */
-      seo_metadata__description: {
-        codename: 'seo_metadata__description',
-        id: '0ae36299-95cb-54d7-9be9-7d76ee6f4be0',
-        externalId: 'description-67490da2-0356-44cc-a7ed-e47afc5487a9',
-        name: 'Description',
-        required: false,
-        type: 'text',
-      },
-
-      /**
-       * Keywords (text)
-       */
-      seo_metadata__keywords: {
-        codename: 'seo_metadata__keywords',
-        id: 'a0f7ffe0-5e94-532f-a86e-d77761eb35af',
-        externalId: 'keywords-2b4ba0dc-10f1-4da9-b559-3c374c45517d',
-        name: 'Keywords',
-        required: false,
-        type: 'text',
       },
     },
   },

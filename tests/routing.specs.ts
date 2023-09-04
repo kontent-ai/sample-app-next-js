@@ -150,18 +150,18 @@ describe("resolveReference", () => {
         linkedItems: []
 
       },
-      seoMetadataTitle: {
+      metadataTitle: {
         type: ElementType.Text,
         name: "Title",
         value: "About us"
       },
-      seoMetadataDescription: {
+      metadataDescription: {
         type: ElementType.Text,
 
         name: "Description",
         value: ""
       },
-      seoMetadataKeywords: {
+      metadataKeywords: {
         type: ElementType.Text,
 
         name: "Keywords",

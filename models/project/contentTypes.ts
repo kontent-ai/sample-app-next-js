@@ -31,27 +31,27 @@ export const contentTypes = {
       /**
        * Description (text)
        */
-      seo_metadata__description: {
-        codename: 'seo_metadata__description',
+      metadata__description: {
+        codename: 'metadata__description',
         id: '0ae36299-95cb-54d7-9be9-7d76ee6f4be0',
         externalId: 'description-67490da2-0356-44cc-a7ed-e47afc5487a9',
         name: 'Description',
         required: false,
         type: 'text',
-        snippetCodename: 'seo_metadata',
+        snippetCodename: 'metadata',
       },
 
       /**
        * Keywords (text)
        */
-      seo_metadata__keywords: {
-        codename: 'seo_metadata__keywords',
+      metadata__keywords: {
+        codename: 'metadata__keywords',
         id: 'a0f7ffe0-5e94-532f-a86e-d77761eb35af',
         externalId: 'keywords-2b4ba0dc-10f1-4da9-b559-3c374c45517d',
         name: 'Keywords',
         required: false,
         type: 'text',
-        snippetCodename: 'seo_metadata',
+        snippetCodename: 'metadata',
       },
 
       /**
@@ -98,14 +98,14 @@ export const contentTypes = {
       /**
        * Title (text)
        */
-      seo_metadata__title: {
-        codename: 'seo_metadata__title',
+      metadata__title: {
+        codename: 'metadata__title',
         id: 'd278379c-9f60-58f8-92e0-0e665033dd95',
         externalId: 'title-897b2878-2b80-48ea-a328-16e25a384bb7',
         name: 'Title',
         required: false,
         type: 'text',
-        snippetCodename: 'seo_metadata',
+        snippetCodename: 'metadata',
       },
     },
   },
@@ -121,6 +121,8 @@ export const contentTypes = {
     elements: {
       /**
        * Content (modular_content)
+       *
+       * Populate with 🧱 type items to define the landing page structure and design.
        */
       content: {
         codename: 'content',
@@ -135,31 +137,33 @@ export const contentTypes = {
       /**
        * Description (text)
        */
-      seo_metadata__description: {
-        codename: 'seo_metadata__description',
+      metadata__description: {
+        codename: 'metadata__description',
         id: '0ae36299-95cb-54d7-9be9-7d76ee6f4be0',
         externalId: 'description-67490da2-0356-44cc-a7ed-e47afc5487a9',
         name: 'Description',
         required: false,
         type: 'text',
-        snippetCodename: 'seo_metadata',
+        snippetCodename: 'metadata',
       },
 
       /**
        * Keywords (text)
        */
-      seo_metadata__keywords: {
-        codename: 'seo_metadata__keywords',
+      metadata__keywords: {
+        codename: 'metadata__keywords',
         id: 'a0f7ffe0-5e94-532f-a86e-d77761eb35af',
         externalId: 'keywords-2b4ba0dc-10f1-4da9-b559-3c374c45517d',
         name: 'Keywords',
         required: false,
         type: 'text',
-        snippetCodename: 'seo_metadata',
+        snippetCodename: 'metadata',
       },
 
       /**
        * Navigation (modular_content)
+       *
+       * Provide a valid Navigation item to define main website menu. Recursive nature of Navigation item type allows you to create a hierarchical mega menu. Two levels of nesting are supported by default.
        */
       navigation: {
         codename: 'navigation',
@@ -173,6 +177,8 @@ export const contentTypes = {
 
       /**
        * Subpages (subpages)
+       *
+       * Page items populating this element will be shown in the web spotlight tree. Further populating a subpages element in the child items allows you to create a multi-level hierarchy.
        */
       subpages: {
         codename: 'subpages',
@@ -200,14 +206,14 @@ export const contentTypes = {
       /**
        * Title (text)
        */
-      seo_metadata__title: {
-        codename: 'seo_metadata__title',
+      metadata__title: {
+        codename: 'metadata__title',
         id: 'd278379c-9f60-58f8-92e0-0e665033dd95',
         externalId: 'title-897b2878-2b80-48ea-a328-16e25a384bb7',
         name: 'Title',
         required: false,
         type: 'text',
-        snippetCodename: 'seo_metadata',
+        snippetCodename: 'metadata',
       },
     },
   },
@@ -236,6 +242,8 @@ export const contentTypes = {
 
       /**
        * Type (multiple_choice)
+       *
+       * Selecting a type affects the visual style of the callout to make its purpose instantly clear to the reader.
        */
       type: {
         codename: 'type',
@@ -316,6 +324,8 @@ export const contentTypes = {
 
       /**
        * Subitems (modular_content)
+       *
+       * Fill with further Navigation items to create a hierarchical menu.
        */
       subitems: {
         codename: 'subitems',
@@ -551,14 +561,14 @@ export const contentTypes = {
       /**
        * Description (text)
        */
-      seo_metadata__description: {
-        codename: 'seo_metadata__description',
+      metadata__description: {
+        codename: 'metadata__description',
         id: '0ae36299-95cb-54d7-9be9-7d76ee6f4be0',
         externalId: 'description-67490da2-0356-44cc-a7ed-e47afc5487a9',
         name: 'Description',
         required: false,
         type: 'text',
-        snippetCodename: 'seo_metadata',
+        snippetCodename: 'metadata',
       },
 
       /**
@@ -577,14 +587,14 @@ export const contentTypes = {
       /**
        * Keywords (text)
        */
-      seo_metadata__keywords: {
-        codename: 'seo_metadata__keywords',
+      metadata__keywords: {
+        codename: 'metadata__keywords',
         id: 'a0f7ffe0-5e94-532f-a86e-d77761eb35af',
         externalId: 'keywords-2b4ba0dc-10f1-4da9-b559-3c374c45517d',
         name: 'Keywords',
         required: false,
         type: 'text',
-        snippetCodename: 'seo_metadata',
+        snippetCodename: 'metadata',
       },
 
       /**
@@ -631,18 +641,20 @@ export const contentTypes = {
       /**
        * Title (text)
        */
-      seo_metadata__title: {
-        codename: 'seo_metadata__title',
+      metadata__title: {
+        codename: 'metadata__title',
         id: 'd278379c-9f60-58f8-92e0-0e665033dd95',
         externalId: 'title-897b2878-2b80-48ea-a328-16e25a384bb7',
         name: 'Title',
         required: false,
         type: 'text',
-        snippetCodename: 'seo_metadata',
+        snippetCodename: 'metadata',
       },
 
       /**
        * Article type (taxonomy)
+       *
+       * Pick a suitable category for your article.
        */
       type: {
         codename: 'type',
@@ -667,6 +679,8 @@ export const contentTypes = {
     elements: {
       /**
        * Author (modular_content)
+       *
+       * By providing an author, you can create a testimonial or a quote.
        */
       author: {
         codename: 'author',
@@ -723,6 +737,8 @@ export const contentTypes = {
 
       /**
        * Image (asset)
+       *
+       * Images have different representation based on context where they are used, such as hero units or cards.
        */
       image: {
         codename: 'image',
@@ -883,6 +899,8 @@ export const contentTypes = {
     elements: {
       /**
        * Product category (taxonomy)
+       *
+       * Categorize the product with a suitable taxonomy term for improved navigation, filtering, and searchability.
        */
       category: {
         codename: 'category',
@@ -896,6 +914,8 @@ export const contentTypes = {
 
       /**
        * Description (text)
+       *
+       * Write a description that highlights the product's features and benefits. Use persuasive language to convey the value.
        */
       product_base__description: {
         codename: 'product_base__description',
@@ -910,31 +930,33 @@ export const contentTypes = {
       /**
        * Description (text)
        */
-      seo_metadata__description: {
-        codename: 'seo_metadata__description',
+      metadata__description: {
+        codename: 'metadata__description',
         id: '0ae36299-95cb-54d7-9be9-7d76ee6f4be0',
         externalId: 'description-67490da2-0356-44cc-a7ed-e47afc5487a9',
         name: 'Description',
         required: false,
         type: 'text',
-        snippetCodename: 'seo_metadata',
+        snippetCodename: 'metadata',
       },
 
       /**
        * Keywords (text)
        */
-      seo_metadata__keywords: {
-        codename: 'seo_metadata__keywords',
+      metadata__keywords: {
+        codename: 'metadata__keywords',
         id: 'a0f7ffe0-5e94-532f-a86e-d77761eb35af',
         externalId: 'keywords-2b4ba0dc-10f1-4da9-b559-3c374c45517d',
         name: 'Keywords',
         required: false,
         type: 'text',
-        snippetCodename: 'seo_metadata',
+        snippetCodename: 'metadata',
       },
 
       /**
        * Main image (asset)
+       *
+       * Use high-quality product images. Ensure the image represents the product's color and size.
        */
       product_base__main_image: {
         codename: 'product_base__main_image',
@@ -948,6 +970,8 @@ export const contentTypes = {
 
       /**
        * Name (text)
+       *
+       * Include key product attributes, such as brand name or model.
        */
       product_base__name: {
         codename: 'product_base__name',
@@ -962,7 +986,7 @@ export const contentTypes = {
       /**
        * Price (number)
        *
-       * Price in Euros. ⚠️ Price element is here just for an illustration and should not be in production projects.
+       * Price in Euros.
        */
       price: {
         codename: 'price',
@@ -976,6 +1000,8 @@ export const contentTypes = {
 
       /**
        * Slug (url_slug)
+       *
+       * ⚠️ Make sure each product has a unique slug.
        */
       slug: {
         codename: 'slug',
@@ -990,14 +1016,14 @@ export const contentTypes = {
       /**
        * Title (text)
        */
-      seo_metadata__title: {
-        codename: 'seo_metadata__title',
+      metadata__title: {
+        codename: 'metadata__title',
         id: 'd278379c-9f60-58f8-92e0-0e665033dd95',
         externalId: 'title-897b2878-2b80-48ea-a328-16e25a384bb7',
         name: 'Title',
         required: false,
         type: 'text',
-        snippetCodename: 'seo_metadata',
+        snippetCodename: 'metadata',
       },
     },
   },
@@ -1013,6 +1039,8 @@ export const contentTypes = {
     elements: {
       /**
        * Description (text)
+       *
+       * Write a description that highlights the product's features and benefits. Use persuasive language to convey the value.
        */
       product_base__description: {
         codename: 'product_base__description',
@@ -1027,18 +1055,20 @@ export const contentTypes = {
       /**
        * Description (text)
        */
-      seo_metadata__description: {
-        codename: 'seo_metadata__description',
+      metadata__description: {
+        codename: 'metadata__description',
         id: '0ae36299-95cb-54d7-9be9-7d76ee6f4be0',
         externalId: 'description-67490da2-0356-44cc-a7ed-e47afc5487a9',
         name: 'Description',
         required: false,
         type: 'text',
-        snippetCodename: 'seo_metadata',
+        snippetCodename: 'metadata',
       },
 
       /**
        * Imaging technology (taxonomy)
+       *
+       * Select the type of imaging technology the solution employs.
        */
       imaging_technology: {
         codename: 'imaging_technology',
@@ -1053,18 +1083,20 @@ export const contentTypes = {
       /**
        * Keywords (text)
        */
-      seo_metadata__keywords: {
-        codename: 'seo_metadata__keywords',
+      metadata__keywords: {
+        codename: 'metadata__keywords',
         id: 'a0f7ffe0-5e94-532f-a86e-d77761eb35af',
         externalId: 'keywords-2b4ba0dc-10f1-4da9-b559-3c374c45517d',
         name: 'Keywords',
         required: false,
         type: 'text',
-        snippetCodename: 'seo_metadata',
+        snippetCodename: 'metadata',
       },
 
       /**
        * Main image (asset)
+       *
+       * Use high-quality product images. Ensure the image represents the product's color and size.
        */
       product_base__main_image: {
         codename: 'product_base__main_image',
@@ -1078,6 +1110,8 @@ export const contentTypes = {
 
       /**
        * Name (text)
+       *
+       * Include key product attributes, such as brand name or model.
        */
       product_base__name: {
         codename: 'product_base__name',
@@ -1091,6 +1125,8 @@ export const contentTypes = {
 
       /**
        * Showcase (rich_text)
+       *
+       * Detailed description of the solution and its benefits. Use Fact items to extend the showcase with captioned cards and a call-to-action.
        */
       showcase: {
         codename: 'showcase',
@@ -1104,6 +1140,8 @@ export const contentTypes = {
 
       /**
        * Slug (url_slug)
+       *
+       * ⚠ Make sure each solution has a unique slug.
        */
       slug: {
         codename: 'slug',
@@ -1118,14 +1156,14 @@ export const contentTypes = {
       /**
        * Title (text)
        */
-      seo_metadata__title: {
-        codename: 'seo_metadata__title',
+      metadata__title: {
+        codename: 'metadata__title',
         id: 'd278379c-9f60-58f8-92e0-0e665033dd95',
         externalId: 'title-897b2878-2b80-48ea-a328-16e25a384bb7',
         name: 'Title',
         required: false,
         type: 'text',
-        snippetCodename: 'seo_metadata',
+        snippetCodename: 'metadata',
       },
     },
   },

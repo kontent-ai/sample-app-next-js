@@ -9,13 +9,13 @@ import { reservedListingSlugs } from "../lib/routing";
 import { ValidCollectionCodename } from "../lib/types/perCollection";
 import { siteCodename } from "../lib/utils/env";
 import { createElementSmartLink, createFixedAddSmartLink } from "../lib/utils/smartLinkUtils";
-import { contentTypes, Nav_NavigationItem, SEOMetadata, WSL_Page } from "../models";
+import { contentTypes, Metadata, Nav_NavigationItem, WSL_Page } from "../models";
 
 type Props = Readonly<{
   page: WSL_Page;
   siteCodename: ValidCollectionCodename;
   siteMenu: Nav_NavigationItem | null;
-  defaultMetadata: SEOMetadata;
+  defaultMetadata: Metadata;
 }>;
 
 interface IParams extends ParsedUrlQuery {

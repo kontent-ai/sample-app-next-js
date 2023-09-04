@@ -16,6 +16,8 @@ export type Fact = IContentItem<{
    * Required: false
    * Id: 619dfb25-be91-42de-8f71-83168743612d
    * Codename: author
+   *
+   * By providing an author, you can create a testimonial or a quote.
    */
   author: Elements.LinkedItemsElement<Person>;
 
@@ -24,6 +26,8 @@ export type Fact = IContentItem<{
    * Required: false
    * Id: 8c8946ce-e683-5df1-b029-967a3e43e056
    * Codename: image
+   *
+   * Images have different representation based on context where they are used, such as hero units or cards.
    */
   image: Elements.AssetsElement;
 

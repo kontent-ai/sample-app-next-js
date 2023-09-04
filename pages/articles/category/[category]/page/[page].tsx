@@ -7,7 +7,7 @@ import { reservedListingSlugs } from "../../../../../lib/routing";
 import { ValidCollectionCodename } from "../../../../../lib/types/perCollection";
 import { ArticleListingUrlQuery, ArticleTypeWithAll, categoryFilterSource, isArticleType } from "../../../../../lib/utils/articlesListing";
 import { siteCodename } from "../../../../../lib/utils/env";
-import { Article, contentTypes,Nav_NavigationItem, SEOMetadata, WSL_Page } from "../../../../../models";
+import { Article, contentTypes,Metadata, Nav_NavigationItem, WSL_Page } from "../../../../../models";
 import ArticlesPage from "..";
 
 type Props = Readonly<{
@@ -16,7 +16,7 @@ type Props = Readonly<{
   siteMenu: Nav_NavigationItem | null,
   page: WSL_Page,
   itemCount: number,
-  defaultMetadata: SEOMetadata;
+  defaultMetadata: Metadata;
 }>;
 
 const ArticlesPagingPage: FC<Props> = props => {

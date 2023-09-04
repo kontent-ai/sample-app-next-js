@@ -5,7 +5,7 @@ import { perCollectionSEOTitle } from "../../../lib/constants/labels";
 import { ValidCollectionCodename } from "../../../lib/types/perCollection";
 import { useSmartLink } from "../../../lib/useSmartLink";
 import { createItemSmartLink } from "../../../lib/utils/smartLinkUtils";
-import { Article, contentTypes,Nav_NavigationItem, Product, SEOMetadata, Solution, WSL_Page, WSL_WebSpotlightRoot } from "../../../models";
+import { Article, contentTypes, Metadata, Nav_NavigationItem, Product, Solution, WSL_Page, WSL_WebSpotlightRoot } from "../../../models";
 import { SiteCodenameProvider } from "../siteCodenameContext";
 import { Footer } from "./footer";
 import { Menu } from "./menu";
@@ -17,7 +17,7 @@ type Props = Readonly<{
   siteCodename: ValidCollectionCodename;
   item: AcceptedItem;
   siteMenu: Nav_NavigationItem | null;
-  defaultMetadata: SEOMetadata;
+  defaultMetadata: Metadata;
   pageType: "WebPage" | "Article" | "Product" | "Solution",
 }>;
 
@@ -56,8 +56,8 @@ const isProductOrSolution = (item: AcceptedItem): item is Product | Solution =>
 
 const PageMetadata: FC<Pick<Props, "siteCodename" | "item" | "defaultMetadata" | "pageType">> = ({ siteCodename, item, defaultMetadata, pageType }) => {
   const pageMetaTitle = createMetaTitle(siteCodename, item);
-  const pageMetaDescription = item.elements.seoMetadataDescription.value || defaultMetadata.elements.seoMetadataDescription.value;
-  const pageMetaKeywords = item.elements.seoMetadataKeywords.value || defaultMetadata.elements.seoMetadataKeywords.value;
+  const pageMetaDescription = item.elements.metadataDescription.value || defaultMetadata.elements.metadataDescription.value;
+  const pageMetaKeywords = item.elements.metadataKeywords.value || defaultMetadata.elements.metadataKeywords.value;
 
   return (
     <Head>
@@ -83,7 +83,7 @@ const PageMetadata: FC<Pick<Props, "siteCodename" | "item" | "defaultMetadata" |
           JSON.stringify({
             "@context": "http://schema.org",
             "@type": pageType,
-            name: item.elements.seoMetadataTitle.value
+            name: item.elements.metadataTitle.value
               || (isProductOrSolution(item) ? item.elements.productBaseName.value : item.elements.title.value),
             description: pageMetaDescription,
             keywords: pageMetaKeywords
@@ -96,7 +96,7 @@ const PageMetadata: FC<Pick<Props, "siteCodename" | "item" | "defaultMetadata" |
 
 const createMetaTitle = (siteCodename: ValidCollectionCodename, item: AcceptedItem): string => {
   const siteTitle = perCollectionSEOTitle[siteCodename];
-  const pageTitle = item.elements.seoMetadataTitle.value;
+  const pageTitle = item.elements.metadataTitle.value;
 
   return pageTitle !== siteTitle ? `${pageTitle} | ${siteTitle}` : siteTitle;
 };

@@ -15,7 +15,7 @@ import { ResolutionContext, resolveUrlPath } from "../../../../lib/routing";
 import { ValidCollectionCodename } from "../../../../lib/types/perCollection";
 import { ArticleListingUrlQuery, ArticleTypeWithAll, categoryFilterSource, isArticleType } from "../../../../lib/utils/articlesListing";
 import { siteCodename } from "../../../../lib/utils/env";
-import { Article, contentTypes, Nav_NavigationItem, SEOMetadata, taxonomies, WSL_Page } from "../../../../models";
+import { Article, contentTypes, Metadata, Nav_NavigationItem, taxonomies, WSL_Page } from "../../../../models";
 
 
 type Props = Readonly<{
@@ -24,7 +24,7 @@ type Props = Readonly<{
   siteMenu: Nav_NavigationItem | null,
   page: WSL_Page,
   itemCount: number;
-  defaultMetadata: SEOMetadata;
+  defaultMetadata: Metadata;
 }>;
 
 type LinkButtonProps = {

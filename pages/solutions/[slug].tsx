@@ -17,15 +17,15 @@ import { siteCodename } from "../../lib/utils/env";
 import { createElementSmartLink } from "../../lib/utils/smartLinkUtils";
 import {
   contentTypes,
+  Metadata,
   Nav_NavigationItem,
-  SEOMetadata,
   Solution,
 } from "../../models";
 
 type Props = Readonly<{
   solution: Solution;
   siteCodename: ValidCollectionCodename;
-  defaultMetadata: SEOMetadata;
+  defaultMetadata: Metadata;
   siteMenu: Nav_NavigationItem | null;
 }>;
 

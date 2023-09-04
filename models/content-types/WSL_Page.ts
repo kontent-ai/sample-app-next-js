@@ -2,8 +2,8 @@ import { type IContentItem, type Elements } from '@kontent-ai/delivery-sdk';
 import { type Article } from './article';
 import { type Block_ContentChunk } from './Block_ContentChunk';
 import { type Block_VisualContainer } from './Block_VisualContainer';
+import { type Metadata } from '../content-type-snippets/metadata';
 import { type Product } from './product';
-import { type SEOMetadata } from '../content-type-snippets/SEOMetadata';
 import { type Solution } from './solution';
 import { type WSL_SpotlightGuidelines } from '../content-type-snippets/WSL_SpotlightGuidelines';
 import { type WSL_WebSpotlightRoot } from './WSL_WebSpotlightRoot';
@@ -55,4 +55,4 @@ export type WSL_Page = IContentItem<{
   title: Elements.TextElement;
 }> &
   WSL_SpotlightGuidelines &
-  SEOMetadata;
+  Metadata;

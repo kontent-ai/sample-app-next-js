@@ -1,6 +1,6 @@
 import { camelCasePropertyNameResolver, createDeliveryClient, DeliveryError, IContentItem } from '@kontent-ai/delivery-sdk';
 
-import { Article, contentTypes, Product, SEOMetadata, Solution, WSL_Page, WSL_WebSpotlightRoot } from '../models';
+import { Article, contentTypes, contentTypeSnippets, Metadata, Product, Solution, WSL_Page, WSL_WebSpotlightRoot } from '../models';
 import { ArticlePageSize, ProductsPageSize } from './constants/paging';
 import { ArticleTypeWithAll } from './utils/articlesListing';
 import { siteCodename } from './utils/env';
@@ -125,24 +125,24 @@ export const getProductDetail = (slug: string, usePreview: boolean) =>
     .then(res => res.data.items[0]);
 
 export const getSolutionsWithSlugs = () =>
-    deliveryClient
-      .items<Solution>()
-      .type(contentTypes.solution.codename)
-      .collections([siteCodename, "default"])
-      .elementsParameter([contentTypes.solution.elements.slug.codename])
-      .toAllPromise()
-      .then(res => res.data.items)
+  deliveryClient
+    .items<Solution>()
+    .type(contentTypes.solution.codename)
+    .collections([siteCodename, "default"])
+    .elementsParameter([contentTypes.solution.elements.slug.codename])
+    .toAllPromise()
+    .then(res => res.data.items)
 
 export const getSolutionDetail = (slug: string, usePreview: boolean) =>
-    deliveryClient
-      .items<Solution>()
-      .equalsFilter(`elements.${contentTypes.solution.elements.slug.codename}`, slug)
-      .queryConfig({
-        usePreviewMode: usePreview,
-        waitForLoadingNewContent: usePreview
-      })
-      .toAllPromise()
-      .then(res => res.data.items[0]);
+  deliveryClient
+    .items<Solution>()
+    .equalsFilter(`elements.${contentTypes.solution.elements.slug.codename}`, slug)
+    .queryConfig({
+      usePreviewMode: usePreview,
+      waitForLoadingNewContent: usePreview
+    })
+    .toAllPromise()
+    .then(res => res.data.items[0]);
 
 export const getSiteMenu = async (usePreview: boolean) => {
   return deliveryClient.items<WSL_WebSpotlightRoot>()
@@ -263,17 +263,23 @@ export const getProductTaxonomy = async (usePreview: boolean) =>
 
 export const getDefaultMetadata = async (usePreview: boolean) =>
   deliveryClient
-    .items()
+    .items<Metadata>()
     .type(homepageTypeCodename)
     .collection(siteCodename)
     .queryConfig({
       usePreviewMode: usePreview,
       waitForLoadingNewContent: usePreview
     })
-    .elementsParameter(["seo_metadata__title", "seo_metadata__description", "seo_metadata__keywords"])
+    .elementsParameter(Object.values(contentTypeSnippets.metadata.elements).map(element => element.codename))
     .depthParameter(defaultDepth)
     .toPromise()
-    .then(res => res.data.items[0] as SEOMetadata)
+    .then(res => {
+      const data = res.data.items[0];
+      if (!data) {
+        throw new Error('Default metadata not found.');
+      }
+      return data;
+    })
 
 export const getItemBySlug = async <T extends IContentItem>(slug: string, type: string, usePreview: boolean = false): Promise<T | null> => {
   const items = await deliveryClient.items<T>()

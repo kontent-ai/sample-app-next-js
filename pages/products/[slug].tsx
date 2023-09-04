@@ -8,13 +8,13 @@ import { getDefaultMetadata, getProductDetail, getProductItemsWithSlugs, getSite
 import { ValidCollectionCodename } from "../../lib/types/perCollection";
 import { siteCodename } from "../../lib/utils/env";
 import { createElementSmartLink } from "../../lib/utils/smartLinkUtils";
-import { contentTypes, Nav_NavigationItem, Product, SEOMetadata } from "../../models"
+import { contentTypes, Metadata,Nav_NavigationItem, Product } from "../../models"
 
 
 type Props = Readonly<{
   product: Product;
   siteCodename: ValidCollectionCodename;
-  defaultMetadata: SEOMetadata;
+  defaultMetadata: Metadata;
   siteMenu: Nav_NavigationItem | null;
 }>;
 

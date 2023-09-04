@@ -1,8 +1,8 @@
 import { type IContentItem, type Elements } from '@kontent-ai/delivery-sdk';
 import { type Block_ContentChunk } from './Block_ContentChunk';
 import { type Block_VisualContainer } from './Block_VisualContainer';
+import { type Metadata } from '../content-type-snippets/metadata';
 import { type Nav_NavigationItem } from './Nav_NavigationItem';
-import { type SEOMetadata } from '../content-type-snippets/SEOMetadata';
 import { type WSL_Page } from './WSL_Page';
 import { type WSL_SpotlightGuidelines } from '../content-type-snippets/WSL_SpotlightGuidelines';
 
@@ -19,6 +19,8 @@ export type WSL_WebSpotlightRoot = IContentItem<{
    * Required: false
    * Id: 9f9bf380-8fdf-48e0-9808-1e1fc067dc1d
    * Codename: content
+   *
+   * Populate with 🧱 type items to define the landing page structure and design.
    */
   content: Elements.LinkedItemsElement<
     Block_ContentChunk | Block_VisualContainer
@@ -29,6 +31,8 @@ export type WSL_WebSpotlightRoot = IContentItem<{
    * Required: true
    * Id: a1a6b4d4-2f47-5071-aa53-1d283d2dee3e
    * Codename: navigation
+   *
+   * Provide a valid Navigation item to define main website menu. Recursive nature of Navigation item type allows you to create a hierarchical mega menu. Two levels of nesting are supported by default.
    */
   navigation: Elements.LinkedItemsElement<Nav_NavigationItem>;
 
@@ -37,6 +41,8 @@ export type WSL_WebSpotlightRoot = IContentItem<{
    * Required: false
    * Id: d94c4178-d6fe-442d-a205-ff1c52c22b35
    * Codename: subpages
+   *
+   * Page items populating this element will be shown in the web spotlight tree. Further populating a subpages element in the child items allows you to create a multi-level hierarchy.
    */
   subpages: Elements.LinkedItemsElement<WSL_Page | WSL_WebSpotlightRoot>;
 
@@ -49,4 +55,4 @@ export type WSL_WebSpotlightRoot = IContentItem<{
   title: Elements.TextElement;
 }> &
   WSL_SpotlightGuidelines &
-  SEOMetadata;
+  Metadata;

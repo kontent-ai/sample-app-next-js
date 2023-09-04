@@ -22,6 +22,8 @@ export type Component_Callout = IContentItem<{
    * Required: true
    * Id: 44dd9032-c950-53b8-91bd-c6c586233311
    * Codename: type
+   *
+   * Selecting a type affects the visual style of the callout to make its purpose instantly clear to the reader.
    */
   type: Elements.MultipleChoiceElement;
 }> &
