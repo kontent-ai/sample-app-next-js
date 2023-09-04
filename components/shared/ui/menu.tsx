@@ -2,7 +2,7 @@ import { Bars3Icon, ChevronDownIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
 import Link from "next/link";
 import { NextRouter, useRouter } from "next/router";
-import { FC, useEffect, useState } from "react";
+import { FC, useState } from "react";
 
 import { mainColorBgClass } from "../../../lib/constants/colors";
 import { perCollectionSiteName } from "../../../lib/constants/labels";
@@ -63,18 +63,16 @@ const MenuList: FC<MenuListProps> = (props) => {
   const router = useRouter();
   return (
     <ul
-      className={`transition ${
-        props.smallMenuActive ? "" : "opacity-0 md:opacity-100"
-      } absolute w-full md:static flex flex-col md:flex md:gap-4 font-medium md:flex-row h-full`}
+      className={`transition ${props.smallMenuActive ? "" : "opacity-0 md:opacity-100"
+        } absolute w-full md:static flex flex-col md:flex md:gap-4 font-medium md:flex-row h-full`}
     >
       {props.items.map((link, i) => (
         <li
           key={i}
-          className={`${
-            isCurrentNavigationItemActive(link, router)
+          className={`${isCurrentNavigationItemActive(link, router)
               ? ""
               : "border-l-transparent border-t-transparent"
-          }
+            }
         border-gray-500 border-l-8 border-t-0 md:border-t-8 md:border-l-0 min-w-fit h-full w-full group grow`}
           onClick={() => props.handleClick(i)}
         >
@@ -123,11 +121,10 @@ const DropdownMenuItems: FC<DropdownMenuProps> = (props) => {
         <li key={link.system.codename}>
           <Link
             href={resolveReference(link)}
-            className={`${
-              isCurrentNavigationItemActive(link, router)
+            className={`${isCurrentNavigationItemActive(link, router)
                 ? "border-l-gray-500 cursor-default "
                 : "border-l-transparent hover:border-l-gray-500"
-            }
+              }
           block p-3 bg-gray-200 border-l-8 h-full`}
           >
             <div className="font-semibold">
@@ -147,34 +144,14 @@ export const Menu: FC<Props> = (props) => {
   const siteCodename = useSiteCodename();
   const [activeMenu, setActiveMenu] = useState<string | number>(-1);
   const [smallMenuActive, setSmallMenuActive] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
 
   const handleMenuClick = (menuId: string | number): void => {
     setActiveMenu(menuId === activeMenu ? -1 : menuId);
-    console.log("active: ", activeMenu);
   };
-
-  useEffect(() => {
-    const handleScroll = () => {
-      // Change the value of 10 to the amount of scroll you want before showing the background
-      if (window.scrollY > 50) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
 
   return (
     <div
-      className={`w-full fixed z-50 transition-all ease-in-out duration-300 ${
-        isScrolled ? mainColorBgClass[siteCodename] : "bg-transparent"
-      }`}
+      className={`w-full fixed z-50 transition-all ease-in-out duration-300 ${mainColorBgClass[siteCodename]}`}
       {...createItemSmartLink(props.item.system.id)}
     >
       <div className="flex justify-between items-center mx-auto max-w-screen-xl md:h-16 pr-4">
@@ -188,10 +165,10 @@ export const Menu: FC<Props> = (props) => {
             >
               <span className="pr-3">
                 <Image
-                  src="/logo.png" 
-                  alt="logo" 
-                  width={30} 
-                  height={30} 
+                  src="/logo.png"
+                  alt="logo"
+                  width={30}
+                  height={30}
                 />
               </span>
               <span className="font-bold">Ficto</span>
