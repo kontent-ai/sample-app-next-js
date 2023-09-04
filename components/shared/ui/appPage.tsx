@@ -39,7 +39,7 @@ export const AppPage: FC<Props> = props => {
           className="grow h-full w-screen bg-slate-50 scroll-smooth"
           {...createItemSmartLink(props.item.system.id, true)}
         >
-          <div className="prose w-full max-w-screen-xl mx-auto">
+          <div className="prose w-full max-w-screen-xl mx-auto mt-16">
             {props.children}
           </div>
         </main>

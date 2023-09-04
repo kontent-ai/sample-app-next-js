@@ -6,6 +6,12 @@ export const mainColorHoverClass: PerCollection<string> = {
   ficto_surgical: "hover:bg-rose-500",
 }
 
+export const mainColorGroupHoverClass: PerCollection<string> = {
+  ficto_healthtech: "group-hover:bg-emerald-500",
+  ficto_imaging: "group-hover:bg-indigo-500",
+  ficto_surgical: "group-hover:bg-rose-500",
+}
+
 export const mainColorButtonClass: PerCollection<string> = {
   ficto_healthtech: "bg-emerald-800",
   ficto_imaging: "bg-indigo-800",

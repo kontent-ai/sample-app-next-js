@@ -2,7 +2,7 @@ import Image from "next/image"
 import Link from "next/link";
 import { FC } from "react";
 
-import { mainColorBgClass, mainColorTextClass } from "../../lib/constants/colors";
+import { mainColorButtonClass, mainColorGroupHoverClass } from "../../lib/constants/colors";
 import { useSiteCodename } from "../shared/siteCodenameContext";
 import { StandaloneSmartLinkButton } from "../shared/StandaloneSmartLinkButton";
 
@@ -22,7 +22,7 @@ export const ProductItem: FC<Props> = props => {
     <li className="min-w-full m-0 p-0 relative rounded-lg shadow hover:shadow-xl transition-shadow border border-gray-200 cursor-pointer min-h-full">
       <Link
         href={props.detailUrl}
-        className="no-underline p-0 m-0"
+        className="group no-underline p-0 m-0"
       >
         <StandaloneSmartLinkButton itemId={props.itemId} />
 
@@ -39,7 +39,7 @@ export const ProductItem: FC<Props> = props => {
             />
           </figure>
           {props.price && <p className="m-0 text-center text-xl font-normal pb-2">{`${props.price}€`}</p>}
-          <button className={`${mainColorTextClass} block ml-auto w-fit mb-3 mr-4 font-semibold line-clamp-6 hover:bg-transparent border ${mainColorBgClass[siteCodename]} py-2 px-4 rounded`}>Detail</button>
+          <button className={`${mainColorGroupHoverClass[siteCodename]} ${mainColorButtonClass[siteCodename]} text-white block ml-auto w-fit mb-3 mr-4 font-semibold line-clamp-6 hover:bg-transparent border py-2 px-4 rounded`}>Detail</button>
         </div>
       </Link>
     </li>

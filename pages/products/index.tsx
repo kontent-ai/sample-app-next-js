@@ -189,9 +189,9 @@ export const Products: FC<Props> = props => {
 
       <h2 className="m-0 mt-16 ml-4 sm:ml-0">Surgical products</h2>
 
-      <div className="flex flex-col md:flex-row mt-4 md:gap-2">
+      <div className="flex flex-col md:flex-row mt-4 md:gap-2 text-white">
         <div className={`flex flex-col ${mainColorBgClass[props.siteCodename]} p-4`}>
-          <h4 className="m-0 py-2">Category</h4>
+          <h4 className="m-0 py-2 text-white">Category</h4>
           <ul className="m-0 min-h-full gap-2 p-0 list-none">
             {taxonomies.map(term =>
               renderFilterOption(term))}
