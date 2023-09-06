@@ -54,7 +54,7 @@ const LinkButton: FC<LinkButtonProps> = props => {
     >
       <button
         disabled={props.disabled}
-        className={`${props.roundRight && 'rounded-r-lg'} ${props.roundLeft && 'rounded-l-lg'} disabled:cursor-not-allowed ${props.highlight ? mainColorBgClass[siteCodename] : 'bg-white'} px-3 py-2 leading-tight text-gray-500 border disabled:bg-gray-200 border-gray-300 enabled:hover:bg-gray-100 enabled:hover:text-gray-700 `}
+        className={`${props.roundRight && 'rounded-r-lg'} ${props.roundLeft && 'rounded-l-lg'} disabled:cursor-not-allowed ${props.highlight ? `${mainColorBgClass[siteCodename]} text-white` : 'bg-white'} px-3 py-2 leading-tight text-gray-500 border disabled:bg-gray-200 border-gray-300 enabled:hover:bg-gray-100 enabled:hover:text-gray-700 `}
       >
         {props.text}
       </button>
@@ -94,7 +94,7 @@ const FilterOptions: FC<FilterOptionProps> = ({ options, router }) => {
             } as ResolutionContext)}
             onClick={() => setDropdownActive(!dropdownActive)}
             scroll={false}
-            className={`inline-flex items-center z-40 md:justify-between md:mr-4 md:w-max px-6 py-1 no-underline ${key === category ? [mainColorBgClass[siteCodename], mainColorBorderClass[siteCodename], "cursor-default"].join(" ") : `border-gray-200 bg-white ${mainColorHoverClass[siteCodename]} cursor-pointer`} md:rounded-3xl`}
+            className={`inline-flex items-center z-40 md:justify-between md:mr-4 md:w-max px-6 py-1 no-underline ${key === category ? [mainColorBgClass[siteCodename], mainColorBorderClass[siteCodename], "text-white" , "cursor-default"].join(" ") : `border-gray-200 bg-white ${mainColorHoverClass[siteCodename]} hover:text-white cursor-pointer`} md:rounded-3xl`}
           >{value}
           </Link>
         ))}
@@ -130,7 +130,7 @@ const ArticlesPagingPage: FC<Props> = props => {
 
   const filteredArticles = getFilteredArticles();
   const pageCount = Math.ceil(props.itemCount / ArticlePageSize);
-
+  
   return (
     <AppPage
       siteCodename={props.siteCodename}
@@ -192,7 +192,7 @@ const ArticlesPagingPage: FC<Props> = props => {
                         term: category,
                         page: page - 1
                       } as ResolutionContext)}
-                    disabled={!page}
+                    disabled={page === 1}
                     roundLeft
                   />
 
