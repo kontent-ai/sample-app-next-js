@@ -16,28 +16,28 @@ type RecursiveTaxonomyCodenames<T extends { readonly terms: unknown }> = keyof T
   : never
   : never;
 
-type ArticleListingPathOptions = {
+type ArticleListingPathOptions = Readonly<{
   type: typeof contentTypes.article.codename;
   term: keyof typeof taxonomies.article_type.terms | "all",
   page?: number
-}
+}>;
 
-type ProductListingPathOptions = {
+type ProductListingPathOptions = Readonly<{
   type: typeof contentTypes.product.codename;
   terms: ReadonlyArray<RecursiveTaxonomyCodenames<typeof taxonomies.product_category>>
   page?: number
-}
+}>;
 
-type GenericContentTypeOptions = {
+type GenericContentTypeOptions = Readonly<{
   type: typeof contentTypes.page.codename
   | typeof contentTypes.article.codename
   | typeof contentTypes.product.codename
   | typeof contentTypes.solution.codename,
   slug: string
-}
-type WebSpotlightRootOptions = {
+}>;
+type WebSpotlightRootOptions = Readonly<{
   type: typeof contentTypes.web_spotlight_root.codename
-}
+}>;
 
 export type ResolutionContext = GenericContentTypeOptions
   | ArticleListingPathOptions

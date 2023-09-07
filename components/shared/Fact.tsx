@@ -29,16 +29,12 @@ export const FactComponent: FC<Props> = (props) => {
 
   return (
     <figure
-      className={`flex flex-col ${
-        reverse ? "md:flex-row-reverse" : "md:flex-row"
-      } items-center gap-1 w-full m-0 py-10`}
+      className={`flex flex-col ${reverse ? "md:flex-row-reverse" : "md:flex-row"} items-center gap-1 w-full m-0 py-10`}
       {...createItemSmartLink(props.item.system.id, true)}
     >
       {image && (
         <div
-          className={`w-full md:w-1/2 h-[400px] relative drop-shadow-lg after:absolute ${
-            reverse ? "after:left-3" : "after:right-3"
-          } after:top-3 ${mainColorAfterBgClass[siteCodename]} after:bg-no-repeat after:w-full after:bg-contain after:h-full after:rounded-lg after:z-[1]`}
+          className={`w-full md:w-1/2 h-[400px] relative drop-shadow-lg after:absolute ${reverse ? "after:left-3" : "after:right-3"} after:top-3 ${mainColorAfterBgClass[siteCodename]} after:bg-no-repeat after:w-full after:bg-contain after:h-full after:rounded-lg after:z-[1]`}
           {...createElementSmartLink(contentTypes.fact.elements.image.codename)}
         >
           <Image
@@ -51,9 +47,7 @@ export const FactComponent: FC<Props> = (props) => {
         </div>
       )}
       <div
-        className={`md:w-1/2 pl-2 pr-10 relative ${
-          reverse ? "md:pl-0" : "md:pl-20"
-        }`}
+        className={`md:w-1/2 pl-2 pr-10 relative ${reverse ? "md:pl-0" : "md:pl-20"}`}
       >
         <h3
           className="heading scroll-mt-20"

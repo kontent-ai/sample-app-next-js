@@ -164,7 +164,7 @@ export const Products: FC<Props> = props => {
         </div>
         {term.terms.length > 0 && (
           <ul className="list-none">
-            {term.terms.map((t) => renderFilterOption(t))}
+            {term.terms.map(renderFilterOption)}
           </ul>
         )}
       </li>
@@ -193,8 +193,7 @@ export const Products: FC<Props> = props => {
         <div className={`flex flex-col ${mainColorBgClass[props.siteCodename]} p-4`}>
           <h4 className="m-0 py-2 text-white">Category</h4>
           <ul className="m-0 min-h-full gap-2 p-0 list-none">
-            {taxonomies.map(term =>
-              renderFilterOption(term))}
+            {taxonomies.map(renderFilterOption)}
           </ul>
         </div>
         <ProductListing products={products} />
