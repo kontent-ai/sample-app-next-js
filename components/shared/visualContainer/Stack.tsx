@@ -82,7 +82,10 @@ export const StackComponent: FC<Props> = (props) => {
           />
         )}
         <div>
-          <FactComponent item={currentAction} />
+          <FactComponent
+            item={currentAction}
+            isReversed={!!(actionIndex % 2)}
+          />
         </div>
       </section>
     </div>
@@ -103,11 +106,10 @@ const Headers: FC<HeadersProps> = (props) => {
       {props.headers.map((header, i) => (
         <li
           key={i}
-          className={`grow w-fit justify-center md:justify-between md:pl-5 flex overflow-hidden p-2 cursor-pointer ${
-            props.selectedHeaderIndex === i
+          className={`grow w-fit justify-center md:justify-between md:pl-5 flex overflow-hidden p-2 cursor-pointer ${props.selectedHeaderIndex === i
               ? `border-b-2 ${mainColorBorderClass[siteCodename]}`
               : ""
-          }`}
+            }`}
           onClick={() => props.onHeaderSelected(i)}
           {...createItemSmartLink(header.id, true)}
           {...createRelativeAddSmartLink("after", "bottom-end")}

@@ -42,7 +42,7 @@ export const HeroUnitComponent: FC<Props> = (props) => {
             className="break-words hyphens-auto"
             lang="en"
             {...createElementSmartLink(
-              contentTypes.fact.elements.reference__caption.codename
+              contentTypes.fact.elements.message.codename
             )}
           >
             {fact.elements.message.value}

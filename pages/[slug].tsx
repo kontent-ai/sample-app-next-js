@@ -45,16 +45,6 @@ export const getStaticProps: GetStaticProps<Props, IParams> = async (context) =>
     }
   }
 
-  // TODO fixed by rebase
-  // if (slug === "articles") {
-  //   return {
-  //     redirect: {
-  //       destination: `/articles/category/all`,
-  //       permanent: true,
-  //     }
-  //   }
-  // }
-
   const siteMenu = await getSiteMenu(!!context.preview);
   const defaultMetadata = await getDefaultMetadata(!!context.preview);
 

@@ -15,37 +15,39 @@ type Props = Readonly<{
   codename: string;
 }>;
 
+const GridItem: FC<{ item: Fact }> = ({ item }) => (
+  <div
+    className="md:p-4 flex flex-col items-center"
+    key={item.system.id}
+  >
+    {item.elements.image.value[0] && (
+      <div className="relative max-w-sm w-full h-[400px]">
+        <Image
+          src={item.elements.image.value[0].url}
+          alt={item.elements.title.value}
+          fill
+          style={{ objectFit: "cover" }}
+          sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
+          className="rounded-lg transition ease-in-out group-hover:brightness-50 duration-300"
+          quality={75}
+        />
+        <div className="font-semibold text-white invisible group-hover:visible absolute top-1/2 left-10 transition delay-300 duration-300 ease-in-out">
+          {item.elements.referenceLabel.value}
+        </div>
+      </div>
+    )}
+    <div className="font-semibold text-3xl w-full md:px-4 pt-10 pb-2">
+      {item.elements.title.value}
+    </div>
+    <div className="md:px-4 justify-center w-full">
+      {item.elements.message.value}
+    </div>
+  </div>
+);
+
 export const GridComponent: FC<Props> = (props) => {
   const siteCodename = useSiteCodename();
-  const createGridItem = (item: Fact) => (
-    <div
-      className="md:p-4 flex flex-col items-center"
-      key={item.system.id}
-    >
-      {item.elements.image.value[0] && (
-        <div className="relative max-w-sm w-full h-[400px]">
-          <Image
-            src={item.elements.image.value[0].url}
-            alt={item.elements.title.value}
-            fill
-            style={{ objectFit: "cover" }}
-            sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
-            className="rounded-lg transition ease-in-out group-hover:brightness-50 duration-300"
-            quality={75}
-          />
-          <div className="font-semibold text-white invisible group-hover:visible absolute top-1/2 left-10 transition delay-300 duration-300 ease-in-out">
-            {item.elements.referenceLabel.value}
-          </div>
-        </div>
-      )}
-      <div className="font-semibold text-3xl w-full md:px-4 pt-10 pb-2">
-        {item.elements.title.value}
-      </div>
-      <div className="md:px-4 justify-center w-full">
-        {item.elements.message.value}
-      </div>
-    </div>
-  );
+
 
   return (
     <div className="vis-container px-10 w-full relative">
@@ -80,10 +82,16 @@ export const GridComponent: FC<Props> = (props) => {
               className="no-underline font-normal group hover:scale-110 transform transition-all duration-300 ease-in-out"
               href={resolveReference(item)}
             >
-              {createGridItem(item)}
+              <GridItem
+                item={item}
+                key={item.system.codename}
+              />
             </Link>
           ) : (
-            createGridItem(item)
+            <GridItem
+              item={item}
+              key={item.system.codename}
+            />
           )
         )}
       </div>

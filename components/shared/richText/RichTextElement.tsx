@@ -103,6 +103,7 @@ export const createDefaultResolvers = (
       const componentItem = element.linkedItems.find(
         (i) => i.system.codename === value.component._ref
       );
+
       if (!componentItem) {
         throw new Error(
           "Component item not found, probably not enough depth requested."
@@ -115,7 +116,12 @@ export const createDefaultResolvers = (
         case contentTypes.action.codename:
           return <CTAButton reference={componentItem as Action} />;
         case contentTypes.fact.codename:
-          return <FactComponent item={componentItem as Fact} />;
+          return (
+<FactComponent
+  item={componentItem as Fact}
+  isReversed={false}
+/>
+);
         case contentTypes.content_chunk.codename:
           return <ContentChunk item={componentItem as Block_ContentChunk} />;
         default:
