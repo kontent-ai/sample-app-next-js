@@ -74,9 +74,11 @@ export const resolveUrlPath = (context: ResolutionContext) => {
     }
     case contentTypes.product.codename: {
       if ("terms" in context) {
-        const categoriesQuery = context.terms.map(term => `category=${term}`).join("&");
-        const pageQuery = context.page ? `&page=${context.page}` : "";
-        return `/${reservedListingSlugs.products}?${categoriesQuery}${pageQuery}`
+        const query = createQueryStringUrl({
+          category: context.terms as string[],
+          page: context.page?.toString() || undefined
+        })
+        return `/${reservedListingSlugs.products}${query}`
       }
 
       return `/${reservedListingSlugs.products}/${context.slug}`;
@@ -116,4 +118,20 @@ export const resolveReference = (reference: Reference) => {
   } as GenericContentTypeOptions);
 
   return collectionDomain + urlPath;
+}
+
+export const createQueryStringUrl = (params: Record<string, string | string[] | undefined>) => {
+  const queryString = Object.entries(params).map(
+    ([paramKey, paramValue]) => {
+      if (!paramValue) {
+        return undefined;
+      }
+
+      return typeof paramValue === 'string'
+        ? `${paramKey}=${paramValue}`
+        : paramValue.map(v => `${paramKey}=${v}`).join('&');
+    },
+  ).filter(p => p !== undefined).join('&');
+
+  return Object.keys(params).length > 0 ? `?${queryString}` : '';
 }

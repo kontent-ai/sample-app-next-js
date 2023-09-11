@@ -9,7 +9,7 @@ import { AppPage } from "../../components/shared/ui/appPage";
 import { mainColorBgClass } from "../../lib/constants/colors";
 import { ProductsPageSize } from "../../lib/constants/paging";
 import { getDefaultMetadata, getItemBySlug, getProductsForListing, getSiteMenu } from "../../lib/kontentClient";
-import { reservedListingSlugs, resolveUrlPath } from "../../lib/routing";
+import { createQueryStringUrl, reservedListingSlugs, resolveUrlPath } from "../../lib/routing";
 import { ValidCollectionCodename } from "../../lib/types/perCollection";
 import { changeUrlQueryString } from "../../lib/utils/changeUrlQueryString";
 import { siteCodename } from "../../lib/utils/env";
@@ -28,22 +28,6 @@ type Props = Readonly<{
 type ProductListingProps = Readonly<{
   products: ReadonlyArray<Product> | undefined,
 }>
-
-const createQueryStringUrl = (params: Record<string, string | string[] | undefined>) => {
-  const queryString = Object.entries(params).map(
-    ([paramKey, paramValue]) => {
-      if (!paramValue) {
-        return undefined;
-      }
-
-      return typeof paramValue === 'string'
-        ? `${paramKey}=${paramValue}`
-        : paramValue.map(v => `${paramKey}=${v}`).join('&');
-    },
-  ).filter(p => p !== undefined).join('&');
-
-  return Object.keys(params).length > 0 ? `?${queryString}` : '';
-}
 
 const ProductListing: FC<ProductListingProps> = (props) => {
   if (!props.products || props.products.length === 0) {
@@ -114,7 +98,7 @@ export const Products: FC<Props> = props => {
 
   useEffect(() => {
     getProducts();
-  }, [page, category, getProducts])
+  }, [getProducts])
 
   useEffect(() => {
     getProductCategories();
@@ -231,7 +215,6 @@ export const getStaticProps: GetStaticProps<Props> = async context => {
   const siteMenu = await getSiteMenu(!!context.preview);
   const defaultMetadata = await getDefaultMetadata(!!context.preview);
 
-  // TODO consider rendering content and adjust metadata
   return {
     props: { page, siteCodename, defaultMetadata, products: products.items, totalCount: products.pagination.totalCount ?? 0, siteMenu, isPreview: !!context.preview },
   };

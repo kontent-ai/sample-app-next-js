@@ -58,7 +58,7 @@ export const FactComponent: FC<Props> = (props) => {
         <div
           className="text-justify"
           {...createElementSmartLink(
-            contentTypes.fact.elements.reference__caption.codename
+            contentTypes.fact.elements.message.codename
           )}
         >
           {props.item.elements.message.value}
