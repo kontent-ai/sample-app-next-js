@@ -10,12 +10,12 @@ import { useSiteCodename } from "../../../../../components/shared/siteCodenameCo
 import { AppPage } from "../../../../../components/shared/ui/appPage";
 import { mainColorBgClass, mainColorBorderClass, mainColorHoverClass } from "../../../../../lib/constants/colors";
 import { ArticlePageSize } from "../../../../../lib/constants/paging";
-import { getArticlesCountByCategory, getArticlesForListing, getDefaultMetadata,getItemBySlug, getItemsTotalCount, getSiteMenu } from "../../../../../lib/kontentClient";
-import { ResolutionContext,resolveUrlPath } from "../../../../../lib/routing";
+import { getArticlesCountByCategory, getArticlesForListing, getDefaultMetadata, getItemBySlug, getItemsTotalCount, getSiteMenu } from "../../../../../lib/kontentClient";
+import { ResolutionContext, resolveUrlPath } from "../../../../../lib/routing";
 import { ValidCollectionCodename } from "../../../../../lib/types/perCollection";
 import { ArticleListingUrlQuery, ArticleTypeWithAll, categoryFilterSource, isArticleType } from "../../../../../lib/utils/articlesListing";
 import { siteCodename } from "../../../../../lib/utils/env";
-import { Article, contentTypes,Metadata, Nav_NavigationItem, taxonomies, WSL_Page } from "../../../../../models";
+import { Article, contentTypes, Metadata, Nav_NavigationItem, taxonomies, WSL_Page } from "../../../../../models";
 
 type Props = Readonly<{
   siteCodename: ValidCollectionCodename;
@@ -94,7 +94,7 @@ const FilterOptions: FC<FilterOptionProps> = ({ options, router }) => {
             } as ResolutionContext)}
             onClick={() => setDropdownActive(!dropdownActive)}
             scroll={false}
-            className={`inline-flex items-center z-40 md:justify-between md:mr-4 md:w-max px-6 py-1 no-underline ${key === category ? [mainColorBgClass[siteCodename], mainColorBorderClass[siteCodename], "text-white" , "cursor-default"].join(" ") : `border-gray-200 bg-white ${mainColorHoverClass[siteCodename]} hover:text-white cursor-pointer`} md:rounded-3xl`}
+            className={`inline-flex items-center z-40 md:justify-between md:mr-4 md:w-max px-6 py-1 no-underline ${key === category ? [mainColorBgClass[siteCodename], mainColorBorderClass[siteCodename], "text-white", "cursor-default"].join(" ") : `border-gray-200 bg-white ${mainColorHoverClass[siteCodename]} hover:text-white cursor-pointer`} md:rounded-3xl`}
           >{value}
           </Link>
         ))}
@@ -118,19 +118,9 @@ const ArticlesPagingPage: FC<Props> = props => {
   const page = typeof router.query.page === 'string' ? +router.query.page : undefined;
   const category = typeof router.query.category === 'string' ? router.query.category : "all";
   const filterOptions = getFilterOptions();
-  const getFilteredArticles = () => {
-    if (category === 'all') {
-      return props.articles;
-    } else {
-      return props.articles.filter(
-        article => article.elements.type.value.some(type => type.codename === category)
-      );
-    }
-  };
 
-  const filteredArticles = getFilteredArticles();
   const pageCount = Math.ceil(props.itemCount / ArticlePageSize);
-  
+
   return (
     <AppPage
       siteCodename={props.siteCodename}
@@ -152,9 +142,9 @@ const ArticlesPagingPage: FC<Props> = props => {
           router={router}
         />
         <div className="flex flex-col flex-grow min-h-[500px]">
-          {filteredArticles.length > 0 ? (
+          {props.articles.length > 0 ? (
             <ul className="w-full grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 place-items-center list-none gap-5 md:pt-4 pl-0 justify-center">
-              {filteredArticles.map(article => (
+              {props.articles.map(article => (
                 article.elements.type.value[0]?.codename && (
                   <ArticleItem
                     key={article.system.id}
