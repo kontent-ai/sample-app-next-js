@@ -1,5 +1,4 @@
-import { NextRequest } from 'next/server'
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 
 export const middleware = (request: NextRequest) => {
   // /articles will be shown in as URL but request will be against fully defined URL path
