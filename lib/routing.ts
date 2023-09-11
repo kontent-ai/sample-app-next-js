@@ -74,11 +74,11 @@ export const resolveUrlPath = (context: ResolutionContext) => {
     }
     case contentTypes.product.codename: {
       if ("terms" in context) {
-        const query = createQueryStringUrl({
+        const query = createQueryString({
           category: context.terms as string[],
           page: context.page?.toString() || undefined
-        })
-        return `/${reservedListingSlugs.products}${query}`
+        });
+        return `/${reservedListingSlugs.products}${query && '?' + query}`
       }
 
       return `/${reservedListingSlugs.products}/${context.slug}`;
@@ -120,7 +120,8 @@ export const resolveReference = (reference: Reference) => {
   return collectionDomain + urlPath;
 }
 
-export const createQueryStringUrl = (params: Record<string, string | string[] | undefined>) => {
+export const createQueryString = (params: Record<string, string | string[] | undefined>) => {
+
   const queryString = Object.entries(params).map(
     ([paramKey, paramValue]) => {
       if (!paramValue) {
@@ -130,8 +131,9 @@ export const createQueryStringUrl = (params: Record<string, string | string[] | 
       return typeof paramValue === 'string'
         ? `${paramKey}=${paramValue}`
         : paramValue.map(v => `${paramKey}=${v}`).join('&');
-    },
-  ).filter(p => p !== undefined).join('&');
+    },)
+    .filter(p => p !== undefined)
+    .join('&');
 
-  return Object.keys(params).length > 0 ? `?${queryString}` : '';
+  return queryString;
 }

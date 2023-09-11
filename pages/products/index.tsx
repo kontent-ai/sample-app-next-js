@@ -9,7 +9,7 @@ import { AppPage } from "../../components/shared/ui/appPage";
 import { mainColorBgClass } from "../../lib/constants/colors";
 import { ProductsPageSize } from "../../lib/constants/paging";
 import { getDefaultMetadata, getItemBySlug, getProductsForListing, getSiteMenu } from "../../lib/kontentClient";
-import { createQueryStringUrl, reservedListingSlugs, resolveUrlPath } from "../../lib/routing";
+import { createQueryString, reservedListingSlugs, resolveUrlPath } from "../../lib/routing";
 import { ValidCollectionCodename } from "../../lib/types/perCollection";
 import { changeUrlQueryString } from "../../lib/utils/changeUrlQueryString";
 import { siteCodename } from "../../lib/utils/env";
@@ -80,9 +80,9 @@ export const Products: FC<Props> = props => {
 
 
   const getProducts = useCallback(async () => {
-    const queryStringUrl = createQueryStringUrl({ preview: props.isPreview.toString(), page, category })
+    const queryString = createQueryString({ preview: props.isPreview.toString(), page, category })
 
-    const response = await fetch(`/api/products${queryStringUrl}`);
+    const response = await fetch(`/api/products${queryString && '?' + queryString}`);
     const newData = await response.json();
 
     setProducts(newData.products);

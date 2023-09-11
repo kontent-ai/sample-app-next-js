@@ -57,6 +57,13 @@ describe("resolveUrlPath", () => {
     [
       {
         type: "product",
+        terms: []
+      } as ResolutionContext,
+      "/products"
+    ],
+    [
+      {
+        type: "product",
         terms: ["cutting", "grasping"]
       } as ResolutionContext,
       "/products?category=cutting&category=grasping"
