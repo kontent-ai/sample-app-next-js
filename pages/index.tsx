@@ -9,12 +9,12 @@ import { getHomepage, getSiteMenu } from "../lib/kontentClient";
 import { ValidCollectionCodename } from '../lib/types/perCollection';
 import { useSmartLink } from '../lib/useSmartLink';
 import { siteCodename } from '../lib/utils/env';
-import { Block_Navigation, WSL_WebSpotlightRoot } from '../models';
+import { Nav_NavigationItem, WSL_WebSpotlightRoot } from '../models';
 
 type Props = Readonly<{
   homepage: WSL_WebSpotlightRoot;
   siteCodename: ValidCollectionCodename;
-  siteMenu: Block_Navigation | null;
+  siteMenu: Nav_NavigationItem | null;
   isPreview: boolean;
 }>;
 

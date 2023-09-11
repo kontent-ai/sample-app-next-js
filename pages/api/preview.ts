@@ -1,16 +1,23 @@
 import { NextApiHandler } from "next";
 
-const handler: NextApiHandler = (req, res) => {
-  if (req.query.secret !== 'mySuperSecret' || !req.query.slug) {
-    return res.status(401).json({ message: 'Invalid preview token' })
+import { ResolutionContext, resolveUrlPath } from "../../lib/routing";
+
+const handler: NextApiHandler = async (req, res) => {
+  // TODO move secret to env variables
+  if (req.query.secret !== 'mySuperSecret' || !req.query.slug || !req.query.type) {
+    return res.status(401).json({ message: 'Invalid preview token, or no slug and type provided.' })
   }
 
   // Enable Preview Mode by setting the cookies
   res.setPreviewData({})
 
+  const path = await resolveUrlPath({
+    type: req.query.type.toString(),
+    slug: req.query.slug.toString()
+  } as ResolutionContext);
+
   // Redirect to the path from the fetched post
-  // We don't redirect to req.query.slug as that might lead to open redirect vulnerabilities
-  res.redirect(req.query.slug.toString());
+  res.redirect(path);
 }
 
 export default handler;

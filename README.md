@@ -18,7 +18,7 @@ Ficto Healthtech Imaging
 
 [![Vercel](https://therealsujitk-vercel-badge.vercel.app/?app=ficto-healthtech-imaging&style=for-the-badge&logo=false)](https://ficto-healthtech-imaging.vercel.app)
 
-Ficto Healthtech Surgical
+Ficto Surgical
 
 [![Vercel](https://therealsujitk-vercel-badge.vercel.app/?app=ficto-healthtech-surgical&style=for-the-badge&logo=false)](https://ficto-healthtech-surgical.vercel.app)
 

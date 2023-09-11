@@ -3,20 +3,20 @@ import { FC } from "react";
 
 import { HeroImage } from "../../components/landingPage/ui/heroImage";
 import { PersonHorizontal } from "../../components/shared/PersonHorizontal";
-import { RichTextElement } from "../../components/shared/RichTextContent";
+import { RichTextElement } from "../../components/shared/richText/RichTextElement";
 import { AppPage } from "../../components/shared/ui/appPage";
 import { mainColorBgClass } from "../../lib/constants/colors";
 import { getAllArticles, getArticleBySlug, getDefaultMetadata, getSiteMenu } from "../../lib/kontentClient";
 import { ValidCollectionCodename } from "../../lib/types/perCollection";
 import { formatDate } from "../../lib/utils/dateTime";
 import { siteCodename } from '../../lib/utils/env';
-import { Article, Block_Navigation, SEOMetadata } from "../../models"
+import { Article, Metadata, Nav_NavigationItem } from "../../models";
 
 type Props = Readonly<{
   article: Article;
   siteCodename: ValidCollectionCodename;
-  siteMenu: Block_Navigation | null;
-  defaultMetadata: SEOMetadata;
+  siteMenu: Nav_NavigationItem | null;
+  defaultMetadata: Metadata;
 }>;
 
 const ArticlePage: FC<Props> = props => {
@@ -33,10 +33,10 @@ const ArticlePage: FC<Props> = props => {
         itemId={props.article.system.id}
       >
         <div className={`py-1 px-3 w-full md:w-fit ${mainColorBgClass[props.siteCodename]}  opacity-90`}>
-          <h1 className="m-0 text-3xl tracking-wide font-semibold">{props.article.elements.title.value}</h1>
+          <h1 className="m-0 text-white  text-5xl tracking-wide font-semibold">{props.article.elements.title.value}</h1>
         </div>
-        <div className="bg-white opacity-90 p-4">
-          <p className="font-semibold">
+        <div className="p-4">
+          <p className="font-semibold text-white text-justify">
             {props.article.elements.abstract.value}
           </p>
         </div>
@@ -47,10 +47,10 @@ const ArticlePage: FC<Props> = props => {
           <div className="w-fit p-2 bg-gray-800 text-white opacity-90 font-semibold">{props.article.elements.publishingDate.value && formatDate(props.article.elements.publishingDate.value)}</div>
           <div className="flex gap-2" >
             {
-              props.article.elements.articleType.value.length > 0 && props.article.elements.articleType.value.map(type => (
+              props.article.elements.type.value.map(type => (
                 <div
                   key={type.codename}
-                  className={`w-fit p-2 ${mainColorBgClass[props.siteCodename]} font-semibold`}
+                  className={`w-fit p-2 ${mainColorBgClass[props.siteCodename]} font-semibold text-white`}
                 >{type.name}
                 </div>
               ))

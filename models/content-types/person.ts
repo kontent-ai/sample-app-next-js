@@ -12,6 +12,8 @@ export type Person = IContentItem<{
    * Required: false
    * Id: 4341b423-f053-523f-bd0f-b63b6c786532
    * Codename: bio
+   *
+   * Write a biography that highlights the person's background and achievements. Don't forget to include relevant professional and educational information.
    */
   bio: Elements.RichTextElement;
 
@@ -36,6 +38,8 @@ export type Person = IContentItem<{
    * Required: false
    * Id: d73579bd-b03a-59e0-8464-63939e0cb6c7
    * Codename: occupation
+   *
+   * Include relevant details about their job title or area of expertise.
    */
   occupation: Elements.TextElement;
 
@@ -44,6 +48,8 @@ export type Person = IContentItem<{
    * Required: false
    * Id: 514655d3-a35d-5c58-8807-b62108651728
    * Codename: photograph
+   *
+   * Use a clear, professional and high quality image.
    */
   photograph: Elements.AssetsElement;
 }>;
