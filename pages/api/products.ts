@@ -18,11 +18,10 @@ const handler: NextApiHandler = async (req, res) => {
         return res.status(400).json({ error: "Please provide 'preview' query parameter with value 'true' or 'false'." });
     }
 
-    const currentEnvId = process.env.NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID;
+    const {currentEnvId, currentPreviewApiKey} = req.cookies;
     if (!currentEnvId) {
-        throw new Error("Missing 'NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID' environment variable.");
+      throw new Error("Missing 'NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID' environment variable.");
     }
-    const currentPreviewApiKey = process.env.KONTENT_PREVIEW_API_KEY;
 
     const products = await getProductsForListing({ envId: currentEnvId, previewApiKey: currentPreviewApiKey }, usePreview, isNaN(pageNumber) ? undefined : pageNumber, category);
 

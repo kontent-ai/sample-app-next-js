@@ -260,7 +260,9 @@ export const getStaticProps: GetStaticProps<Props, ArticleListingUrlQuery> = asy
   if (!envId) {
     throw new Error("Missing envId in url");
   }
-  const previewApiKey = process.env.KONTENT_PREVIEW_API_KEY;
+  const previewApiKey = context.previewData && typeof context.previewData === 'object' && 'currentPreviewApiKey' in context.previewData
+    ? context.previewData.currentPreviewApiKey as string
+    : undefined;
 
   const pageNumber = !pageURLParameter || isNaN(+pageURLParameter) ? 1 : +pageURLParameter;
   const articles = await getArticlesForListing({ envId: envId, previewApiKey: previewApiKey }, !!context.preview, pageNumber, selectedCategory);
