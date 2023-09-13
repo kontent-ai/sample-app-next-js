@@ -13,7 +13,7 @@ if (!envId) {
   throw new Error("Missing 'NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID' environment variable.");
 }
 
-const deliveryClient = createDeliveryClient({
+const getDeliveryClient = ({ envId, previewApiKey }: ClientConfig) => createDeliveryClient({
   environmentId: envId,
   globalHeaders: () => [
     {
@@ -26,11 +26,17 @@ const deliveryClient = createDeliveryClient({
     baseUrl: "https://deliver.devkontentmasters.com",
     basePreviewUrl: "https://preview-deliver.devkontentmasters.com",
   },
-  previewApiKey: process.env.KONTENT_PREVIEW_API_KEY
+  previewApiKey: previewApiKey
+  // previewApiKey: process.env.KONTENT_PREVIEW_API_KEY
 });
 
-export const getItemByCodename = <ItemType extends IContentItem>(codename: string, usePreview: boolean): Promise<ItemType | null> => {
-  return deliveryClient
+type ClientConfig = {
+  envId: string,
+  previewApiKey?: string
+}
+
+export const getItemByCodename = <ItemType extends IContentItem>(config: ClientConfig, codename: string, usePreview: boolean): Promise<ItemType | null> => {
+  return getDeliveryClient(config)
     .item<ItemType>(codename)
     .queryConfig({
       usePreviewMode: usePreview,
@@ -59,8 +65,8 @@ export const getItemByCodename = <ItemType extends IContentItem>(codename: strin
 
 const homepageTypeCodename = "web_spotlight_root" as const;
 
-export const getHomepage = (usePreview: boolean) =>
-  deliveryClient
+export const getHomepage = (config: ClientConfig, usePreview: boolean) =>
+  getDeliveryClient(config)
     .items()
     .type(homepageTypeCodename)
     .collection(siteCodename)
@@ -72,8 +78,8 @@ export const getHomepage = (usePreview: boolean) =>
     .toPromise()
     .then(res => res.data.items[0] as WSL_WebSpotlightRoot | undefined)
 
-export const getProductsForListing = async (usePreview: boolean, page?: number, categories?: string[], pageSize: number = ProductsPageSize) => {
-  const query = deliveryClient
+export const getProductsForListing = async (config: ClientConfig, usePreview: boolean, page?: number, categories?: string[], pageSize: number = ProductsPageSize) => {
+  const query = getDeliveryClient(config)
     .items<Product>()
     .type(contentTypes.product.codename)
     .collections([siteCodename, "default"])
@@ -103,8 +109,8 @@ export const getProductsForListing = async (usePreview: boolean, page?: number, 
     .then(res => res.data);
 }
 
-export const getProductItemsWithSlugs = () =>
-  deliveryClient
+export const getProductItemsWithSlugs = (config: ClientConfig) =>
+  getDeliveryClient(config)
     .items<Product>()
     .type(contentTypes.product.codename)
     .collections([siteCodename, "default"])
@@ -112,8 +118,8 @@ export const getProductItemsWithSlugs = () =>
     .toAllPromise()
     .then(res => res.data.items)
 
-export const getProductDetail = (slug: string, usePreview: boolean) =>
-  deliveryClient
+export const getProductDetail = (config: ClientConfig, slug: string, usePreview: boolean) =>
+  getDeliveryClient(config)
     .items<Product>()
     .equalsFilter(`elements.${contentTypes.product.elements.slug.codename}`, slug)
     .queryConfig({
@@ -124,8 +130,8 @@ export const getProductDetail = (slug: string, usePreview: boolean) =>
     .toAllPromise()
     .then(res => res.data.items[0]);
 
-export const getSolutionsWithSlugs = () =>
-  deliveryClient
+export const getSolutionsWithSlugs = (config: ClientConfig) =>
+  getDeliveryClient(config)
     .items<Solution>()
     .type(contentTypes.solution.codename)
     .collections([siteCodename, "default"])
@@ -133,8 +139,8 @@ export const getSolutionsWithSlugs = () =>
     .toAllPromise()
     .then(res => res.data.items)
 
-export const getSolutionDetail = (slug: string, usePreview: boolean) =>
-  deliveryClient
+export const getSolutionDetail = (config: ClientConfig, slug: string, usePreview: boolean) =>
+  getDeliveryClient(config)
     .items<Solution>()
     .equalsFilter(`elements.${contentTypes.solution.elements.slug.codename}`, slug)
     .queryConfig({
@@ -144,8 +150,9 @@ export const getSolutionDetail = (slug: string, usePreview: boolean) =>
     .toAllPromise()
     .then(res => res.data.items[0]);
 
-export const getSiteMenu = async (usePreview: boolean) => {
-  return deliveryClient.items<WSL_WebSpotlightRoot>()
+export const getSiteMenu = async (config: ClientConfig, usePreview: boolean) => {
+  return getDeliveryClient(config)
+    .items<WSL_WebSpotlightRoot>()
     .type(contentTypes.web_spotlight_root.codename)
     .collection(siteCodename)
     .queryConfig({
@@ -158,8 +165,8 @@ export const getSiteMenu = async (usePreview: boolean) => {
     .then(item => item?.elements.navigation.linkedItems[0] || null)
 }
 
-export const getArticlesForListing = (usePreview: boolean, page?: number, articleType?: string, pageSize: number = ArticlePageSize) => {
-  const query = deliveryClient
+export const getArticlesForListing = (config: ClientConfig, usePreview: boolean, page?: number, articleType?: string, pageSize: number = ArticlePageSize) => {
+  const query = getDeliveryClient(config)
     .items<Article>()
     .type(contentTypes.article.codename)
     .collections([siteCodename, "default"])
@@ -184,8 +191,8 @@ export const getArticlesForListing = (usePreview: boolean, page?: number, articl
     .then(res => res.data);
 }
 
-export const getAllArticles = (usePreview: boolean) =>
-  deliveryClient
+export const getAllArticles = (config: ClientConfig, usePreview: boolean) =>
+  getDeliveryClient(config)
     .items<Article>()
     .type(contentTypes.article.codename)
     .collections([siteCodename, "default"])
@@ -195,8 +202,8 @@ export const getAllArticles = (usePreview: boolean) =>
     .toPromise()
     .then(res => res.data);
 
-export const getArticleBySlug = (slug: string, usePreview: boolean) =>
-  deliveryClient
+export const getArticleBySlug = (config: ClientConfig, slug: string, usePreview: boolean) =>
+  getDeliveryClient(config)
     .items<Article>()
     .equalsFilter(`elements.${contentTypes.article.elements.slug.codename}`, slug)
     .depthParameter(defaultDepth)
@@ -207,8 +214,8 @@ export const getArticleBySlug = (slug: string, usePreview: boolean) =>
     .toAllPromise()
     .then(res => res.data.items[0]);
 
-const getCurrentCollectionTotalCountQuery = () => (
-  deliveryClient
+const getCurrentCollectionTotalCountQuery = (config: ClientConfig) => (
+  getDeliveryClient(config)
     .items()
     .collection(siteCodename)
     .elementsParameter([])
@@ -216,8 +223,8 @@ const getCurrentCollectionTotalCountQuery = () => (
     .includeTotalCountParameter()
 );
 
-const getItemsCountByTypeQuery = (usePreview: boolean, contentTypeCodename?: string) => {
-  const query = getCurrentCollectionTotalCountQuery()
+const getItemsCountByTypeQuery = (config: ClientConfig, usePreview: boolean, contentTypeCodename?: string) => {
+  const query = getCurrentCollectionTotalCountQuery(config)
     .collection(siteCodename)
     .queryConfig({
       usePreviewMode: usePreview,
@@ -231,16 +238,16 @@ const getItemsCountByTypeQuery = (usePreview: boolean, contentTypeCodename?: str
 }
 
 
-export const getItemsTotalCount = (usePreview: boolean, contentTypeCodename?: string) => {
-  const query = getItemsCountByTypeQuery(usePreview, contentTypeCodename);
+export const getItemsTotalCount = (config: ClientConfig, usePreview: boolean, contentTypeCodename?: string) => {
+  const query = getItemsCountByTypeQuery(config, usePreview, contentTypeCodename);
 
   return query
     .toPromise()
     .then(res => res.data.pagination.totalCount)
 }
 
-export const getArticlesCountByCategory = (usePreview: boolean, articleType: ArticleTypeWithAll) => {
-  const query = getItemsCountByTypeQuery(usePreview, contentTypes.article.codename);
+export const getArticlesCountByCategory = (config: ClientConfig, usePreview: boolean, articleType: ArticleTypeWithAll) => {
+  const query = getItemsCountByTypeQuery(config, usePreview, contentTypes.article.codename);
 
   if (articleType !== 'all') {
     query.containsFilter(`elements.${contentTypes.article.elements.type.codename}`, [articleType])
@@ -251,8 +258,8 @@ export const getArticlesCountByCategory = (usePreview: boolean, articleType: Art
     .then(res => res.data.pagination.totalCount || 0)
 }
 
-export const getProductTaxonomy = async (usePreview: boolean) =>
-  deliveryClient
+export const getProductTaxonomy = async (config: ClientConfig, usePreview: boolean) =>
+  getDeliveryClient(config)
     .taxonomy("product_category")
     .queryConfig({
       usePreviewMode: usePreview,
@@ -261,8 +268,8 @@ export const getProductTaxonomy = async (usePreview: boolean) =>
     .toPromise()
     .then(res => res.data.taxonomy.terms);
 
-export const getDefaultMetadata = async (usePreview: boolean) =>
-  deliveryClient
+export const getDefaultMetadata = async (config: ClientConfig, usePreview: boolean) =>
+  getDeliveryClient(config)
     .items<Metadata>()
     .type(homepageTypeCodename)
     .collection(siteCodename)
@@ -281,8 +288,9 @@ export const getDefaultMetadata = async (usePreview: boolean) =>
       return data;
     })
 
-export const getItemBySlug = async <T extends IContentItem>(slug: string, type: string, usePreview: boolean = false): Promise<T | null> => {
-  const items = await deliveryClient.items<T>()
+export const getItemBySlug = async <T extends IContentItem>(config: ClientConfig, slug: string, type: string, usePreview: boolean = false): Promise<T | null> => {
+  const items = await getDeliveryClient(config)
+    .items<T>()
     .equalsFilter("elements.slug", slug)
     .type(type)
     .collections([siteCodename, "default"])
@@ -310,8 +318,8 @@ export const getItemBySlug = async <T extends IContentItem>(slug: string, type: 
   return item;
 }
 
-export const getPagesSlugs = () =>
-  deliveryClient
+export const getPagesSlugs = (config: ClientConfig) =>
+  getDeliveryClient(config)
     .items<WSL_Page>()
     .type(contentTypes.page.codename)
     .collections([siteCodename, "default"])

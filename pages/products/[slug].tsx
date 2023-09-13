@@ -24,7 +24,12 @@ interface IParams extends ParsedUrlQuery {
 }
 
 export const getStaticPaths: GetStaticPaths = () => {
-  return getProductItemsWithSlugs()
+  const envId = process.env.NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID;
+  if (!envId) {
+    throw new Error("Missing 'NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID' environment variable.");
+  }
+
+  return getProductItemsWithSlugs({envId: envId})
     .then(products => ({
       paths: products.map(product => `/products/${product.elements.slug.value}`),
       fallback: 'blocking'
@@ -38,9 +43,16 @@ export const getStaticProps: GetStaticProps<Props, IParams> = async (context) =>
     return { notFound: true };
   }
 
-  const product = await getProductDetail(slug, !!context.preview);
-  const siteMenu = await getSiteMenu(!!context.preview);
-  const defaultMetadata = await getDefaultMetadata(!!context.preview);
+  const envId = process.env.NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID;
+  if (!envId) {
+    throw new Error("Missing 'NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID' environment variable.");
+  }
+
+  const previewApiKey = process.env.KONTENT_PREVIEW_API_KEY;
+
+  const product = await getProductDetail({envId: envId, previewApiKey: previewApiKey}, slug, !!context.preview);
+  const siteMenu = await getSiteMenu({envId: envId, previewApiKey: previewApiKey}, !!context.preview);
+  const defaultMetadata = await getDefaultMetadata({envId: envId, previewApiKey: previewApiKey}, !!context.preview);
 
   if (!product) {
     return { notFound: true };

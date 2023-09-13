@@ -61,8 +61,14 @@ const Home: NextPage<Props> = props => {
 };
 
 export const getStaticProps: GetStaticProps<Props> = async context => {
-  const homepage = await getHomepage(!!context.preview);
-  const siteMenu = await getSiteMenu(!!context.preview);
+  const envId = process.env.NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID;
+  if (!envId) {
+    throw new Error("Missing 'NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID' environment variable.");
+  }
+  const previewApiKey = process.env.KONTENT_PREVIEW_API_KEY;
+
+  const homepage = await getHomepage({envId: envId, previewApiKey: previewApiKey},!!context.preview);
+  const siteMenu = await getSiteMenu({envId: envId, previewApiKey: previewApiKey}, !!context.preview);
 
   if (!homepage) {
     throw new Error("Can't find homepage item.");
