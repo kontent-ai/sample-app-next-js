@@ -3,13 +3,14 @@ import Image from "next/image";
 import { ParsedUrlQuery } from 'querystring';
 import { FC } from "react";
 
-import { AppPage } from "../../components/shared/ui/appPage";
-import { mainColorButtonClass, mainColorHoverClass, mainColorTextClass } from "../../lib/constants/colors";
-import { getDefaultMetadata, getProductDetail, getProductItemsWithSlugs, getSiteMenu } from "../../lib/kontentClient";
-import { ValidCollectionCodename } from "../../lib/types/perCollection";
-import { siteCodename } from "../../lib/utils/env";
-import { createElementSmartLink } from "../../lib/utils/smartLinkUtils";
-import { contentTypes, Metadata, Nav_NavigationItem, Product } from "../../models"
+import { AppPage } from "../../../components/shared/ui/appPage";
+import { mainColorButtonClass, mainColorHoverClass, mainColorTextClass } from "../../../lib/constants/colors";
+import { getDefaultMetadata, getProductDetail, getProductItemsWithSlugs, getSiteMenu } from "../../../lib/kontentClient";
+import { ValidCollectionCodename } from "../../../lib/types/perCollection";
+import { siteCodename } from "../../../lib/utils/env";
+import { createElementSmartLink } from "../../../lib/utils/smartLinkUtils";
+import { contentTypes, Metadata, Nav_NavigationItem, Product } from "../../../models";
+
 
 
 type Props = Readonly<{
@@ -29,9 +30,14 @@ export const getStaticPaths: GetStaticPaths = () => {
     throw new Error("Missing 'NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID' environment variable.");
   }
 
-  return getProductItemsWithSlugs({envId: envId})
+  return getProductItemsWithSlugs({ envId: envId })
     .then(products => ({
-      paths: products.map(product => `/products/${product.elements.slug.value}`),
+      paths: products.map(product => ({
+        params: {
+          slug: product.elements.slug.value,
+          envId
+        }
+      })),
       fallback: 'blocking'
     }));
 }
@@ -50,9 +56,9 @@ export const getStaticProps: GetStaticProps<Props, IParams> = async (context) =>
 
   const previewApiKey = process.env.KONTENT_PREVIEW_API_KEY;
 
-  const product = await getProductDetail({envId: envId, previewApiKey: previewApiKey}, slug, !!context.preview);
-  const siteMenu = await getSiteMenu({envId: envId, previewApiKey: previewApiKey}, !!context.preview);
-  const defaultMetadata = await getDefaultMetadata({envId: envId, previewApiKey: previewApiKey}, !!context.preview);
+  const product = await getProductDetail({ envId: envId, previewApiKey: previewApiKey }, slug, !!context.preview);
+  const siteMenu = await getSiteMenu({ envId: envId, previewApiKey: previewApiKey }, !!context.preview);
+  const defaultMetadata = await getDefaultMetadata({ envId: envId, previewApiKey: previewApiKey }, !!context.preview);
 
   if (!product) {
     return { notFound: true };
