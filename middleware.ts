@@ -1,22 +1,43 @@
 import { NextRequest, NextResponse } from 'next/server'
 
-export const middleware = (request: NextRequest) => {
+const envIdRegex = /(?<envId>[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12})(?<remainingUrl>.*)/
 
-  const currentEnvId = process.env.NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID;
+export const middleware = (request: NextRequest) => {
+  let currentEnvId = request.cookies.get('currentEnvId');
+
+  if (!currentEnvId) {
+    currentEnvId = process.env.NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID;
+  }
+
   if (!currentEnvId) {
     throw new Error("Missing 'NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID' environment variable.");
   }
-  
-  if(request.nextUrl.pathname === '/envid' ||  request.nextUrl.pathname === '/callback'){
+
+  const regexResult = request.nextUrl.pathname.match(envIdRegex);
+  const routeEnvId = regexResult?.groups?.envId
+  const remainingUrl = regexResult?.groups?.remainingUrl;
+
+  if (routeEnvId) {
+    if (routeEnvId !== currentEnvId) {
+      const res = NextResponse.redirect(new URL('/getPreviewApiKey', request.url))
+      res.cookies.set('currentEnvId', routeEnvId, {path: '/'});
+      return res;
+    } else {
+      return NextResponse.redirect(new URL(remainingUrl ?? '/', request.url));
+    }
+  }
+
+
+  if (request.nextUrl.pathname === '/envid' || request.nextUrl.pathname === '/callback') {
     return NextResponse.next();
   }
 
-  if(request.nextUrl.pathname === '/articles'){
+  if (request.nextUrl.pathname === '/articles') {
     return NextResponse.rewrite(new URL(`/${currentEnvId}/articles/category/all/page/1`, request.url));
   }
 
   // Redirect to the /articles when manually type the /articles/category/all URL
-  if(request.nextUrl.pathname === '/articles/category/all'){
+  if (request.nextUrl.pathname === '/articles/category/all') {
     return NextResponse.redirect(new URL('/articles', request.url));
   }
 
@@ -37,7 +58,7 @@ export const config = {
      * - _next/image (image optimization files)
      * - favicon.ico (favicon file)
      */
-    '/((?!api|_next/static|_next/image|favicon.ico).*)',
+    '/((?!api|_next/static|_next/image|favicon.ico|getPreviewApiKey).*)',
     '/'
   ],
 }

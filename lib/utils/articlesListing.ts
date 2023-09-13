@@ -2,7 +2,8 @@ import { ArticleType } from "../../models";
 
 export type ArticleListingUrlQuery = Readonly<{
   page: string,
-  category: string
+  category: string,
+  envId: string
 }>;
 
 export type ArticleTypeWithAll = ArticleType | "all";
