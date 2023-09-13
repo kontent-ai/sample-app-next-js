@@ -1,11 +1,13 @@
-import { FC } from "react";
+import { FC, useEffect } from "react";
+
+import { webAuth } from "../../lib/constants/auth";
 
 const GetPreviewApiKey: FC = () => {
-    return (
-        <div>
-            Hello there
-        </div>
-    )
+    useEffect(() => {
+        webAuth.authorize({ redirectUri: `http://localhost:3000/callback` });
+    }, [])
+
+    return null;
 }
 
 export default GetPreviewApiKey
