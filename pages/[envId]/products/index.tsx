@@ -8,12 +8,12 @@ import { Content } from "../../../components/shared/Content";
 import { AppPage } from "../../../components/shared/ui/appPage";
 import { mainColorBgClass } from "../../../lib/constants/colors";
 import { ProductsPageSize } from "../../../lib/constants/paging";
-import { getDefaultMetadata,getItemBySlug, getProductsForListing, getSiteMenu } from "../../../lib/kontentClient";
-import { createQueryString, reservedListingSlugs,resolveUrlPath } from "../../../lib/routing";
+import { getDefaultMetadata, getItemBySlug, getProductsForListing, getSiteMenu } from "../../../lib/kontentClient";
+import { createQueryString, reservedListingSlugs, resolveUrlPath } from "../../../lib/routing";
 import { ValidCollectionCodename } from "../../../lib/types/perCollection";
 import { changeUrlQueryString } from "../../../lib/utils/changeUrlQueryString";
 import { siteCodename } from "../../../lib/utils/env";
-import { contentTypes,Metadata, Nav_NavigationItem, Product, WSL_Page } from "../../../models";
+import { contentTypes, Metadata, Nav_NavigationItem, Product, WSL_Page } from "../../../models";
 
 
 type Props = Readonly<{
@@ -201,15 +201,15 @@ export const Products: FC<Props> = props => {
   )
 };
 
-export const getStaticProps: GetStaticProps<Props> = async context => {
-  const envId = process.env.NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID;
+export const getStaticProps: GetStaticProps<Props, { envId: string }> = async context => {
+  const envId = context.params?.envId;
   if (!envId) {
-    throw new Error("Missing 'NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID' environment variable.");
+    throw new Error("Missing envId in url");
   }
   const previewApiKey = process.env.KONTENT_PREVIEW_API_KEY;
 
   // We might want to bound listing pages to something else than URL slug
-  const page = await getItemBySlug<WSL_Page>({envId: envId, previewApiKey: previewApiKey}, reservedListingSlugs.products, contentTypes.page.codename, !!context.preview);
+  const page = await getItemBySlug<WSL_Page>({ envId: envId, previewApiKey: previewApiKey }, reservedListingSlugs.products, contentTypes.page.codename, !!context.preview);
 
 
   if (page === null) {
@@ -218,9 +218,9 @@ export const getStaticProps: GetStaticProps<Props> = async context => {
     };
   }
 
-  const products = await getProductsForListing({envId: envId, previewApiKey: previewApiKey}, !!context.preview);
-  const siteMenu = await getSiteMenu({envId: envId, previewApiKey: previewApiKey}, !!context.preview);
-  const defaultMetadata = await getDefaultMetadata({envId: envId, previewApiKey: previewApiKey}, !!context.preview);
+  const products = await getProductsForListing({ envId: envId, previewApiKey: previewApiKey }, !!context.preview);
+  const siteMenu = await getSiteMenu({ envId: envId, previewApiKey: previewApiKey }, !!context.preview);
+  const defaultMetadata = await getDefaultMetadata({ envId: envId, previewApiKey: previewApiKey }, !!context.preview);
 
   return {
     props: { page, siteCodename, defaultMetadata, products: products.items, totalCount: products.pagination.totalCount ?? 0, siteMenu, isPreview: !!context.preview },
@@ -235,7 +235,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
   return {
     paths: [{
-      params: {envId: envId}
+      params: { envId: envId }
     }],
     fallback: 'blocking',
   }

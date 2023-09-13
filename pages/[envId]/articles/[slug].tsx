@@ -67,10 +67,10 @@ const ArticlePage: FC<Props> = props => {
   );
 };
 
-export const getStaticProps: GetStaticProps<Props, { slug: string }> = async context => {
-  const envId = process.env.NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID;
+export const getStaticProps: GetStaticProps<Props, { slug: string, envId: string }> = async context => {
+  const envId = context.params?.envId;
   if (!envId) {
-    throw new Error("Missing 'NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID' environment variable.");
+    throw new Error("Missing envId in url");
   }
   const previewApiKey = process.env.KONTENT_PREVIEW_API_KEY;
 
