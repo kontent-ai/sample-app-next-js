@@ -2,25 +2,17 @@ import { GetStaticPaths, GetStaticProps } from "next";
 import { ParsedUrlQuery } from "querystring";
 import { FC } from "react";
 
-import { HeroImage } from "../../components/landingPage/ui/heroImage";
-import { RichTextElement } from "../../components/shared/richText/RichTextElement";
-import { AppPage } from "../../components/shared/ui/appPage";
-import { mainColorBgClass } from "../../lib/constants/colors";
-import {
-  getDefaultMetadata,
-  getSiteMenu,
-  getSolutionDetail,
-  getSolutionsWithSlugs,
-} from "../../lib/kontentClient";
-import { ValidCollectionCodename } from "../../lib/types/perCollection";
-import { siteCodename } from "../../lib/utils/env";
-import { createElementSmartLink } from "../../lib/utils/smartLinkUtils";
-import {
-  contentTypes,
-  Metadata,
-  Nav_NavigationItem,
-  Solution,
-} from "../../models";
+import { HeroImage } from "../../../components/landingPage/ui/heroImage";
+import { RichTextElement } from "../../../components/shared/richText/RichTextElement";
+import { AppPage } from "../../../components/shared/ui/appPage";
+import { mainColorBgClass } from "../../../lib/constants/colors";
+import { getDefaultMetadata, getSiteMenu, getSolutionDetail, getSolutionsWithSlugs } from "../../../lib/kontentClient";
+import { ValidCollectionCodename } from "../../../lib/types/perCollection";
+import { siteCodename } from "../../../lib/utils/env";
+import { createElementSmartLink } from "../../../lib/utils/smartLinkUtils";
+import { contentTypes, Metadata, Nav_NavigationItem, Solution } from "../../../models";
+
+
 
 type Props = Readonly<{
   solution: Solution;
@@ -39,9 +31,14 @@ export const getStaticPaths: GetStaticPaths = () => {
     throw new Error("Missing 'NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID' environment variable.");
   }
 
-  return getSolutionsWithSlugs({envId: envId}).then((solutions) => ({
+  return getSolutionsWithSlugs({ envId: envId }).then((solutions) => ({
     paths: solutions.map(
-      (solution) => `/solutions/${solution.elements.slug.value}`
+      (solution) => ({
+        params: {
+          slug: solution.elements.slug.value,
+          envId
+        }
+      })
     ),
     fallback: "blocking",
   }));
@@ -62,9 +59,9 @@ export const getStaticProps: GetStaticProps<Props, IParams> = async (
   }
   const previewApiKey = process.env.KONTENT_PREVIEW_API_KEY;
 
-  const solution = await getSolutionDetail({envId: envId, previewApiKey: previewApiKey}, slug, !!context.preview);
-  const siteMenu = await getSiteMenu({envId: envId, previewApiKey: previewApiKey}, !!context.preview);
-  const defaultMetadata = await getDefaultMetadata({envId: envId, previewApiKey: previewApiKey}, !!context.preview);
+  const solution = await getSolutionDetail({ envId: envId, previewApiKey: previewApiKey }, slug, !!context.preview);
+  const siteMenu = await getSiteMenu({ envId: envId, previewApiKey: previewApiKey }, !!context.preview);
+  const defaultMetadata = await getDefaultMetadata({ envId: envId, previewApiKey: previewApiKey }, !!context.preview);
 
   if (!solution) {
     return { notFound: true };

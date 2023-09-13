@@ -4,18 +4,18 @@ import Link from "next/link";
 import { NextRouter, useRouter } from "next/router";
 import { FC, useState } from "react";
 
-import { ArticleItem } from "../../../../../components/listingPage/ArticleItem";
-import { Content } from "../../../../../components/shared/Content";
-import { useSiteCodename } from "../../../../../components/shared/siteCodenameContext";
-import { AppPage } from "../../../../../components/shared/ui/appPage";
-import { mainColorBgClass, mainColorBorderClass, mainColorHoverClass } from "../../../../../lib/constants/colors";
-import { ArticlePageSize } from "../../../../../lib/constants/paging";
-import { getArticlesCountByCategory, getArticlesForListing, getDefaultMetadata, getItemBySlug, getItemsTotalCount, getSiteMenu } from "../../../../../lib/kontentClient";
-import { ResolutionContext, resolveUrlPath } from "../../../../../lib/routing";
-import { ValidCollectionCodename } from "../../../../../lib/types/perCollection";
-import { ArticleListingUrlQuery, ArticleTypeWithAll, categoryFilterSource, isArticleType } from "../../../../../lib/utils/articlesListing";
-import { siteCodename } from "../../../../../lib/utils/env";
-import { Article, contentTypes, Metadata, Nav_NavigationItem, taxonomies, WSL_Page } from "../../../../../models";
+import { ArticleItem } from "../../../../../../components/listingPage/ArticleItem";
+import { Content } from "../../../../../../components/shared/Content";
+import { useSiteCodename } from "../../../../../../components/shared/siteCodenameContext";
+import { AppPage } from "../../../../../../components/shared/ui/appPage";
+import { mainColorBgClass, mainColorBorderClass, mainColorHoverClass } from "../../../../../../lib/constants/colors";
+import { ArticlePageSize } from "../../../../../../lib/constants/paging";
+import { getArticlesCountByCategory, getArticlesForListing, getDefaultMetadata,getItemBySlug, getItemsTotalCount, getSiteMenu } from "../../../../../../lib/kontentClient";
+import { ResolutionContext,resolveUrlPath } from "../../../../../../lib/routing";
+import { ValidCollectionCodename } from "../../../../../../lib/types/perCollection";
+import { ArticleListingUrlQuery, ArticleTypeWithAll, categoryFilterSource, isArticleType } from "../../../../../../lib/utils/articlesListing";
+import { siteCodename } from "../../../../../../lib/utils/env";
+import { Article, contentTypes,Metadata, Nav_NavigationItem, taxonomies, WSL_Page } from "../../../../../../models";
 
 type Props = Readonly<{
   siteCodename: ValidCollectionCodename;
@@ -234,7 +234,7 @@ export const getStaticPaths = async () => {
     const pagesNumber = Math.ceil((totalCount ?? 0) / ArticlePageSize);
     const pages = Array.from({ length: pagesNumber }).map((_, index) => index + 1);
     return pages.map(pageNumber => ({
-      params: { page: pageNumber.toString(), category },
+      params: { page: pageNumber.toString(), category, envId },
     }));
   };
 

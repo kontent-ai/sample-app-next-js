@@ -1,15 +1,16 @@
 import { KontentSmartLinkEvent } from '@kontent-ai/smart-link';
 import { IRefreshMessageData, IRefreshMessageMetadata } from '@kontent-ai/smart-link/types/lib/IFrameCommunicatorTypes';
-import { GetStaticProps, NextPage } from 'next';
+import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import { useEffect, useState } from 'react';
 
-import { Content } from '../components/shared/Content';
-import { AppPage } from '../components/shared/ui/appPage';
-import { getHomepage, getSiteMenu } from "../lib/kontentClient";
-import { ValidCollectionCodename } from '../lib/types/perCollection';
-import { useSmartLink } from '../lib/useSmartLink';
-import { siteCodename } from '../lib/utils/env';
-import { Nav_NavigationItem, WSL_WebSpotlightRoot } from '../models';
+import { Content } from '../../components/shared/Content';
+import { AppPage } from '../../components/shared/ui/appPage';
+import { getHomepage, getSiteMenu } from '../../lib/kontentClient';
+import { ValidCollectionCodename } from '../../lib/types/perCollection';
+import { useSmartLink } from '../../lib/useSmartLink';
+import { siteCodename } from '../../lib/utils/env';
+import { Nav_NavigationItem,WSL_WebSpotlightRoot } from '../../models';
+
 
 type Props = Readonly<{
   homepage: WSL_WebSpotlightRoot;
@@ -77,6 +78,20 @@ export const getStaticProps: GetStaticProps<Props> = async context => {
   return {
     props: { homepage, siteCodename, siteMenu, isPreview: !!context.preview },
   };
+}
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  const envId = process.env.NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID;
+  if (!envId) {
+    throw new Error("Missing 'NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID' environment variable.");
+  }
+
+  return {
+    paths: [{
+      params: {envId: envId}
+    }],
+    fallback: 'blocking',
+  }
 }
 
 export default Home

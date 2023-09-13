@@ -1,16 +1,17 @@
 import { GetStaticPaths, GetStaticProps } from "next";
 import { FC } from "react";
 
-import { HeroImage } from "../../components/landingPage/ui/heroImage";
-import { PersonHorizontal } from "../../components/shared/PersonHorizontal";
-import { RichTextElement } from "../../components/shared/richText/RichTextElement";
-import { AppPage } from "../../components/shared/ui/appPage";
-import { mainColorBgClass } from "../../lib/constants/colors";
-import { getAllArticles, getArticleBySlug, getDefaultMetadata, getSiteMenu } from "../../lib/kontentClient";
-import { ValidCollectionCodename } from "../../lib/types/perCollection";
-import { formatDate } from "../../lib/utils/dateTime";
-import { siteCodename } from '../../lib/utils/env';
-import { Article, Metadata, Nav_NavigationItem } from "../../models";
+import { HeroImage } from "../../../components/landingPage/ui/heroImage";
+import { PersonHorizontal } from "../../../components/shared/PersonHorizontal";
+import { RichTextElement } from "../../../components/shared/richText/RichTextElement";
+import { AppPage } from "../../../components/shared/ui/appPage";
+import { mainColorBgClass } from "../../../lib/constants/colors";
+import { getAllArticles,getArticleBySlug, getDefaultMetadata, getSiteMenu } from "../../../lib/kontentClient";
+import { ValidCollectionCodename } from "../../../lib/types/perCollection";
+import { formatDate } from "../../../lib/utils/dateTime";
+import { siteCodename } from "../../../lib/utils/env";
+import { Article, Metadata,Nav_NavigationItem } from "../../../models";
+
 
 type Props = Readonly<{
   article: Article;
@@ -107,7 +108,12 @@ export const getStaticPaths: GetStaticPaths = async () => {
   const articles = await getAllArticles({envId: envId}, false);
 
   return {
-    paths: articles.items.map(a => `/articles/${a.elements.slug.value}`),
+    paths: articles.items.map(a => ({
+      params: {
+        slug: a.elements.slug.value,
+        envId
+      }
+    })),
     fallback: "blocking",
   };
 }

@@ -2,14 +2,14 @@ import { GetStaticPaths, GetStaticProps } from "next";
 import { ParsedUrlQuery } from "querystring";
 import { FC } from "react";
 
-import { Content } from "../components/shared/Content";
-import { AppPage } from "../components/shared/ui/appPage";
-import { getDefaultMetadata, getItemBySlug, getPagesSlugs, getSiteMenu } from "../lib/kontentClient";
-import { reservedListingSlugs } from "../lib/routing";
-import { ValidCollectionCodename } from "../lib/types/perCollection";
-import { siteCodename } from "../lib/utils/env";
-import { createElementSmartLink, createFixedAddSmartLink } from "../lib/utils/smartLinkUtils";
-import { contentTypes, Metadata, Nav_NavigationItem, WSL_Page } from "../models";
+import { Content } from "../../components/shared/Content";
+import { AppPage } from "../../components/shared/ui/appPage";
+import { getDefaultMetadata, getItemBySlug, getPagesSlugs, getSiteMenu } from "../../lib/kontentClient";
+import { reservedListingSlugs } from "../../lib/routing";
+import { ValidCollectionCodename } from "../../lib/types/perCollection";
+import { siteCodename } from "../../lib/utils/env";
+import { createElementSmartLink, createFixedAddSmartLink } from "../../lib/utils/smartLinkUtils";
+import { contentTypes, Metadata, Nav_NavigationItem, WSL_Page } from "../../models";
 
 type Props = Readonly<{
   page: WSL_Page;
@@ -33,7 +33,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
     .filter(item => item != reservedListingSlugs.articles)
     .filter(item => item != reservedListingSlugs.products)
     .map(slug => (
-      { params: { slug } }
+      { params: { envId, slug } }
     ))
   return {
     paths,
