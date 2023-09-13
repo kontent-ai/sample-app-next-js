@@ -8,8 +8,10 @@ const handler: NextApiHandler = async (req, res) => {
     return res.status(401).json({ message: 'Invalid preview token, or no slug and type provided.' })
   }
 
+  const {currentPreviewApiKey} = req.cookies
+
   // Enable Preview Mode by setting the cookies
-  res.setPreviewData({})
+  res.setPreviewData({currentPreviewApiKey})
 
   const path = await resolveUrlPath({
     type: req.query.type.toString(),

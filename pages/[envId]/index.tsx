@@ -9,7 +9,7 @@ import { getHomepage, getSiteMenu } from '../../lib/kontentClient';
 import { ValidCollectionCodename } from '../../lib/types/perCollection';
 import { useSmartLink } from '../../lib/useSmartLink';
 import { siteCodename } from '../../lib/utils/env';
-import { Nav_NavigationItem,WSL_WebSpotlightRoot } from '../../models';
+import { Nav_NavigationItem, WSL_WebSpotlightRoot } from '../../models';
 
 
 type Props = Readonly<{
@@ -61,15 +61,18 @@ const Home: NextPage<Props> = props => {
   )
 };
 
-export const getStaticProps: GetStaticProps<Props, {envId: string}> = async context => {
+export const getStaticProps: GetStaticProps<Props, { envId: string }> = async context => {
   const envId = context.params?.envId;
   if (!envId) {
     throw new Error("Missing envId in url");
   }
-  const previewApiKey = process.env.KONTENT_PREVIEW_API_KEY;
 
-  const homepage = await getHomepage({envId: envId, previewApiKey: previewApiKey},!!context.preview);
-  const siteMenu = await getSiteMenu({envId: envId, previewApiKey: previewApiKey}, !!context.preview);
+  const previewApiKey = context.previewData && typeof context.previewData === 'object' && 'currentPreviewApiKey' in context.previewData
+    ? context.previewData.currentPreviewApiKey as string 
+    : undefined ;
+
+  const homepage = await getHomepage({ envId: envId, previewApiKey: previewApiKey }, !!context.preview);
+  const siteMenu = await getSiteMenu({ envId: envId, previewApiKey: previewApiKey }, !!context.preview);
 
   if (!homepage) {
     throw new Error("Can't find homepage item.");
@@ -88,7 +91,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
   return {
     paths: [{
-      params: {envId: envId}
+      params: { envId: envId }
     }],
     fallback: 'blocking',
   }

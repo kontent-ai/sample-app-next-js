@@ -55,12 +55,14 @@ export const getStaticProps: GetStaticProps<Props, IParams> = async (context) =>
     throw new Error("Missing envId in url");
   }
 
-  const previewApiKey = process.env.KONTENT_PREVIEW_API_KEY;
+  const previewApiKey = context.previewData && typeof context.previewData === 'object' && 'currentPreviewApiKey' in context.previewData
+    ? context.previewData.currentPreviewApiKey as string
+    : undefined;
 
   const siteMenu = await getSiteMenu({ envId: envId, previewApiKey: previewApiKey }, !!context.preview);
-  const defaultMetadata = await getDefaultMetadata({envId: envId, previewApiKey: previewApiKey}, !!context.preview);
+  const defaultMetadata = await getDefaultMetadata({ envId: envId, previewApiKey: previewApiKey }, !!context.preview);
 
-  const page = await getItemBySlug<WSL_Page>({envId: envId, previewApiKey: previewApiKey}, slug, contentTypes.page.codename, !!context.preview);
+  const page = await getItemBySlug<WSL_Page>({ envId: envId, previewApiKey: previewApiKey }, slug, contentTypes.page.codename, !!context.preview);
 
   if (page === null) {
     return {
