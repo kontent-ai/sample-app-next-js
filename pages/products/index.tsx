@@ -201,8 +201,14 @@ export const Products: FC<Props> = props => {
 };
 
 export const getStaticProps: GetStaticProps<Props> = async context => {
+  const envId = process.env.NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID;
+  if (!envId) {
+    throw new Error("Missing 'NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID' environment variable.");
+  }
+  const previewApiKey = process.env.KONTENT_PREVIEW_API_KEY;
+
   // We might want to bound listing pages to something else than URL slug
-  const page = await getItemBySlug<WSL_Page>(reservedListingSlugs.products, contentTypes.page.codename, !!context.preview);
+  const page = await getItemBySlug<WSL_Page>({envId: envId, previewApiKey: previewApiKey}, reservedListingSlugs.products, contentTypes.page.codename, !!context.preview);
 
 
   if (page === null) {
@@ -211,9 +217,9 @@ export const getStaticProps: GetStaticProps<Props> = async context => {
     };
   }
 
-  const products = await getProductsForListing(!!context.preview);
-  const siteMenu = await getSiteMenu(!!context.preview);
-  const defaultMetadata = await getDefaultMetadata(!!context.preview);
+  const products = await getProductsForListing({envId: envId, previewApiKey: previewApiKey}, !!context.preview);
+  const siteMenu = await getSiteMenu({envId: envId, previewApiKey: previewApiKey}, !!context.preview);
+  const defaultMetadata = await getDefaultMetadata({envId: envId, previewApiKey: previewApiKey}, !!context.preview);
 
   return {
     props: { page, siteCodename, defaultMetadata, products: products.items, totalCount: products.pagination.totalCount ?? 0, siteMenu, isPreview: !!context.preview },

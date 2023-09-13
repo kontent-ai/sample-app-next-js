@@ -67,15 +67,21 @@ const ArticlePage: FC<Props> = props => {
 };
 
 export const getStaticProps: GetStaticProps<Props, { slug: string }> = async context => {
-  const siteMenu = await getSiteMenu(!!context.preview);
+  const envId = process.env.NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID;
+  if (!envId) {
+    throw new Error("Missing 'NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID' environment variable.");
+  }
+  const previewApiKey = process.env.KONTENT_PREVIEW_API_KEY;
+
+  const siteMenu = await getSiteMenu({envId: envId, previewApiKey: previewApiKey}, !!context.preview);
   const slug = typeof context.params?.slug === "string" ? context.params.slug : "";
 
   if (!slug) {
     return { notFound: true };
   }
 
-  const article = await getArticleBySlug(slug, !!context.preview);
-  const defaultMetadata = await getDefaultMetadata(!!context.preview);
+  const article = await getArticleBySlug({envId: envId, previewApiKey: previewApiKey},slug, !!context.preview);
+  const defaultMetadata = await getDefaultMetadata({envId: envId, previewApiKey: previewApiKey}, !!context.preview);
 
   if (!article) {
     return { notFound: true };
@@ -92,7 +98,13 @@ export const getStaticProps: GetStaticProps<Props, { slug: string }> = async con
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const articles = await getAllArticles(false);
+  const envId = process.env.NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID;
+
+  if (!envId) {
+    throw new Error("Missing 'NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID' environment variable.");
+  }
+
+  const articles = await getAllArticles({envId: envId}, false);
 
   return {
     paths: articles.items.map(a => `/articles/${a.elements.slug.value}`),

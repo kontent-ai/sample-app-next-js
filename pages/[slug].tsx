@@ -22,14 +22,19 @@ interface IParams extends ParsedUrlQuery {
   slug: string
 }
 export const getStaticPaths: GetStaticPaths = async () => {
-  const slugs = await getPagesSlugs();
+  const envId = process.env.NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID;
+  if (!envId) {
+    throw new Error("Missing 'NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID' environment variable.");
+  }
+
+  const slugs = await getPagesSlugs({ envId: envId });
 
   const paths = slugs
-  .filter(item => item != reservedListingSlugs.articles)
-  .filter(item => item != reservedListingSlugs.products)
-  .map(slug => (
-    { params: { slug } }
-  ))
+    .filter(item => item != reservedListingSlugs.articles)
+    .filter(item => item != reservedListingSlugs.products)
+    .map(slug => (
+      { params: { slug } }
+    ))
   return {
     paths,
     fallback: 'blocking',
@@ -44,11 +49,16 @@ export const getStaticProps: GetStaticProps<Props, IParams> = async (context) =>
       notFound: true
     }
   }
+  const envId = process.env.NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID;
+  if (!envId) {
+    throw new Error("Missing 'NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID' environment variable.");
+  }
+  const previewApiKey = process.env.KONTENT_PREVIEW_API_KEY;
 
-  const siteMenu = await getSiteMenu(!!context.preview);
-  const defaultMetadata = await getDefaultMetadata(!!context.preview);
+  const siteMenu = await getSiteMenu({ envId: envId, previewApiKey: previewApiKey }, !!context.preview);
+  const defaultMetadata = await getDefaultMetadata({envId: envId, previewApiKey: previewApiKey}, !!context.preview);
 
-  const page = await getItemBySlug<WSL_Page>(slug, contentTypes.page.codename, !!context.preview);
+  const page = await getItemBySlug<WSL_Page>({envId: envId, previewApiKey: previewApiKey}, slug, contentTypes.page.codename, !!context.preview);
 
   if (page === null) {
     return {

@@ -224,7 +224,13 @@ const ArticlesPagingPage: FC<Props> = props => {
 export const getStaticPaths = async () => {
 
   const getAllPagesForCategory = async (category: ArticleTypeWithAll) => {
-    const totalCount = category === 'all' ? await getItemsTotalCount(false, contentTypes.article.codename) : await getArticlesCountByCategory(false, category);
+    const envId = process.env.NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID;
+    if (!envId) {
+      throw new Error("Missing 'NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID' environment variable.");
+    }
+
+    const totalCount = category === 'all' ? await getItemsTotalCount({ envId: envId }, false, contentTypes.article.codename) :
+      await getArticlesCountByCategory({ envId: envId }, false, category);
     const pagesNumber = Math.ceil((totalCount ?? 0) / ArticlePageSize);
     const pages = Array.from({ length: pagesNumber }).map((_, index) => index + 1);
     return pages.map(pageNumber => ({
@@ -250,12 +256,18 @@ export const getStaticProps: GetStaticProps<Props, ArticleListingUrlQuery> = asy
     };
   }
 
+  const envId = process.env.NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID;
+  if (!envId) {
+    throw new Error("Missing 'NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID' environment variable.");
+  }
+  const previewApiKey = process.env.KONTENT_PREVIEW_API_KEY;
+
   const pageNumber = !pageURLParameter || isNaN(+pageURLParameter) ? 1 : +pageURLParameter;
-  const articles = await getArticlesForListing(!!context.preview, pageNumber, selectedCategory);
-  const siteMenu = await getSiteMenu(!!context.preview);
-  const page = await getItemBySlug<WSL_Page>("articles", contentTypes.page.codename, !!context.preview);
-  const itemCount = await getArticlesCountByCategory(!!context.preview, selectedCategory)
-  const defaultMetadata = await getDefaultMetadata(!!context.preview);
+  const articles = await getArticlesForListing({ envId: envId, previewApiKey: previewApiKey }, !!context.preview, pageNumber, selectedCategory);
+  const siteMenu = await getSiteMenu({ envId: envId, previewApiKey: previewApiKey }, !!context.preview);
+  const page = await getItemBySlug<WSL_Page>({ envId: envId, previewApiKey: previewApiKey }, "articles", contentTypes.page.codename, !!context.preview);
+  const itemCount = await getArticlesCountByCategory({ envId: envId, previewApiKey: previewApiKey }, !!context.preview, selectedCategory)
+  const defaultMetadata = await getDefaultMetadata({ envId: envId, previewApiKey: previewApiKey }, !!context.preview);
 
   if (page === null) {
     return { notFound: true };
