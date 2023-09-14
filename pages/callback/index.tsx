@@ -6,7 +6,7 @@ import { webAuth } from "../../lib/constants/auth";
 
 const CallbackPage: React.FC = () => {
   useEffect(() => {
-    const envId = getCookie('currentEnvId', { path: '/' });
+    const envId = getCookie('currentEnvId', { path: '/', sameSite: 'none'});
 
     const getProjectContainerId = async (authToken: string) => {
       const response = await fetch(`https://app.devkontentmasters.com/api/project-management/${envId}`,

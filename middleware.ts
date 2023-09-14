@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 
-const envIdRegex = /(?<envId>[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12})(?<remainingUrl>.*)/
+import { createQueryString } from './lib/routing';
 
+const envIdRegex = /(?<envId>[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12})(?<remainingUrl>.*)/
 export const middleware = (request: NextRequest) => {
   let currentEnvId = request.cookies.get('currentEnvId');
 
@@ -18,12 +19,12 @@ export const middleware = (request: NextRequest) => {
   const remainingUrl = regexResult?.groups?.remainingUrl;
 
   if (routeEnvId) {
-    if (routeEnvId !== currentEnvId) {
+    if (routeEnvId !== currentEnvId && routeEnvId !== process.env.NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID) {
       const res = NextResponse.redirect(new URL('/getPreviewApiKey', request.url))
-      res.cookies.set('currentEnvId', routeEnvId, {path: '/'});
+      res.cookies.set('currentEnvId', routeEnvId, {path: '/', sameSite: 'none', secure: true});
       return res;
     } else {
-      return NextResponse.redirect(new URL(remainingUrl ?? '/', request.url));
+      return NextResponse.redirect(new URL(`${remainingUrl ?? ''}?${createQueryString(Object.fromEntries(request.nextUrl.searchParams.entries()))}`, request.url));
     }
   }
 
