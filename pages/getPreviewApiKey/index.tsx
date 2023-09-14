@@ -1,3 +1,4 @@
+import dynamic from "next/dynamic";
 import { FC, useEffect } from "react";
 
 import { webAuth } from "../../lib/constants/auth";
@@ -10,4 +11,8 @@ const GetPreviewApiKey: FC = () => {
     return null;
 }
 
-export default GetPreviewApiKey
+const callback = dynamic(() => Promise.resolve(GetPreviewApiKey), {
+    ssr: false,
+  })
+  
+export default callback;
