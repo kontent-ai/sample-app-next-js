@@ -8,8 +8,8 @@ import { siteCodename } from './utils/env';
 const sourceTrackingHeaderName = 'X-KC-SOURCE';
 const defaultDepth = 10;
 
-const envId = process.env.NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID;
-if (!envId) {
+const defaultEnvId = process.env.NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID;
+if (!defaultEnvId) {
   throw new Error("Missing 'NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID' environment variable.");
 }
 
@@ -26,7 +26,7 @@ const getDeliveryClient = ({ envId, previewApiKey }: ClientConfig) => createDeli
     baseUrl: "https://deliver.devkontentmasters.com",
     basePreviewUrl: "https://preview-deliver.devkontentmasters.com",
   },
-  previewApiKey: previewApiKey
+  previewApiKey: defaultEnvId === envId ? process.env.KONTENT_PREVIEW_API_KEY : previewApiKey
   // previewApiKey: process.env.KONTENT_PREVIEW_API_KEY
 });
 
