@@ -1,12 +1,15 @@
 import { getCookie, setCookie } from "cookies-next";
 import dynamic from "next/dynamic";
+import { useRouter } from "next/router";
 import { useEffect } from "react";
 
 import { webAuth } from "../../lib/constants/auth";
 
 const CallbackPage: React.FC = () => {
+  const router = useRouter();
+
   useEffect(() => {
-    const envId = getCookie('currentEnvId', { path: '/', sameSite: 'none'});
+    const envId = getCookie('currentEnvId', { path: '/', sameSite: 'none' });
 
     const getProjectContainerId = async (authToken: string) => {
       const response = await fetch(`https://app.devkontentmasters.com/api/project-management/${envId}`,
@@ -27,7 +30,7 @@ const CallbackPage: React.FC = () => {
         'token_types': ['delivery-api'],
         environments: [envId]
       }
-    
+
       const tokenSeedUrl = `https://app.devkontentmasters.com/api/project-container/${projectContainerId}/keys/listing`;
       const tokenSeedResponse = await fetch(tokenSeedUrl, {
         method: "POST",
@@ -37,15 +40,15 @@ const CallbackPage: React.FC = () => {
         },
         body: JSON.stringify(data)
       });
-    
+
       const listingData = await tokenSeedResponse.json();
-      return  listingData[0]['token_seed_id']
+      return listingData[0]['token_seed_id']
     }
-    
-    
+
+
     const getPreviewApiKey = async (authToken: string, projectContainerId: string) => {
       const tokenSeedId = await getTokenSeedId(authToken, projectContainerId);
-    
+
       const apiKeyUrl = `https://app.devkontentmasters.com/api/project-container/${projectContainerId}/keys/${tokenSeedId}`;
       const apiKeyResponse = await fetch(apiKeyUrl, {
         method: "GET",
@@ -54,11 +57,10 @@ const CallbackPage: React.FC = () => {
           "Authorization": `Bearer ${authToken}`
         },
       });
-    
+
       const apiKeyData = await apiKeyResponse.json();
       return apiKeyData['api_key'];
     };
-
 
     webAuth.parseHash({ hash: window.location.hash }, async (err, authResult) => {
       if (err) {
@@ -67,11 +69,13 @@ const CallbackPage: React.FC = () => {
       const projectContainerId = await getProjectContainerId(authResult?.accessToken as string);
 
       const api_key = await getPreviewApiKey(authResult?.accessToken as string, projectContainerId as string);
-      setCookie('currentPreviewApiKey', api_key, {path: '/'})
-    });
-  }, [])
+      setCookie('currentPreviewApiKey', api_key, { path: '/', sameSite: 'none', secure: true })
 
-  return <>hello</>;
+      router.replace('/api/preview?secret=mySuperSecret&type=web_spotlight_root&slug=/');
+    });
+  }, [router]);
+
+  return null;
 }
 
 const callback = dynamic(() => Promise.resolve(CallbackPage), {
