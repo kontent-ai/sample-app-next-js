@@ -8,6 +8,11 @@ const envIdRegex = /(?<envId>[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12})(?<remain
 export const middleware = (request: NextRequest) => {
   let currentEnvId = request.cookies.get('currentEnvId');
 
+  //try to fix css on web spotlight
+  if(request.nextUrl.pathname.startsWith('/_next/static')){
+    return NextResponse.next();
+  }
+
   if (!currentEnvId) {
     currentEnvId = process.env.NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID;
     setCookie('currentEnvId', currentEnvId, {path: '/', sameSite: 'none', secure: true});
