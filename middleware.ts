@@ -1,4 +1,3 @@
-import { setCookie } from 'cookies-next';
 import { NextRequest, NextResponse } from 'next/server'
 
 import { createQueryString } from './lib/routing';
@@ -15,7 +14,6 @@ export const middleware = (request: NextRequest) => {
 
   if (!currentEnvId) {
     currentEnvId = process.env.NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID;
-    setCookie('currentEnvId', currentEnvId, {path: '/', sameSite: 'none', secure: true});
   }
 
   if (!currentEnvId) {
@@ -83,6 +81,6 @@ export const config = {
      * - favicon.ico (favicon file)
      */
     '/((?!api|_next/static|_next/image|favicon.ico|getPreviewApiKey|logo.png).*)',
-    '/'
+    '\/'
   ],
 }
