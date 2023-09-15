@@ -5,12 +5,7 @@ import { createQueryString } from './lib/routing';
 const envIdRegex = /(?<envId>[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12})(?<remainingUrl>.*)/
 
 export const middleware = (request: NextRequest) => {
-  let currentEnvId = request.cookies.get('currentEnvId');
-
-  //try to fix css on web spotlight
-  if(request.nextUrl.pathname.startsWith('/_next/static')){
-    return NextResponse.next();
-  }
+  let currentEnvId = request.cookies.get('currentEnvId')?.value;
 
   if (!currentEnvId) {
     currentEnvId = process.env.NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID;
@@ -30,28 +25,20 @@ export const middleware = (request: NextRequest) => {
       const res = NextResponse.redirect(new URL(`${remainingUrl ?? ''}?${createQueryString(Object.fromEntries(request.nextUrl.searchParams.entries()))}`, request.nextUrl.origin));
       res.cookies.set('currentEnvId', routeEnvId, {path: '/', sameSite: 'none', secure: true});
       res.cookies.set('currentPreviewApiKey', '', {path: '/', sameSite: 'none', secure: true});
+
       return res
     }
 
     if (routeEnvId !== currentEnvId || !request.cookies.get('currentPreviewApiKey')) {
       const res = NextResponse.redirect(new URL('/getPreviewApiKey', request.url))
+  
       res.cookies.set('currentEnvId', routeEnvId, {path: '/', sameSite: 'none', secure: true});
       res.cookies.set('currentPreviewApiKey', '', {path: '/', sameSite: 'none', secure: true});
-
-      // https://github.com/vercel/next.js/issues/40146
-      res.cookies.set("__next_preview_data", ``);
-      res.cookies.set("__prerender_bypass", ``);
-      res.cookies.delete('__next_preview_data');
-      res.cookies.delete('__prerender_bypass');
 
       return res;
     } else {
       return NextResponse.redirect(new URL(`${remainingUrl ?? ''}?${createQueryString(Object.fromEntries(request.nextUrl.searchParams.entries()))}`, request.nextUrl.origin));
     }
-  }
-
-  if (request.nextUrl.pathname === '/callback') {
-    return NextResponse.next();
   }
 
   if (request.nextUrl.pathname === '/articles') {
@@ -80,7 +67,7 @@ export const config = {
      * - _next/image (image optimization files)
      * - favicon.ico (favicon file)
      */
-    '/((?!api|_next/static|_next/image|favicon.ico|getPreviewApiKey|logo.png).*)',
-    '\/'
+    '/((?!api|_next/static|_next/image|favicon.ico|getPreviewApiKey|logo.png|callback).*)',
+    '/'
   ],
 }

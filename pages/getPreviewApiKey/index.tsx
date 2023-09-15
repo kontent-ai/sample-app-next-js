@@ -5,7 +5,12 @@ import { webAuth } from "../../lib/constants/auth";
 
 const GetPreviewApiKey: FC = () => {
   useEffect(() => {
-    webAuth.authorize({ redirectUri: `https://localhost:3000/callback` },);
+    const exitPreview = async () => {
+      await fetch('/api/exit-preview');
+    }
+    exitPreview();
+
+     webAuth.authorize({ redirectUri: `https://ficto-surgical-git-devrel-914-dynamic-projects-devrel-kontentai.vercel.app/callback` },);
   }, [])
 
   return null;
