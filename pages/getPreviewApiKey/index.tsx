@@ -10,9 +10,10 @@ const GetPreviewApiKey: FC = () => {
     }
     exitPreview();
 
-    webAuth.authorize({ redirectUri: `${process.env.NEXT_PUBLIC_VERCEL_URL}/callback` });
+    //TODO: needs to be changed after presentation to environment variable 
+    webAuth.authorize({ redirectUri: `https://ficto-surgical-git-devrel-914-dynamic-projects-devrel-kontentai.vercel.app/callback` });
   }, [])
-
+//
   return null;
 }
 
