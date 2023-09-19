@@ -221,9 +221,9 @@ export const getStaticProps: GetStaticProps<Props, { envId: string }> = async co
     };
   }
 
-  const products = await getProductsForListing({ envId: envId, previewApiKey: previewApiKey }, !!context.preview);
-  const siteMenu = await getSiteMenu({ envId: envId, previewApiKey: previewApiKey }, !!context.preview);
-  const defaultMetadata = await getDefaultMetadata({ envId: envId, previewApiKey: previewApiKey }, !!context.preview);
+  const products = await getProductsForListing({ envId, previewApiKey }, !!context.preview);
+  const siteMenu = await getSiteMenu({ envId, previewApiKey }, !!context.preview);
+  const defaultMetadata = await getDefaultMetadata({ envId, previewApiKey }, !!context.preview);
 
   return {
     props: { page, siteCodename, defaultMetadata, products: products.items, totalCount: products.pagination.totalCount ?? 0, siteMenu, isPreview: !!context.preview },

@@ -265,11 +265,11 @@ export const getStaticProps: GetStaticProps<Props, ArticleListingUrlQuery> = asy
     : undefined;
 
   const pageNumber = !pageURLParameter || isNaN(+pageURLParameter) ? 1 : +pageURLParameter;
-  const articles = await getArticlesForListing({ envId: envId, previewApiKey: previewApiKey }, !!context.preview, pageNumber, selectedCategory);
-  const siteMenu = await getSiteMenu({ envId: envId, previewApiKey: previewApiKey }, !!context.preview);
-  const page = await getItemBySlug<WSL_Page>({ envId: envId, previewApiKey: previewApiKey }, "articles", contentTypes.page.codename, !!context.preview);
-  const itemCount = await getArticlesCountByCategory({ envId: envId, previewApiKey: previewApiKey }, !!context.preview, selectedCategory)
-  const defaultMetadata = await getDefaultMetadata({ envId: envId, previewApiKey: previewApiKey }, !!context.preview);
+  const articles = await getArticlesForListing({ envId, previewApiKey }, !!context.preview, pageNumber, selectedCategory);
+  const siteMenu = await getSiteMenu({ envId, previewApiKey }, !!context.preview);
+  const page = await getItemBySlug<WSL_Page>({ envId, previewApiKey }, "articles", contentTypes.page.codename, !!context.preview);
+  const itemCount = await getArticlesCountByCategory({ envId, previewApiKey }, !!context.preview, selectedCategory)
+  const defaultMetadata = await getDefaultMetadata({ envId, previewApiKey }, !!context.preview);
 
   if (page === null) {
     return { notFound: true };

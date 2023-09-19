@@ -63,9 +63,9 @@ export const getStaticProps: GetStaticProps<Props, IParams> = async (
     ? context.previewData.currentPreviewApiKey as string
     : undefined;
 
-  const solution = await getSolutionDetail({ envId: envId, previewApiKey: previewApiKey }, slug, !!context.preview);
-  const siteMenu = await getSiteMenu({ envId: envId, previewApiKey: previewApiKey }, !!context.preview);
-  const defaultMetadata = await getDefaultMetadata({ envId: envId, previewApiKey: previewApiKey }, !!context.preview);
+  const solution = await getSolutionDetail({ envId, previewApiKey }, slug, !!context.preview);
+  const siteMenu = await getSiteMenu({ envId, previewApiKey }, !!context.preview);
+  const defaultMetadata = await getDefaultMetadata({ envId, previewApiKey }, !!context.preview);
 
   if (!solution) {
     return { notFound: true };
