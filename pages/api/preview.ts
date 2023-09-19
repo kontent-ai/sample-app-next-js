@@ -11,7 +11,7 @@ const handler: NextApiHandler = async (req, res) => {
   const { currentEnvId, currentPreviewApiKey } = req.cookies
 
   if (!currentPreviewApiKey && currentEnvId !== process.env.NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID) {
-    return res.redirect('/getPreviewApiKey');
+    return res.redirect(`/getPreviewApiKey?path=${encodeURIComponent(req.url ?? '')}`);
   }
 
   // Enable Preview Mode by setting the cookies

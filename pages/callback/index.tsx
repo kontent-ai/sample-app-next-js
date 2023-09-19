@@ -71,7 +71,7 @@ const CallbackPage: React.FC = () => {
       const api_key = await getPreviewApiKey(authResult?.accessToken as string, projectContainerId as string);
       setCookie('currentPreviewApiKey', api_key, { path: '/', sameSite: 'none', secure: true })
 
-      router.replace('/');
+      router.replace(authResult?.appState ?? '/');
     });
   }, [router]);
 

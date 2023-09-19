@@ -36,7 +36,7 @@ const handleExplicitProjectRoute = (currentEnvId: string, routeEnvId: string | u
   }
 
   if (routeEnvId === process.env.NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID) {
-    const res = NextResponse.redirect(new URL(`${remainingUrl ?? ''}?${createQueryString(Object.fromEntries(request.nextUrl.searchParams.entries()))}`, request.nextUrl.origin));
+    const res = NextResponse.redirect(new URL(createUrlWithQueryString(remainingUrl, request.nextUrl.searchParams), request.nextUrl.origin));
     res.cookies.set('currentEnvId', routeEnvId, { path: '/', sameSite: 'none', secure: true });
     res.cookies.set('currentPreviewApiKey', '', { path: '/', sameSite: 'none', secure: true });
 
@@ -44,7 +44,7 @@ const handleExplicitProjectRoute = (currentEnvId: string, routeEnvId: string | u
   }
 
   if (routeEnvId !== currentEnvId || !request.cookies.get('currentPreviewApiKey')) {
-    const res = NextResponse.redirect(new URL('/getPreviewApiKey', request.url))
+    const res = NextResponse.redirect(new URL(`/getPreviewApiKey?path=${encodeURIComponent(createUrlWithQueryString(remainingUrl, request.nextUrl.searchParams.entries()))}`, request.url))
 
     res.cookies.set('currentEnvId', routeEnvId, { path: '/', sameSite: 'none', secure: true });
     res.cookies.set('currentPreviewApiKey', '', { path: '/', sameSite: 'none', secure: true });
@@ -74,6 +74,12 @@ const handleEmptyCookies = (prevResponse: NextResponse, request: NextRequest) =>
     prevResponse.cookies.set('currentEnvId', process.env.NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID ?? '', { path: '/', sameSite: 'none', secure: true })
   }
   return prevResponse;
+}
+
+const createUrlWithQueryString = (url: string | undefined, searchParams: any) => {
+  const entries = Object.fromEntries(searchParams);
+
+  return  Object.entries(entries).length > 0 ? `${url ?? ''}?${createQueryString(entries)}` : url ?? '';
 }
 
 export const config = {
