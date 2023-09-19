@@ -7,7 +7,8 @@ import { AppPage } from "../../components/shared/ui/appPage";
 import { getDefaultMetadata, getItemBySlug, getPagesSlugs, getSiteMenu } from "../../lib/kontentClient";
 import { reservedListingSlugs } from "../../lib/routing";
 import { ValidCollectionCodename } from "../../lib/types/perCollection";
-import { siteCodename } from "../../lib/utils/env";
+import { defaultEnvId, siteCodename } from "../../lib/utils/env";
+import { getEnvIdFromRouteParams } from "../../lib/utils/routeParams";
 import { createElementSmartLink, createFixedAddSmartLink } from "../../lib/utils/smartLinkUtils";
 import { contentTypes, Metadata, Nav_NavigationItem, WSL_Page } from "../../models";
 
@@ -23,18 +24,13 @@ interface IParams extends ParsedUrlQuery {
   envId: string;
 }
 export const getStaticPaths: GetStaticPaths = async () => {
-  const envId = process.env.NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID;
-  if (!envId) {
-    throw new Error("Missing 'NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID' environment variable.");
-  }
-
-  const slugs = await getPagesSlugs({ envId: envId });
+  const slugs = await getPagesSlugs({ envId: defaultEnvId });
 
   const paths = slugs
     .filter(item => item != reservedListingSlugs.articles)
     .filter(item => item != reservedListingSlugs.products)
     .map(slug => (
-      { params: { envId, slug } }
+      { params: { envId: defaultEnvId, slug } }
     ))
   return {
     paths,
@@ -50,10 +46,7 @@ export const getStaticProps: GetStaticProps<Props, IParams> = async (context) =>
       notFound: true
     }
   }
-  const envId = context.params?.envId;
-  if (!envId) {
-    throw new Error("Missing envId in url");
-  }
+  const envId = getEnvIdFromRouteParams(context.params?.envId);
 
   const previewApiKey = context.previewData && typeof context.previewData === 'object' && 'currentPreviewApiKey' in context.previewData
     ? context.previewData.currentPreviewApiKey as string

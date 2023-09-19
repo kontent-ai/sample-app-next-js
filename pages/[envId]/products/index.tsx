@@ -12,7 +12,8 @@ import { getDefaultMetadata, getItemBySlug, getProductsForListing, getSiteMenu }
 import { createQueryString, reservedListingSlugs, resolveUrlPath } from "../../../lib/routing";
 import { ValidCollectionCodename } from "../../../lib/types/perCollection";
 import { changeUrlQueryString } from "../../../lib/utils/changeUrlQueryString";
-import { siteCodename } from "../../../lib/utils/env";
+import { defaultEnvId, siteCodename } from "../../../lib/utils/env";
+import { getEnvIdFromRouteParams } from "../../../lib/utils/routeParams";
 import { contentTypes, Metadata, Nav_NavigationItem, Product, WSL_Page } from "../../../models";
 
 
@@ -202,10 +203,8 @@ export const Products: FC<Props> = props => {
 };
 
 export const getStaticProps: GetStaticProps<Props, { envId: string }> = async context => {
-  const envId = context.params?.envId;
-  if (!envId) {
-    throw new Error("Missing envId in url");
-  }
+  const envId = getEnvIdFromRouteParams(context.params?.envId);
+  
   const previewApiKey = context.previewData && typeof context.previewData === 'object' && 'currentPreviewApiKey' in context.previewData
     ? context.previewData.currentPreviewApiKey as string
     : undefined;
@@ -231,14 +230,9 @@ export const getStaticProps: GetStaticProps<Props, { envId: string }> = async co
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const envId = process.env.NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID;
-  if (!envId) {
-    throw new Error("Missing 'NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID' environment variable.");
-  }
-
   return {
     paths: [{
-      params: { envId: envId }
+      params: { envId: defaultEnvId }
     }],
     fallback: 'blocking',
   }
