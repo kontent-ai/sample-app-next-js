@@ -27,7 +27,6 @@ const getDeliveryClient = ({ envId, previewApiKey }: ClientConfig) => createDeli
     basePreviewUrl: "https://preview-deliver.devkontentmasters.com",
   },
   previewApiKey: defaultEnvId === envId ? process.env.KONTENT_PREVIEW_API_KEY : previewApiKey
-  // previewApiKey: process.env.KONTENT_PREVIEW_API_KEY
 });
 
 type ClientConfig = {
