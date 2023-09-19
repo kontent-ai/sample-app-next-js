@@ -8,7 +8,8 @@ import { AppPage } from '../../components/shared/ui/appPage';
 import { getHomepage, getSiteMenu } from '../../lib/kontentClient';
 import { ValidCollectionCodename } from '../../lib/types/perCollection';
 import { useSmartLink } from '../../lib/useSmartLink';
-import { siteCodename } from '../../lib/utils/env';
+import { defaultEnvId, siteCodename } from '../../lib/utils/env';
+import { getEnvIdFromRouteParams } from '../../lib/utils/routeParams';
 import { Nav_NavigationItem, WSL_WebSpotlightRoot } from '../../models';
 
 
@@ -62,14 +63,11 @@ const Home: NextPage<Props> = props => {
 };
 
 export const getStaticProps: GetStaticProps<Props, { envId: string }> = async context => {
-  const envId = context.params?.envId;
-  if (!envId) {
-    throw new Error("Missing envId in url");
-  }
+  const envId = getEnvIdFromRouteParams(context.params?.envId);
 
   const previewApiKey = context.previewData && typeof context.previewData === 'object' && 'currentPreviewApiKey' in context.previewData
-    ? context.previewData.currentPreviewApiKey as string 
-    : undefined ;
+    ? context.previewData.currentPreviewApiKey as string
+    : undefined;
 
   const homepage = await getHomepage({ envId, previewApiKey }, !!context.preview);
   const siteMenu = await getSiteMenu({ envId, previewApiKey }, !!context.preview);
@@ -83,18 +81,11 @@ export const getStaticProps: GetStaticProps<Props, { envId: string }> = async co
   };
 }
 
-export const getStaticPaths: GetStaticPaths = async () => {
-  const envId = process.env.NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID;
-  if (!envId) {
-    throw new Error("Missing 'NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID' environment variable.");
-  }
-
-  return {
-    paths: [{
-      params: { envId: envId }
-    }],
-    fallback: 'blocking',
-  }
-}
+export const getStaticPaths: GetStaticPaths = async () => ({
+  paths: [{
+    params: { envId: defaultEnvId }
+  }],
+  fallback: 'blocking',
+})
 
 export default Home

@@ -8,7 +8,8 @@ import { AppPage } from "../../../components/shared/ui/appPage";
 import { mainColorBgClass } from "../../../lib/constants/colors";
 import { getDefaultMetadata, getSiteMenu, getSolutionDetail, getSolutionsWithSlugs } from "../../../lib/kontentClient";
 import { ValidCollectionCodename } from "../../../lib/types/perCollection";
-import { siteCodename } from "../../../lib/utils/env";
+import { defaultEnvId, siteCodename } from "../../../lib/utils/env";
+import { getEnvIdFromRouteParams } from "../../../lib/utils/routeParams";
 import { createElementSmartLink } from "../../../lib/utils/smartLinkUtils";
 import { contentTypes, Metadata, Nav_NavigationItem, Solution } from "../../../models";
 
@@ -26,24 +27,17 @@ interface IParams extends ParsedUrlQuery {
   envId: string;
 }
 
-export const getStaticPaths: GetStaticPaths = () => {
-  const envId = process.env.NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID;
-  if (!envId) {
-    throw new Error("Missing 'NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID' environment variable.");
-  }
-
-  return getSolutionsWithSlugs({ envId: envId }).then((solutions) => ({
-    paths: solutions.map(
-      (solution) => ({
-        params: {
-          slug: solution.elements.slug.value,
-          envId
-        }
-      })
-    ),
-    fallback: "blocking",
-  }));
-};
+export const getStaticPaths: GetStaticPaths = () => getSolutionsWithSlugs({ envId: defaultEnvId }).then((solutions) => ({
+  paths: solutions.map(
+    (solution) => ({
+      params: {
+        slug: solution.elements.slug.value,
+        envId: defaultEnvId
+      }
+    })
+  ),
+  fallback: "blocking",
+}));
 
 export const getStaticProps: GetStaticProps<Props, IParams> = async (
   context
@@ -54,11 +48,8 @@ export const getStaticProps: GetStaticProps<Props, IParams> = async (
     return { notFound: true };
   }
 
-  const envId = context.params?.envId;
-  if (!envId) {
-    throw new Error("Missing envId in url");
-  }
-  
+  const envId = getEnvIdFromRouteParams(context.params?.envId);
+
   const previewApiKey = context.previewData && typeof context.previewData === 'object' && 'currentPreviewApiKey' in context.previewData
     ? context.previewData.currentPreviewApiKey as string
     : undefined;

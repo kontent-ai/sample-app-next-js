@@ -14,7 +14,8 @@ import { getArticlesCountByCategory, getArticlesForListing, getDefaultMetadata,g
 import { ResolutionContext,resolveUrlPath } from "../../../../../../lib/routing";
 import { ValidCollectionCodename } from "../../../../../../lib/types/perCollection";
 import { ArticleListingUrlQuery, ArticleTypeWithAll, categoryFilterSource, isArticleType } from "../../../../../../lib/utils/articlesListing";
-import { siteCodename } from "../../../../../../lib/utils/env";
+import { defaultEnvId, siteCodename } from "../../../../../../lib/utils/env";
+import { getEnvIdFromRouteParams } from "../../../../../../lib/utils/routeParams";
 import { Article, contentTypes,Metadata, Nav_NavigationItem, taxonomies, WSL_Page } from "../../../../../../models";
 
 type Props = Readonly<{
@@ -222,19 +223,13 @@ const ArticlesPagingPage: FC<Props> = props => {
 }
 
 export const getStaticPaths = async () => {
-
   const getAllPagesForCategory = async (category: ArticleTypeWithAll) => {
-    const envId = process.env.NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID;
-    if (!envId) {
-      throw new Error("Missing 'NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID' environment variable.");
-    }
-
-    const totalCount = category === 'all' ? await getItemsTotalCount({ envId: envId }, false, contentTypes.article.codename) :
-      await getArticlesCountByCategory({ envId: envId }, false, category);
+    const totalCount = category === 'all' ? await getItemsTotalCount({ envId: defaultEnvId }, false, contentTypes.article.codename) :
+      await getArticlesCountByCategory({ envId: defaultEnvId }, false, category);
     const pagesNumber = Math.ceil((totalCount ?? 0) / ArticlePageSize);
     const pages = Array.from({ length: pagesNumber }).map((_, index) => index + 1);
     return pages.map(pageNumber => ({
-      params: { page: pageNumber.toString(), category, envId },
+      params: { page: pageNumber.toString(), category, envId: defaultEnvId },
     }));
   };
 
@@ -248,6 +243,8 @@ export const getStaticPaths = async () => {
 };
 
 export const getStaticProps: GetStaticProps<Props, ArticleListingUrlQuery> = async context => {
+  const envId = getEnvIdFromRouteParams(context.params?.envId);
+  
   const pageURLParameter = context.params?.page;
   const selectedCategory = context.params?.category;
   if (!isArticleType(selectedCategory)) {
@@ -256,10 +253,6 @@ export const getStaticProps: GetStaticProps<Props, ArticleListingUrlQuery> = asy
     };
   }
 
-  const envId = context.params?.envId;
-  if (!envId) {
-    throw new Error("Missing envId in url");
-  }
   const previewApiKey = context.previewData && typeof context.previewData === 'object' && 'currentPreviewApiKey' in context.previewData
     ? context.previewData.currentPreviewApiKey as string
     : undefined;

@@ -7,7 +7,8 @@ import { AppPage } from "../../../components/shared/ui/appPage";
 import { mainColorButtonClass, mainColorHoverClass, mainColorTextClass } from "../../../lib/constants/colors";
 import { getDefaultMetadata, getProductDetail, getProductItemsWithSlugs, getSiteMenu } from "../../../lib/kontentClient";
 import { ValidCollectionCodename } from "../../../lib/types/perCollection";
-import { siteCodename } from "../../../lib/utils/env";
+import { defaultEnvId, siteCodename } from "../../../lib/utils/env";
+import { getEnvIdFromRouteParams } from "../../../lib/utils/routeParams";
 import { createElementSmartLink } from "../../../lib/utils/smartLinkUtils";
 import { contentTypes, Metadata, Nav_NavigationItem, Product } from "../../../models";
 
@@ -25,23 +26,17 @@ interface IParams extends ParsedUrlQuery {
   envId: string
 }
 
-export const getStaticPaths: GetStaticPaths = () => {
-  const envId = process.env.NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID;
-  if (!envId) {
-    throw new Error("Missing 'NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID' environment variable.");
-  }
-
-  return getProductItemsWithSlugs({ envId: envId })
+export const getStaticPaths: GetStaticPaths = () =>
+  getProductItemsWithSlugs({ envId: defaultEnvId })
     .then(products => ({
       paths: products.map(product => ({
         params: {
           slug: product.elements.slug.value,
-          envId
+          envId: defaultEnvId
         }
       })),
       fallback: 'blocking'
     }));
-}
 
 export const getStaticProps: GetStaticProps<Props, IParams> = async (context) => {
   const slug = context.params?.slug;
@@ -50,10 +45,7 @@ export const getStaticProps: GetStaticProps<Props, IParams> = async (context) =>
     return { notFound: true };
   }
 
-  const envId = context.params?.envId;
-  if (!envId) {
-    throw new Error("Missing envId in url");
-  }
+  const envId = getEnvIdFromRouteParams(context.params?.envId);
 
   const previewApiKey = context.previewData && typeof context.previewData === 'object' && 'currentPreviewApiKey' in context.previewData
     ? context.previewData.currentPreviewApiKey as string

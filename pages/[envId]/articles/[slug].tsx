@@ -9,7 +9,7 @@ import { mainColorBgClass } from "../../../lib/constants/colors";
 import { getAllArticles,getArticleBySlug, getDefaultMetadata, getSiteMenu } from "../../../lib/kontentClient";
 import { ValidCollectionCodename } from "../../../lib/types/perCollection";
 import { formatDate } from "../../../lib/utils/dateTime";
-import { siteCodename } from "../../../lib/utils/env";
+import { defaultEnvId, siteCodename } from "../../../lib/utils/env";
 import { Article, Metadata,Nav_NavigationItem } from "../../../models";
 
 
@@ -101,19 +101,13 @@ export const getStaticProps: GetStaticProps<Props, { slug: string, envId: string
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const envId = process.env.NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID;
-
-  if (!envId) {
-    throw new Error("Missing 'NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID' environment variable.");
-  }
-
-  const articles = await getAllArticles({envId: envId}, false);
+  const articles = await getAllArticles({envId: defaultEnvId}, false);
 
   return {
     paths: articles.items.map(a => ({
       params: {
         slug: a.elements.slug.value,
-        envId
+        envId: defaultEnvId
       }
     })),
     fallback: "blocking",
