@@ -11,8 +11,13 @@ const CallbackPage: React.FC = () => {
   useEffect(() => {
     const envId = getCookie('currentEnvId', { path: '/', sameSite: 'none' });
 
+    const domain = process.env.NEXT_PUBLIC_KONTENT_DOMAIN;
+    if(!domain) {
+      console.log("Enviroment variable KONTENT_DOMAIN is empty");
+    }
+
     const getProjectContainerId = async (authToken: string) => {
-      const response = await fetch(`https://app.devkontentmasters.com/api/project-management/${envId}`,
+      const response = await fetch(`${domain}/api/project-management/${envId}`,
         {
           method: "GET",
           headers: {
@@ -31,7 +36,7 @@ const CallbackPage: React.FC = () => {
         environments: [envId]
       }
 
-      const tokenSeedUrl = `https://app.devkontentmasters.com/api/project-container/${projectContainerId}/keys/listing`;
+      const tokenSeedUrl = `${domain}/api/project-container/${projectContainerId}/keys/listing`;
       const tokenSeedResponse = await fetch(tokenSeedUrl, {
         method: "POST",
         headers: {
@@ -49,7 +54,7 @@ const CallbackPage: React.FC = () => {
     const getPreviewApiKey = async (authToken: string, projectContainerId: string) => {
       const tokenSeedId = await getTokenSeedId(authToken, projectContainerId);
 
-      const apiKeyUrl = `https://app.devkontentmasters.com/api/project-container/${projectContainerId}/keys/${tokenSeedId}`;
+      const apiKeyUrl = `${domain}/api/project-container/${projectContainerId}/keys/${tokenSeedId}`;
       const apiKeyResponse = await fetch(apiKeyUrl, {
         method: "GET",
         headers: {
