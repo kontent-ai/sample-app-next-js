@@ -7,13 +7,19 @@ import { webAuth } from "../../lib/constants/auth";
 const GetPreviewApiKey: FC = () => {
   const router = useRouter();
   const { path } = router.query;
+
   useEffect(() => {
    fetch('/api/exit-preview').then(() => {
-    webAuth.authorize({ redirectUri: `http://localhost:3000/callback`, appState: path });
+    const redirectUri = process.env.NEXT_PUBLIC_AUTH0_WEBAUTH_REDIRECT_URI;
+    if(!redirectUri){
+      console.error("Enviroment variable AUTH0_WEBAUTH_REDIRECT_URI is missing");
+      return;
+    }
+    webAuth.authorize({ redirectUri: redirectUri, appState: path });
    });
     
   }, [router, path])
-  
+
   return null;
 }
 
