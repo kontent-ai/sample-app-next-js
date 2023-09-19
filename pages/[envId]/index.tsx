@@ -71,8 +71,8 @@ export const getStaticProps: GetStaticProps<Props, { envId: string }> = async co
     ? context.previewData.currentPreviewApiKey as string 
     : undefined ;
 
-  const homepage = await getHomepage({ envId: envId, previewApiKey: previewApiKey }, !!context.preview);
-  const siteMenu = await getSiteMenu({ envId: envId, previewApiKey: previewApiKey }, !!context.preview);
+  const homepage = await getHomepage({ envId, previewApiKey }, !!context.preview);
+  const siteMenu = await getSiteMenu({ envId, previewApiKey }, !!context.preview);
 
   if (!homepage) {
     throw new Error("Can't find homepage item.");

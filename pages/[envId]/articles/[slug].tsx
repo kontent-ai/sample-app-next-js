@@ -76,7 +76,7 @@ export const getStaticProps: GetStaticProps<Props, { slug: string, envId: string
     ? context.previewData.currentPreviewApiKey as string
     : undefined;
 
-  const siteMenu = await getSiteMenu({envId: envId, previewApiKey: previewApiKey}, !!context.preview);
+  const siteMenu = await getSiteMenu({envId, previewApiKey}, !!context.preview);
   const slug = typeof context.params?.slug === "string" ? context.params.slug : "";
 
   if (!slug) {
