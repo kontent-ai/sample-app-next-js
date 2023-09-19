@@ -15,7 +15,7 @@ import { ResolutionContext,resolveUrlPath } from "../../../../../../lib/routing"
 import { ValidCollectionCodename } from "../../../../../../lib/types/perCollection";
 import { ArticleListingUrlQuery, ArticleTypeWithAll, categoryFilterSource, isArticleType } from "../../../../../../lib/utils/articlesListing";
 import { defaultEnvId, siteCodename } from "../../../../../../lib/utils/env";
-import { getEnvIdFromRouteParams } from "../../../../../../lib/utils/routeParams";
+import { getEnvIdFromRouteParams, getPreviewApiKeyFromPreviewData } from "../../../../../../lib/utils/pageUtils";
 import { Article, contentTypes,Metadata, Nav_NavigationItem, taxonomies, WSL_Page } from "../../../../../../models";
 
 type Props = Readonly<{
@@ -253,9 +253,7 @@ export const getStaticProps: GetStaticProps<Props, ArticleListingUrlQuery> = asy
     };
   }
 
-  const previewApiKey = context.previewData && typeof context.previewData === 'object' && 'currentPreviewApiKey' in context.previewData
-    ? context.previewData.currentPreviewApiKey as string
-    : undefined;
+  const previewApiKey = getPreviewApiKeyFromPreviewData(context.previewData);
 
   const pageNumber = !pageURLParameter || isNaN(+pageURLParameter) ? 1 : +pageURLParameter;
   const articles = await getArticlesForListing({ envId, previewApiKey }, !!context.preview, pageNumber, selectedCategory);

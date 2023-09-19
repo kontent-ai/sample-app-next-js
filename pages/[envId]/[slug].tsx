@@ -8,7 +8,7 @@ import { getDefaultMetadata, getItemBySlug, getPagesSlugs, getSiteMenu } from ".
 import { reservedListingSlugs } from "../../lib/routing";
 import { ValidCollectionCodename } from "../../lib/types/perCollection";
 import { defaultEnvId, siteCodename } from "../../lib/utils/env";
-import { getEnvIdFromRouteParams } from "../../lib/utils/routeParams";
+import { getEnvIdFromRouteParams, getPreviewApiKeyFromPreviewData } from "../../lib/utils/pageUtils";
 import { createElementSmartLink, createFixedAddSmartLink } from "../../lib/utils/smartLinkUtils";
 import { contentTypes, Metadata, Nav_NavigationItem, WSL_Page } from "../../models";
 
@@ -48,9 +48,7 @@ export const getStaticProps: GetStaticProps<Props, IParams> = async (context) =>
   }
   const envId = getEnvIdFromRouteParams(context.params?.envId);
 
-  const previewApiKey = context.previewData && typeof context.previewData === 'object' && 'currentPreviewApiKey' in context.previewData
-    ? context.previewData.currentPreviewApiKey as string
-    : undefined;
+  const previewApiKey = getPreviewApiKeyFromPreviewData(context.previewData);
 
   const siteMenu = await getSiteMenu({ envId, previewApiKey }, !!context.preview);
   const defaultMetadata = await getDefaultMetadata({ envId, previewApiKey }, !!context.preview);

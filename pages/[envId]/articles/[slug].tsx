@@ -10,6 +10,7 @@ import { getAllArticles,getArticleBySlug, getDefaultMetadata, getSiteMenu } from
 import { ValidCollectionCodename } from "../../../lib/types/perCollection";
 import { formatDate } from "../../../lib/utils/dateTime";
 import { defaultEnvId, siteCodename } from "../../../lib/utils/env";
+import { getPreviewApiKeyFromPreviewData } from "../../../lib/utils/pageUtils";
 import { Article, Metadata,Nav_NavigationItem } from "../../../models";
 
 
@@ -72,9 +73,8 @@ export const getStaticProps: GetStaticProps<Props, { slug: string, envId: string
   if (!envId) {
     throw new Error("Missing envId in url");
   }
-  const previewApiKey = context.previewData && typeof context.previewData === 'object' && 'currentPreviewApiKey' in context.previewData
-    ? context.previewData.currentPreviewApiKey as string
-    : undefined;
+  
+  const previewApiKey = getPreviewApiKeyFromPreviewData(context.previewData);
 
   const siteMenu = await getSiteMenu({envId, previewApiKey}, !!context.preview);
   const slug = typeof context.params?.slug === "string" ? context.params.slug : "";
