@@ -13,7 +13,7 @@ import { createQueryString, reservedListingSlugs, resolveUrlPath } from "../../.
 import { ValidCollectionCodename } from "../../../lib/types/perCollection";
 import { changeUrlQueryString } from "../../../lib/utils/changeUrlQueryString";
 import { defaultEnvId, siteCodename } from "../../../lib/utils/env";
-import { getEnvIdFromRouteParams } from "../../../lib/utils/routeParams";
+import { getEnvIdFromRouteParams, getPreviewApiKeyFromPreviewData } from "../../../lib/utils/pageUtils";
 import { contentTypes, Metadata, Nav_NavigationItem, Product, WSL_Page } from "../../../models";
 
 
@@ -205,11 +205,8 @@ export const Products: FC<Props> = props => {
 export const getStaticProps: GetStaticProps<Props, { envId: string }> = async context => {
   const envId = getEnvIdFromRouteParams(context.params?.envId);
   
-  const previewApiKey = context.previewData && typeof context.previewData === 'object' && 'currentPreviewApiKey' in context.previewData
-    ? context.previewData.currentPreviewApiKey as string
-    : undefined;
+  const previewApiKey = getPreviewApiKeyFromPreviewData(context.previewData);
     
-
   // We might want to bound listing pages to something else than URL slug
   const page = await getItemBySlug<WSL_Page>({ envId: envId, previewApiKey: previewApiKey }, reservedListingSlugs.products, contentTypes.page.codename, !!context.preview);
 
