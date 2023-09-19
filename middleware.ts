@@ -5,57 +5,75 @@ import { createQueryString } from './lib/routing';
 const envIdRegex = /(?<envId>[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12})(?<remainingUrl>.*)/
 
 export const middleware = (request: NextRequest) => {
-  let currentEnvId = request.cookies.get('currentEnvId')?.value;
-
-  if (!currentEnvId) {
-    currentEnvId = process.env.NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID;
-  }
+  const currentEnvId = request.cookies.get('currentEnvId')?.value 
+    ? request.cookies.get('currentEnvId')?.value
+    : process.env.NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID
 
   if (!currentEnvId) {
     throw new Error("Missing 'NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID' environment variable.");
   }
 
-
   const regexResult = request.nextUrl.pathname.match(envIdRegex);
   const routeEnvId = regexResult?.groups?.envId
   const remainingUrl = regexResult?.groups?.remainingUrl;
 
-  if (routeEnvId) {
-    if(routeEnvId === process.env.NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID) {
-      const res = NextResponse.redirect(new URL(`${remainingUrl ?? ''}?${createQueryString(Object.fromEntries(request.nextUrl.searchParams.entries()))}`, request.nextUrl.origin));
-      res.cookies.set('currentEnvId', routeEnvId, {path: '/', sameSite: 'none', secure: true});
-      res.cookies.set('currentPreviewApiKey', '', {path: '/', sameSite: 'none', secure: true});
+  // the order of functions is important
+  const handlers = [
+    handleArticlesRoute(currentEnvId),
+    handleArticlesCategoryRoute,
+    handleArticlesCategoryWithNoPaginationRoute(currentEnvId),
+    handleExplicitProjectRoute(currentEnvId, routeEnvId, remainingUrl),
+    handleEmptyCookies
+  ];
 
-      return res
-    }
+  return handlers.reduce((prevResponse, handler) => handler(prevResponse, request),
+    NextResponse.rewrite(new URL(`/${currentEnvId}${request.nextUrl.pathname ? `${request.nextUrl.pathname}` : ''}`, request.url)))
+};
 
-    if (routeEnvId !== currentEnvId || !request.cookies.get('currentPreviewApiKey')) {
-      const res = NextResponse.redirect(new URL('/getPreviewApiKey', request.url))
-  
-      res.cookies.set('currentEnvId', routeEnvId, {path: '/', sameSite: 'none', secure: true});
-      res.cookies.set('currentPreviewApiKey', '', {path: '/', sameSite: 'none', secure: true});
-
-      return res;
-    } else {
-      return NextResponse.redirect(new URL(`${remainingUrl ?? ''}?${createQueryString(Object.fromEntries(request.nextUrl.searchParams.entries()))}`, request.nextUrl.origin));
-    }
+const handleExplicitProjectRoute = (currentEnvId: string, routeEnvId: string | undefined, remainingUrl: string | undefined) => (prevResponse: NextResponse, request: NextRequest) => {
+  if (!routeEnvId) {
+    return prevResponse;
   }
 
-  if (request.nextUrl.pathname === '/articles') {
-    return NextResponse.rewrite(new URL(`/${currentEnvId}/articles/category/all/page/1`, request.url));
+  if (routeEnvId === process.env.NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID) {
+    const res = NextResponse.redirect(new URL(`${remainingUrl ?? ''}?${createQueryString(Object.fromEntries(request.nextUrl.searchParams.entries()))}`, request.nextUrl.origin));
+    res.cookies.set('currentEnvId', routeEnvId, { path: '/', sameSite: 'none', secure: true });
+    res.cookies.set('currentPreviewApiKey', '', { path: '/', sameSite: 'none', secure: true });
+
+    return res
   }
 
+  if (routeEnvId !== currentEnvId || !request.cookies.get('currentPreviewApiKey')) {
+    const res = NextResponse.redirect(new URL('/getPreviewApiKey', request.url))
+
+    res.cookies.set('currentEnvId', routeEnvId, { path: '/', sameSite: 'none', secure: true });
+    res.cookies.set('currentPreviewApiKey', '', { path: '/', sameSite: 'none', secure: true });
+
+    return res;
+  }
+
+  return NextResponse.redirect(new URL(`${remainingUrl ?? ''}?${createQueryString(Object.fromEntries(request.nextUrl.searchParams.entries()))}`, request.nextUrl.origin));
+}
+
+const handleArticlesRoute = (currentEnvId: string) => (prevResponse: NextResponse, request: NextRequest,) => request.nextUrl.pathname === '/articles'
+  ? NextResponse.rewrite(new URL(`/${currentEnvId}/articles/category/all/page/1`, request.url))
+  : prevResponse;
+
+const handleArticlesCategoryRoute = (prevReponse: NextResponse, request: NextRequest) => request.nextUrl.pathname === '/articles/category/all'
   // Redirect to the /articles when manually type the /articles/category/all URL
-  if (request.nextUrl.pathname === '/articles/category/all') {
-    return NextResponse.redirect(new URL('/articles', request.url));
-  }
+  ? NextResponse.redirect(new URL('/articles', request.url))
+  : prevReponse;
 
+const handleArticlesCategoryWithNoPaginationRoute = (currentEnvId: string) => (prevResponse: NextResponse, request: NextRequest) => /^\/articles\/category\/[^/]+$/.test(request.nextUrl.pathname)
   // If there is no pagination, but category provided - add the first page ti URL path
-  if (/^\/articles\/category\/[^/]+$/.test(request.nextUrl.pathname)) {
-    return NextResponse.rewrite(new URL(request.url + "/page/1", request.url));
-  }
+  ? NextResponse.rewrite(new URL(`/${currentEnvId}${request.nextUrl.pathname}/page/1`, request.url))
+  : prevResponse
 
-  return NextResponse.rewrite(new URL(`/${currentEnvId}${request.nextUrl.pathname ? `${request.nextUrl.pathname}` : ''}`, request.url))
+const handleEmptyCookies = (prevResponse: NextResponse, request: NextRequest) => {
+  if (!request.cookies.get('currentEnvId')?.value) {
+    prevResponse.cookies.set('currentEnvId', process.env.NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID ?? '', { path: '/', sameSite: 'none', secure: true })
+  }
+  return prevResponse;
 }
 
 export const config = {
