@@ -1,6 +1,5 @@
 import { KontentSmartLinkEvent } from '@kontent-ai/smart-link';
 import { IRefreshMessageData, IRefreshMessageMetadata } from '@kontent-ai/smart-link/types/lib/IFrameCommunicatorTypes';
-import { getCookie, setCookie } from 'cookies-next';
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import { useEffect, useState } from 'react';
 
@@ -41,12 +40,6 @@ const Home: NextPage<Props> = props => {
       }
     });
   }, [sdk, props.isPreview]);
-
-  useEffect(() => {
-    if(!getCookie('currentEnvId', {path: "/", sameSite: "none", secure: true})){
-      setCookie('currentEnvId', process.env.NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID, {path: '/', sameSite:"none", secure: true});
-    }
-  }, []);
 
   return (
     <AppPage
