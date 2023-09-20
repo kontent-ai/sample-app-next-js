@@ -1,3 +1,4 @@
+import { getCookie } from "cookies-next";
 import { PreviewData } from "next";
 
 export const getEnvIdFromRouteParams = (envId: string | undefined) => {
@@ -12,3 +13,5 @@ export const getPreviewApiKeyFromPreviewData = (previewData: PreviewData | undef
   previewData && typeof previewData === 'object' && 'currentPreviewApiKey' in previewData
     ? previewData.currentPreviewApiKey as string
     : undefined;
+
+export const getEnvIdFromCookie = () => getCookie('currentEnvId', { path: '/', sameSite: 'none' });
