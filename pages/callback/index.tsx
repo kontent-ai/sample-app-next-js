@@ -5,6 +5,7 @@ import { useEffect } from "react";
 
 import { webAuth } from "../../lib/constants/auth";
 import { envIdCookieName, previewApiKeyCookieName } from "../../lib/constants/cookies";
+import { internalApiDomain } from "../../lib/utils/env";
 
 const CallbackPage: React.FC = () => {
   const router = useRouter();
@@ -12,13 +13,12 @@ const CallbackPage: React.FC = () => {
   useEffect(() => {
     const envId = getCookie(envIdCookieName, { path: '/', sameSite: 'none' });
 
-    const domain = process.env.NEXT_PUBLIC_KONTENT_DOMAIN;
-    if (!domain) {
+    if (!internalApiDomain) {
       console.log("Enviroment variable KONTENT_DOMAIN is empty");
     }
 
     const getProjectContainerId = async (authToken: string) => {
-      const response = await fetch(`${domain}/api/project-management/${envId}`,
+      const response = await fetch(`${internalApiDomain}/api/project-management/${envId}`,
         {
           method: "GET",
           headers: {
@@ -37,7 +37,7 @@ const CallbackPage: React.FC = () => {
         environments: [envId]
       }
 
-      const tokenSeedUrl = `${domain}/api/project-container/${projectContainerId}/keys/listing`;
+      const tokenSeedUrl = `${internalApiDomain}/api/project-container/${projectContainerId}/keys/listing`;
       const tokenSeedResponse = await fetch(tokenSeedUrl, {
         method: "POST",
         headers: {
@@ -55,7 +55,7 @@ const CallbackPage: React.FC = () => {
     const getPreviewApiKey = async (authToken: string, projectContainerId: string) => {
       const tokenSeedId = await getTokenSeedId(authToken, projectContainerId);
 
-      const apiKeyUrl = `${domain}/api/project-container/${projectContainerId}/keys/${tokenSeedId}`;
+      const apiKeyUrl = `${internalApiDomain}/api/project-container/${projectContainerId}/keys/${tokenSeedId}`;
       const apiKeyResponse = await fetch(apiKeyUrl, {
         method: "GET",
         headers: {

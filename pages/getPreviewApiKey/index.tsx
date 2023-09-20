@@ -9,15 +9,10 @@ const GetPreviewApiKey: FC = () => {
   const { path } = router.query;
 
   useEffect(() => {
-   fetch('/api/exit-preview').then(() => {
-    const redirectUri = process.env.NEXT_PUBLIC_AUTH0_WEBAUTH_REDIRECT_URI;
-    if(!redirectUri){
-      console.error("Enviroment variable AUTH0_WEBAUTH_REDIRECT_URI is missing");
-      return;
-    }
-    webAuth.authorize({ redirectUri: redirectUri, appState: path });
-   });
-    
+    fetch('/api/exit-preview').then(() => {
+      webAuth.authorize({ redirectUri: `${window.origin}/callback`, appState: path });
+    });
+
   }, [router, path])
 
   return null;

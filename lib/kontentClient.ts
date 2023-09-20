@@ -3,15 +3,10 @@ import { camelCasePropertyNameResolver, createDeliveryClient, DeliveryError, ICo
 import { Article, contentTypes, contentTypeSnippets, Metadata, Product, Solution, WSL_Page, WSL_WebSpotlightRoot } from '../models';
 import { ArticlePageSize, ProductsPageSize } from './constants/paging';
 import { ArticleTypeWithAll } from './utils/articlesListing';
-import { siteCodename } from './utils/env';
+import { defaultEnvId, deliveryApiDomain, deliveryPreviewApiDomain, siteCodename } from './utils/env';
 
 const sourceTrackingHeaderName = 'X-KC-SOURCE';
 const defaultDepth = 10;
-
-const defaultEnvId = process.env.NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID;
-if (!defaultEnvId) {
-  throw new Error("Missing 'NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID' environment variable.");
-}
 
 const getDeliveryClient = ({ envId, previewApiKey }: ClientConfig) => createDeliveryClient({
   environmentId: envId,
@@ -23,8 +18,8 @@ const getDeliveryClient = ({ envId, previewApiKey }: ClientConfig) => createDeli
   ],
   propertyNameResolver: camelCasePropertyNameResolver,
   proxy: {
-    baseUrl: "https://deliver.devkontentmasters.com",
-    basePreviewUrl: "https://preview-deliver.devkontentmasters.com",
+    baseUrl: deliveryApiDomain,
+    basePreviewUrl: deliveryPreviewApiDomain,
   },
   previewApiKey: defaultEnvId === envId ? process.env.KONTENT_PREVIEW_API_KEY : previewApiKey
 });

@@ -31,7 +31,7 @@ const handleExplicitProjectRoute = (currentEnvId: string) => (prevResponse: Next
     return prevResponse;
   }
 
-  if (routeEnvId === process.env.NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID) {
+  if (routeEnvId === defaultEnvId) {
     const res = NextResponse.redirect(new URL(createUrlWithQueryString(remainingUrl, request.nextUrl.searchParams), request.nextUrl.origin));
     res.cookies.set(envIdCookieName, routeEnvId, { path: '/', sameSite: 'none', secure: true });
     res.cookies.set(previewApiKeyCookieName, '', { path: '/', sameSite: 'none', secure: true });
@@ -67,7 +67,7 @@ const handleArticlesCategoryWithNoPaginationRoute = (currentEnvId: string) => (p
 
 const handleEmptyCookies = (prevResponse: NextResponse, request: NextRequest) => {
   if (!request.cookies.get(envIdCookieName)?.value) {
-    prevResponse.cookies.set(envIdCookieName, process.env.NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID ?? '', { path: '/', sameSite: 'none', secure: true })
+    prevResponse.cookies.set(envIdCookieName, defaultEnvId, { path: '/', sameSite: 'none', secure: true })
   }
   return prevResponse;
 }
