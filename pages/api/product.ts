@@ -1,5 +1,6 @@
 import { NextApiHandler } from "next";
 
+import { envIdCookieName, previewApiKeyCookieName } from "../../lib/constants/cookies";
 import { getItemByCodename } from "../../lib/kontentClient";
 import { Product } from "../../models";
 
@@ -14,7 +15,9 @@ const handler: NextApiHandler = async (req, res) => {
     return res.status(400).json({ error: "Please provide 'preview' query parameter with value 'true' or 'false'." });
   }
 
-  const { currentEnvId, currentPreviewApiKey } = req.cookies;
+  const currentEnvId = req.cookies[envIdCookieName];
+  const currentPreviewApiKey = req.cookies[previewApiKeyCookieName];
+
   if (!currentEnvId) {
     return res.status(400).json({ error: "Missing envId cookie" });
   }

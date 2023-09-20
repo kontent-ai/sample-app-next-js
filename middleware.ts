@@ -1,28 +1,20 @@
 import { NextRequest, NextResponse } from 'next/server'
 
+import { envIdCookieName, previewApiKeyCookieName } from './lib/constants/cookies';
 import { createQueryString } from './lib/routing';
+import { defaultEnvId } from './lib/utils/env';
 
-const envIdRegex = /(?<envId>[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12})(?<remainingUrl>.*)/
+const envIdRegex = /(?<envId>[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12})(?<remainingUrl>.*)/;
 
 export const middleware = (request: NextRequest) => {
-  const currentEnvId = request.cookies.get('currentEnvId')?.value 
-    ? request.cookies.get('currentEnvId')?.value
-    : process.env.NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID
-
-  if (!currentEnvId) {
-    throw new Error("Missing 'NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID' environment variable.");
-  }
-
-  const regexResult = request.nextUrl.pathname.match(envIdRegex);
-  const routeEnvId = regexResult?.groups?.envId
-  const remainingUrl = regexResult?.groups?.remainingUrl;
+  const currentEnvId = request.cookies.get(envIdCookieName)?.value ?? defaultEnvId;
 
   // the order of functions is important
   const handlers = [
     handleArticlesRoute(currentEnvId),
     handleArticlesCategoryRoute,
     handleArticlesCategoryWithNoPaginationRoute(currentEnvId),
-    handleExplicitProjectRoute(currentEnvId, routeEnvId, remainingUrl),
+    handleExplicitProjectRoute(currentEnvId),
     handleEmptyCookies
   ];
 
@@ -30,24 +22,28 @@ export const middleware = (request: NextRequest) => {
     NextResponse.rewrite(new URL(`/${currentEnvId}${request.nextUrl.pathname ? `${request.nextUrl.pathname}` : ''}`, request.url)))
 };
 
-const handleExplicitProjectRoute = (currentEnvId: string, routeEnvId: string | undefined, remainingUrl: string | undefined) => (prevResponse: NextResponse, request: NextRequest) => {
+const handleExplicitProjectRoute = (currentEnvId: string) => (prevResponse: NextResponse, request: NextRequest) => {
+  const regexResult = request.nextUrl.pathname.match(envIdRegex);
+  const routeEnvId = regexResult?.groups?.envId
+  const remainingUrl = regexResult?.groups?.remainingUrl;
+
   if (!routeEnvId) {
     return prevResponse;
   }
 
   if (routeEnvId === process.env.NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID) {
     const res = NextResponse.redirect(new URL(createUrlWithQueryString(remainingUrl, request.nextUrl.searchParams), request.nextUrl.origin));
-    res.cookies.set('currentEnvId', routeEnvId, { path: '/', sameSite: 'none', secure: true });
-    res.cookies.set('currentPreviewApiKey', '', { path: '/', sameSite: 'none', secure: true });
+    res.cookies.set(envIdCookieName, routeEnvId, { path: '/', sameSite: 'none', secure: true });
+    res.cookies.set(previewApiKeyCookieName, '', { path: '/', sameSite: 'none', secure: true });
 
     return res
   }
 
-  if (routeEnvId !== currentEnvId || !request.cookies.get('currentPreviewApiKey')) {
+  if (routeEnvId !== currentEnvId || !request.cookies.get(previewApiKeyCookieName)) {
     const res = NextResponse.redirect(new URL(`/getPreviewApiKey?path=${encodeURIComponent(createUrlWithQueryString(remainingUrl, request.nextUrl.searchParams.entries()))}`, request.url))
 
-    res.cookies.set('currentEnvId', routeEnvId, { path: '/', sameSite: 'none', secure: true });
-    res.cookies.set('currentPreviewApiKey', '', { path: '/', sameSite: 'none', secure: true });
+    res.cookies.set(envIdCookieName, routeEnvId, { path: '/', sameSite: 'none', secure: true });
+    res.cookies.set(previewApiKeyCookieName, '', { path: '/', sameSite: 'none', secure: true });
 
     return res;
   }
@@ -70,8 +66,8 @@ const handleArticlesCategoryWithNoPaginationRoute = (currentEnvId: string) => (p
   : prevResponse
 
 const handleEmptyCookies = (prevResponse: NextResponse, request: NextRequest) => {
-  if (!request.cookies.get('currentEnvId')?.value) {
-    prevResponse.cookies.set('currentEnvId', process.env.NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID ?? '', { path: '/', sameSite: 'none', secure: true })
+  if (!request.cookies.get(envIdCookieName)?.value) {
+    prevResponse.cookies.set(envIdCookieName, process.env.NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID ?? '', { path: '/', sameSite: 'none', secure: true })
   }
   return prevResponse;
 }
@@ -79,7 +75,7 @@ const handleEmptyCookies = (prevResponse: NextResponse, request: NextRequest) =>
 const createUrlWithQueryString = (url: string | undefined, searchParams: any) => {
   const entries = Object.fromEntries(searchParams);
 
-  return  Object.entries(entries).length > 0 ? `${url ?? ''}?${createQueryString(entries)}` : url ?? '';
+  return Object.entries(entries).length > 0 ? `${url ?? ''}?${createQueryString(entries)}` : url ?? '';
 }
 
 export const config = {

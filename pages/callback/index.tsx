@@ -4,15 +4,16 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 
 import { webAuth } from "../../lib/constants/auth";
+import { envIdCookieName, previewApiKeyCookieName } from "../../lib/constants/cookies";
 
 const CallbackPage: React.FC = () => {
   const router = useRouter();
 
   useEffect(() => {
-    const envId = getCookie('currentEnvId', { path: '/', sameSite: 'none' });
+    const envId = getCookie(envIdCookieName, { path: '/', sameSite: 'none' });
 
     const domain = process.env.NEXT_PUBLIC_KONTENT_DOMAIN;
-    if(!domain) {
+    if (!domain) {
       console.log("Enviroment variable KONTENT_DOMAIN is empty");
     }
 
@@ -74,7 +75,7 @@ const CallbackPage: React.FC = () => {
       const projectContainerId = await getProjectContainerId(authResult?.accessToken as string);
 
       const api_key = await getPreviewApiKey(authResult?.accessToken as string, projectContainerId as string);
-      setCookie('currentPreviewApiKey', api_key, { path: '/', sameSite: 'none', secure: true })
+      setCookie(previewApiKeyCookieName, api_key, { path: '/', sameSite: 'none', secure: true })
 
       router.replace(authResult?.appState ?? '/');
     });
