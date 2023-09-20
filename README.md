@@ -62,12 +62,18 @@ yarn create next-app --example https://github.com/kontent-ai-bot/kontent-ai-new-
     ```
 
 🎉 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+> If you want to use your app inside [web spotlight](https://kontent.ai/features/webspotlight/), you will need to run the project under the `https` scheme.
+> To do that you can use a proxy like [Ngrok](https://ngrok.com/) or [write you own server](https://github.com/vercel/next.js/tree/canary/examples/custom-server).
 
 You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
 
-> By default, the content is loaded from a shared Kontent.ai project. If you want to use your own clone of the project so that you can customize it and experiment with Kontent, continue to the next section.
+> By default, the content is loaded from a shared Kontent.ai project.
+> If you want to use your own clone of the project so that you can customize it and experiment with Kontent, change the relevant settings in your `.env.local` file.
 
 To generate new models from Kontent.ai data, just run `npm run generateModels`. Make sure you have environment variables filled in properly.
+
+> The app contains code to dynamically handle different Kontent.ai projects (e.g. the environment route prefix). 
+> You don't need it when using single project and can ignore this as you won't need this for most of your applications.
 
 ## Create your own data source project in Kontent.ai
 
