@@ -57,6 +57,8 @@ const map = (mapper: (char: string, index: number) => string, str: string) =>
 const {
   KONTENT_MANAGEMENT_API_KEY,
   NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID,
+  NEXT_PUBLIC_KONTENT_DOMAIN,
+  NEXT_PUBLIC_KONTENT_MAPI_DOMAIN,
 } = process.env;
 
 if (!KONTENT_MANAGEMENT_API_KEY) {
@@ -64,6 +66,9 @@ if (!KONTENT_MANAGEMENT_API_KEY) {
 }
 if (!NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID) {
   throw new Error(createMissingVarErrorMsg("environment id"));
+}
+if (!NEXT_PUBLIC_KONTENT_DOMAIN && !NEXT_PUBLIC_KONTENT_MAPI_DOMAIN) {
+  throw new Error(createMissingVarErrorMsg("management api domain"))
 }
 
 console.log("Deleting 'models' directory.");
@@ -79,7 +84,7 @@ await generateModelsAsync({
   outputDir: "models",
   isEnterpriseSubscription: false,
   addTimestamp: false,
-  managementApiUrl: "https://manage.devkontentmasters.com/v2",
+  managementApiUrl: `${NEXT_PUBLIC_KONTENT_DOMAIN ? `https://manage.${NEXT_PUBLIC_KONTENT_DOMAIN}` : NEXT_PUBLIC_KONTENT_MAPI_DOMAIN}/v2`,
   addEnvironmentInfo: false,
   elementResolver: (_, elementCodename) => resolveName(elementCodename, "camelCase"),
   contentTypeResolver: byNameResolver("pascalCase"),

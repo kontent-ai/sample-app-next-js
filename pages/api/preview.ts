@@ -2,6 +2,7 @@ import { NextApiHandler } from "next";
 
 import { envIdCookieName, previewApiKeyCookieName } from "../../lib/constants/cookies";
 import { ResolutionContext, resolveUrlPath } from "../../lib/routing";
+import { defaultEnvId } from "../../lib/utils/env";
 
 const handler: NextApiHandler = async (req, res) => {
   // TODO move secret to env variables
@@ -12,14 +13,14 @@ const handler: NextApiHandler = async (req, res) => {
   const currentEnvId = req.cookies[envIdCookieName];
   const currentPreviewApiKey = req.cookies[previewApiKeyCookieName];
 
-  if (!currentPreviewApiKey && currentEnvId !== process.env.NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID) {
+  if (!currentPreviewApiKey && currentEnvId !== defaultEnvId) {
     return res.redirect(`/getPreviewApiKey?path=${encodeURIComponent(req.url ?? '')}`);
   }
 
   // Enable Preview Mode by setting the cookies
   res.setPreviewData({ currentPreviewApiKey });
 
-  const path = await resolveUrlPath({
+  const path = resolveUrlPath({
     type: req.query.type.toString(),
     slug: req.query.slug.toString()
   } as ResolutionContext);
