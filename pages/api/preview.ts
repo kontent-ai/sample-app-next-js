@@ -1,5 +1,6 @@
 import { NextApiHandler } from "next";
 
+import { envIdCookieName, previewApiKeyCookieName } from "../../lib/constants/cookies";
 import { ResolutionContext, resolveUrlPath } from "../../lib/routing";
 
 const handler: NextApiHandler = async (req, res) => {
@@ -8,7 +9,8 @@ const handler: NextApiHandler = async (req, res) => {
     return res.status(401).json({ message: 'Invalid preview token, or no slug and type provided.' })
   }
 
-  const { currentEnvId, currentPreviewApiKey } = req.cookies
+  const currentEnvId = req.cookies[envIdCookieName];
+  const currentPreviewApiKey = req.cookies[previewApiKeyCookieName];
 
   if (!currentPreviewApiKey && currentEnvId !== process.env.NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID) {
     return res.redirect(`/getPreviewApiKey?path=${encodeURIComponent(req.url ?? '')}`);
