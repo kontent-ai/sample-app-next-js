@@ -72,8 +72,17 @@ You can start editing the page by modifying `pages/index.js`. The page auto-upda
 
 To generate new models from Kontent.ai data, just run `npm run generateModels`. Make sure you have environment variables filled in properly.
 
-> The app contains code to dynamically handle different Kontent.ai projects (e.g. the environment route prefix). 
-> You don't need it when using single project and can ignore this as you won't need this for most of your applications.
+### Use codebase as a starter
+
+> ⚠ This project is not intended as a starter project. It is as a sample of the presentation channel showcasing Kontent.ai capabilities. The following hints help you to use this code base as a base for presentation channel for your project as a boilerplate. By doing it, you are accepting the fact you are changing the purpose of this code.
+
+The app contains code to dynamically handle different Kontent.ai projects (e.g. the environment route prefix). To adjust the code to be used to single project as a starter, you want to remove the logic that is used solely for showcasing the sample project during evaluation.
+
+Some of the parts responsible for handle different Kontent.ai projects that needs adjustments in case of transforming it into single-project setup.
+
+* `middleware.ts` - Getting the Kontent.ai environment ID and storing it in cookie. For single-project setup use only the environment variable with environment ID should be used.
+* `pages/callback.ts` & `pages/getPreviewApiKey.ts` & `constants/auth.ts` - Responsible for exchanging preview API keys for specified environment. For single-project setup use only the environment variable with preview API key should be used.
+* `pages/[envid]` - folder responsible for the [dynamic segment](https://nextjs.org/docs/pages/building-your-application/routing/dynamic-routes) passing the environment ID for pages. For single-project setup remove the folder and move its content one level up.
 
 ## Create your own data source project in Kontent.ai
 
