@@ -60,7 +60,7 @@ const Home: NextPage<Props> = props => {
 };
 
 export const getStaticProps: GetStaticProps<Props, { envId: string }> = async context => {
-  const envId = getEnvIdFromRouteParams(context.params?.envId);
+  const envId = getEnvIdFromRouteParams(context);
 
   const previewApiKey = getPreviewApiKeyFromPreviewData(context.previewData);
 

@@ -44,7 +44,7 @@ export const getStaticProps: GetStaticProps<Props, IParams> = async (context) =>
       notFound: true
     }
   }
-  const envId = getEnvIdFromRouteParams(context.params?.envId);
+  const envId = getEnvIdFromRouteParams(context);
 
   const previewApiKey = getPreviewApiKeyFromPreviewData(context.previewData);
 
