@@ -2,13 +2,13 @@ import Image from "next/image";
 import { FC } from "react";
 
 import { mainColorAfterBgClass } from "../../lib/constants/colors";
+import { siteCodename } from "../../lib/utils/env";
 import {
   createElementSmartLink,
   createItemSmartLink,
 } from "../../lib/utils/smartLinkUtils";
 import { contentTypes, Fact } from "../../models";
 import { CTAButton } from "./internalLinks/CTAButton";
-import { useSiteCodename } from "./siteCodenameContext";
 
 type Props = Readonly<{
   item: Fact;
@@ -17,7 +17,6 @@ type Props = Readonly<{
 
 export const FactComponent: FC<Props> = (props) => {
   const image = props.item.elements.image.value[0];
-  const siteCodename = useSiteCodename();
   const authorElements = props.item.elements.author.linkedItems[0]?.elements;
   const { firstName, lastName, occupation } = authorElements ?? {};
 

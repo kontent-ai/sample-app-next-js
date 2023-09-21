@@ -6,15 +6,13 @@ import { Content } from "../../components/shared/Content";
 import { AppPage } from "../../components/shared/ui/appPage";
 import { getDefaultMetadata, getItemBySlug, getPagesSlugs, getSiteMenu } from "../../lib/kontentClient";
 import { reservedListingSlugs } from "../../lib/routing";
-import { ValidCollectionCodename } from "../../lib/types/perCollection";
-import { defaultEnvId, siteCodename } from "../../lib/utils/env";
+import { defaultEnvId } from "../../lib/utils/env";
 import { getEnvIdFromRouteParams, getPreviewApiKeyFromPreviewData } from "../../lib/utils/pageUtils";
 import { createElementSmartLink, createFixedAddSmartLink } from "../../lib/utils/smartLinkUtils";
 import { contentTypes, Metadata, Nav_NavigationItem, WSL_Page } from "../../models";
 
 type Props = Readonly<{
   page: WSL_Page;
-  siteCodename: ValidCollectionCodename;
   siteMenu: Nav_NavigationItem | null;
   defaultMetadata: Metadata;
 }>;
@@ -62,13 +60,12 @@ export const getStaticProps: GetStaticProps<Props, IParams> = async (context) =>
   }
 
   return {
-    props: { page, siteCodename, siteMenu, defaultMetadata },
+    props: { page, siteMenu, defaultMetadata },
   };
 }
 
 const TopLevelPage: FC<Props> = props => (
   <AppPage
-    siteCodename={props.siteCodename}
     siteMenu={props.siteMenu}
     defaultMetadata={props.defaultMetadata}
     item={props.page}

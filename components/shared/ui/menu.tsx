@@ -11,6 +11,7 @@ import {
   resolveReference,
   resolveUrlPath,
 } from "../../../lib/routing";
+import { siteCodename } from "../../../lib/utils/env";
 import { createItemSmartLink } from "../../../lib/utils/smartLinkUtils";
 import {
   Article,
@@ -21,7 +22,6 @@ import {
   WSL_Page,
   WSL_WebSpotlightRoot,
 } from "../../../models";
-import { useSiteCodename } from "../siteCodenameContext";
 
 type Link = Readonly<Nav_NavigationItem>;
 
@@ -70,8 +70,8 @@ const MenuList: FC<MenuListProps> = (props) => {
         <li
           key={i}
           className={`${isCurrentNavigationItemActive(link, router)
-              ? ""
-              : "border-l-transparent border-t-transparent"
+            ? ""
+            : "border-l-transparent border-t-transparent"
             }
         border-gray-500 border-l-8 border-t-0 md:border-t-8 md:border-l-0 min-w-fit h-full w-full group grow`}
           onClick={() => props.handleClick(i)}
@@ -122,8 +122,8 @@ const DropdownMenuItems: FC<DropdownMenuProps> = (props) => {
           <Link
             href={resolveReference(link)}
             className={`${isCurrentNavigationItemActive(link, router)
-                ? "border-l-gray-500 cursor-default "
-                : "border-l-transparent hover:border-l-gray-500"
+              ? "border-l-gray-500 cursor-default "
+              : "border-l-transparent hover:border-l-gray-500"
               }
           block p-3 bg-gray-200 border-l-8 h-full`}
           >
@@ -141,7 +141,6 @@ const DropdownMenuItems: FC<DropdownMenuProps> = (props) => {
 };
 
 export const Menu: FC<Props> = (props) => {
-  const siteCodename = useSiteCodename();
   const [activeMenu, setActiveMenu] = useState<string | number>(-1);
   const [smallMenuActive, setSmallMenuActive] = useState(false);
 

@@ -6,18 +6,17 @@ import {
   mainColorHoverClass,
 } from "../../../lib/constants/colors";
 import { resolveReference } from "../../../lib/routing";
+import { siteCodename } from "../../../lib/utils/env";
 import { Action, Fact, Nav_NavigationItem } from "../../../models";
-import { useSiteCodename } from "../siteCodenameContext";
 
 type Props = {
   reference: Fact | Action | Nav_NavigationItem;
 };
 
 export const CTAButton = (props: Props) => {
-  const siteCodename = useSiteCodename();
   const factUrl =
     props.reference.elements.referenceExternalUri.value ||
-    props.reference.elements.referenceContentItemLink.linkedItems.length > 0
+      props.reference.elements.referenceContentItemLink.linkedItems.length > 0
       ? resolveReference(props.reference)
       : null;
   return (

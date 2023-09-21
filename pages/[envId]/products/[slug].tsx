@@ -6,7 +6,6 @@ import { FC } from "react";
 import { AppPage } from "../../../components/shared/ui/appPage";
 import { mainColorButtonClass, mainColorHoverClass, mainColorTextClass } from "../../../lib/constants/colors";
 import { getDefaultMetadata, getProductDetail, getProductItemsWithSlugs, getSiteMenu } from "../../../lib/kontentClient";
-import { ValidCollectionCodename } from "../../../lib/types/perCollection";
 import { defaultEnvId, siteCodename } from "../../../lib/utils/env";
 import { getEnvIdFromRouteParams, getPreviewApiKeyFromPreviewData } from "../../../lib/utils/pageUtils";
 import { createElementSmartLink } from "../../../lib/utils/smartLinkUtils";
@@ -16,7 +15,6 @@ import { contentTypes, Metadata, Nav_NavigationItem, Product } from "../../../mo
 
 type Props = Readonly<{
   product: Product;
-  siteCodename: ValidCollectionCodename;
   defaultMetadata: Metadata;
   siteMenu: Nav_NavigationItem | null;
 }>;
@@ -60,7 +58,6 @@ export const getStaticProps: GetStaticProps<Props, IParams> = async (context) =>
   return {
     props: {
       product,
-      siteCodename,
       siteMenu,
       defaultMetadata
     }
@@ -69,10 +66,9 @@ export const getStaticProps: GetStaticProps<Props, IParams> = async (context) =>
 
 const widthLimit = 300;
 
-const ProductDetail: FC<Props> = ({ product, siteCodename, siteMenu, defaultMetadata }) => (
+const ProductDetail: FC<Props> = ({ product, siteMenu, defaultMetadata }) => (
   <AppPage
     item={product}
-    siteCodename={siteCodename}
     siteMenu={siteMenu}
     defaultMetadata={defaultMetadata}
     pageType="Product"

@@ -9,31 +9,27 @@ import {
   calloutTypeColor,
   mainColorBorderClass,
 } from "../../../lib/constants/colors";
+import { siteCodename } from "../../../lib/utils/env";
 import { Component_Callout } from "../../../models";
-import { useSiteCodename } from "../siteCodenameContext";
 import { RichTextElement } from "./RichTextElement";
 
 type Props = Readonly<{
   item: Component_Callout;
 }>;
 
-export const CalloutComponent: FC<Props> = (props) => {
-  const siteCodename = useSiteCodename();
-
-  return (
-    <div
-      className={`p-5 border-2 rounded-3xl ${mainColorBorderClass[siteCodename]}`}
-    >
-      <div className={`w-5 ${createIconColor(props.item)}`}>
-        {renderTypeIcon(props.item)}
-      </div>
-      <RichTextElement
-        element={props.item.elements.content}
-        isInsideTable={false}
-      />
+export const CalloutComponent: FC<Props> = (props) => (
+  <div
+    className={`p-5 border-2 rounded-3xl ${mainColorBorderClass[siteCodename]}`}
+  >
+    <div className={`w-5 ${createIconColor(props.item)}`}>
+      {renderTypeIcon(props.item)}
     </div>
-  );
-};
+    <RichTextElement
+      element={props.item.elements.content}
+      isInsideTable={false}
+    />
+  </div>
+);
 
 const renderTypeIcon = (callout: Component_Callout) => {
   switch (callout.elements.type.value[0]?.codename) {
