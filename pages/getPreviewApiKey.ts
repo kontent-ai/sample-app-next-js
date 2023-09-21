@@ -2,7 +2,7 @@ import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import { FC, useEffect } from "react";
 
-import { webAuth } from "../../lib/constants/auth";
+import { webAuth } from "../lib/constants/auth";
 
 const GetPreviewApiKey: FC = () => {
   const router = useRouter();

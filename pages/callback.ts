@@ -3,9 +3,9 @@ import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
-import { webAuth } from "../../lib/constants/auth";
-import { envIdCookieName, previewApiKeyCookieName } from "../../lib/constants/cookies";
-import { internalApiDomain } from "../../lib/utils/env";
+import { webAuth } from "../lib/constants/auth";
+import { envIdCookieName, previewApiKeyCookieName } from "../lib/constants/cookies";
+import { internalApiDomain } from "../lib/utils/env";
 
 const CallbackPage: React.FC = () => {
   const router = useRouter();
