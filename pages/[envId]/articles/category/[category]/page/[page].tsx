@@ -235,7 +235,7 @@ export const getStaticPaths = async () => {
 };
 
 export const getStaticProps: GetStaticProps<Props, ArticleListingUrlQuery> = async context => {
-  const envId = getEnvIdFromRouteParams(context.params?.envId);
+  const envId = getEnvIdFromRouteParams(context);
 
   const pageURLParameter = context.params?.page;
   const selectedCategory = context.params?.category;
