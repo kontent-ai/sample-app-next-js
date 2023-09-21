@@ -4,6 +4,7 @@ import {
   mainColorAnchor,
   mainColorBorderClass,
 } from "../../../lib/constants/colors";
+import { siteCodename } from "../../../lib/utils/env";
 import {
   createElementSmartLink,
   createItemSmartLink,
@@ -11,7 +12,6 @@ import {
 } from "../../../lib/utils/smartLinkUtils";
 import { contentTypes, Fact } from "../../../models";
 import { FactComponent } from "../Fact";
-import { useSiteCodename } from "../siteCodenameContext";
 import { StandaloneSmartLinkButton } from "../StandaloneSmartLinkButton";
 
 type Props = Readonly<{
@@ -25,7 +25,6 @@ type Props = Readonly<{
 export const StackComponent: FC<Props> = (props) => {
   const [actionIndex, setActionIndex] = useState(0);
   const currentAction = props.items[actionIndex];
-  const siteCodename = useSiteCodename();
 
   if (!currentAction) {
     return null;
@@ -99,7 +98,6 @@ type HeadersProps = Readonly<{
 }>;
 
 const Headers: FC<HeadersProps> = (props) => {
-  const siteCodename = useSiteCodename();
 
   return (
     <menu className="flex grow">
@@ -107,8 +105,8 @@ const Headers: FC<HeadersProps> = (props) => {
         <li
           key={i}
           className={`grow w-fit justify-center md:justify-between md:pl-5 flex overflow-hidden p-2 cursor-pointer ${props.selectedHeaderIndex === i
-              ? `border-b-2 ${mainColorBorderClass[siteCodename]}`
-              : ""
+            ? `border-b-2 ${mainColorBorderClass[siteCodename]}`
+            : ""
             }`}
           onClick={() => props.onHeaderSelected(i)}
           {...createItemSmartLink(header.id, true)}

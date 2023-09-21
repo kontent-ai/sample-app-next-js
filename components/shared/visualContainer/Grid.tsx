@@ -4,9 +4,9 @@ import React, { FC } from "react";
 
 import { mainColorAnchor } from "../../../lib/constants/colors";
 import { resolveReference } from "../../../lib/routing";
+import { siteCodename } from "../../../lib/utils/env";
 import { createElementSmartLink } from "../../../lib/utils/smartLinkUtils";
 import { contentTypes, Fact } from "../../../models";
-import { useSiteCodename } from "../siteCodenameContext";
 
 type Props = Readonly<{
   items: ReadonlyArray<Fact>;
@@ -45,56 +45,50 @@ const GridItem: FC<{ item: Fact }> = ({ item }) => (
   </div>
 );
 
-export const GridComponent: FC<Props> = (props) => {
-  const siteCodename = useSiteCodename();
-
-
-  return (
-    <div className="vis-container px-10 w-full relative">
-      {props.title && (
-        <h3
-          className="heading"
-          id={props.codename}
-          {...createElementSmartLink(
-            contentTypes.visual_container.elements.title.codename
-          )}
-        >
-          <a
-            className={mainColorAnchor[siteCodename]}
-            href={"#" + props.codename}
-          >
-            {props.title}
-          </a>
-        </h3>
-      )}
-      <div
+export const GridComponent: FC<Props> = (props) => (
+  <div className="vis-container px-10 w-full relative">
+    {props.title && (
+      <h3
+        className="heading"
+        id={props.codename}
         {...createElementSmartLink(
-          contentTypes.visual_container.elements.subtitle.codename
+          contentTypes.visual_container.elements.title.codename
         )}
       >
-        {props.subtitle}
-      </div>
-      <div className="grid mx-auto w-full max-w-screen-xl py-7 text-gray-900 sm:grid-cols-2 md:grid-cols-3">
-        {props.items.map((item) =>
-          item.elements.referenceLabel.value ? (
-            <Link
-              key={item.system.codename}
-              className="no-underline font-normal group hover:scale-110 transform transition-all duration-300 ease-in-out"
-              href={resolveReference(item)}
-            >
-              <GridItem
-                item={item}
-                key={item.system.codename}
-              />
-            </Link>
-          ) : (
-            <GridItem
-              item={item}
-              key={item.system.codename}
-            />
-          )
-        )}
-      </div>
+        <a
+          className={mainColorAnchor[siteCodename]}
+          href={"#" + props.codename}
+        >
+          {props.title}
+        </a>
+      </h3>
+    )}
+    <div
+      {...createElementSmartLink(
+        contentTypes.visual_container.elements.subtitle.codename
+      )}
+    >
+      {props.subtitle}
     </div>
-  );
-};
+    <div className="grid mx-auto w-full max-w-screen-xl py-7 text-gray-900 sm:grid-cols-2 md:grid-cols-3">
+      {props.items.map((item) => item.elements.referenceLabel.value ? (
+        <Link
+          key={item.system.codename}
+          className="no-underline font-normal group hover:scale-110 transform transition-all duration-300 ease-in-out"
+          href={resolveReference(item)}
+        >
+          <GridItem
+            item={item}
+            key={item.system.codename}
+          />
+        </Link>
+      ) : (
+        <GridItem
+          item={item}
+          key={item.system.codename}
+        />
+      )
+      )}
+    </div>
+  </div>
+);

@@ -10,7 +10,6 @@ import { mainColorBgClass } from "../../../lib/constants/colors";
 import { ProductsPageSize } from "../../../lib/constants/paging";
 import { getDefaultMetadata, getItemBySlug, getProductsForListing, getSiteMenu } from "../../../lib/kontentClient";
 import { createQueryString, reservedListingSlugs, resolveUrlPath } from "../../../lib/routing";
-import { ValidCollectionCodename } from "../../../lib/types/perCollection";
 import { changeUrlQueryString } from "../../../lib/utils/changeUrlQueryString";
 import { defaultEnvId, siteCodename } from "../../../lib/utils/env";
 import { getEnvIdFromRouteParams, getPreviewApiKeyFromPreviewData } from "../../../lib/utils/pageUtils";
@@ -20,7 +19,6 @@ import { contentTypes, Metadata, Nav_NavigationItem, Product, WSL_Page } from ".
 type Props = Readonly<{
   page: WSL_Page;
   products: ReadonlyArray<Product> | undefined;
-  siteCodename: ValidCollectionCodename;
   totalCount: number;
   siteMenu: Nav_NavigationItem | null;
   isPreview: boolean;
@@ -159,7 +157,6 @@ export const Products: FC<Props> = props => {
 
   return (
     <AppPage
-      siteCodename={props.siteCodename}
       siteMenu={props.siteMenu}
       defaultMetadata={props.defaultMetadata}
       item={props.page}
@@ -175,7 +172,7 @@ export const Products: FC<Props> = props => {
       <h2 className="m-0 mt-16 ml-4 sm:ml-0">Surgical products</h2>
 
       <div className="flex flex-col md:flex-row mt-4 md:gap-2 text-white">
-        <div className={`flex flex-col ${mainColorBgClass[props.siteCodename]} p-4`}>
+        <div className={`flex flex-col ${mainColorBgClass[siteCodename]} p-4`}>
           <h4 className="m-0 py-2 text-white">Category</h4>
           <ul className="m-0 min-h-full gap-2 p-0 list-none">
             {taxonomies.map(renderFilterOption)}
@@ -204,9 +201,9 @@ export const Products: FC<Props> = props => {
 
 export const getStaticProps: GetStaticProps<Props, { envId: string }> = async context => {
   const envId = getEnvIdFromRouteParams(context.params?.envId);
-  
+
   const previewApiKey = getPreviewApiKeyFromPreviewData(context.previewData);
-    
+
   // We might want to bound listing pages to something else than URL slug
   const page = await getItemBySlug<WSL_Page>({ envId: envId, previewApiKey: previewApiKey }, reservedListingSlugs.products, contentTypes.page.codename, !!context.preview);
 
@@ -222,7 +219,7 @@ export const getStaticProps: GetStaticProps<Props, { envId: string }> = async co
   const defaultMetadata = await getDefaultMetadata({ envId, previewApiKey }, !!context.preview);
 
   return {
-    props: { page, siteCodename, defaultMetadata, products: products.items, totalCount: products.pagination.totalCount ?? 0, siteMenu, isPreview: !!context.preview },
+    props: { page, defaultMetadata, products: products.items, totalCount: products.pagination.totalCount ?? 0, siteMenu, isPreview: !!context.preview },
   };
 }
 

@@ -6,20 +6,17 @@ import { FC, useState } from "react";
 
 import { ArticleItem } from "../../../../../../components/listingPage/ArticleItem";
 import { Content } from "../../../../../../components/shared/Content";
-import { useSiteCodename } from "../../../../../../components/shared/siteCodenameContext";
 import { AppPage } from "../../../../../../components/shared/ui/appPage";
 import { mainColorBgClass, mainColorBorderClass, mainColorHoverClass } from "../../../../../../lib/constants/colors";
 import { ArticlePageSize } from "../../../../../../lib/constants/paging";
-import { getArticlesCountByCategory, getArticlesForListing, getDefaultMetadata,getItemBySlug, getItemsTotalCount, getSiteMenu } from "../../../../../../lib/kontentClient";
-import { ResolutionContext,resolveUrlPath } from "../../../../../../lib/routing";
-import { ValidCollectionCodename } from "../../../../../../lib/types/perCollection";
+import { getArticlesCountByCategory, getArticlesForListing, getDefaultMetadata, getItemBySlug, getItemsTotalCount, getSiteMenu } from "../../../../../../lib/kontentClient";
+import { ResolutionContext, resolveUrlPath } from "../../../../../../lib/routing";
 import { ArticleListingUrlQuery, ArticleTypeWithAll, categoryFilterSource, isArticleType } from "../../../../../../lib/utils/articlesListing";
 import { defaultEnvId, siteCodename } from "../../../../../../lib/utils/env";
 import { getEnvIdFromRouteParams, getPreviewApiKeyFromPreviewData } from "../../../../../../lib/utils/pageUtils";
-import { Article, contentTypes,Metadata, Nav_NavigationItem, taxonomies, WSL_Page } from "../../../../../../models";
+import { Article, contentTypes, Metadata, Nav_NavigationItem, taxonomies, WSL_Page } from "../../../../../../models";
 
 type Props = Readonly<{
-  siteCodename: ValidCollectionCodename;
   articles: ReadonlyArray<Article>;
   siteMenu: Nav_NavigationItem | null,
   page: WSL_Page,
@@ -41,27 +38,23 @@ type FilterOptionProps = Readonly<{
   router: NextRouter;
 }>;
 
-const LinkButton: FC<LinkButtonProps> = props => {
-  const siteCodename = useSiteCodename();
-
-  return (
-    <Link
-      scroll={false}
-      href={props.disabled ? resolveUrlPath({
-        type: "article",
-        term: "all"
-      }) : props.href}
-      className="h-full"
+const LinkButton: FC<LinkButtonProps> = props => (
+  <Link
+    scroll={false}
+    href={props.disabled ? resolveUrlPath({
+      type: "article",
+      term: "all"
+    }) : props.href}
+    className="h-full"
+  >
+    <button
+      disabled={props.disabled}
+      className={`${props.roundRight && 'rounded-r-lg'} ${props.roundLeft && 'rounded-l-lg'} disabled:cursor-not-allowed ${props.highlight ? `${mainColorBgClass[siteCodename]} text-white` : 'bg-white'} px-3 py-2 leading-tight text-gray-500 border disabled:bg-gray-200 border-gray-300 enabled:hover:bg-gray-100 enabled:hover:text-gray-700 `}
     >
-      <button
-        disabled={props.disabled}
-        className={`${props.roundRight && 'rounded-r-lg'} ${props.roundLeft && 'rounded-l-lg'} disabled:cursor-not-allowed ${props.highlight ? `${mainColorBgClass[siteCodename]} text-white` : 'bg-white'} px-3 py-2 leading-tight text-gray-500 border disabled:bg-gray-200 border-gray-300 enabled:hover:bg-gray-100 enabled:hover:text-gray-700 `}
-      >
-        {props.text}
-      </button>
-    </Link>
-  )
-}
+      {props.text}
+    </button>
+  </Link>
+);
 
 const getFilterOptions = () =>
   Object.fromEntries(Object.entries(taxonomies.article_type.terms).map(([codename, obj]) => [codename, obj.name]));
@@ -69,7 +62,6 @@ const getFilterOptions = () =>
 const FilterOptions: FC<FilterOptionProps> = ({ options, router }) => {
   const category = router.query.category;
   const [dropdownActive, setDropdownActive] = useState(false);
-  const siteCodename = useSiteCodename();
 
   return (
     <>
@@ -124,7 +116,6 @@ const ArticlesPagingPage: FC<Props> = props => {
 
   return (
     <AppPage
-      siteCodename={props.siteCodename}
       siteMenu={props.siteMenu}
       defaultMetadata={props.defaultMetadata}
       item={props.page}
@@ -224,8 +215,9 @@ const ArticlesPagingPage: FC<Props> = props => {
 
 export const getStaticPaths = async () => {
   const getAllPagesForCategory = async (category: ArticleTypeWithAll) => {
-    const totalCount = category === 'all' ? await getItemsTotalCount({ envId: defaultEnvId }, false, contentTypes.article.codename) :
-      await getArticlesCountByCategory({ envId: defaultEnvId }, false, category);
+    const totalCount = category === 'all'
+      ? await getItemsTotalCount({ envId: defaultEnvId }, false, contentTypes.article.codename)
+      : await getArticlesCountByCategory({ envId: defaultEnvId }, false, category);
     const pagesNumber = Math.ceil((totalCount ?? 0) / ArticlePageSize);
     const pages = Array.from({ length: pagesNumber }).map((_, index) => index + 1);
     return pages.map(pageNumber => ({
@@ -244,7 +236,7 @@ export const getStaticPaths = async () => {
 
 export const getStaticProps: GetStaticProps<Props, ArticleListingUrlQuery> = async context => {
   const envId = getEnvIdFromRouteParams(context.params?.envId);
-  
+
   const pageURLParameter = context.params?.page;
   const selectedCategory = context.params?.category;
   if (!isArticleType(selectedCategory)) {
@@ -269,7 +261,6 @@ export const getStaticProps: GetStaticProps<Props, ArticleListingUrlQuery> = asy
   return {
     props: {
       articles: articles.items,
-      siteCodename,
       siteMenu,
       page,
       itemCount,

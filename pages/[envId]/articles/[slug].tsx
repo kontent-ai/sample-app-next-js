@@ -6,17 +6,15 @@ import { PersonHorizontal } from "../../../components/shared/PersonHorizontal";
 import { RichTextElement } from "../../../components/shared/richText/RichTextElement";
 import { AppPage } from "../../../components/shared/ui/appPage";
 import { mainColorBgClass } from "../../../lib/constants/colors";
-import { getAllArticles,getArticleBySlug, getDefaultMetadata, getSiteMenu } from "../../../lib/kontentClient";
-import { ValidCollectionCodename } from "../../../lib/types/perCollection";
+import { getAllArticles, getArticleBySlug, getDefaultMetadata, getSiteMenu } from "../../../lib/kontentClient";
 import { formatDate } from "../../../lib/utils/dateTime";
 import { defaultEnvId, siteCodename } from "../../../lib/utils/env";
 import { getPreviewApiKeyFromPreviewData } from "../../../lib/utils/pageUtils";
-import { Article, Metadata,Nav_NavigationItem } from "../../../models";
+import { Article, Metadata, Nav_NavigationItem } from "../../../models";
 
 
 type Props = Readonly<{
   article: Article;
-  siteCodename: ValidCollectionCodename;
   siteMenu: Nav_NavigationItem | null;
   defaultMetadata: Metadata;
 }>;
@@ -24,7 +22,6 @@ type Props = Readonly<{
 const ArticlePage: FC<Props> = props => {
   return (
     <AppPage
-      siteCodename={props.siteCodename}
       siteMenu={props.siteMenu}
       defaultMetadata={props.defaultMetadata}
       item={props.article}
@@ -34,7 +31,7 @@ const ArticlePage: FC<Props> = props => {
         url={props.article.elements.heroImage.value[0]?.url || ""}
         itemId={props.article.system.id}
       >
-        <div className={`py-1 px-3 w-full md:w-fit ${mainColorBgClass[props.siteCodename]}  opacity-90`}>
+        <div className={`py-1 px-3 w-full md:w-fit ${mainColorBgClass[siteCodename]}  opacity-90`}>
           <h1 className="m-0 text-white  text-5xl tracking-wide font-semibold">{props.article.elements.title.value}</h1>
         </div>
         <div className="p-4">
@@ -52,7 +49,7 @@ const ArticlePage: FC<Props> = props => {
               props.article.elements.type.value.map(type => (
                 <div
                   key={type.codename}
-                  className={`w-fit p-2 ${mainColorBgClass[props.siteCodename]} font-semibold text-white`}
+                  className={`w-fit p-2 ${mainColorBgClass[siteCodename]} font-semibold text-white`}
                 >{type.name}
                 </div>
               ))
@@ -73,18 +70,18 @@ export const getStaticProps: GetStaticProps<Props, { slug: string, envId: string
   if (!envId) {
     throw new Error("Missing envId in url");
   }
-  
+
   const previewApiKey = getPreviewApiKeyFromPreviewData(context.previewData);
 
-  const siteMenu = await getSiteMenu({envId, previewApiKey}, !!context.preview);
+  const siteMenu = await getSiteMenu({ envId, previewApiKey }, !!context.preview);
   const slug = typeof context.params?.slug === "string" ? context.params.slug : "";
 
   if (!slug) {
     return { notFound: true };
   }
 
-  const article = await getArticleBySlug({envId: envId, previewApiKey: previewApiKey},slug, !!context.preview);
-  const defaultMetadata = await getDefaultMetadata({envId: envId, previewApiKey: previewApiKey}, !!context.preview);
+  const article = await getArticleBySlug({ envId: envId, previewApiKey: previewApiKey }, slug, !!context.preview);
+  const defaultMetadata = await getDefaultMetadata({ envId: envId, previewApiKey: previewApiKey }, !!context.preview);
 
   if (!article) {
     return { notFound: true };
@@ -93,15 +90,14 @@ export const getStaticProps: GetStaticProps<Props, { slug: string, envId: string
   return {
     props: {
       article,
-      siteCodename,
       siteMenu,
-      defaultMetadata
+      defaultMetadata,
     },
   };
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const articles = await getAllArticles({envId: defaultEnvId}, false);
+  const articles = await getAllArticles({ envId: defaultEnvId }, false);
 
   return {
     paths: articles.items.map(a => ({

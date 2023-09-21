@@ -7,7 +7,6 @@ import { RichTextElement } from "../../../components/shared/richText/RichTextEle
 import { AppPage } from "../../../components/shared/ui/appPage";
 import { mainColorBgClass } from "../../../lib/constants/colors";
 import { getDefaultMetadata, getSiteMenu, getSolutionDetail, getSolutionsWithSlugs } from "../../../lib/kontentClient";
-import { ValidCollectionCodename } from "../../../lib/types/perCollection";
 import { defaultEnvId, siteCodename } from "../../../lib/utils/env";
 import { getEnvIdFromRouteParams, getPreviewApiKeyFromPreviewData } from "../../../lib/utils/pageUtils";
 import { createElementSmartLink } from "../../../lib/utils/smartLinkUtils";
@@ -17,7 +16,6 @@ import { contentTypes, Metadata, Nav_NavigationItem, Solution } from "../../../m
 
 type Props = Readonly<{
   solution: Solution;
-  siteCodename: ValidCollectionCodename;
   defaultMetadata: Metadata;
   siteMenu: Nav_NavigationItem | null;
 }>;
@@ -63,7 +61,6 @@ export const getStaticProps: GetStaticProps<Props, IParams> = async (
   return {
     props: {
       solution,
-      siteCodename,
       siteMenu,
       defaultMetadata,
     },
@@ -72,13 +69,11 @@ export const getStaticProps: GetStaticProps<Props, IParams> = async (
 
 const SolutionDetail: FC<Props> = ({
   solution,
-  siteCodename,
   siteMenu,
   defaultMetadata,
 }) => (
   <AppPage
     item={solution}
-    siteCodename={siteCodename}
     siteMenu={siteMenu}
     defaultMetadata={defaultMetadata}
     pageType="Solution"

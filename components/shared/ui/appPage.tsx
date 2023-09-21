@@ -4,9 +4,9 @@ import { FC, ReactNode } from "react";
 import { perCollectionSEOTitle } from "../../../lib/constants/labels";
 import { ValidCollectionCodename } from "../../../lib/types/perCollection";
 import { useSmartLink } from "../../../lib/useSmartLink";
+import { siteCodename } from "../../../lib/utils/env";
 import { createItemSmartLink } from "../../../lib/utils/smartLinkUtils";
 import { Article, contentTypes, Metadata, Nav_NavigationItem, Product, Solution, WSL_Page, WSL_WebSpotlightRoot } from "../../../models";
-import { SiteCodenameProvider } from "../siteCodenameContext";
 import { Footer } from "./footer";
 import { Menu } from "./menu";
 
@@ -14,7 +14,6 @@ type AcceptedItem = WSL_WebSpotlightRoot | Article | Product | WSL_Page | Soluti
 
 type Props = Readonly<{
   children: ReactNode;
-  siteCodename: ValidCollectionCodename;
   item: AcceptedItem;
   siteMenu: Nav_NavigationItem | null;
   defaultMetadata: Metadata;
@@ -25,12 +24,11 @@ export const AppPage: FC<Props> = props => {
   useSmartLink();
 
   return (
-    <SiteCodenameProvider siteCodename={props.siteCodename}>
+    <>
       <PageMetadata
         item={props.item}
         pageType={props.pageType}
         defaultMetadata={props.defaultMetadata}
-        siteCodename={props.siteCodename}
       />
       <div className="min-h-full grow flex flex-col items-center overflow-hidden">
         {props.siteMenu ? <Menu item={props.siteMenu} /> : <span>Missing top navigation. Please provide a valid navigation item in the web spotlight root.</span>}
@@ -45,7 +43,7 @@ export const AppPage: FC<Props> = props => {
         </main>
         <Footer />
       </div>
-    </SiteCodenameProvider>
+    </>
   );
 };
 
@@ -54,7 +52,7 @@ AppPage.displayName = "Page";
 const isProductOrSolution = (item: AcceptedItem): item is Product | Solution =>
   [contentTypes.solution.codename as string, contentTypes.product.codename as string].includes(item.system.type)
 
-const PageMetadata: FC<Pick<Props, "siteCodename" | "item" | "defaultMetadata" | "pageType">> = ({ siteCodename, item, defaultMetadata, pageType }) => {
+const PageMetadata: FC<Pick<Props, "item" | "defaultMetadata" | "pageType">> = ({ item, defaultMetadata, pageType }) => {
   const pageMetaTitle = createMetaTitle(siteCodename, item);
   const pageMetaDescription = item.elements.metadataDescription.value || defaultMetadata.elements.metadataDescription.value;
   const pageMetaKeywords = item.elements.metadataKeywords.value || defaultMetadata.elements.metadataKeywords.value;

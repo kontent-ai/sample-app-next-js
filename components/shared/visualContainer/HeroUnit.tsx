@@ -1,6 +1,7 @@
 import { FC } from "react";
 
 import { mainColorBgClass } from "../../../lib/constants/colors";
+import { siteCodename } from "../../../lib/utils/env";
 import {
   createElementSmartLink,
   createItemSmartLink,
@@ -8,7 +9,6 @@ import {
 import { contentTypes, Fact } from "../../../models";
 import { HeroImage } from "../../landingPage/ui/heroImage";
 import { CTAButton } from "../internalLinks/CTAButton";
-import { useSiteCodename } from "../siteCodenameContext";
 
 type Props = Readonly<{
   item: Fact;
@@ -16,7 +16,6 @@ type Props = Readonly<{
 
 export const HeroUnitComponent: FC<Props> = (props) => {
   const fact = props.item;
-  const siteCodename = useSiteCodename();
 
   return (
     <HeroImage

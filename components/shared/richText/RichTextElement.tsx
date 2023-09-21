@@ -20,6 +20,7 @@ import { FC } from "react";
 
 import { sanitizeFirstChildText } from "../../../lib/anchors";
 import { mainColorAnchor } from "../../../lib/constants/colors";
+import { siteCodename } from "../../../lib/utils/env";
 import {
   Action,
   Block_ContentChunk,
@@ -31,7 +32,6 @@ import { ContentChunk } from "../ContentChunk";
 import { FactComponent } from "../Fact";
 import { CTAButton } from "../internalLinks/CTAButton";
 import { InternalLink } from "../internalLinks/InternalLink";
-import { useSiteCodename } from "../siteCodenameContext";
 import { BuildError } from "../ui/BuildError";
 import { CalloutComponent } from "./Callout";
 
@@ -117,11 +117,11 @@ export const createDefaultResolvers = (
           return <CTAButton reference={componentItem as Action} />;
         case contentTypes.fact.codename:
           return (
-<FactComponent
-  item={componentItem as Fact}
-  isReversed={false}
-/>
-);
+            <FactComponent
+              item={componentItem as Fact}
+              isReversed={false}
+            />
+          );
         case contentTypes.content_chunk.codename:
           return <ContentChunk item={componentItem as Block_ContentChunk} />;
         default:
@@ -255,7 +255,6 @@ export const createDefaultResolvers = (
 
 export const RichTextElement: FC<ElementProps> = (props) => {
   const portableText = transformToPortableText(nodeParse(props.element.value));
-  const siteCodename = useSiteCodename();
 
   return (
     <PortableText
@@ -271,17 +270,13 @@ type RichTextValueProps = Readonly<{
   isInsideTable: boolean;
 }>;
 
-const RichTextValue: FC<RichTextValueProps> = (props) => {
-  const siteCodename = useSiteCodename();
-
-  return (
-    <PortableText
-      value={props.value}
-      components={createDefaultResolvers(
-        props.element,
-        props.isInsideTable,
-        siteCodename
-      )}
-    />
-  );
-};
+const RichTextValue: FC<RichTextValueProps> = (props) => (
+  <PortableText
+    value={props.value}
+    components={createDefaultResolvers(
+      props.element,
+      props.isInsideTable,
+      siteCodename
+    )}
+  />
+);

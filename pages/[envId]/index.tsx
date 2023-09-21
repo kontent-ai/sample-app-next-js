@@ -6,16 +6,14 @@ import { useEffect, useState } from 'react';
 import { Content } from '../../components/shared/Content';
 import { AppPage } from '../../components/shared/ui/appPage';
 import { getHomepage, getSiteMenu } from '../../lib/kontentClient';
-import { ValidCollectionCodename } from '../../lib/types/perCollection';
 import { useSmartLink } from '../../lib/useSmartLink';
-import { defaultEnvId, siteCodename } from '../../lib/utils/env';
+import { defaultEnvId } from '../../lib/utils/env';
 import { getEnvIdFromRouteParams, getPreviewApiKeyFromPreviewData } from '../../lib/utils/pageUtils';
 import { Nav_NavigationItem, WSL_WebSpotlightRoot } from '../../models';
 
 
 type Props = Readonly<{
   homepage: WSL_WebSpotlightRoot;
-  siteCodename: ValidCollectionCodename;
   siteMenu: Nav_NavigationItem | null;
   isPreview: boolean;
 }>;
@@ -45,7 +43,6 @@ const Home: NextPage<Props> = props => {
   return (
     <AppPage
       item={homepage}
-      siteCodename={props.siteCodename}
       siteMenu={props.siteMenu ?? null}
       pageType='WebPage'
       defaultMetadata={homepage}
@@ -75,7 +72,7 @@ export const getStaticProps: GetStaticProps<Props, { envId: string }> = async co
   }
 
   return {
-    props: { homepage, siteCodename, siteMenu, isPreview: !!context.preview },
+    props: { homepage, siteMenu, isPreview: !!context.preview },
   };
 }
 
