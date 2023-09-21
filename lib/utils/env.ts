@@ -11,7 +11,6 @@ if (!NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID) {
 }
 
 export const siteCodename = NEXT_PUBLIC_KONTENT_COLLECTION_CODENAME;
-export const commonCollection = "common";
 
 export const defaultEnvId = NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID;
 
