@@ -1,6 +1,6 @@
 {
-  "name": "@kontent-ai/boilerplate-next-js",
-  "version": "0.3.0",
+  "name": "@kontent-ai/sample-app-next-js",
+  "version": "1.0.0",
   "scripts": {
     "generateModels": "tsc --project scripts/tsconfig.json && node scripts/build/generateModels.mjs",
     "dev": "next dev",
