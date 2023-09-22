@@ -96,6 +96,6 @@ const createMetaTitle = (siteCodename: ValidCollectionCodename, item: AcceptedIt
   const siteTitle = perCollectionSEOTitle[siteCodename];
   const pageTitle = item.elements.metadataTitle.value;
 
-  return pageTitle !== siteTitle ? `${pageTitle} | ${siteTitle}` : siteTitle;
+  return pageTitle && pageTitle !== siteTitle ? `${pageTitle} | ${siteTitle}` : siteTitle;
 };
 
