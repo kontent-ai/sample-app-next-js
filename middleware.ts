@@ -6,6 +6,11 @@ import { defaultEnvId } from './lib/utils/env';
 
 const envIdRegex = /(?<envId>[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12})(?<remainingUrl>.*)/;
 
+const KONTENT_PREVIEW_API_KEY = process.env.KONTENT_PREVIEW_API_KEY;
+if (!KONTENT_PREVIEW_API_KEY) {
+  throw new Error(`Environment variable KONTENT_PREVIEW_API_KEY is missing`);
+}
+
 export const middleware = (request: NextRequest) => {
   const currentEnvId = request.cookies.get(envIdCookieName)?.value ?? defaultEnvId;
 
@@ -69,6 +74,12 @@ const handleEmptyCookies = (prevResponse: NextResponse, request: NextRequest) =>
   if (!request.cookies.get(envIdCookieName)?.value) {
     prevResponse.cookies.set(envIdCookieName, defaultEnvId, { path: '/', sameSite: 'none', secure: true })
   }
+  if (!request.cookies.get(envIdCookieName)?.value || request.cookies.get(envIdCookieName)?.value === defaultEnvId) {
+
+    prevResponse.cookies.set(previewApiKeyCookieName, KONTENT_PREVIEW_API_KEY, { path: '/', sameSite: 'none', secure: true })
+  }
+
+
   return prevResponse;
 }
 
