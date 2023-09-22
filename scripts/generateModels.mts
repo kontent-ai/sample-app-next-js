@@ -54,12 +54,10 @@ const isValidChar = (char: string) => validCharRegex.test(char);
 const map = (mapper: (char: string, index: number) => string, str: string) =>
   str.replaceAll(new RegExp(/./, 'ug'), mapper);
 
-const {
-  KONTENT_MANAGEMENT_API_KEY,
-  NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID,
-  NEXT_PUBLIC_KONTENT_DOMAIN,
-  NEXT_PUBLIC_KONTENT_MAPI_DOMAIN,
-} = process.env;
+const KONTENT_MANAGEMENT_API_KEY = process.env.KONTENT_MANAGEMENT_API_KEY;
+const  NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID = process.env.NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID;
+const  NEXT_PUBLIC_KONTENT_DOMAIN = process.env.NEXT_PUBLIC_KONTENT_DOMAIN;
+const  NEXT_PUBLIC_KONTENT_MAPI_DOMAIN = process.env.NEXT_PUBLIC_KONTENT_MAPI_DOMAIN;
 
 if (!KONTENT_MANAGEMENT_API_KEY) {
   throw new Error(createMissingVarErrorMsg("management api key"));
