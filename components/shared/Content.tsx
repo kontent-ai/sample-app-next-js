@@ -19,6 +19,7 @@ export const Content: FC<Props> = props => {
   if (!isSupportedComponentType(type)) {
     return null;
   }
+  
   const TargetComponent = componentMap[type];
 
   return <TargetComponent item={props.item as any} />;

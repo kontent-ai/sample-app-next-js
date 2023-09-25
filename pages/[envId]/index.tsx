@@ -10,6 +10,7 @@ import { useSmartLink } from '../../lib/useSmartLink';
 import { defaultEnvId } from '../../lib/utils/env';
 import { getEnvIdFromRouteParams, getPreviewApiKeyFromPreviewData } from '../../lib/utils/pageUtils';
 import { Nav_NavigationItem, WSL_WebSpotlightRoot } from '../../models';
+import { sanitizeCircularData } from '../../lib/utils/circularityUtils';
 
 
 type Props = Readonly<{
@@ -51,7 +52,7 @@ const Home: NextPage<Props> = props => {
         {homepage.elements.content.linkedItems.map(item => (
           <Content
             key={item.system.id}
-            item={item as any}
+            item={item}
           />
         ))}
       </div>
@@ -64,12 +65,16 @@ export const getStaticProps: GetStaticProps<Props, { envId: string }> = async co
 
   const previewApiKey = getPreviewApiKeyFromPreviewData(context.previewData);
 
-  const homepage = await getHomepage({ envId, previewApiKey }, !!context.preview);
-  const siteMenu = await getSiteMenu({ envId, previewApiKey }, !!context.preview);
+  const homepageData = await getHomepage({ envId, previewApiKey }, !!context.preview);
+  const siteMenuData = await getSiteMenu({ envId, previewApiKey }, !!context.preview);
 
-  if (!homepage) {
+
+  if (!homepageData) {
     throw new Error("Can't find homepage item.");
   }
+
+  const homepage = sanitizeCircularData(homepageData);
+  const siteMenu = sanitizeCircularData(siteMenuData);
 
   return {
     props: { homepage, siteMenu, isPreview: !!context.preview },
