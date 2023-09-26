@@ -1,16 +1,22 @@
 import { getCookie, setCookie } from "cookies-next";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
+import { BuildError } from "../components/shared/ui/BuildError";
 import { webAuth } from "../lib/constants/auth";
 import { envIdCookieName, previewApiKeyCookieName } from "../lib/constants/cookies";
 import { internalApiDomain } from "../lib/utils/env";
 
 const CallbackPage: React.FC = () => {
   const router = useRouter();
+  const [error, setError] = useState<string | null>(null);
+  const { replace } = router;
 
   useEffect(() => {
+    if (!router.isReady) {
+      return;
+    }
     const envId = getCookie(envIdCookieName, { path: '/', sameSite: 'none' });
 
     if (!internalApiDomain) {
@@ -30,7 +36,7 @@ const CallbackPage: React.FC = () => {
       return data['projectContainerId'];
     }
 
-    const getTokenSeedId = async (authToken: string, projectContainerId: string) => {
+    const getTokenSeedId = async (authToken: string, projectContainerId: string): Promise<string | Readonly<{ error: string }>> => {
       const data = {
         query: '',
         'token_types': ['delivery-api'],
@@ -48,12 +54,20 @@ const CallbackPage: React.FC = () => {
       });
 
       const listingData = await tokenSeedResponse.json();
+      const firstToken = listingData[0];
+      if (!firstToken) {
+        return { error: "There is no preview delivery API token generated for this environment." } as const;
+      }
+
       return listingData[0]['token_seed_id']
     }
 
 
-    const getPreviewApiKey = async (authToken: string, projectContainerId: string) => {
+    const getPreviewApiKey = async (authToken: string, projectContainerId: string): Promise<string | Readonly<{ error: string }>> => {
       const tokenSeedId = await getTokenSeedId(authToken, projectContainerId);
+      if (typeof tokenSeedId !== "string") {
+        return tokenSeedId;
+      }
 
       const apiKeyUrl = `${internalApiDomain}/api/project-container/${projectContainerId}/keys/${tokenSeedId}`;
       const apiKeyResponse = await fetch(apiKeyUrl, {
@@ -75,11 +89,21 @@ const CallbackPage: React.FC = () => {
       const projectContainerId = await getProjectContainerId(authResult?.accessToken as string);
 
       const api_key = await getPreviewApiKey(authResult?.accessToken as string, projectContainerId as string);
-      setCookie(previewApiKeyCookieName, api_key, { path: '/', sameSite: 'none', secure: true })
 
-      router.replace(authResult?.appState ?? '/');
+      if (typeof api_key === "string") {
+        setCookie(previewApiKeyCookieName, api_key, { path: '/', sameSite: 'none', secure: true })
+      }
+      else {
+        setError(api_key.error);
+      }
+
+      replace(authResult?.appState ?? '/');
     });
-  }, [router]);
+  }, [router.isReady, replace]);
+
+  if (error) {
+    return <BuildError>{error}</BuildError>;
+  }
 
   return null;
 }

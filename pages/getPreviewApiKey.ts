@@ -9,11 +9,15 @@ const GetPreviewApiKey: FC = () => {
   const { path } = router.query;
 
   useEffect(() => {
-    fetch('/api/exit-preview').then(() => {
-      webAuth.authorize({ redirectUri: `${window.origin}/callback`, appState: path });
-    });
+    if (!router.isReady) { // We need to wait until the component is hydrated, because otherwise router.query is empty (https://nextjs.org/docs/pages/building-your-application/rendering/automatic-static-optimization)
+      return;
+    }
+    if (!path) {
+      console.warn("Missing query parameter 'path' in /getPreviewApiKey. Will redirect to / after auth.");
+    }
+    webAuth.authorize({ redirectUri: `${window.origin}/callback`, appState: path });
 
-  }, [router, path])
+  }, [path, router.isReady])
 
   return null;
 }

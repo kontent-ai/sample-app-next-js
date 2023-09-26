@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 
-import { envIdCookieName, previewApiKeyCookieName } from './lib/constants/cookies';
+import { envIdCookieName, ignoreMissingApiKeyCookieName, previewApiKeyCookieName } from './lib/constants/cookies';
 import { createQueryString } from './lib/routing';
 import { defaultEnvId } from './lib/utils/env';
 
@@ -36,19 +36,26 @@ const handleExplicitProjectRoute = (currentEnvId: string) => (prevResponse: Next
     return prevResponse;
   }
 
+  if (request.nextUrl.pathname.includes("/api/exit-preview") && request.cookies.get(ignoreMissingApiKeyCookieName)) {
+    return prevResponse;
+  }
+
   if (routeEnvId === defaultEnvId) {
     const res = NextResponse.redirect(new URL(createUrlWithQueryString(remainingUrl, request.nextUrl.searchParams), request.nextUrl.origin));
-    res.cookies.set(envIdCookieName, routeEnvId, { path: '/', sameSite: 'none', secure: true });
-    res.cookies.set(previewApiKeyCookieName, '', { path: '/', sameSite: 'none', secure: true });
+    res.cookies.set(envIdCookieName, routeEnvId, cookieOptions);
+    res.cookies.set(previewApiKeyCookieName, '', cookieOptions);
 
     return res
   }
 
   if (routeEnvId !== currentEnvId || !request.cookies.get(previewApiKeyCookieName)) {
-    const res = NextResponse.redirect(new URL(`/getPreviewApiKey?path=${encodeURIComponent(createUrlWithQueryString(remainingUrl, request.nextUrl.searchParams.entries()))}`, request.url))
+    const originalPath = encodeURIComponent(createUrlWithQueryString(remainingUrl, request.nextUrl.searchParams.entries()));
+    const redirectPath = `/api/exit-preview?callback=${encodeURIComponent(`/getPreviewApiKey?path=${originalPath}`)}`;
+    const res = NextResponse.redirect(new URL(redirectPath, request.url));
 
-    res.cookies.set(envIdCookieName, routeEnvId, { path: '/', sameSite: 'none', secure: true });
-    res.cookies.set(previewApiKeyCookieName, '', { path: '/', sameSite: 'none', secure: true });
+    res.cookies.set(envIdCookieName, routeEnvId, cookieOptions);
+    res.cookies.set(previewApiKeyCookieName, '', cookieOptions);
+    res.cookies.set(ignoreMissingApiKeyCookieName, "true", cookieOptions);
 
     return res;
   }
@@ -56,7 +63,7 @@ const handleExplicitProjectRoute = (currentEnvId: string) => (prevResponse: Next
   return NextResponse.redirect(new URL(`${remainingUrl ?? ''}?${createQueryString(Object.fromEntries(request.nextUrl.searchParams.entries()))}`, request.nextUrl.origin));
 }
 
-const handleArticlesRoute = (currentEnvId: string) => (prevResponse: NextResponse, request: NextRequest,) => request.nextUrl.pathname === '/articles'
+const handleArticlesRoute = (currentEnvId: string) => (prevResponse: NextResponse, request: NextRequest) => request.nextUrl.pathname === '/articles'
   ? NextResponse.rewrite(new URL(`/${currentEnvId}/articles/category/all/page/1`, request.url))
   : prevResponse;
 
@@ -72,11 +79,10 @@ const handleArticlesCategoryWithNoPaginationRoute = (currentEnvId: string) => (p
 
 const handleEmptyCookies = (prevResponse: NextResponse, request: NextRequest) => {
   if (!request.cookies.get(envIdCookieName)?.value) {
-    prevResponse.cookies.set(envIdCookieName, defaultEnvId, { path: '/', sameSite: 'none', secure: true })
+    prevResponse.cookies.set(envIdCookieName, defaultEnvId, cookieOptions)
   }
   if (!request.cookies.get(envIdCookieName)?.value || request.cookies.get(envIdCookieName)?.value === defaultEnvId) {
-
-    prevResponse.cookies.set(previewApiKeyCookieName, KONTENT_PREVIEW_API_KEY, { path: '/', sameSite: 'none', secure: true })
+    prevResponse.cookies.set(previewApiKeyCookieName, KONTENT_PREVIEW_API_KEY, cookieOptions)
   }
 
 
@@ -101,4 +107,6 @@ export const config = {
     '/((?!api|_next/static|_next/image|favicon.png|getPreviewApiKey|logo.png|callback).*)',
     '/'
   ],
-}
+};
+
+const cookieOptions = { path: '/', sameSite: 'none', secure: true } as const;
