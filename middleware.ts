@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 
-import { envIdCookieName, ignoreMissingApiKeyCookieName, previewApiKeyCookieName } from './lib/constants/cookies';
+import { envIdCookieName, previewApiKeyCookieName } from './lib/constants/cookies';
 import { createQueryString } from './lib/routing';
 import { defaultEnvId } from './lib/utils/env';
 
@@ -20,11 +20,16 @@ export const middleware = (request: NextRequest) => {
     handleArticlesCategoryRoute,
     handleArticlesCategoryWithNoPaginationRoute(currentEnvId),
     handleExplicitProjectRoute(currentEnvId),
+    handleEmptyApiKeyCookie(currentEnvId),
     handleEmptyCookies
   ];
 
-  return handlers.reduce((prevResponse, handler) => handler(prevResponse, request),
-    NextResponse.rewrite(new URL(`/${currentEnvId}${request.nextUrl.pathname ? `${request.nextUrl.pathname}` : ''}`, request.url)))
+  const initialResponse = request.nextUrl.pathname.startsWith("/api/")
+    ? NextResponse.next()
+    : NextResponse.rewrite(new URL(`/${currentEnvId}${request.nextUrl.pathname ? `${request.nextUrl.pathname}` : ''}`, request.url));
+
+
+  return handlers.reduce((prevResponse, handler) => handler(prevResponse, request), initialResponse);
 };
 
 const handleExplicitProjectRoute = (currentEnvId: string) => (prevResponse: NextResponse, request: NextRequest) => {
@@ -36,32 +41,43 @@ const handleExplicitProjectRoute = (currentEnvId: string) => (prevResponse: Next
     return prevResponse;
   }
 
-  if (request.nextUrl.pathname.includes("/api/exit-preview") && request.cookies.get(ignoreMissingApiKeyCookieName)) {
-    return prevResponse;
-  }
-
   if (routeEnvId === defaultEnvId) {
-    const res = NextResponse.redirect(new URL(createUrlWithQueryString(remainingUrl, request.nextUrl.searchParams), request.nextUrl.origin));
-    res.cookies.set(envIdCookieName, routeEnvId, cookieOptions);
-    res.cookies.set(previewApiKeyCookieName, '', cookieOptions);
+    const res = NextResponse.redirect(new URL(createUrlWithQueryString(remainingUrl, request.nextUrl.searchParams.entries()), request.nextUrl.origin));
+    res.cookies.set(envIdCookieName, defaultEnvId, cookieOptions);
+    res.cookies.set(previewApiKeyCookieName, "", cookieDeleteOptions);
 
     return res
   }
 
-  if (routeEnvId !== currentEnvId || !request.cookies.get(previewApiKeyCookieName)) {
+  if (routeEnvId !== currentEnvId) {
     const originalPath = encodeURIComponent(createUrlWithQueryString(remainingUrl, request.nextUrl.searchParams.entries()));
-    const redirectPath = `/api/exit-preview?callback=${encodeURIComponent(`/getPreviewApiKey?path=${originalPath}`)}`;
-    const res = NextResponse.redirect(new URL(redirectPath, request.url));
+    const redirectPath = `/api/exit-preview?callback=${originalPath}`; // We need to exit preview, because the old preview API key is in preview data
+    const res = NextResponse.redirect(new URL(redirectPath, request.nextUrl.origin));
 
     res.cookies.set(envIdCookieName, routeEnvId, cookieOptions);
-    res.cookies.set(previewApiKeyCookieName, '', cookieOptions);
-    res.cookies.set(ignoreMissingApiKeyCookieName, "true", cookieOptions);
+    res.cookies.set(previewApiKeyCookieName, "", cookieDeleteOptions);
 
     return res;
   }
 
   return NextResponse.redirect(new URL(`${remainingUrl ?? ''}?${createQueryString(Object.fromEntries(request.nextUrl.searchParams.entries()))}`, request.nextUrl.origin));
 }
+
+const handleEmptyApiKeyCookie = (currentEnvId: string) => (prevResponse: NextResponse, request: NextRequest) => {
+  if (request.cookies.get(previewApiKeyCookieName)?.value || !request.nextUrl.pathname.startsWith("/api/preview")) {
+    return prevResponse;
+  }
+
+  if (currentEnvId === defaultEnvId) {
+    const res = NextResponse.redirect(request.url); // Workaround for this issue https://github.com/vercel/next.js/issues/49442, we cannot set cookies on NextResponse.next()
+    res.cookies.set(previewApiKeyCookieName, KONTENT_PREVIEW_API_KEY, cookieOptions);
+    return res;
+  }
+
+  const originalPath = encodeURIComponent(createUrlWithQueryString(request.nextUrl.pathname, request.nextUrl.searchParams.entries()));
+  const redirectPath = `/getPreviewApiKey?path=${originalPath}`;
+  return NextResponse.redirect(new URL(redirectPath, request.nextUrl.origin));
+};
 
 const handleArticlesRoute = (currentEnvId: string) => (prevResponse: NextResponse, request: NextRequest) => request.nextUrl.pathname === '/articles'
   ? NextResponse.rewrite(new URL(`/${currentEnvId}/articles/category/all/page/1`, request.url))
@@ -78,18 +94,14 @@ const handleArticlesCategoryWithNoPaginationRoute = (currentEnvId: string) => (p
   : prevResponse
 
 const handleEmptyCookies = (prevResponse: NextResponse, request: NextRequest) => {
-  if (!request.cookies.get(envIdCookieName)?.value) {
-    prevResponse.cookies.set(envIdCookieName, defaultEnvId, cookieOptions)
+  if (!request.cookies.get(envIdCookieName)?.value && !prevResponse.cookies.get(envIdCookieName)) {
+    prevResponse.cookies.set(envIdCookieName, defaultEnvId, cookieOptions);
   }
-  if (!request.cookies.get(envIdCookieName)?.value || request.cookies.get(envIdCookieName)?.value === defaultEnvId) {
-    prevResponse.cookies.set(previewApiKeyCookieName, KONTENT_PREVIEW_API_KEY, cookieOptions)
-  }
-
 
   return prevResponse;
 }
 
-const createUrlWithQueryString = (url: string | undefined, searchParams: any) => {
+const createUrlWithQueryString = (url: string | undefined, searchParams: IterableIterator<[string, string]>) => {
   const entries = Object.fromEntries(searchParams);
 
   return Object.entries(entries).length > 0 ? `${url ?? ''}?${createQueryString(entries)}` : url ?? '';
@@ -97,16 +109,10 @@ const createUrlWithQueryString = (url: string | undefined, searchParams: any) =>
 
 export const config = {
   matcher: [
-    /*
-     * Match all request paths except for the ones starting with:
-     * - api (API routes)
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.png (favicon file)
-     */
-    '/((?!api|_next/static|_next/image|favicon.png|getPreviewApiKey|logo.png|callback).*)',
+    '/((?!_next/static|_next/image|favicon.png|getPreviewApiKey|logo.png|callback).*)',
     '/'
   ],
 };
 
 const cookieOptions = { path: '/', sameSite: 'none', secure: true } as const;
+const cookieDeleteOptions = { ...cookieOptions, maxAge: -1 } as const; // It seems that res.cookies.delete doesn't propagate provided options (we need sameSite: none) so we use this as a workaround

@@ -1,8 +1,7 @@
 import { NextApiHandler, NextApiResponse } from "next";
 
-import { envIdCookieName, previewApiKeyCookieName } from "../../lib/constants/cookies";
+import { previewApiKeyCookieName } from "../../lib/constants/cookies";
 import { ResolutionContext, resolveUrlPath } from "../../lib/routing";
-import { defaultEnvId } from "../../lib/utils/env";
 
 const handler: NextApiHandler = async (req, res) => {
   // TODO move secret to env variables
@@ -11,13 +10,8 @@ const handler: NextApiHandler = async (req, res) => {
     return;
   }
 
-  const currentEnvId = req.cookies[envIdCookieName];
   const currentPreviewApiKey = req.cookies[previewApiKeyCookieName];
 
-  if (!currentPreviewApiKey && currentEnvId !== defaultEnvId) {
-    res.redirect(`/api/exit-preview?callback=${`/getPreviewApiKey?path=${encodeURIComponent(req.url ?? '')}`}`);
-    return;
-  }
   // Enable Preview Mode by setting the cookies
   res.setPreviewData({ currentPreviewApiKey });
   const newCookieHeader = makeCookiesCrossOrigin(res);
@@ -27,7 +21,7 @@ const handler: NextApiHandler = async (req, res) => {
 
   const path = resolveUrlPath({
     type: req.query.type.toString(),
-    slug: req.query.slug.toString()
+    slug: req.query.slug.toString(),
   } as ResolutionContext);
 
   // Redirect to the path from the fetched post
