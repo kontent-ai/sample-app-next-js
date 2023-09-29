@@ -11,7 +11,6 @@ import { internalApiDomain } from "../lib/utils/env";
 const CallbackPage: React.FC = () => {
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
-  const { replace } = router;
 
   useEffect(() => {
     if (!router.isReady) {
@@ -97,9 +96,9 @@ const CallbackPage: React.FC = () => {
         setError(api_key.error);
       }
 
-      replace(authResult?.appState ?? '/');
+      window.location.replace(authResult?.appState ?? '/'); // router.replace changes the "slug" query parameter so we can't use it here, because this parameter is used when calling the /api/preview endpoint
     });
-  }, [router.isReady, replace]);
+  }, [router.isReady]);
 
   if (error) {
     return <BuildError>{error}</BuildError>;
