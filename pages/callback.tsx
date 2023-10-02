@@ -22,18 +22,17 @@ const CallbackPage: React.FC = () => {
       console.log("Enviroment variable KONTENT_DOMAIN is empty");
     }
 
-    const getProjectContainerId = async (authToken: string) => {
-      const response = await fetch(`${internalApiDomain}/api/project-management/${envId}`,
+    const getProjectContainerId = (authToken: string): Promise<string | Readonly<{ error: string }>> =>
+      fetch(`${internalApiDomain}/api/project-management/${envId}`,
         {
           method: "GET",
           headers: {
             "Authorization": `Bearer ${authToken}`
           }
-        });
-      const data = await response.json();
-
-      return data['projectContainerId'];
-    }
+        })
+        .then(res => res.json())
+        .then(res => isIapiError(res) ? { error: res.description } : res["projectContainerId"] as string)
+        .catch(() => ({ error: "Failed to fetch projects." }))
 
     const getTokenSeedId = async (authToken: string, projectContainerId: string): Promise<string | Readonly<{ error: string }>> => {
       const data = {
@@ -43,23 +42,23 @@ const CallbackPage: React.FC = () => {
       }
 
       const tokenSeedUrl = `${internalApiDomain}/api/project-container/${projectContainerId}/keys/listing`;
-      const tokenSeedResponse = await fetch(tokenSeedUrl, {
+      return fetch(tokenSeedUrl, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           "Authorization": `Bearer ${authToken}`
         },
         body: JSON.stringify(data)
-      });
-
-      const listingData = await tokenSeedResponse.json();
-      const firstToken = listingData[0];
-      if (!firstToken) {
-        return { error: "There is no preview delivery API token generated for this environment." } as const;
-      }
-
-      return listingData[0]['token_seed_id']
-    }
+      })
+        .then(res => res.json())
+        .then(res => {
+          if (isIapiError(res)) {
+            return { error: res.description };
+          }
+          return res[0] ? res[0]['token_seed_id'] : { error: "There is no preview delivery API token generated for this environment." };
+        })
+        .catch(() => "Failed to fetch authentication keys.");
+    };
 
 
     const getPreviewApiKey = async (authToken: string, projectContainerId: string): Promise<string | Readonly<{ error: string }>> => {
@@ -69,34 +68,42 @@ const CallbackPage: React.FC = () => {
       }
 
       const apiKeyUrl = `${internalApiDomain}/api/project-container/${projectContainerId}/keys/${tokenSeedId}`;
-      const apiKeyResponse = await fetch(apiKeyUrl, {
+
+      return fetch(apiKeyUrl, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
           "Authorization": `Bearer ${authToken}`
         },
-      });
-
-      const apiKeyData = await apiKeyResponse.json();
-      return apiKeyData['api_key'];
+      })
+        .then(res => res.json())
+        .then(res => isIapiError(res) ? { error: res.description } : res["api_key"])
+        .catch(() => ({ error: "Failed to fetch authentication key." }))
     };
 
     webAuth.parseHash({ hash: window.location.hash }, async (err, authResult) => {
       if (err) {
-        return console.error(err);
+        return setError(err.errorDescription ?? err.error);
       }
-      const projectContainerId = await getProjectContainerId(authResult?.accessToken as string);
+      if (!authResult?.accessToken) {
+        return setError("Failed to fetch access token.");
+      }
+      const projectContainerId = await getProjectContainerId(authResult.accessToken);
 
-      const api_key = await getPreviewApiKey(authResult?.accessToken as string, projectContainerId as string);
+      if (typeof projectContainerId === "object") {
+        return setError(projectContainerId.error);
+      }
+
+      const api_key = await getPreviewApiKey(authResult.accessToken, projectContainerId);
 
       if (typeof api_key === "string") {
         setCookie(previewApiKeyCookieName, api_key, { path: '/', sameSite: 'none', secure: true })
       }
       else {
-        setError(api_key.error);
+        return setError(api_key.error);
       }
 
-      window.location.replace(authResult?.appState ?? '/'); // router.replace changes the "slug" query parameter so we can't use it here, because this parameter is used when calling the /api/preview endpoint
+      window.location.replace(authResult.appState ?? '/'); // router.replace changes the "slug" query parameter so we can't use it here, because this parameter is used when calling the /api/preview endpoint
     });
   }, [router.isReady]);
 
@@ -112,3 +119,6 @@ const callback = dynamic(() => Promise.resolve(CallbackPage), {
 })
 
 export default callback;
+
+const isIapiError = (response: unknown): response is Readonly<{ description: string }> =>
+  typeof response === "object" && response !== null && "description" in response && typeof response.description === "string";
