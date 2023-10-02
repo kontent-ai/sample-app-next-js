@@ -5,8 +5,9 @@ import { useEffect, useState } from "react";
 
 import { BuildError } from "../components/shared/ui/BuildError";
 import { webAuth } from "../lib/constants/auth";
+import { mainColorTextClass } from "../lib/constants/colors";
 import { envIdCookieName, previewApiKeyCookieName } from "../lib/constants/cookies";
-import { internalApiDomain } from "../lib/utils/env";
+import { internalApiDomain, siteCodename } from "../lib/utils/env";
 
 const CallbackPage: React.FC = () => {
   const router = useRouter();
@@ -111,14 +112,24 @@ const CallbackPage: React.FC = () => {
     return <BuildError>{error}</BuildError>;
   }
 
-  return null;
-}
+  return <Loader />;
+};
 
 const callback = dynamic(() => Promise.resolve(CallbackPage), {
   ssr: false,
-})
+});
 
 export default callback;
 
 const isIapiError = (response: unknown): response is Readonly<{ description: string }> =>
   typeof response === "object" && response !== null && "description" in response && typeof response.description === "string";
+
+const Loader = () => (
+  <div
+    className={`animate-spin inline-block mt-[20%] ml-[50%] w-8 h-8 border-[3px] border-current border-t-transparent ${mainColorTextClass[siteCodename]} rounded-full`}
+    role="status"
+    aria-label="loading"
+  >
+    <span className="sr-only">Loading...</span>
+  </div >
+);
