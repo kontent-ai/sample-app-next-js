@@ -65,7 +65,7 @@ yarn create next-app --example https://github.com/kontent-ai-bot/kontent-ai-new-
 > If you want to use your app inside [web spotlight](https://kontent.ai/features/webspotlight/), you will need to run the project under the `https` scheme.
 > To do that you can use a proxy like [Ngrok](https://ngrok.com/) or [write you own server](https://github.com/vercel/next.js/tree/canary/examples/custom-server).
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+You can start editing the page by modifying `pages/[envId]/index.tsx`. The page auto-updates as you edit the file.
 
 > By default, the content is loaded from a shared Kontent.ai project.
 > If you want to use your own clone of the project so that you can customize it and experiment with Kontent, change the relevant settings in your `.env.local` file.
@@ -81,8 +81,8 @@ The app contains code to dynamically handle different Kontent.ai projects (e.g. 
 Some of the parts responsible for handle different Kontent.ai projects that needs adjustments in case of transforming it into single-project setup.
 
 * `middleware.ts` - Getting the Kontent.ai environment ID and storing it in cookie. For single-project setup use only the environment variable with environment ID should be used.
-* `pages/callback.ts` & `pages/getPreviewApiKey.ts` & `constants/auth.ts` - Responsible for exchanging preview API keys for specified environment. For single-project setup use only the environment variable with preview API key should be used.
-* `pages/[envid]` - folder responsible for the [dynamic segment](https://nextjs.org/docs/pages/building-your-application/routing/dynamic-routes) passing the environment ID for pages. For single-project setup remove the folder and move its content one level up.
+* `pages/callback.tsx` & `pages/getPreviewApiKey.ts` & `lib/constants/auth.ts` - Responsible for exchanging preview API keys for specified environment. For single-project setup use only the environment variable with preview API key should be used.
+* `pages/[envId]` - folder responsible for the [dynamic segment](https://nextjs.org/docs/pages/building-your-application/routing/dynamic-routes) passing the environment ID for pages. For single-project setup remove the folder and move its content one level up.
 
 ## Create your own data source project in Kontent.ai
 
