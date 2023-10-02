@@ -12,15 +12,13 @@ Ficto Healthtech
 
 [![Vercel](https://therealsujitk-vercel-badge.vercel.app/?app=ficto-healthtech&style=for-the-badge&logo=false)](https://ficto-healthtech.vercel.app)
 
-[![Netlify Status](https://api.netlify.com/api/v1/badges/aa724fef-9fda-4a85-8f6b-4a58f6f3763e/deploy-status)](https://app.netlify.com/sites/new-sample-app/deploys)
-
 Ficto Healthtech Imaging
 
-[![Vercel](https://therealsujitk-vercel-badge.vercel.app/?app=ficto-healthtech-imaging&style=for-the-badge&logo=false)](https://ficto-healthtech-imaging.vercel.app)
+[![Vercel](https://therealsujitk-vercel-badge.vercel.app/?app=ficto-imaging&style=for-the-badge&logo=false)](https://ficto-imaging.vercel.app)
 
 Ficto Surgical
 
-[![Vercel](https://therealsujitk-vercel-badge.vercel.app/?app=ficto-healthtech-surgical&style=for-the-badge&logo=false)](https://ficto-healthtech-surgical.vercel.app)
+[![Vercel](https://therealsujitk-vercel-badge.vercel.app/?app=ficto-surgical&style=for-the-badge&logo=false)](https://ficto-surgical.vercel.app)
 
 ## Getting Started
 
@@ -28,18 +26,18 @@ You can spin out your clone of this template.
 
 ### Deploy
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/external?repository-url=https://github.com/kontent-ai-bot/kontent-ai-new-sample-app&project-name=kontent-sample-app&repository-name=kontent-sample-app-next-js&env=KONTENT_COLLECTION_CODENAME,NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID,KONTENT_PREVIEW_API_KEY,NEXT_PUBLIC_OTHER_COLLECTIONS_DOMAINS&envDescription=Required%20to%20connect%20the%20app%20with%20Kontent&envLink=[https://github.com/kontent-ai/boilerplate-next-js%23Environment-variables](https://github.com/kontent-ai-bot/kontent-ai-new-sample-app#environment-variables))
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/external?repository-url=https://github.com/kontent-ai/sample-app-next-js&project-name=kontent-sample-app&repository-name=kontent-sample-app-next-js&env=KONTENT_COLLECTION_CODENAME,NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID,KONTENT_PREVIEW_API_KEY,NEXT_PUBLIC_OTHER_COLLECTIONS_DOMAINS&envDescription=Required%20to%20connect%20the%20app%20with%20Kontent&envLink=[https://github.com/kontent-ai/sample-app-next-js#environment-variables](https://github.com/kontent-ai/sample-app-next-js#environment-variables))
 
-[![Deploy on Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/kontent-ai-bot/kontent-ai-new-sample-app)
+[![Deploy on Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/kontent-ai/sample-app-next-js)
 
 ### Init project by command line
 
 Execute [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) with [npm](https://docs.npmjs.com/cli/init) or [Yarn](https://yarnpkg.com/lang/en/docs/cli/create/) to bootstrap the example:
 
 ```bash
-npx create-next-app --example https://github.com/kontent-ai-bot/kontent-ai-new-sample-app kontent-ai-new-sample-app
+npx create-next-app --example https://github.com/kontent-ai/sample-app-next-js sample-app-next-js
 # or
-yarn create next-app --example https://github.com/kontent-ai-bot/kontent-ai-new-sample-app kontent-ai-new-sample-app
+yarn create next-app --example https://github.com/kontent-ai/sample-app-next-js sample-app-next-js
 ```
 
 ## Code development
@@ -92,15 +90,15 @@ TBD - raise the issue, if you want the project backup
 
 https://github.com/kontent-ai/sample-app-next-js/blob/001994b44d2ef5cb499bce23756f0dd9c3086c2b/package.json#L4-L13
 
-[contributors-shield]: https://img.shields.io/github/contributors/kontent-ai-bot/kontent-ai-new-sample-app.svg?style=for-the-badge
-[contributors-url]: https://github.com/kontent-ai-bot/kontent-ai-new-sample-app/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/kontent-ai-bot/kontent-ai-new-sample-app.svg?style=for-the-badge
-[forks-url]: https://github.com/kontent-ai-bot/kontent-ai-new-sample-app/network/members
-[stars-shield]: https://img.shields.io/github/stars/kontent-ai-bot/kontent-ai-new-sample-app.svg?style=for-the-badge
-[stars-url]: https://github.com/kontent-ai-bot/kontent-ai-new-sample-app/stargazers
-[issues-shield]: https://img.shields.io/github/issues/kontent-ai-bot/kontent-ai-new-sample-app.svg?style=for-the-badge
-[issues-url]:https://github.com/kontent-ai-bot/kontent-ai-new-sample-app/issues
-[license-shield]: https://img.shields.io/github/license/kontent-ai-bot/kontent-ai-new-sample-app.svg?style=for-the-badge
-[license-url]:https://github.com/kontent-ai-bot/kontent-ai-new-sample-app/blob/master/LICENSE.md
+[contributors-shield]: https://img.shields.io/github/contributors/kontent-ai/sample-app-next-js.svg?style=for-the-badge
+[contributors-url]: https://github.com/kontent-ai/sample-app-next-js/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/kontent-ai/sample-app-next-js.svg?style=for-the-badge
+[forks-url]: https://github.com/kontent-ai/sample-app-next-js/network/members
+[stars-shield]: https://img.shields.io/github/stars/kontent-ai/sample-app-next-js.svg?style=for-the-badge
+[stars-url]: https://github.com/kontent-ai/sample-app-next-js/stargazers
+[issues-shield]: https://img.shields.io/github/issues/kontent-ai/sample-app-next-js.svg?style=for-the-badge
+[issues-url]:https://github.com/kontent-ai/sample-app-next-js/issues
+[license-shield]: https://img.shields.io/github/license/kontent-ai/sample-app-next-js.svg?style=for-the-badge
+[license-url]:https://github.com/kontent-ai/sample-app-next-js/blob/master/LICENSE.md
 [discord-shield]: https://img.shields.io/discord/821885171984891914?color=%237289DA&label=Kontent.ai%20Discord&logo=discord&style=for-the-badge
 [discord-url]: https://discord.com/invite/SKCxwPtevJ
