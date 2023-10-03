@@ -9,8 +9,9 @@ import {
   calloutTypeColor,
   mainColorBorderClass,
 } from "../../../lib/constants/colors";
+import { isCalloutType } from "../../../lib/types/perCollection";
 import { siteCodename } from "../../../lib/utils/env";
-import { Component_Callout } from "../../../models";
+import { Component_Callout, contentTypes } from "../../../models";
 import { RichTextElement } from "./RichTextElement";
 
 type Props = Readonly<{
@@ -32,12 +33,14 @@ export const CalloutComponent: FC<Props> = (props) => (
 );
 
 const renderTypeIcon = (callout: Component_Callout) => {
+  const { warning, info, lightbulb } = contentTypes.callout.elements.type.options;
+
   switch (callout.elements.type.value[0]?.codename) {
-    case OptionCodename.Warning:
+    case warning.codename:
       return <ExclamationTriangleIcon />;
-    case OptionCodename.Info:
+    case info.codename:
       return <InformationCircleIcon />;
-    case OptionCodename.Lightbulb:
+    case lightbulb.codename:
       return <LightBulbIcon />;
     default:
       throwUnknownType(callout);
@@ -45,20 +48,13 @@ const renderTypeIcon = (callout: Component_Callout) => {
 };
 
 const createIconColor = (callout: Component_Callout) => {
-  const calloutType = callout.elements.type.value[0]?.codename as CalloutType;
+  const calloutType = callout.elements.type.value[0]?.codename;
 
-  if (calloutType) return calloutTypeColor[calloutType];
+  if (isCalloutType(calloutType)) return calloutTypeColor[calloutType];
 
   throwUnknownType(callout);
 };
 
-enum OptionCodename {
-  Warning = "warning",
-  Info = "info",
-  Lightbulb = "lightbulb",
-}
-
-type CalloutType = "warning" | "info" | "lightbulb" | undefined;
 
 const throwUnknownType = (callout: Component_Callout) => {
   throw new Error(

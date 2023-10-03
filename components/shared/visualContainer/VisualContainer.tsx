@@ -1,7 +1,7 @@
 import { FC } from "react";
 
 import { sanitizeAnchor } from "../../../lib/anchors";
-import { Block_VisualContainer } from "../../../models";
+import { Block_VisualContainer, contentTypes } from "../../../models";
 import { BuildError } from "../ui/BuildError";
 import { CarouselComponent } from "./Carousel";
 import { GridComponent } from "./Grid";
@@ -13,8 +13,9 @@ type Props = Readonly<{
 }>;
 
 const VisualRepresentation: FC<Props> = (props) => {
+  const { grid, hero_unit, stack } = contentTypes.visual_container.elements.visual_representation.options;
   switch (props.item.elements.visualRepresentation.value[0]?.codename) {
-    case visualRepresentation.grid:
+    case grid.codename:
       return (
         <GridComponent
           items={props.item.elements.items.linkedItems}
@@ -23,7 +24,7 @@ const VisualRepresentation: FC<Props> = (props) => {
           codename={props.item.system.codename}
         />
       );
-    case visualRepresentation.stack:
+    case stack.codename:
       return (
         <StackComponent
           items={props.item.elements.items.linkedItems}
@@ -33,7 +34,7 @@ const VisualRepresentation: FC<Props> = (props) => {
           codename={props.item.system.codename}
         />
       );
-    case visualRepresentation.hero_unit:
+    case hero_unit.codename:
       if (props.item.elements.items.linkedItems.length === 1) {
         const fact = props.item.elements.items.linkedItems[0];
         return !fact ? (
@@ -67,10 +68,3 @@ export const VisualContainer: FC<Props> = (props) => (
     <VisualRepresentation item={props.item} />
   </div>
 );
-
-// https://kontent-ai.atlassian.net/browse/DEVREL-955
-const visualRepresentation = {
-  grid: "grid",
-  stack: "stack",
-  hero_unit: "hero_unit",
-} as const;
