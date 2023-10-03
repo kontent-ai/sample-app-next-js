@@ -12,7 +12,7 @@ Ficto Healthtech
 
 [![Vercel](https://therealsujitk-vercel-badge.vercel.app/?app=ficto-healthtech&style=for-the-badge&logo=false)](https://ficto-healthtech.vercel.app)
 
-Ficto Healthtech Imaging
+Ficto Imaging
 
 [![Vercel](https://therealsujitk-vercel-badge.vercel.app/?app=ficto-imaging&style=for-the-badge&logo=false)](https://ficto-imaging.vercel.app)
 
@@ -21,8 +21,6 @@ Ficto Surgical
 [![Vercel](https://therealsujitk-vercel-badge.vercel.app/?app=ficto-surgical&style=for-the-badge&logo=false)](https://ficto-surgical.vercel.app)
 
 ## Getting Started
-
-You can spin out your clone of this template.
 
 ### Deploy
 
