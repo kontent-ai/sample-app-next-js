@@ -9,7 +9,7 @@ import {
   calloutTypeColor,
   mainColorBorderClass,
 } from "../../../lib/constants/colors";
-import { isCalloutType } from "../../../lib/types/perCollection";
+import { isCalloutType } from "../../../lib/types/calloutType";
 import { siteCodename } from "../../../lib/utils/env";
 import { Component_Callout, contentTypes } from "../../../models";
 import { RichTextElement } from "./RichTextElement";
