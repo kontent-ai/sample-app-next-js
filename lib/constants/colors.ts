@@ -1,4 +1,5 @@
-import { CalloutType, PerCollection } from "../types/perCollection";
+import { CalloutType } from "../types/calloutType";
+import { PerCollection } from "../types/perCollection";
 
 export const mainColorHoverClass: PerCollection<string> = {
   ficto_healthtech: "hover:bg-emerald-500",
