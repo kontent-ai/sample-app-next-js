@@ -62,8 +62,18 @@ yarn create next-app --example https://github.com/kontent-ai-bot/kontent-ai-new-
     ```
 
 🎉 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-> If you want to use your app inside [web spotlight](https://kontent.ai/features/webspotlight/), you will need to run the project under the `https` scheme.
-> To do that you can use a proxy like [Ngrok](https://ngrok.com/) or [write you own server](https://github.com/vercel/next.js/tree/canary/examples/custom-server).
+
+#### Running the app in web spotlight
+If you want to use your app inside [web spotlight](https://kontent.ai/features/webspotlight/), you will need to run the app under the `https` scheme.
+
+To run the app under the `https` scheme you can use one of the following methods:
+* Run `npm run https:dev` to run the app in the development mode and a proxy server proxying `https://localhost:3001` to `http://localhost:3000`. 
+  * The proxy will use a self-signed certificate which might not work in some browsers.
+  * The proxy is run using the [`local-ssl-proxy`](https://www.npmjs.com/package/local-ssl-proxy) package.
+* Run `npm run https:proxy` to create a proxy as above without running the app (you are expected to run the app separately).
+  * You can use this command with a custom trusted certificate like this `npm run https:proxy -- --key localhost-key.pem --cert localhost.pem`. See [the package documentation](https://github.com/cameronhunter/local-ssl-proxy#run-ssl-proxy-with-a-self-signed-trusted-certificate) for more details
+* [Write you own server](https://github.com/vercel/next.js/tree/canary/examples/custom-server).
+* Use [Ngrok](https://ngrok.com/) or something similar.
 
 You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
 
