@@ -1,4 +1,4 @@
-import { PerCollection } from "../types/perCollection";
+import { CalloutType, PerCollection } from "../types/perCollection";
 
 export const mainColorHoverClass: PerCollection<string> = {
   ficto_healthtech: "hover:bg-emerald-500",
@@ -54,7 +54,7 @@ export const mainColorAfterBgClass: PerCollection<string> = {
   ficto_surgical: "after:bg-rose-900",
 }
 
-export const calloutTypeColor = {
+export const calloutTypeColor: Readonly<Record<CalloutType, string>> = {
   warning: "text-orange-400",
   info: "text-blue-400",
   lightbulb: "text-green-400",
