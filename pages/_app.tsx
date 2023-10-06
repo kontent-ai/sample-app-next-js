@@ -4,14 +4,20 @@ import { Analytics } from '@vercel/analytics/react';
 import { AppProps } from 'next/app';
 import Head from 'next/head';
 
-import { SmartLinkProvider } from '../components/shared/contexts/SmartLink';
+import { LivePreviewProvider } from '../components/shared/contexts/LivePreview';
+import {
+  SmartLinkProvider,
+  useSmartLink,
+} from '../components/shared/contexts/SmartLink';
 
-export default function MyApp({
+const App = ({
   Component,
   pageProps,
-}: AppProps) {
+}: AppProps) => {
+  const smartLink = useSmartLink();
+
   return (
-    <SmartLinkProvider>
+    <LivePreviewProvider smartLink={smartLink}>
       <div className="w-full h-screen">
         <Component {...pageProps} />
         <Head>
@@ -24,6 +30,14 @@ export default function MyApp({
         </Head>
         <Analytics />
       </div>
+    </LivePreviewProvider>
+  );
+};
+
+export default function MyApp(props: AppProps) {
+  return (
+    <SmartLinkProvider>
+      <App {...props} />
     </SmartLinkProvider>
   );
 }
