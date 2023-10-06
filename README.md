@@ -90,9 +90,11 @@ Some of the parts responsible for handle different Kontent.ai projects that need
 * `pages/callback.tsx` & `pages/getPreviewApiKey.ts` & `lib/constants/auth.ts` - Responsible for exchanging preview API keys for specified environment. For single-project setup use only the environment variable with preview API key should be used.
 * `pages/[envId]` - folder responsible for the [dynamic segment](https://nextjs.org/docs/pages/building-your-application/routing/dynamic-routes) passing the environment ID for pages. For single-project setup remove the folder and move its content one level up.
 
-## Create your own data source project in Kontent.ai
+## Create your own source project in Kontent.ai
 
-TBD - raise the issue, if you want the project backup
+The project itself is currently in an early access.
+If you want to try the app with your own project in Kontent.ai, please create an issue and mention your email connected to your Kontent.ai project.
+Once we give you access, you will be able to create your copy of the source project right from the Kontent.ai UI.
 
 ### Commands
 
