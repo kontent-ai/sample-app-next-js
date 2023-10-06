@@ -3,6 +3,7 @@ import { ParsedUrlQuery } from "querystring";
 import { FC } from "react";
 
 import { Content } from "../../components/shared/Content";
+import {useLivePreview} from "../../components/shared/contexts/LivePreview";
 import { AppPage } from "../../components/shared/ui/appPage";
 import { getDefaultMetadata, getItemBySlug, getPagesSlugs, getSiteMenu } from "../../lib/kontentClient";
 import { reservedListingSlugs } from "../../lib/routing";
@@ -64,25 +65,37 @@ export const getStaticProps: GetStaticProps<Props, IParams> = async (context) =>
   };
 }
 
-const TopLevelPage: FC<Props> = props => (
-  <AppPage
-    siteMenu={props.siteMenu}
-    defaultMetadata={props.defaultMetadata}
-    item={props.page}
-    pageType="WebPage"
-  >
-    <div
-      {...createElementSmartLink(contentTypes.page.elements.content.codename)}
-      {...createFixedAddSmartLink("end")}
+const TopLevelPage: FC<Props> = ({
+    page,
+    siteMenu,
+    defaultMetadata,
+}) => {
+  const data = useLivePreview({
+      page,
+      siteMenu,
+      defaultMetadata,
+  });
+
+  return (
+    <AppPage
+      siteMenu={data.siteMenu}
+      defaultMetadata={data.defaultMetadata}
+      item={data.page}
+      pageType="WebPage"
     >
-      {props.page.elements.content.linkedItems.map(piece => (
-        <Content
-          key={piece.system.id}
-          item={piece}
-        />
-      ))}
-    </div>
-  </AppPage>
-);
+      <div
+        {...createElementSmartLink(contentTypes.page.elements.content.codename)}
+        {...createFixedAddSmartLink("end")}
+      >
+        {data.page.elements.content.linkedItems.map(piece => (
+          <Content
+            key={piece.system.id}
+            item={piece}
+          />
+        ))}
+      </div>
+    </AppPage>
+  );
+};
 
 export default TopLevelPage;

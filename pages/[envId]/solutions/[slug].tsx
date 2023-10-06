@@ -3,6 +3,7 @@ import { ParsedUrlQuery } from "querystring";
 import { FC } from "react";
 
 import { HeroImage } from "../../../components/landingPage/ui/heroImage";
+import {useLivePreview} from "../../../components/shared/contexts/LivePreview";
 import { RichTextElement } from "../../../components/shared/richText/RichTextElement";
 import { AppPage } from "../../../components/shared/ui/appPage";
 import { mainColorBgClass } from "../../../lib/constants/colors";
@@ -11,8 +12,6 @@ import { defaultEnvId, siteCodename } from "../../../lib/utils/env";
 import { getEnvIdFromRouteParams, getPreviewApiKeyFromPreviewData } from "../../../lib/utils/pageUtils";
 import { createElementSmartLink } from "../../../lib/utils/smartLinkUtils";
 import { contentTypes, Metadata, Nav_NavigationItem, Solution } from "../../../models";
-
-
 
 type Props = Readonly<{
   solution: Solution;
@@ -71,42 +70,46 @@ const SolutionDetail: FC<Props> = ({
   solution,
   siteMenu,
   defaultMetadata,
-}) => (
-  <AppPage
-    item={solution}
-    siteMenu={siteMenu}
-    defaultMetadata={defaultMetadata}
-    pageType="Solution"
-  >
-    <HeroImage
-      url={solution.elements.productBaseMainImage.value[0]?.url || ""}
-      itemId={solution.system.id}
-    >
-      <div
-        className={`py-1 px-3 w-full md:w-fit ${mainColorBgClass[siteCodename]}  opacity-90`}
+}) => {
+  const data = useLivePreview({
+    solution,
+    siteMenu,
+    defaultMetadata,
+  });
+
+  return (
+      <AppPage
+        item={data.solution}
+        siteMenu={data.siteMenu}
+        defaultMetadata={data.defaultMetadata}
+        pageType="Solution"
       >
-        <h1
-          {...createElementSmartLink(
-            contentTypes.solution.elements.product_base__name.codename
-          )}
-          className="m-0 text-8xl text-white align-text-bottom max-w-2xl tracking-wide font-semibold"
+        <HeroImage
+          url={data.solution.elements.productBaseMainImage.value[0]?.url || ""}
+          itemId={data.solution.system.id}
         >
-          {solution.elements.productBaseName.value}
-        </h1>
-      </div>
-    </HeroImage>
-    <div
-      className="text-xl font-semibold"
-      {...createElementSmartLink(
-        contentTypes.solution.elements.showcase.codename
-      )}
-    >
-      <RichTextElement
-        element={solution.elements.showcase}
-        isInsideTable={false}
-      />
-    </div>
-  </AppPage>
-);
+          <div
+            className={`py-1 px-3 w-full md:w-fit ${mainColorBgClass[siteCodename]}  opacity-90`}
+          >
+            <h1
+              {...createElementSmartLink(contentTypes.solution.elements.product_base__name.codename)}
+              className="m-0 text-8xl text-white align-text-bottom max-w-2xl tracking-wide font-semibold"
+            >
+              {data.solution.elements.productBaseName.value}
+            </h1>
+          </div>
+        </HeroImage>
+        <div
+          className="text-xl font-semibold"
+          {...createElementSmartLink(contentTypes.solution.elements.showcase.codename)}
+        >
+          <RichTextElement
+            element={data.solution.elements.showcase}
+            isInsideTable={false}
+          />
+        </div>
+      </AppPage>
+  );
+}
 
 export default SolutionDetail;

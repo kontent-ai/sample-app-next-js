@@ -6,6 +6,7 @@ import { FC, useState } from "react";
 
 import { ArticleItem } from "../../../../../../components/listingPage/ArticleItem";
 import { Content } from "../../../../../../components/shared/Content";
+import {useLivePreview} from "../../../../../../components/shared/contexts/LivePreview";
 import { AppPage } from "../../../../../../components/shared/ui/appPage";
 import { mainColorBgClass, mainColorBorderClass, mainColorHoverClass } from "../../../../../../lib/constants/colors";
 import { ArticlePageSize } from "../../../../../../lib/constants/paging";
@@ -106,22 +107,35 @@ const FilterOptions: FC<FilterOptionProps> = ({ options, router }) => {
   );
 };
 
-const ArticlesPagingPage: FC<Props> = props => {
+const ArticlesPagingPage: FC<Props> = ({
+    articles,
+    page,
+    itemCount,
+    defaultMetadata,
+    siteMenu,
+}) => {
   const router = useRouter();
-  const page = typeof router.query.page === 'string' ? +router.query.page : undefined;
+  const pageNumber = typeof router.query.page === 'string' ? +router.query.page : undefined;
   const category = typeof router.query.category === 'string' ? router.query.category : "all";
   const filterOptions = getFilterOptions();
 
-  const pageCount = Math.ceil(props.itemCount / ArticlePageSize);
+  const pageCount = Math.ceil(itemCount / ArticlePageSize);
+
+  const data = useLivePreview({
+    articles,
+    defaultMetadata,
+    page,
+    siteMenu,
+  });
 
   return (
     <AppPage
-      siteMenu={props.siteMenu}
-      defaultMetadata={props.defaultMetadata}
-      item={props.page}
+      siteMenu={data.siteMenu}
+      defaultMetadata={data.defaultMetadata}
+      item={data.page}
       pageType="WebPage"
     >
-      {props.page.elements.content.linkedItems.map(piece => (
+      {data.page.elements.content.linkedItems.map(piece => (
         <Content
           key={piece.system.id}
           item={piece as any}
@@ -134,9 +148,9 @@ const ArticlesPagingPage: FC<Props> = props => {
           router={router}
         />
         <div className="flex flex-col flex-grow min-h-[500px]">
-          {props.articles.length > 0 ? (
+          {data.articles.length > 0 ? (
             <ul className="w-full grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 place-items-center list-none gap-5 md:pt-4 pl-0 justify-center">
-              {props.articles.map(article => (
+              {data.articles.map(article => (
                 article.elements.type.value[0]?.codename && (
                   <ArticleItem
                     key={article.system.id}
@@ -164,7 +178,7 @@ const ArticlesPagingPage: FC<Props> = props => {
                 <li>
                   <LinkButton
                     text="Previous"
-                    href={!page || page === 2
+                    href={!pageNumber || pageNumber === 2
                       ? resolveUrlPath({
                         type: "article",
                         term: "all"
@@ -172,9 +186,9 @@ const ArticlesPagingPage: FC<Props> = props => {
                       : resolveUrlPath({
                         type: "article",
                         term: category,
-                        page: page - 1
+                        page: pageNumber - 1
                       } as ResolutionContext)}
-                    disabled={page === 1}
+                    disabled={pageNumber === 1}
                     roundLeft
                   />
 
@@ -188,7 +202,7 @@ const ArticlesPagingPage: FC<Props> = props => {
                         term: category,
                         page: i + 1 > 1 ? i + 1 : undefined
                       } as ResolutionContext)}
-                      highlight={(page ?? 1) === i + 1}
+                      highlight={(pageNumber ?? 1) === i + 1}
                     />
                   </li>
                 ))}
@@ -198,9 +212,9 @@ const ArticlesPagingPage: FC<Props> = props => {
                     href={resolveUrlPath({
                       type: "article",
                       term: category,
-                      page: page ? page + 1 : 2
+                      page: pageNumber ? pageNumber + 1 : 2
                     } as ResolutionContext)}
-                    disabled={(page ?? 1) === pageCount}
+                    disabled={(pageNumber ?? 1) === pageCount}
                     roundRight
                   />
                 </li>

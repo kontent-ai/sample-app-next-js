@@ -18,6 +18,7 @@ import {
   WSL_Page,
   WSL_WebSpotlightRoot,
 } from '../../../models';
+import { useLivePreview } from '../contexts/LivePreview';
 import { Footer } from './footer';
 import { Menu } from './menu';
 
@@ -31,29 +32,42 @@ type Props = Readonly<{
   pageType: 'WebPage' | 'Article' | 'Product' | 'Solution',
 }>;
 
-export const AppPage: FC<Props> = props => (
-  <>
-    <PageMetadata
-      item={props.item}
-      pageType={props.pageType}
-      defaultMetadata={props.defaultMetadata}
-    />
-    <div className="min-h-full grow flex flex-col items-center overflow-hidden">
-      {props.siteMenu ? <Menu item={props.siteMenu} /> :
-        <span>Missing top navigation. Please provide a valid navigation item in the web spotlight root.</span>}
-      {/* https://tailwindcss.com/docs/typography-plugin */}
-      <main
-        className="grow h-full w-screen bg-slate-50 scroll-smooth"
-        {...createItemSmartLink(props.item.system.id, true)}
-      >
-        <div className="prose w-full max-w-screen-xl mx-auto mt-16">
-          {props.children}
-        </div>
-      </main>
-      <Footer />
-    </div>
-  </>
-);
+export const AppPage: FC<Props> = ({
+  item,
+  siteMenu,
+  defaultMetadata,
+  pageType,
+  children,
+}) => {
+  const data = useLivePreview({
+    item,
+    siteMenu,
+    defaultMetadata,
+  });
+
+  return (
+    <>
+      <PageMetadata
+        item={data.item}
+        pageType={pageType}
+        defaultMetadata={data.defaultMetadata}
+      />
+      <div className="min-h-full grow flex flex-col items-center overflow-hidden">
+        {data.siteMenu ? <Menu item={data.siteMenu} /> : <span>Missing top navigation. Please provide a valid navigation item in the web spotlight root.</span>}
+        {/* https://tailwindcss.com/docs/typography-plugin */}
+        <main
+          className="grow h-full w-screen bg-slate-50 scroll-smooth"
+          {...createItemSmartLink(data.item.system.id, true)}
+        >
+          <div className="prose w-full max-w-screen-xl mx-auto mt-16">
+            {children}
+          </div>
+        </main>
+        <Footer />
+      </div>
+    </>
+  );
+};
 
 AppPage.displayName = 'Page';
 
