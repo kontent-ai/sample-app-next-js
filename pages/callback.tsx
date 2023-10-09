@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { BuildError } from "../components/shared/ui/BuildError";
 import { webAuth } from "../lib/constants/auth";
 import { mainColorTextClass } from "../lib/constants/colors";
-import { envIdCookieName, previewApiKeyCookieName } from "../lib/constants/cookies";
+import { envIdCookieName, previewApiKeyCookieName, urlAfterAuthCookieName } from "../lib/constants/cookies";
 import { internalApiDomain, siteCodename } from "../lib/utils/env";
 
 const CallbackPage: React.FC = () => {
@@ -83,6 +83,9 @@ const CallbackPage: React.FC = () => {
     };
 
     webAuth.parseHash({ hash: window.location.hash }, async (err, authResult) => {
+      if (err?.error && requiresLoginAuthErrors.includes(err.error)) {
+        return window.location.replace(`/getPreviewApiKey?promptLogin&path=${getCookie(urlAfterAuthCookieName)}`);
+      }
       if (err) {
         return setError(err.errorDescription ?? err.error);
       }
@@ -133,3 +136,5 @@ const Loader = () => (
     <span className="sr-only">Loading...</span>
   </div >
 );
+
+const requiresLoginAuthErrors: ReadonlyArray<string> = ["login_required", "consent_required", "interaction_required"];
