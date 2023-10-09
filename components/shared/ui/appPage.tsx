@@ -1,14 +1,25 @@
-import Head from "next/head";
-import { FC, ReactNode } from "react";
+import Head from 'next/head';
+import {
+  FC,
+  ReactNode,
+} from 'react';
 
-import { perCollectionSEOTitle } from "../../../lib/constants/labels";
-import { ValidCollectionCodename } from "../../../lib/types/perCollection";
-import { useSmartLink } from "../../../lib/useSmartLink";
-import { siteCodename } from "../../../lib/utils/env";
-import { createItemSmartLink } from "../../../lib/utils/smartLinkUtils";
-import { Article, contentTypes, Metadata, Nav_NavigationItem, Product, Solution, WSL_Page, WSL_WebSpotlightRoot } from "../../../models";
-import { Footer } from "./footer";
-import { Menu } from "./menu";
+import { perCollectionSEOTitle } from '../../../lib/constants/labels';
+import { ValidCollectionCodename } from '../../../lib/types/perCollection';
+import { siteCodename } from '../../../lib/utils/env';
+import { createItemSmartLink } from '../../../lib/utils/smartLinkUtils';
+import {
+  Article,
+  contentTypes,
+  Metadata,
+  Nav_NavigationItem,
+  Product,
+  Solution,
+  WSL_Page,
+  WSL_WebSpotlightRoot,
+} from '../../../models';
+import { Footer } from './footer';
+import { Menu } from './menu';
 
 type AcceptedItem = WSL_WebSpotlightRoot | Article | Product | WSL_Page | Solution;
 
@@ -17,42 +28,43 @@ type Props = Readonly<{
   item: AcceptedItem;
   siteMenu: Nav_NavigationItem | null;
   defaultMetadata: Metadata;
-  pageType: "WebPage" | "Article" | "Product" | "Solution",
+  pageType: 'WebPage' | 'Article' | 'Product' | 'Solution',
 }>;
 
-export const AppPage: FC<Props> = props => {
-  useSmartLink();
+export const AppPage: FC<Props> = props => (
+  <>
+    <PageMetadata
+      item={props.item}
+      pageType={props.pageType}
+      defaultMetadata={props.defaultMetadata}
+    />
+    <div className="min-h-full grow flex flex-col items-center overflow-hidden">
+      {props.siteMenu ? <Menu item={props.siteMenu} /> :
+        <span>Missing top navigation. Please provide a valid navigation item in the web spotlight root.</span>}
+      {/* https://tailwindcss.com/docs/typography-plugin */}
+      <main
+        className="grow h-full w-screen bg-slate-50 scroll-smooth"
+        {...createItemSmartLink(props.item.system.id, true)}
+      >
+        <div className="prose w-full max-w-screen-xl mx-auto mt-16">
+          {props.children}
+        </div>
+      </main>
+      <Footer />
+    </div>
+  </>
+);
 
-  return (
-    <>
-      <PageMetadata
-        item={props.item}
-        pageType={props.pageType}
-        defaultMetadata={props.defaultMetadata}
-      />
-      <div className="min-h-full grow flex flex-col items-center overflow-hidden">
-        {props.siteMenu ? <Menu item={props.siteMenu} /> : <span>Missing top navigation. Please provide a valid navigation item in the web spotlight root.</span>}
-        {/* https://tailwindcss.com/docs/typography-plugin */}
-        <main
-          className="grow h-full w-screen bg-slate-50 scroll-smooth"
-          {...createItemSmartLink(props.item.system.id, true)}
-        >
-          <div className="prose w-full max-w-screen-xl mx-auto mt-16">
-            {props.children}
-          </div>
-        </main>
-        <Footer />
-      </div>
-    </>
-  );
-};
-
-AppPage.displayName = "Page";
+AppPage.displayName = 'Page';
 
 const isProductOrSolution = (item: AcceptedItem): item is Product | Solution =>
-  [contentTypes.solution.codename as string, contentTypes.product.codename as string].includes(item.system.type)
+  [contentTypes.solution.codename as string, contentTypes.product.codename as string].includes(item.system.type);
 
-const PageMetadata: FC<Pick<Props, "item" | "defaultMetadata" | "pageType">> = ({ item, defaultMetadata, pageType }) => {
+const PageMetadata: FC<Pick<Props, 'item' | 'defaultMetadata' | 'pageType'>> = ({
+  item,
+  defaultMetadata,
+  pageType,
+}) => {
   const pageMetaTitle = createMetaTitle(siteCodename, item);
   const pageMetaDescription = item.elements.metadataDescription.value || defaultMetadata.elements.metadataDescription.value;
   const pageMetaKeywords = item.elements.metadataKeywords.value || defaultMetadata.elements.metadataKeywords.value;
@@ -79,18 +91,18 @@ const PageMetadata: FC<Pick<Props, "item" | "defaultMetadata" | "pageType">> = (
       <script type="application/ld+json">
         {
           JSON.stringify({
-            "@context": "http://schema.org",
-            "@type": pageType,
+            '@context': 'http://schema.org',
+            '@type': pageType,
             name: item.elements.metadataTitle.value
               || (isProductOrSolution(item) ? item.elements.productBaseName.value : item.elements.title.value),
             description: pageMetaDescription,
-            keywords: pageMetaKeywords
+            keywords: pageMetaKeywords,
           })
         }
       </script>
     </Head>
-  )
-}
+  );
+};
 
 const createMetaTitle = (siteCodename: ValidCollectionCodename, item: AcceptedItem): string => {
   const siteTitle = perCollectionSEOTitle[siteCodename];
