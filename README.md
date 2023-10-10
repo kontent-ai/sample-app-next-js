@@ -22,13 +22,17 @@ Ficto Surgical
 
 ## Getting Started
 
+To run the app yourself you will need a clone of the Kontent.ai project.
+As it is currently in early access, please create an issue and mention your email connected to your Kontent.ai account and we will give you access.
+Once we give you access, you will be able to create your copy of the source project right from the Kontent.ai UI (`app.kontent.ai/projects`).
+
 ### Deploy
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/external?repository-url=https://github.com/kontent-ai/sample-app-next-js&project-name=kontent-sample-app&repository-name=kontent-sample-app-next-js&env=KONTENT_COLLECTION_CODENAME,NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID,KONTENT_PREVIEW_API_KEY,NEXT_PUBLIC_OTHER_COLLECTIONS_DOMAINS&envDescription=Required%20to%20connect%20the%20app%20with%20Kontent&envLink=[https://github.com/kontent-ai/sample-app-next-js#environment-variables](https://github.com/kontent-ai/sample-app-next-js#environment-variables))
 
 [![Deploy on Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/kontent-ai/sample-app-next-js)
 
-### Init project by command line
+### Init project from command line
 
 Execute [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) with [npm](https://docs.npmjs.com/cli/init) or [Yarn](https://yarnpkg.com/lang/en/docs/cli/create/) to bootstrap the example:
 
@@ -60,7 +64,7 @@ yarn create next-app --example https://github.com/kontent-ai/sample-app-next-js 
 
 🎉 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-#### Running the app in web spotlight
+### Running the app in web spotlight
 If you want to use your app inside [web spotlight](https://kontent.ai/features/webspotlight/), you will need to run the app under the `https` scheme.
 
 To run the app under the `https` scheme you can use one of the following methods:
@@ -76,9 +80,6 @@ To run the app under the `https` scheme you can use one of the following methods
 
 You can start editing the page by modifying `pages/[envId]/index.tsx`. The page auto-updates as you edit the file.
 
-> By default, the content is loaded from a shared Kontent.ai project.
-> If you want to use your own clone of the project so that you can customize it and experiment with Kontent, change the relevant settings in your `.env.local` file.
-
 To generate new models from Kontent.ai data, just run `npm run generateModels`. Make sure you have environment variables filled in properly.
 
 ### Use codebase as a starter
@@ -92,12 +93,6 @@ Some of the parts responsible for handle different Kontent.ai projects that need
 * `middleware.ts` - Getting the Kontent.ai environment ID and storing it in cookie. For single-project setup use only the environment variable with environment ID should be used.
 * `pages/callback.tsx` & `pages/getPreviewApiKey.ts` & `lib/constants/auth.ts` - Responsible for exchanging preview API keys for specified environment. For single-project setup use only the environment variable with preview API key should be used.
 * `pages/[envId]` - folder responsible for the [dynamic segment](https://nextjs.org/docs/pages/building-your-application/routing/dynamic-routes) passing the environment ID for pages. For single-project setup remove the folder and move its content one level up.
-
-## Create your own source project in Kontent.ai
-
-The project itself is currently in an early access.
-If you want to try the app with your own project in Kontent.ai, please create an issue and mention your email connected to your Kontent.ai project.
-Once we give you access, you will be able to create your copy of the source project right from the Kontent.ai UI.
 
 ### Commands
 
