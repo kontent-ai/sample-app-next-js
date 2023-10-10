@@ -9,7 +9,7 @@
     "build": "next build",
     "export": "next export",
     "start": "next start",
-    "https:dev": "concurrently -n dev,proxy \"npm run dev\" \"local-ssl-proxy --source 3001 --target 3000\"",
+    "https:dev": "concurrently --kill-others -n dev,proxy \"npm run dev -- --port 3000\" \"local-ssl-proxy --source 3001 --target 3000\"",
     "https:proxy": "local-ssl-proxy --source 3001 --target 3000",
     "test": "jest"
   },

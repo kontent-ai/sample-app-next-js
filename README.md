@@ -67,8 +67,10 @@ To run the app under the `https` scheme you can use one of the following methods
 * Run `npm run https:dev` to run the app in the development mode and a proxy server proxying `https://localhost:3001` to `http://localhost:3000`. 
   * The proxy will use a self-signed certificate which might not work in some browsers.
   * The proxy is run using the [`local-ssl-proxy`](https://www.npmjs.com/package/local-ssl-proxy) package.
+  * The command requires the ports 3001 and 3000 to be free, otherwise it fails. If you want to use a different ports you will need to run the proxy (`npm run https:proxy`) and the app `npm run dev` yourself.
 * Run `npm run https:proxy` to create a proxy as above without running the app (you are expected to run the app separately).
   * You can use this command with a custom trusted certificate like this `npm run https:proxy -- --key localhost-key.pem --cert localhost.pem`. See [the package documentation](https://github.com/cameronhunter/local-ssl-proxy#run-ssl-proxy-with-a-self-signed-trusted-certificate) for more details
+  * You can also change the source and/or target port (e.g. `npm run https:proxy -- --source 3002 --target 4000`)
 * [Write you own server](https://github.com/vercel/next.js/tree/canary/examples/custom-server).
 * Use [Ngrok](https://ngrok.com/) or something similar.
 
