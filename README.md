@@ -42,6 +42,27 @@ npx create-next-app --example https://github.com/kontent-ai/sample-app-next-js s
 yarn create next-app --example https://github.com/kontent-ai/sample-app-next-js sample-app-next-js
 ```
 
+### Preview mode
+
+The app uses the [Next's preview mode](https://nextjs.org/docs/pages/building-your-application/configuring/preview-mode) to show [Kontent.ai preview data](https://kontent.ai/learn/create/content-creation-first-steps/preview-your-content) on the site.
+
+Inside the generated Kontent.ai project everything is already setup for you. [Preview urls](https://kontent.ai/learn/docs/preview/preview-configuration/javascript#a-define-preview-urls-for-content-types), [Web Spotlight](https://kontent.ai/learn/docs/preview/preview-configuration/javascript#a-set-up-a-preview-for-web-spotlight) and [multiple previews](https://kontent.ai/learn/docs/preview/preview-configuration/javascript#a-set-up-multiple-previews-with-spaces) are all configured.
+So when you open the Web Spotlight or a content item preview from the Kontent.ai app, the Next's preview mode will automatically be enabled.
+
+If you open the app outside the Kontent.ai app, it will by default show the published content from Kontent.ai.
+To enable the preview mode, visit the `/api/preview` route and provide the following query parameters.
+* `secret` - This prevents unauthorised access to the preview data. By default it is in this code set to `mySuperSecret`.
+* `slug` - This defines where should the app redirect you once the preview mode is enabled (e.g. `/`).
+* `type` - This must be the codename of the content type of the content item that represents the `slug`. It can be one of (`page` or `web_spotlight_root`).
+
+An example might look something like this `/api/preview?secret=mySuperSecret&slug=about-us&type=page`.
+To exit the preview mode, visit this route `/api/exit-preview`. 
+No query parameter is necessary, but you can provide `callback` with a path to redirect to once the preview mode is disabled.
+
+> The preview mode leverages cookies so when you open the app in preview (e.g. from the Kontent.ai) and then open it again (e.g. in a different tab).
+> The second instance will also be in preview, because the cookies will be present (for the same domain) until you clear them or visit `/api/exit-preview` which also just removes the cookies.
+
+
 ## Code development
 
 ### Environment variables
