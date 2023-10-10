@@ -48,6 +48,7 @@ yarn create next-app --example https://github.com/kontent-ai/sample-app-next-js 
         ```sh
         cp .env.local.template .env.local
         ```
+    * Fill in all the necessary variables in `.env.local` based on the comments.
 
 1. Run the development server:
 
@@ -80,7 +81,7 @@ To generate new models from Kontent.ai data, just run `npm run generateModels`. 
 
 ### Use codebase as a starter
 
-> ⚠ This project is not intended as a starter project. It is as a sample of the presentation channel showcasing Kontent.ai capabilities. The following hints help you to use this code base as a base for presentation channel for your project as a boilerplate. By doing it, you are accepting the fact you are changing the purpose of this code.
+> ⚠ This project is not intended as a starter project. It is a sample of a presentation channel showcasing Kontent.ai capabilities. The following hints help you to use this code base as a base for presentation channel for your project as a boilerplate. By doing it, you are accepting the fact you are changing the purpose of this code.
 
 The app contains code to dynamically handle different Kontent.ai projects (e.g. the environment route prefix). To adjust the code to be used to single project as a starter, you want to remove the logic that is used solely for showcasing the sample project during evaluation.
 
