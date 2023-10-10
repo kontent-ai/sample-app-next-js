@@ -23,8 +23,8 @@ Ficto Surgical
 ## Getting Started
 
 To run the app yourself you will need a clone of the Kontent.ai project.
-As it is currently in early access, please create an issue and mention your email connected to your Kontent.ai account and we will give you access.
-Once we give you access, you will be able to create your copy of the source project right from the Kontent.ai UI (`app.kontent.ai/projects`).
+As it is currently in early access, please create an issue and mention the email tied with the Kontent.ai account you want to enable the project for.
+Once we grant you access, you will be able to create your copy of the source project right from the Kontent.ai UI (`app.kontent.ai/projects`).
 
 ### Deploy
 
@@ -44,23 +44,22 @@ yarn create next-app --example https://github.com/kontent-ai/sample-app-next-js 
 
 ### Preview mode
 
-The app uses the [Next's preview mode](https://nextjs.org/docs/pages/building-your-application/configuring/preview-mode) to show [Kontent.ai preview data](https://kontent.ai/learn/create/content-creation-first-steps/preview-your-content) on the site.
+The app uses the [Next's preview mode](https://nextjs.org/docs/pages/building-your-application/configuring/preview-mode) to display [Kontent.ai preview data](https://kontent.ai/learn/create/content-creation-first-steps/preview-your-content) on the site.
 
-Inside the generated Kontent.ai project everything is already setup for you. [Preview urls](https://kontent.ai/learn/docs/preview/preview-configuration/javascript#a-define-preview-urls-for-content-types), [Web Spotlight](https://kontent.ai/learn/docs/preview/preview-configuration/javascript#a-set-up-a-preview-for-web-spotlight) and [multiple previews](https://kontent.ai/learn/docs/preview/preview-configuration/javascript#a-set-up-multiple-previews-with-spaces) are all configured.
-So when you open the Web Spotlight or a content item preview from the Kontent.ai app, the Next's preview mode will automatically be enabled.
+All the features, including [preview urls](https://kontent.ai/learn/docs/preview/preview-configuration/javascript#a-define-preview-urls-for-content-types), [Web Spotlight](https://kontent.ai/learn/docs/preview/preview-configuration/javascript#a-set-up-a-preview-for-web-spotlight) and [multiple previews](https://kontent.ai/learn/docs/preview/preview-configuration/javascript#a-set-up-multiple-previews-with-spaces) are configured automatically when the project is generated. Next.js preview mode is also toggled whenever you view content via Web Spotlight or Preview button.
 
-If you open the app outside the Kontent.ai app, it will by default show the published content from Kontent.ai.
-To enable the preview mode, visit the `/api/preview` route and provide the following query parameters.
-* `secret` - This prevents unauthorised access to the preview data. By default it is in this code set to `mySuperSecret`.
+If you open the app outside of Kontent.ai, it will by default show the published content.
+To enable the preview mode, visit the `/api/preview` route and provide the following query parameters:
+* `secret` - This prevents unauthorised access to the preview data. Default value is `mySuperSecret`.
 * `slug` - This defines where should the app redirect you once the preview mode is enabled (e.g. `/`).
-* `type` - This must be the codename of the content type of the content item that represents the `slug`. It can be one of (`page` or `web_spotlight_root`).
+* `type` - This must be the codename of the content type that the item represented by `slug` is based on. It can be either `page` or `web_spotlight_root`.
 
-An example might look something like this `/api/preview?secret=mySuperSecret&slug=about-us&type=page`.
-To exit the preview mode, visit this route `/api/exit-preview`. 
+An example might look something like this: `/api/preview?secret=mySuperSecret&slug=about-us&type=page`.
+To exit the preview mode, visit the route `/api/exit-preview`. 
 No query parameter is necessary, but you can provide `callback` with a path to redirect to once the preview mode is disabled.
 
-> The preview mode leverages cookies so when you open the app in preview (e.g. from the Kontent.ai) and then open it again (e.g. in a different tab).
-> The second instance will also be in preview, because the cookies will be present (for the same domain) until you clear them or visit `/api/exit-preview` which also just removes the cookies.
+> The preview mode leverages cookies, so when you open the app in preview (e.g. from Kontent.ai) and then open it again (e.g. in a different tab),
+> the second instance will remain in preview, as long as the cookies are present. You can clear cookies manually or visit `/api/exit-preview` which removes them as well.
 
 
 ## Code development
@@ -92,28 +91,28 @@ To run the app under the `https` scheme you can use one of the following methods
 * Run `npm run https:dev` to run the app in the development mode and a proxy server proxying `https://localhost:3001` to `http://localhost:3000`. 
   * The proxy will use a self-signed certificate which might not work in some browsers.
   * The proxy is run using the [`local-ssl-proxy`](https://www.npmjs.com/package/local-ssl-proxy) package.
-  * The command requires the ports 3001 and 3000 to be free, otherwise it fails. If you want to use a different ports you will need to run the proxy (`npm run https:proxy`) and the app `npm run dev` yourself.
+  * The command requires the ports 3001 and 3000 to be free, otherwise it fails. If you want to use different ports, you will need to run the proxy (`npm run https:proxy`) and the app `npm run dev` yourself.
 * Run `npm run https:proxy` to create a proxy as above without running the app (you are expected to run the app separately).
   * You can use this command with a custom trusted certificate like this `npm run https:proxy -- --key localhost-key.pem --cert localhost.pem`. See [the package documentation](https://github.com/cameronhunter/local-ssl-proxy#run-ssl-proxy-with-a-self-signed-trusted-certificate) for more details
   * You can also change the source and/or target port (e.g. `npm run https:proxy -- --source 3002 --target 4000`)
-* [Write you own server](https://github.com/vercel/next.js/tree/canary/examples/custom-server).
-* Use [Ngrok](https://ngrok.com/) or something similar.
+* [Write your own server](https://github.com/vercel/next.js/tree/canary/examples/custom-server).
+* Use [Ngrok](https://ngrok.com/) or a similar tool.
 
-You can start editing the page by modifying `pages/[envId]/index.tsx`. The page auto-updates as you edit the file.
+You can adjust the homepage by editing `pages/[envId]/index.tsx`. The page auto-updates as you edit the file.
 
 To generate new models from Kontent.ai data, just run `npm run generateModels`. Make sure you have environment variables filled in properly.
 
 ### Use codebase as a starter
 
-> ⚠ This project is not intended as a starter project. It is a sample of a presentation channel showcasing Kontent.ai capabilities. The following hints help you to use this code base as a base for presentation channel for your project as a boilerplate. By doing it, you are accepting the fact you are changing the purpose of this code.
+> ⚠ This project is not intended as a starter project. It is a sample of a presentation channel showcasing Kontent.ai capabilities. The following hints help you use this code as a base for presentation channel for your project like a boilerplate. By doing it, you are accepting the fact you are changing the purpose of this code.
 
-The app contains code to dynamically handle different Kontent.ai projects (e.g. the environment route prefix). To adjust the code to be used to single project as a starter, you want to remove the logic that is used solely for showcasing the sample project during evaluation.
+The app contains code to dynamically handle different Kontent.ai projects (e.g. the environment route prefix). To adjust the code to be used for a single project as a starter, you should remove the logic that is used solely for showcasing the sample project during evaluation.
 
-Some of the parts responsible for handle different Kontent.ai projects that needs adjustments in case of transforming it into single-project setup.
+Below are some of the parts responsible for handling different Kontent.ai projects that need adjustment in case of transforming the code into a single-project setup:
 
-* `middleware.ts` - Getting the Kontent.ai environment ID and storing it in cookie. For single-project setup use only the environment variable with environment ID should be used.
-* `pages/callback.tsx` & `pages/getPreviewApiKey.ts` & `lib/constants/auth.ts` - Responsible for exchanging preview API keys for specified environment. For single-project setup use only the environment variable with preview API key should be used.
-* `pages/[envId]` - folder responsible for the [dynamic segment](https://nextjs.org/docs/pages/building-your-application/routing/dynamic-routes) passing the environment ID for pages. For single-project setup remove the folder and move its content one level up.
+* `middleware.ts` - Gets the Kontent.ai environment ID and stores it in a cookie. For single-project setup, a single environment variable should be used to store the environment ID.
+* `pages/callback.tsx` & `pages/getPreviewApiKey.ts` & `lib/constants/auth.ts` - Responsible for exchanging preview API keys for specified environment. For single-project setup, a single environment variable should be used to store the preview API key.
+* `pages/[envId]` - Folder representing the [dynamic segment](https://nextjs.org/docs/pages/building-your-application/routing/dynamic-routes), passing the environment ID for pages. For single-project setup, remove the folder and move its content one level up.
 
 ### Commands
 
