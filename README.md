@@ -101,7 +101,7 @@ Once we give you access, you will be able to create your copy of the source proj
 
 ### Commands
 
-https://github.com/kontent-ai/sample-app-next-js/blob/001994b44d2ef5cb499bce23756f0dd9c3086c2b/package.json#L4-L13
+https://github.com/kontent-ai/sample-app-next-js/blob/001994b44d2ef5cb499bce23756f0dd9c3086c2b/package.json#L4-L15
 
 [contributors-shield]: https://img.shields.io/github/contributors/kontent-ai/sample-app-next-js.svg?style=for-the-badge
 [contributors-url]: https://github.com/kontent-ai/sample-app-next-js/graphs/contributors
