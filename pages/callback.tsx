@@ -84,7 +84,7 @@ const CallbackPage: React.FC = () => {
 
     webAuth.parseHash({ hash: window.location.hash }, async (err, authResult) => {
       if (err?.error && requiresLoginAuthErrors.includes(err.error)) {
-        return window.location.replace(`/getPreviewApiKey?promptLogin&path=${getCookie(urlAfterAuthCookieName)}`);
+        return window.location.replace(`/getPreviewApiKey?promptLogin&path=${encodeURIComponent(getCookie(urlAfterAuthCookieName) ?? "")}`);
       }
       if (err) {
         return setError(err.errorDescription ?? err.error);
@@ -107,7 +107,7 @@ const CallbackPage: React.FC = () => {
         return setError(api_key.error);
       }
 
-      window.location.replace(authResult.appState ?? '/'); // router.replace changes the "slug" query parameter so we can't use it here, because this parameter is used when calling the /api/preview endpoint
+      window.location.replace(getCookie(urlAfterAuthCookieName) ?? '/'); // router.replace changes the "slug" query parameter so we can't use it here, because this parameter is used when calling the /api/preview endpoint
     });
   }, [router.isReady]);
 
