@@ -1,37 +1,41 @@
-import { Elements, IContentItem } from "@kontent-ai/delivery-sdk";
+import {
+  ContentItemElementsIndexer,
+  Elements,
+  IContentItem,
+} from "@kontent-ai/delivery-sdk";
 
-const isLinkedItemsElement = (obj: any): obj is Elements.LinkedItemsElement<IContentItem> => {
-    return Array.isArray(obj.linkedItems);
-}
+const isLinkableElement = (obj: any): obj is Elements.LinkedItemsElement => {
+  return Array.isArray(obj.linkedItems);
+};
 
-const isRichTextElement = (obj: any): obj is Elements.RichTextElement => {
-    return obj.links !== undefined && obj.images !== undefined && Array.isArray(obj.linkedItems);
-}
+export const sanitizeCircularData = <T extends IContentItem>(
+  data: T,
+  seenObjects = new WeakSet<T>()
+): T => {
+  if (seenObjects.has(data)) {
+    console.warn(
+      `Circular reference found in item with codename "${data.system.codename}" Problematic item removed, some UI components may not work correctly.`
+    );
+    return null as unknown as T;
+  }
 
-export const sanitizeCircularData = (data: any, seenObjects = new WeakSet()): any => {
-    if (data && typeof data === 'object') {
-        seenObjects.add(data);
+  seenObjects.add(data);
 
-        if (isLinkedItemsElement(data) || isRichTextElement(data)) {
-            return {
-                ...data,
-                linkedItems: data.linkedItems.map(item => {
-                    if (seenObjects.has(item)) {
-                        return null;
-                    } else {
-                        return sanitizeCircularData(item, seenObjects);
-                    }
-                }).filter(item => item !== null)
-            };
-        } else {
-            const newData: any = {};
-            for (let key in data) {
-                newData[key] = sanitizeCircularData(data[key], seenObjects);
-            }
-            return newData;
+  const sanitizedElements: Record<string, ContentItemElementsIndexer | Elements.LinkedItemsElement> = {};
+
+  for (const [key, element] of Object.entries(data.elements)) {
+    sanitizedElements[key] = isLinkableElement(element)
+      ? {
+          ...element,
+          linkedItems: element.linkedItems
+            .map((item) => sanitizeCircularData(item, seenObjects))
         }
-    }
+      : element;
+  }
 
-    return data;
-}
+  const newData = { ...data, elements: sanitizedElements };
 
+  seenObjects.delete(data);
+
+  return newData;
+};

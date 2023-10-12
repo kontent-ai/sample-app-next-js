@@ -13,7 +13,8 @@ type Props = Readonly<{
 }>;
 
 const VisualRepresentation: FC<Props> = (props) => {
-  const { grid, hero_unit, stack } = contentTypes.visual_container.elements.visual_representation.options;
+  const { grid, hero_unit, stack } =
+    contentTypes.visual_container.elements.visual_representation.options;
   switch (props.item.elements.visualRepresentation.value[0]?.codename) {
     case grid.codename:
       return (
@@ -50,6 +51,7 @@ const VisualRepresentation: FC<Props> = (props) => {
       return (
         <CarouselComponent items={props.item.elements.items.linkedItems} />
       );
+
     default:
       return (
         <BuildError>

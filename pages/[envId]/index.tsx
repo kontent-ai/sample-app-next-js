@@ -7,10 +7,10 @@ import { Content } from '../../components/shared/Content';
 import { AppPage } from '../../components/shared/ui/appPage';
 import { getHomepage, getSiteMenu } from '../../lib/kontentClient';
 import { useSmartLink } from '../../lib/useSmartLink';
+import { sanitizeCircularData } from '../../lib/utils/circularityUtils';
 import { defaultEnvId } from '../../lib/utils/env';
 import { getEnvIdFromRouteParams, getPreviewApiKeyFromPreviewData } from '../../lib/utils/pageUtils';
 import { Nav_NavigationItem, WSL_WebSpotlightRoot } from '../../models';
-import { sanitizeCircularData } from '../../lib/utils/circularityUtils';
 
 
 type Props = Readonly<{
@@ -71,6 +71,10 @@ export const getStaticProps: GetStaticProps<Props, { envId: string }> = async co
 
   if (!homepageData) {
     throw new Error("Can't find homepage item.");
+  }
+
+  if (!siteMenuData) {
+    throw new Error("Can't find main menu item.");
   }
 
   const homepage = sanitizeCircularData(homepageData);
