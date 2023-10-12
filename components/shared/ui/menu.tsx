@@ -151,7 +151,6 @@ export const Menu: FC<Props> = (props) => {
   return (
     <div
       className={`w-full fixed z-50 transition-all ease-in-out duration-300 ${mainColorBgClass[siteCodename]}`}
-      {...createItemSmartLink(props.item.system.id)}
     >
       <div className="flex justify-between items-center mx-auto max-w-screen-xl md:h-16 pr-4">
         <div className="w-screen h-full md:flex justify-between z-50 md:pr-24 xl:pr-12 2xl:pr-0">
@@ -182,6 +181,7 @@ export const Menu: FC<Props> = (props) => {
               <Bars3Icon className="w-6 h-6" />
             </button>
           </div>
+          <div {...createItemSmartLink(props.item.system.id)} />
           <div>
             <MenuList
               smallMenuActive={smallMenuActive}
