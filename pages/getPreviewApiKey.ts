@@ -17,7 +17,7 @@ const GetPreviewApiKey: FC = () => {
     if (!path) {
       console.warn("Missing query parameter 'path' in /getPreviewApiKey. Will redirect to / after auth.");
     }
-    setCookie(urlAfterAuthCookieName, path);
+    setCookie(urlAfterAuthCookieName, path, { path: "/", secure: true, sameSite: "none" });
     webAuth.authorize({ redirectUri: `${window.origin}/callback`, prompt: typeof promptLogin === "string" ? undefined : "none" });
 
   }, [path, router.isReady, promptLogin])
