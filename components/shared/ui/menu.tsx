@@ -12,7 +12,6 @@ import {
   resolveUrlPath,
 } from "../../../lib/routing";
 import { siteCodename } from "../../../lib/utils/env";
-import { createItemSmartLink } from "../../../lib/utils/smartLinkUtils";
 import {
   Article,
   contentTypes,
@@ -22,6 +21,7 @@ import {
   WSL_Page,
   WSL_WebSpotlightRoot,
 } from "../../../models";
+import { StandaloneSmartLinkButton } from "../StandaloneSmartLinkButton";
 
 type Link = Readonly<Nav_NavigationItem>;
 
@@ -181,7 +181,9 @@ export const Menu: FC<Props> = (props) => {
               <Bars3Icon className="w-6 h-6" />
             </button>
           </div>
-          <div {...createItemSmartLink(props.item.system.id)} />
+          <StandaloneSmartLinkButton
+            itemId={props.item.system.id}
+          />
           <div>
             <MenuList
               smallMenuActive={smallMenuActive}
