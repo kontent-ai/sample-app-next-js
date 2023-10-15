@@ -11,6 +11,7 @@ import { defaultEnvId, siteCodename } from "../../../lib/utils/env";
 import { getEnvIdFromRouteParams, getPreviewApiKeyFromPreviewData } from "../../../lib/utils/pageUtils";
 import { createElementSmartLink } from "../../../lib/utils/smartLinkUtils";
 import { contentTypes, Metadata, Nav_NavigationItem, Solution } from "../../../models";
+import { CircularReferenceInfo, sanitizeCircularData } from "../../../lib/utils/circularityUtils";
 
 
 
@@ -18,6 +19,7 @@ type Props = Readonly<{
   solution: Solution;
   defaultMetadata: Metadata;
   siteMenu: Nav_NavigationItem | null;
+  circularReferences: Record<string, CircularReferenceInfo[]>;
 }>;
 
 interface IParams extends ParsedUrlQuery {
@@ -50,19 +52,29 @@ export const getStaticProps: GetStaticProps<Props, IParams> = async (
 
   const previewApiKey = getPreviewApiKeyFromPreviewData(context.previewData);
 
-  const solution = await getSolutionDetail({ envId, previewApiKey }, slug, !!context.preview);
-  const siteMenu = await getSiteMenu({ envId, previewApiKey }, !!context.preview);
+  const solutionData = await getSolutionDetail({ envId, previewApiKey }, slug, !!context.preview);
+  const siteMenuData = await getSiteMenu({ envId, previewApiKey }, !!context.preview);
   const defaultMetadata = await getDefaultMetadata({ envId, previewApiKey }, !!context.preview);
 
-  if (!solution) {
+  if (!solutionData) {
     return { notFound: true };
   }
+
+  if (!siteMenuData) {
+    throw new Error("Can't find the main menu item.")
+  }
+
+  const [solution, solutionFoundCycles] = sanitizeCircularData(solutionData);
+  const [siteMenu, siteMenuFoundCycles] = sanitizeCircularData(siteMenuData);
+
+  const circularReferences = {...solutionFoundCycles, ...siteMenuFoundCycles};
 
   return {
     props: {
       solution,
       siteMenu,
       defaultMetadata,
+      circularReferences
     },
   };
 };
@@ -71,12 +83,14 @@ const SolutionDetail: FC<Props> = ({
   solution,
   siteMenu,
   defaultMetadata,
+  circularReferences
 }) => (
   <AppPage
     item={solution}
     siteMenu={siteMenu}
     defaultMetadata={defaultMetadata}
     pageType="Solution"
+    circularReferences={circularReferences}
   >
     <HeroImage
       url={solution.elements.productBaseMainImage.value[0]?.url || ""}

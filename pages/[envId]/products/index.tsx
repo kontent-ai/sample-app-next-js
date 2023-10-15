@@ -14,6 +14,7 @@ import { changeUrlQueryString } from "../../../lib/utils/changeUrlQueryString";
 import { defaultEnvId, siteCodename } from "../../../lib/utils/env";
 import { getEnvIdFromRouteParams, getPreviewApiKeyFromPreviewData } from "../../../lib/utils/pageUtils";
 import { contentTypes, Metadata, Nav_NavigationItem, Product, WSL_Page } from "../../../models";
+import { CircularReferenceInfo, sanitizeCircularData } from "../../../lib/utils/circularityUtils";
 
 
 type Props = Readonly<{
@@ -23,6 +24,7 @@ type Props = Readonly<{
   siteMenu: Nav_NavigationItem | null;
   isPreview: boolean;
   defaultMetadata: Metadata;
+  circularReferences: Record<string, CircularReferenceInfo[]>;
 }>;
 
 type ProductListingProps = Readonly<{
@@ -161,6 +163,7 @@ export const Products: FC<Props> = props => {
       defaultMetadata={props.defaultMetadata}
       item={props.page}
       pageType="WebPage"
+      circularReferences={props.circularReferences}
     >
       {props.page.elements.content.linkedItems.map(piece => (
         <Content
@@ -214,12 +217,31 @@ export const getStaticProps: GetStaticProps<Props, { envId: string }> = async co
     };
   }
 
-  const products = await getProductsForListing({ envId, previewApiKey }, !!context.preview);
-  const siteMenu = await getSiteMenu({ envId, previewApiKey }, !!context.preview);
+  const productsData = await getProductsForListing({ envId, previewApiKey }, !!context.preview);
+  const siteMenuData = await getSiteMenu({ envId, previewApiKey }, !!context.preview);
   const defaultMetadata = await getDefaultMetadata({ envId, previewApiKey }, !!context.preview);
 
+  if (!siteMenuData) {
+    throw new Error("Can't find the main menu item.")
+  }
+
+  let productsFoundCycles: Record<string, CircularReferenceInfo[]> = {};
+
+  const products = {
+    ...productsData,
+    items: productsData.items.map(product => {
+      const [sanitizedProduct, foundCycles] = sanitizeCircularData(product);
+      productsFoundCycles = {...productsFoundCycles, ...foundCycles};
+      return sanitizedProduct;
+    })
+  }
+
+  const [siteMenu, siteMenuFoundCycles] = sanitizeCircularData(siteMenuData);
+
+  const circularReferences = {...siteMenuFoundCycles, ...productsFoundCycles};
+
   return {
-    props: { page, defaultMetadata, products: products.items, totalCount: products.pagination.totalCount ?? 0, siteMenu, isPreview: !!context.preview },
+    props: { page, defaultMetadata, products: products.items, circularReferences, totalCount: products.pagination.totalCount ?? 0, siteMenu, isPreview: !!context.preview },
   };
 }
 

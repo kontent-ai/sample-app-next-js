@@ -10,6 +10,7 @@ import { defaultEnvId, siteCodename } from "../../../lib/utils/env";
 import { getEnvIdFromRouteParams, getPreviewApiKeyFromPreviewData } from "../../../lib/utils/pageUtils";
 import { createElementSmartLink } from "../../../lib/utils/smartLinkUtils";
 import { contentTypes, Metadata, Nav_NavigationItem, Product } from "../../../models";
+import { CircularReferenceInfo, sanitizeCircularData } from "../../../lib/utils/circularityUtils";
 
 
 
@@ -17,6 +18,7 @@ type Props = Readonly<{
   product: Product;
   defaultMetadata: Metadata;
   siteMenu: Nav_NavigationItem | null;
+  circularReferences: Record<string, CircularReferenceInfo[]>;
 }>;
 
 interface IParams extends ParsedUrlQuery {
@@ -48,30 +50,38 @@ export const getStaticProps: GetStaticProps<Props, IParams> = async (context) =>
   const previewApiKey = getPreviewApiKeyFromPreviewData(context.previewData);
 
   const product = await getProductDetail({ envId, previewApiKey }, slug, !!context.preview);
-  const siteMenu = await getSiteMenu({ envId, previewApiKey }, !!context.preview);
+  const siteMenuData = await getSiteMenu({ envId, previewApiKey }, !!context.preview);
   const defaultMetadata = await getDefaultMetadata({ envId, previewApiKey }, !!context.preview);
 
   if (!product) {
     return { notFound: true };
   }
 
+  if (!siteMenuData) {
+    throw new Error("Can't find main menu item.");
+  }
+
+  const [siteMenu, circularReferences] = sanitizeCircularData(siteMenuData);
+
   return {
     props: {
       product,
       siteMenu,
-      defaultMetadata
+      defaultMetadata,
+      circularReferences
     }
   };
 };
 
 const widthLimit = 300;
 
-const ProductDetail: FC<Props> = ({ product, siteMenu, defaultMetadata }) => (
+const ProductDetail: FC<Props> = ({ product, siteMenu, defaultMetadata, circularReferences }) => (
   <AppPage
     item={product}
     siteMenu={siteMenu}
     defaultMetadata={defaultMetadata}
     pageType="Product"
+    circularReferences={circularReferences}
   >
     <div className="bg-white pt-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

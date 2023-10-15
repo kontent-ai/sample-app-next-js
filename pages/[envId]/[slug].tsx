@@ -6,7 +6,7 @@ import { Content } from "../../components/shared/Content";
 import { AppPage } from "../../components/shared/ui/appPage";
 import { getDefaultMetadata, getItemBySlug, getPagesSlugs, getSiteMenu } from "../../lib/kontentClient";
 import { reservedListingSlugs } from "../../lib/routing";
-import { sanitizeCircularData } from "../../lib/utils/circularityUtils";
+import { CircularReferenceInfo, sanitizeCircularData } from "../../lib/utils/circularityUtils";
 import { defaultEnvId } from "../../lib/utils/env";
 import { getEnvIdFromRouteParams, getPreviewApiKeyFromPreviewData } from "../../lib/utils/pageUtils";
 import { createElementSmartLink, createFixedAddSmartLink } from "../../lib/utils/smartLinkUtils";
@@ -16,6 +16,7 @@ type Props = Readonly<{
   page: WSL_Page;
   siteMenu: Nav_NavigationItem | null;
   defaultMetadata: Metadata;
+  circularReferences: Record<string, CircularReferenceInfo[]>;
 }>;
 
 interface IParams extends ParsedUrlQuery {
@@ -49,10 +50,14 @@ export const getStaticProps: GetStaticProps<Props, IParams> = async (context) =>
 
   const previewApiKey = getPreviewApiKeyFromPreviewData(context.previewData);
 
-  const siteMenu = await getSiteMenu({ envId, previewApiKey }, !!context.preview);
+  const siteMenuData = await getSiteMenu({ envId, previewApiKey }, !!context.preview);
   const defaultMetadata = await getDefaultMetadata({ envId, previewApiKey }, !!context.preview);
 
   const data = await getItemBySlug<WSL_Page>({envId, previewApiKey}, slug, contentTypes.page.codename, !!context.preview);
+
+  if (!siteMenuData) {
+    throw new Error("Can't find main menu item.");
+  }
 
   if (data === null) {
     return {
@@ -60,10 +65,13 @@ export const getStaticProps: GetStaticProps<Props, IParams> = async (context) =>
     };
   }
 
-  const page = sanitizeCircularData(data);
+  const [page, pageFoundCycles] = sanitizeCircularData(data);
+  const [siteMenu, siteMenuFoundCycles] = sanitizeCircularData(siteMenuData);
+
+  const circularReferences = {...pageFoundCycles, ...siteMenuFoundCycles};
 
   return {
-    props: { page, siteMenu, defaultMetadata },
+    props: { page, siteMenu, defaultMetadata, circularReferences },
   };
 }
 
@@ -73,6 +81,7 @@ const TopLevelPage: FC<Props> = props => (
     defaultMetadata={props.defaultMetadata}
     item={props.page}
     pageType="WebPage"
+    circularReferences={props.circularReferences}
   >
     <div
       {...createElementSmartLink(contentTypes.page.elements.content.codename)}

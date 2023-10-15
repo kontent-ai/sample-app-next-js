@@ -15,6 +15,7 @@ import { ArticleListingUrlQuery, ArticleTypeWithAll, categoryFilterSource, isArt
 import { defaultEnvId, siteCodename } from "../../../../../../lib/utils/env";
 import { getEnvIdFromRouteParams, getPreviewApiKeyFromPreviewData } from "../../../../../../lib/utils/pageUtils";
 import { Article, contentTypes, Metadata, Nav_NavigationItem, taxonomies, WSL_Page } from "../../../../../../models";
+import { CircularReferenceInfo, sanitizeCircularData } from "../../../../../../lib/utils/circularityUtils";
 
 type Props = Readonly<{
   articles: ReadonlyArray<Article>;
@@ -22,6 +23,7 @@ type Props = Readonly<{
   page: WSL_Page,
   itemCount: number;
   defaultMetadata: Metadata;
+  circularReferences: Record<string, CircularReferenceInfo[]>;
 }>;
 
 type LinkButtonProps = {
@@ -120,6 +122,7 @@ const ArticlesPagingPage: FC<Props> = props => {
       defaultMetadata={props.defaultMetadata}
       item={props.page}
       pageType="WebPage"
+      circularReferences={props.circularReferences}
     >
       {props.page.elements.content.linkedItems.map(piece => (
         <Content
@@ -248,15 +251,35 @@ export const getStaticProps: GetStaticProps<Props, ArticleListingUrlQuery> = asy
   const previewApiKey = getPreviewApiKeyFromPreviewData(context.previewData);
 
   const pageNumber = !pageURLParameter || isNaN(+pageURLParameter) ? 1 : +pageURLParameter;
-  const articles = await getArticlesForListing({ envId, previewApiKey }, !!context.preview, pageNumber, selectedCategory);
-  const siteMenu = await getSiteMenu({ envId, previewApiKey }, !!context.preview);
-  const page = await getItemBySlug<WSL_Page>({ envId, previewApiKey }, "articles", contentTypes.page.codename, !!context.preview);
+  const articlesData = await getArticlesForListing({ envId, previewApiKey }, !!context.preview, pageNumber, selectedCategory);
+  const siteMenuData = await getSiteMenu({ envId, previewApiKey }, !!context.preview);
+  const pageData = await getItemBySlug<WSL_Page>({ envId, previewApiKey }, "articles", contentTypes.page.codename, !!context.preview);
   const itemCount = await getArticlesCountByCategory({ envId, previewApiKey }, !!context.preview, selectedCategory)
   const defaultMetadata = await getDefaultMetadata({ envId, previewApiKey }, !!context.preview);
 
-  if (page === null) {
+  if (pageData === null) {
     return { notFound: true };
   }
+
+  if (!siteMenuData) {
+    throw new Error("Can't find main menu item.");
+  }
+
+  const [siteMenu, siteMenuFoundCycles] = sanitizeCircularData(siteMenuData);
+  const [page, pageFoundCycles] = sanitizeCircularData(pageData);
+
+  let articlesFoundCycles: Record<string, CircularReferenceInfo[]> = {};
+
+  const articles = {
+    ...articlesData,
+    items: articlesData.items.map(product => {
+      const [sanitizedArticle, foundCycles] = sanitizeCircularData(product);
+      articlesFoundCycles = {...articlesFoundCycles, ...foundCycles};
+      return sanitizedArticle;
+    })
+  }
+
+  const circularReferences = {...siteMenuFoundCycles, ...articlesFoundCycles, ...pageFoundCycles};
 
   return {
     props: {
@@ -264,7 +287,8 @@ export const getStaticProps: GetStaticProps<Props, ArticleListingUrlQuery> = asy
       siteMenu,
       page,
       itemCount,
-      defaultMetadata
+      defaultMetadata,
+      circularReferences
     },
     revalidate: 10,
   };

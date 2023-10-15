@@ -11,12 +11,14 @@ import { formatDate } from "../../../lib/utils/dateTime";
 import { defaultEnvId, siteCodename } from "../../../lib/utils/env";
 import { getPreviewApiKeyFromPreviewData } from "../../../lib/utils/pageUtils";
 import { Article, Metadata, Nav_NavigationItem } from "../../../models";
+import { CircularReferenceInfo, sanitizeCircularData } from "../../../lib/utils/circularityUtils";
 
 
 type Props = Readonly<{
   article: Article;
   siteMenu: Nav_NavigationItem | null;
   defaultMetadata: Metadata;
+  circularReferences: Record<string, CircularReferenceInfo[]>;
 }>;
 
 const ArticlePage: FC<Props> = props => {
@@ -26,6 +28,7 @@ const ArticlePage: FC<Props> = props => {
       defaultMetadata={props.defaultMetadata}
       item={props.article}
       pageType="Article"
+      circularReferences={props.circularReferences}
     >
       <HeroImage
         url={props.article.elements.heroImage.value[0]?.url || ""}
@@ -73,25 +76,35 @@ export const getStaticProps: GetStaticProps<Props, { slug: string, envId: string
 
   const previewApiKey = getPreviewApiKeyFromPreviewData(context.previewData);
 
-  const siteMenu = await getSiteMenu({ envId, previewApiKey }, !!context.preview);
+  const siteMenuData = await getSiteMenu({ envId, previewApiKey }, !!context.preview);
   const slug = typeof context.params?.slug === "string" ? context.params.slug : "";
 
   if (!slug) {
     return { notFound: true };
   }
 
-  const article = await getArticleBySlug({ envId: envId, previewApiKey: previewApiKey }, slug, !!context.preview);
+  if (!siteMenuData) {
+    throw new Error("Can't find main menu item.");
+  }
+
+  const articleData = await getArticleBySlug({ envId: envId, previewApiKey: previewApiKey }, slug, !!context.preview);
   const defaultMetadata = await getDefaultMetadata({ envId: envId, previewApiKey: previewApiKey }, !!context.preview);
 
-  if (!article) {
+  if (!articleData) {
     return { notFound: true };
   }
+
+  const [siteMenu, siteMenuFoundCycles] = sanitizeCircularData(siteMenuData);
+  const [article, articleFoundCycles] = sanitizeCircularData(articleData);
+
+  const circularReferences = {...siteMenuFoundCycles, ...articleFoundCycles};
 
   return {
     props: {
       article,
       siteMenu,
       defaultMetadata,
+      circularReferences
     },
   };
 }
