@@ -9,6 +9,8 @@ import { createItemSmartLink } from "../../../lib/utils/smartLinkUtils";
 import { Article, contentTypes, Metadata, Nav_NavigationItem, Product, Solution, WSL_Page, WSL_WebSpotlightRoot } from "../../../models";
 import { Footer } from "./footer";
 import { Menu } from "./menu";
+import { CircularReferenceWarnings } from "./circularReferenceWarnings";
+import { CircularReferenceInfo } from "../../../lib/utils/circularityUtils";
 
 type AcceptedItem = WSL_WebSpotlightRoot | Article | Product | WSL_Page | Solution;
 
@@ -18,6 +20,7 @@ type Props = Readonly<{
   siteMenu: Nav_NavigationItem | null;
   defaultMetadata: Metadata;
   pageType: "WebPage" | "Article" | "Product" | "Solution",
+  circularReferences: Record<string, CircularReferenceInfo[]>
 }>;
 
 export const AppPage: FC<Props> = props => {
@@ -30,6 +33,7 @@ export const AppPage: FC<Props> = props => {
         pageType={props.pageType}
         defaultMetadata={props.defaultMetadata}
       />
+      <CircularReferenceWarnings circularReferences={props.circularReferences}/>
       <div className="min-h-full grow flex flex-col items-center overflow-hidden">
         {props.siteMenu ? <Menu item={props.siteMenu} /> : <span>Missing top navigation. Please provide a valid navigation item in the web spotlight root.</span>}
         {/* https://tailwindcss.com/docs/typography-plugin */}
