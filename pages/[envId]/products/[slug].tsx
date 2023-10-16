@@ -6,11 +6,11 @@ import { FC } from "react";
 import { AppPage } from "../../../components/shared/ui/appPage";
 import { mainColorButtonClass, mainColorHoverClass, mainColorTextClass } from "../../../lib/constants/colors";
 import { getDefaultMetadata, getProductDetail, getProductItemsWithSlugs, getSiteMenu } from "../../../lib/kontentClient";
+import { CircularReferenceInfo, sanitizeCircularData } from "../../../lib/utils/circularityUtils";
 import { defaultEnvId, siteCodename } from "../../../lib/utils/env";
 import { getEnvIdFromRouteParams, getPreviewApiKeyFromPreviewData } from "../../../lib/utils/pageUtils";
 import { createElementSmartLink } from "../../../lib/utils/smartLinkUtils";
 import { contentTypes, Metadata, Nav_NavigationItem, Product } from "../../../models";
-import { CircularReferenceInfo, sanitizeCircularData } from "../../../lib/utils/circularityUtils";
 
 
 

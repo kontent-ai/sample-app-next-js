@@ -7,11 +7,11 @@ import { RichTextElement } from "../../../components/shared/richText/RichTextEle
 import { AppPage } from "../../../components/shared/ui/appPage";
 import { mainColorBgClass } from "../../../lib/constants/colors";
 import { getDefaultMetadata, getSiteMenu, getSolutionDetail, getSolutionsWithSlugs } from "../../../lib/kontentClient";
+import { CircularReferenceInfo, sanitizeCircularData } from "../../../lib/utils/circularityUtils";
 import { defaultEnvId, siteCodename } from "../../../lib/utils/env";
 import { getEnvIdFromRouteParams, getPreviewApiKeyFromPreviewData } from "../../../lib/utils/pageUtils";
 import { createElementSmartLink } from "../../../lib/utils/smartLinkUtils";
 import { contentTypes, Metadata, Nav_NavigationItem, Solution } from "../../../models";
-import { CircularReferenceInfo, sanitizeCircularData } from "../../../lib/utils/circularityUtils";
 
 
 

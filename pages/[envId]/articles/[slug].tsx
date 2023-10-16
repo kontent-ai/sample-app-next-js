@@ -7,11 +7,11 @@ import { RichTextElement } from "../../../components/shared/richText/RichTextEle
 import { AppPage } from "../../../components/shared/ui/appPage";
 import { mainColorBgClass } from "../../../lib/constants/colors";
 import { getAllArticles, getArticleBySlug, getDefaultMetadata, getSiteMenu } from "../../../lib/kontentClient";
+import { CircularReferenceInfo, sanitizeCircularData } from "../../../lib/utils/circularityUtils";
 import { formatDate } from "../../../lib/utils/dateTime";
 import { defaultEnvId, siteCodename } from "../../../lib/utils/env";
 import { getPreviewApiKeyFromPreviewData } from "../../../lib/utils/pageUtils";
 import { Article, Metadata, Nav_NavigationItem } from "../../../models";
-import { CircularReferenceInfo, sanitizeCircularData } from "../../../lib/utils/circularityUtils";
 
 
 type Props = Readonly<{
