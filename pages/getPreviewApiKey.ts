@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { FC, useEffect } from "react";
 
 import { webAuth } from "../lib/constants/auth";
-import { urlAfterAuthCookieName } from "../lib/constants/cookies";
+import { defaultCookieOptions, urlAfterAuthCookieName } from "../lib/constants/cookies";
 
 const GetPreviewApiKey: FC = () => {
   const router = useRouter();
@@ -17,7 +17,7 @@ const GetPreviewApiKey: FC = () => {
     if (!path) {
       console.warn("Missing query parameter 'path' in /getPreviewApiKey. Will redirect to / after auth.");
     }
-    setCookie(urlAfterAuthCookieName, path, { path: "/", secure: true, sameSite: "none" });
+    setCookie(urlAfterAuthCookieName, path, defaultCookieOptions);
     webAuth.authorize({ redirectUri: `${window.origin}/callback`, prompt: typeof promptLogin === "string" ? undefined : "none" });
 
   }, [path, router.isReady, promptLogin])
