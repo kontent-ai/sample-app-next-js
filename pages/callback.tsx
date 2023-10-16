@@ -6,8 +6,9 @@ import { useEffect, useState } from "react";
 import { BuildError } from "../components/shared/ui/BuildError";
 import { webAuth } from "../lib/constants/auth";
 import { mainColorTextClass } from "../lib/constants/colors";
-import { envIdCookieName, previewApiKeyCookieName, urlAfterAuthCookieName } from "../lib/constants/cookies";
+import { defaultCookieOptions, previewApiKeyCookieName, urlAfterAuthCookieName } from "../lib/constants/cookies";
 import { internalApiDomain, siteCodename } from "../lib/utils/env";
+import { getEnvIdFromCookie } from "../lib/utils/pageUtils";
 
 const CallbackPage: React.FC = () => {
   const router = useRouter();
@@ -17,7 +18,7 @@ const CallbackPage: React.FC = () => {
     if (!router.isReady) {
       return;
     }
-    const envId = getCookie(envIdCookieName, { path: '/', sameSite: 'none' });
+    const envId = getEnvIdFromCookie();
 
     if (!internalApiDomain) {
       console.log("Enviroment variable KONTENT_DOMAIN is empty");
@@ -101,7 +102,7 @@ const CallbackPage: React.FC = () => {
       const api_key = await getPreviewApiKey(authResult.accessToken, projectContainerId);
 
       if (typeof api_key === "string") {
-        setCookie(previewApiKeyCookieName, api_key, { path: '/', sameSite: 'none', secure: true })
+        setCookie(previewApiKeyCookieName, api_key, defaultCookieOptions);
       }
       else {
         return setError(api_key.error);
