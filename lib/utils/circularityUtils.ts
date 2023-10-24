@@ -35,40 +35,32 @@ export const sanitizeCircularData = <T extends IContentItem>(
       elementName
     );
   }
-
+  // add current node to visited in each recursion pass
   seenCodenames.add(data.system.codename);
 
-  const sanitizedElements = Object.entries(data.elements).reduce<
-    Record<string, ContentItemElementsIndexer | LinkableElement>
-  >((acc, [elementCodename, element]) => {
-    if (isLinkableElement(element)) {
-      const [linkedItems, newItemCycles] = element.linkedItems.reduce(
-        ([items, cycles], item) => {
-          const [sanitizedItem, newCycles] = sanitizeCircularData(
-            item,
-            seenCodenames,
-            cycles,
-            element.name
-          );
-          return [items.concat(sanitizedItem), { ...cycles, ...newCycles }];
-        },
-        [[] as IContentItem[], foundItemCycles]
-      );
-
-      acc[elementCodename] = {
-        ...element,
-        linkedItems,
-      };
-
-      foundItemCycles = newItemCycles;
-    } else {
-      acc[elementCodename] = element;
-    }
-
-    return acc;
-  }, {});
-
-  // remove visited node codename when backtracking
+  const sanitizedElements: Record<
+    string,
+    ContentItemElementsIndexer | LinkableElement
+  > = {};
+  // call recursively for RTE/linked items, otherwise return element as is
+  for (const [elementCodename, element] of Object.entries(data.elements)) {
+    sanitizedElements[elementCodename] = isLinkableElement(element)
+      ? {
+          ...element,
+          linkedItems: element.linkedItems.map((item) => {
+            const [sanitizedItem, newItemCycles] = sanitizeCircularData(
+              item,
+              seenCodenames,
+              foundItemCycles,
+              element.name
+            );
+            foundItemCycles = { ...foundItemCycles, ...newItemCycles };
+            return sanitizedItem;
+          }),
+        }
+      : element;
+  }
+  // remove visited node codename when backtracking from recursion
   seenCodenames.delete(data.system.codename);
 
   return [{ ...data, elements: sanitizedElements }, foundItemCycles];
