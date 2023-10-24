@@ -7,7 +7,7 @@ import { RichTextElement } from "../../../components/shared/richText/RichTextEle
 import { AppPage } from "../../../components/shared/ui/appPage";
 import { mainColorBgClass } from "../../../lib/constants/colors";
 import { getDefaultMetadata, getSiteMenu, getSolutionDetail, getSolutionsWithSlugs } from "../../../lib/kontentClient";
-import { CircularReferenceInfo, sanitizeCircularData } from "../../../lib/utils/circularityUtils";
+import { ItemCircularReferenceMap, sanitizeCircularData } from "../../../lib/utils/circularityUtils";
 import { defaultEnvId, siteCodename } from "../../../lib/utils/env";
 import { getEnvIdFromRouteParams, getPreviewApiKeyFromPreviewData } from "../../../lib/utils/pageUtils";
 import { createElementSmartLink } from "../../../lib/utils/smartLinkUtils";
@@ -19,7 +19,7 @@ type Props = Readonly<{
   solution: Solution;
   defaultMetadata: Metadata;
   siteMenu: Nav_NavigationItem | null;
-  circularReferences: Record<string, CircularReferenceInfo[]>;
+  circularReferences: ItemCircularReferenceMap;
 }>;
 
 interface IParams extends ParsedUrlQuery {
@@ -64,10 +64,10 @@ export const getStaticProps: GetStaticProps<Props, IParams> = async (
     throw new Error("Can't find the main menu item.")
   }
 
-  const [solution, solutionFoundCycles] = sanitizeCircularData(solutionData);
-  const [siteMenu, siteMenuFoundCycles] = sanitizeCircularData(siteMenuData);
+  const [solution, solutionCircularReferences] = sanitizeCircularData(solutionData);
+  const [siteMenu, siteMenuCircularReferences] = sanitizeCircularData(siteMenuData);
 
-  const circularReferences = {...solutionFoundCycles, ...siteMenuFoundCycles};
+  const circularReferences = {...solutionCircularReferences, ...siteMenuCircularReferences};
 
   return {
     props: {

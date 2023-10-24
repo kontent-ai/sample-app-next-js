@@ -4,7 +4,7 @@ import { FC, ReactNode } from "react";
 import { perCollectionSEOTitle } from "../../../lib/constants/labels";
 import { ValidCollectionCodename } from "../../../lib/types/perCollection";
 import { useSmartLink } from "../../../lib/useSmartLink";
-import { CircularReferenceInfo } from "../../../lib/utils/circularityUtils";
+import { ItemCircularReferenceMap } from "../../../lib/utils/circularityUtils";
 import { siteCodename } from "../../../lib/utils/env";
 import { createItemSmartLink } from "../../../lib/utils/smartLinkUtils";
 import { Article, contentTypes, Metadata, Nav_NavigationItem, Product, Solution, WSL_Page, WSL_WebSpotlightRoot } from "../../../models";
@@ -20,7 +20,7 @@ type Props = Readonly<{
   siteMenu: Nav_NavigationItem | null;
   defaultMetadata: Metadata;
   pageType: "WebPage" | "Article" | "Product" | "Solution",
-  circularReferences: Record<string, CircularReferenceInfo[]>
+  circularReferences: ItemCircularReferenceMap;
 }>;
 
 export const AppPage: FC<Props> = props => {
@@ -33,7 +33,7 @@ export const AppPage: FC<Props> = props => {
         pageType={props.pageType}
         defaultMetadata={props.defaultMetadata}
       />
-      <CircularReferenceWarnings circularReferences={props.circularReferences} />
+      <CircularReferenceWarnings itemCircularReferences={props.circularReferences} />
       <div className="min-h-full grow flex flex-col items-center overflow-hidden">
         {props.siteMenu ? <Menu item={props.siteMenu} /> : <span>Missing top navigation. Please provide a valid navigation item in the web spotlight root.</span>}
         {/* https://tailwindcss.com/docs/typography-plugin */}

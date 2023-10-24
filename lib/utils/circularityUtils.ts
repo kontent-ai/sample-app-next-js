@@ -4,14 +4,26 @@ import {
   IContentItem,
 } from "@kontent-ai/delivery-sdk";
 
+/**
+ * Module responsible for detecting and removing circular references
+ * in content items from the Kontent.ai Delivery SDK.
+ */
+
 export type CircularReferenceInfo = {
+  parentItemCodename: string;
   elementName: string;
-  cycle: string;
+  cycle: string[];
 };
+
+export type ItemCircularReferenceMap = Record<string, CircularReferenceInfo[]>;
 
 type LinkableElement = Elements.LinkedItemsElement | Elements.RichTextElement;
 
-// identify rich text or linked items element
+/**
+ * Identifies whether a given element can contain links to other items.
+ * @param obj - The element to check.
+ * @returns True if the element can contain links, false otherwise.
+ */
 const isLinkableElement = (
   obj: ContentItemElementsIndexer
 ): obj is LinkableElement => {
@@ -20,73 +32,99 @@ const isLinkableElement = (
   );
 };
 
-// depth first traversal removing any reference that would close a cycle
-export const sanitizeCircularData = <T extends IContentItem>(
-  data: T,
+/**
+ * Performs a depth-first traversal to sanitize any content item references that would create a cycle.
+ * Collects information on identified circular references.
+ * @param data - The content item to sanitize.
+ * @param elementName - The name of the current element being processed.
+ * @param seenCodenames - Set of content item codenames visited during the recursion.
+ * @param circularReferences - Accumulated list of detected circular references.
+ * @returns A tuple containing the sanitized content item and the accumulated circular references.
+ */
+const sanitizeCircularDataInternal = <TItem extends IContentItem>(
+  data: TItem,
+  elementName = "",
   seenCodenames = new Set<string>(),
-  foundItemCycles: Record<string, CircularReferenceInfo[]> = {},
-  elementName: string = ""
-): [T, Record<string, CircularReferenceInfo[]>] => {
+  circularReferences: CircularReferenceInfo[] = []
+): [TItem, CircularReferenceInfo[]] => {
   if (seenCodenames.has(data.system.codename)) {
-    return handleCircularReference(
-      data,
-      seenCodenames,
-      foundItemCycles,
-      elementName
-    );
+    const seenCodenamesArray = Array.from(seenCodenames);
+    const itemCodename = seenCodenamesArray[seenCodenamesArray.length - 1]!;
+    return [
+      // Replaces circular reference with null. Cast necessary to adhere to type signature.
+      null as unknown as TItem,
+      [
+        ...circularReferences,
+        {
+          cycle: [...seenCodenamesArray, data.system.codename],
+          parentItemCodename: itemCodename,
+          elementName,
+        },
+      ],
+    ];
   }
-  // add current node to visited in each recursion pass
+
   seenCodenames.add(data.system.codename);
 
   const sanitizedElements: Record<
     string,
     ContentItemElementsIndexer | LinkableElement
   > = {};
-  // call recursively for RTE/linked items, otherwise return element as is
+
+  // Recursively run the method for rich text and linked item elements, leave other elements unchanged.
   for (const [elementCodename, element] of Object.entries(data.elements)) {
     sanitizedElements[elementCodename] = isLinkableElement(element)
       ? {
           ...element,
           linkedItems: element.linkedItems.map((item) => {
-            const [sanitizedItem, newItemCycles] = sanitizeCircularData(
-              item,
-              seenCodenames,
-              foundItemCycles,
-              element.name
+            const [sanitizedItem, newCircularReferences] =
+              sanitizeCircularDataInternal(
+                item,
+                element.name,
+                seenCodenames,
+                circularReferences
+              );
+            // Avoids infinite loop by filtering out duplicate findings.
+            const uniqueNewReferences = newCircularReferences.filter(
+              (reference) => !circularReferences.includes(reference)
             );
-            foundItemCycles = { ...foundItemCycles, ...newItemCycles };
+            circularReferences.push(...uniqueNewReferences);
+
             return sanitizedItem;
           }),
         }
       : element;
   }
-  // remove visited node codename when backtracking from recursion
+  // Remove codename from visited set when backtracking from the recursion.
   seenCodenames.delete(data.system.codename);
 
-  return [{ ...data, elements: sanitizedElements }, foundItemCycles];
+  return [{ ...data, elements: sanitizedElements }, circularReferences];
 };
 
-// replace closing circular reference with null,
-const handleCircularReference = <T extends IContentItem>(
-  data: T,
-  seenCodenames: Set<string>,
-  foundItemCycles: Record<string, CircularReferenceInfo[]>,
-  elementName: string
-): [T, Record<string, CircularReferenceInfo[]>] => {
-  const seenCodenamesArray = Array.from(seenCodenames);
-  const circleStartIndex = seenCodenamesArray.indexOf(data.system.codename);
-  const cycle = seenCodenamesArray
-    .slice(circleStartIndex)
-    .concat(data.system.codename)
-    .join(" → ");
-  const parentItemCodename = seenCodenamesArray.pop()!;
+/**
+ * User-friendlier interface to the internal recursive function.
+ * Sanitizes a content item by removing references that would otherwise create a cycle, potentially crashing the app.
+ * Collects information on sanitized references (grouped by item codename) for use by warning messages.
+ * @param data - The content item to sanitize.
+ * @returns A tuple containing the sanitized content item and a structured record of detected circular references.
+ */
+export const sanitizeCircularData = <T extends IContentItem>(
+  data: T
+): [T, ItemCircularReferenceMap] => {
+  const [sanitizedData, circularInfoArray] = sanitizeCircularDataInternal(data);
 
-  if (!foundItemCycles[parentItemCodename]) {
-    foundItemCycles[parentItemCodename] = [];
-  }
+  return [
+    sanitizedData,
+    // Groups identified circular references by content item codename.
+    circularInfoArray.reduce<ItemCircularReferenceMap>(
+      (accumulator, currentItem) => {
+        accumulator[currentItem.parentItemCodename] = (
+          accumulator[currentItem.parentItemCodename] ?? []
+        ).concat(currentItem);
 
-  foundItemCycles[parentItemCodename]!.push({ elementName, cycle });
-  console.warn(`Circular reference found. Cycle: ${cycle}`);
-
-  return [null as unknown as T, foundItemCycles];
+        return accumulator;
+      },
+      {}
+    ),
+  ];
 };

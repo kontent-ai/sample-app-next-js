@@ -7,7 +7,7 @@ import { RichTextElement } from "../../../components/shared/richText/RichTextEle
 import { AppPage } from "../../../components/shared/ui/appPage";
 import { mainColorBgClass } from "../../../lib/constants/colors";
 import { getAllArticles, getArticleBySlug, getDefaultMetadata, getSiteMenu } from "../../../lib/kontentClient";
-import { CircularReferenceInfo, sanitizeCircularData } from "../../../lib/utils/circularityUtils";
+import { ItemCircularReferenceMap, sanitizeCircularData } from "../../../lib/utils/circularityUtils";
 import { formatDate } from "../../../lib/utils/dateTime";
 import { defaultEnvId, siteCodename } from "../../../lib/utils/env";
 import { getPreviewApiKeyFromPreviewData } from "../../../lib/utils/pageUtils";
@@ -18,7 +18,7 @@ type Props = Readonly<{
   article: Article;
   siteMenu: Nav_NavigationItem | null;
   defaultMetadata: Metadata;
-  circularReferences: Record<string, CircularReferenceInfo[]>;
+  circularReferences: ItemCircularReferenceMap;
 }>;
 
 const ArticlePage: FC<Props> = props => {
@@ -94,10 +94,10 @@ export const getStaticProps: GetStaticProps<Props, { slug: string, envId: string
     return { notFound: true };
   }
 
-  const [siteMenu, siteMenuFoundCycles] = sanitizeCircularData(siteMenuData);
-  const [article, articleFoundCycles] = sanitizeCircularData(articleData);
+  const [siteMenu, siteMenuCircularReferences] = sanitizeCircularData(siteMenuData);
+  const [article, articleCircularReferences] = sanitizeCircularData(articleData);
 
-  const circularReferences = {...siteMenuFoundCycles, ...articleFoundCycles};
+  const circularReferences = {...siteMenuCircularReferences, ...articleCircularReferences};
 
   return {
     props: {

@@ -6,7 +6,7 @@ import { FC } from "react";
 import { AppPage } from "../../../components/shared/ui/appPage";
 import { mainColorButtonClass, mainColorHoverClass, mainColorTextClass } from "../../../lib/constants/colors";
 import { getDefaultMetadata, getProductDetail, getProductItemsWithSlugs, getSiteMenu } from "../../../lib/kontentClient";
-import { CircularReferenceInfo, sanitizeCircularData } from "../../../lib/utils/circularityUtils";
+import { ItemCircularReferenceMap, sanitizeCircularData } from "../../../lib/utils/circularityUtils";
 import { defaultEnvId, siteCodename } from "../../../lib/utils/env";
 import { getEnvIdFromRouteParams, getPreviewApiKeyFromPreviewData } from "../../../lib/utils/pageUtils";
 import { createElementSmartLink } from "../../../lib/utils/smartLinkUtils";
@@ -18,7 +18,7 @@ type Props = Readonly<{
   product: Product;
   defaultMetadata: Metadata;
   siteMenu: Nav_NavigationItem | null;
-  circularReferences: Record<string, CircularReferenceInfo[]>;
+  circularReferences: ItemCircularReferenceMap;
 }>;
 
 interface IParams extends ParsedUrlQuery {

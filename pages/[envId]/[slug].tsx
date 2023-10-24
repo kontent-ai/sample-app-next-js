@@ -6,7 +6,7 @@ import { Content } from "../../components/shared/Content";
 import { AppPage } from "../../components/shared/ui/appPage";
 import { getDefaultMetadata, getItemBySlug, getPagesSlugs, getSiteMenu } from "../../lib/kontentClient";
 import { reservedListingSlugs } from "../../lib/routing";
-import { CircularReferenceInfo, sanitizeCircularData } from "../../lib/utils/circularityUtils";
+import { ItemCircularReferenceMap, sanitizeCircularData } from "../../lib/utils/circularityUtils";
 import { defaultEnvId } from "../../lib/utils/env";
 import { getEnvIdFromRouteParams, getPreviewApiKeyFromPreviewData } from "../../lib/utils/pageUtils";
 import { createElementSmartLink, createFixedAddSmartLink } from "../../lib/utils/smartLinkUtils";
@@ -16,7 +16,7 @@ type Props = Readonly<{
   page: WSL_Page;
   siteMenu: Nav_NavigationItem | null;
   defaultMetadata: Metadata;
-  circularReferences: Record<string, CircularReferenceInfo[]>;
+  circularReferences: ItemCircularReferenceMap;
 }>;
 
 interface IParams extends ParsedUrlQuery {
@@ -65,10 +65,10 @@ export const getStaticProps: GetStaticProps<Props, IParams> = async (context) =>
     };
   }
 
-  const [page, pageFoundCycles] = sanitizeCircularData(data);
-  const [siteMenu, siteMenuFoundCycles] = sanitizeCircularData(siteMenuData);
+  const [page, pageCircularReferences] = sanitizeCircularData(data);
+  const [siteMenu, siteMenuCircularReferences] = sanitizeCircularData(siteMenuData);
 
-  const circularReferences = {...pageFoundCycles, ...siteMenuFoundCycles};
+  const circularReferences = {...pageCircularReferences, ...siteMenuCircularReferences};
 
   return {
     props: { page, siteMenu, defaultMetadata, circularReferences },

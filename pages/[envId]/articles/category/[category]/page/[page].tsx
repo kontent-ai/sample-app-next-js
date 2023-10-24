@@ -12,7 +12,7 @@ import { ArticlePageSize } from "../../../../../../lib/constants/paging";
 import { getArticlesCountByCategory, getArticlesForListing, getDefaultMetadata, getItemBySlug, getItemsTotalCount, getSiteMenu } from "../../../../../../lib/kontentClient";
 import { ResolutionContext, resolveUrlPath } from "../../../../../../lib/routing";
 import { ArticleListingUrlQuery, ArticleTypeWithAll, categoryFilterSource, isArticleType } from "../../../../../../lib/utils/articlesListing";
-import { CircularReferenceInfo, sanitizeCircularData } from "../../../../../../lib/utils/circularityUtils";
+import { ItemCircularReferenceMap, sanitizeCircularData } from "../../../../../../lib/utils/circularityUtils";
 import { defaultEnvId, siteCodename } from "../../../../../../lib/utils/env";
 import { getEnvIdFromRouteParams, getPreviewApiKeyFromPreviewData } from "../../../../../../lib/utils/pageUtils";
 import { Article, contentTypes, Metadata, Nav_NavigationItem, taxonomies, WSL_Page } from "../../../../../../models";
@@ -23,7 +23,7 @@ type Props = Readonly<{
   page: WSL_Page,
   itemCount: number;
   defaultMetadata: Metadata;
-  circularReferences: Record<string, CircularReferenceInfo[]>;
+  circularReferences: ItemCircularReferenceMap;
 }>;
 
 type LinkButtonProps = {
@@ -268,7 +268,7 @@ export const getStaticProps: GetStaticProps<Props, ArticleListingUrlQuery> = asy
   const [siteMenu, siteMenuFoundCycles] = sanitizeCircularData(siteMenuData);
   const [page, pageFoundCycles] = sanitizeCircularData(pageData);
 
-  let articlesFoundCycles: Record<string, CircularReferenceInfo[]> = {};
+  let articlesFoundCycles: ItemCircularReferenceMap = {};
 
   const articles = {
     ...articlesData,

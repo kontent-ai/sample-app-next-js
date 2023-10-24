@@ -11,7 +11,7 @@ import { ProductsPageSize } from "../../../lib/constants/paging";
 import { getDefaultMetadata, getItemBySlug, getProductsForListing, getSiteMenu } from "../../../lib/kontentClient";
 import { createQueryString, reservedListingSlugs, resolveUrlPath } from "../../../lib/routing";
 import { changeUrlQueryString } from "../../../lib/utils/changeUrlQueryString";
-import { CircularReferenceInfo, sanitizeCircularData } from "../../../lib/utils/circularityUtils";
+import { ItemCircularReferenceMap, sanitizeCircularData } from "../../../lib/utils/circularityUtils";
 import { defaultEnvId, siteCodename } from "../../../lib/utils/env";
 import { getEnvIdFromRouteParams, getPreviewApiKeyFromPreviewData } from "../../../lib/utils/pageUtils";
 import { contentTypes, Metadata, Nav_NavigationItem, Product, WSL_Page } from "../../../models";
@@ -24,7 +24,7 @@ type Props = Readonly<{
   siteMenu: Nav_NavigationItem | null;
   isPreview: boolean;
   defaultMetadata: Metadata;
-  circularReferences: Record<string, CircularReferenceInfo[]>;
+  circularReferences: ItemCircularReferenceMap;
 }>;
 
 type ProductListingProps = Readonly<{
@@ -225,20 +225,20 @@ export const getStaticProps: GetStaticProps<Props, { envId: string }> = async co
     throw new Error("Can't find the main menu item.")
   }
 
-  let productsFoundCycles: Record<string, CircularReferenceInfo[]> = {};
+  let productsCircularReferences: ItemCircularReferenceMap = {};
 
   const products = {
     ...productsData,
     items: productsData.items.map(product => {
       const [sanitizedProduct, foundCycles] = sanitizeCircularData(product);
-      productsFoundCycles = {...productsFoundCycles, ...foundCycles};
+      productsCircularReferences = {...productsCircularReferences, ...foundCycles};
       return sanitizedProduct;
     })
   }
 
-  const [siteMenu, siteMenuFoundCycles] = sanitizeCircularData(siteMenuData);
+  const [siteMenu, siteMenuCircularReferences] = sanitizeCircularData(siteMenuData);
 
-  const circularReferences = {...siteMenuFoundCycles, ...productsFoundCycles};
+  const circularReferences = {...siteMenuCircularReferences, ...productsCircularReferences};
 
   return {
     props: { page, defaultMetadata, products: products.items, circularReferences, totalCount: products.pagination.totalCount ?? 0, siteMenu, isPreview: !!context.preview },
