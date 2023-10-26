@@ -7,7 +7,7 @@ import { RichTextElement } from "../../../components/shared/richText/RichTextEle
 import { AppPage } from "../../../components/shared/ui/appPage";
 import { mainColorBgClass } from "../../../lib/constants/colors";
 import { getAllArticles, getArticleBySlug, getDefaultMetadata, getSiteMenu } from "../../../lib/kontentClient";
-import { ItemCircularReferenceMap, sanitizeCircularData } from "../../../lib/utils/circularityUtils";
+import { ItemCircularReferenceMap, sanitizeItem } from "../../../lib/utils/circularityUtils";
 import { formatDate } from "../../../lib/utils/dateTime";
 import { defaultEnvId, siteCodename } from "../../../lib/utils/env";
 import { getPreviewApiKeyFromPreviewData } from "../../../lib/utils/pageUtils";
@@ -94,8 +94,8 @@ export const getStaticProps: GetStaticProps<Props, { slug: string, envId: string
     return { notFound: true };
   }
 
-  const [siteMenu, siteMenuCircularReferences] = sanitizeCircularData(siteMenuData);
-  const [article, articleCircularReferences] = sanitizeCircularData(articleData);
+  const [siteMenu, siteMenuCircularReferences] = sanitizeItem(siteMenuData);
+  const [article, articleCircularReferences] = sanitizeItem(articleData);
 
   const circularReferences = {...siteMenuCircularReferences, ...articleCircularReferences};
 

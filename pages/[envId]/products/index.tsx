@@ -11,7 +11,7 @@ import { ProductsPageSize } from "../../../lib/constants/paging";
 import { getDefaultMetadata, getItemBySlug, getProductsForListing, getSiteMenu } from "../../../lib/kontentClient";
 import { createQueryString, reservedListingSlugs, resolveUrlPath } from "../../../lib/routing";
 import { changeUrlQueryString } from "../../../lib/utils/changeUrlQueryString";
-import { ItemCircularReferenceMap, sanitizeCircularData } from "../../../lib/utils/circularityUtils";
+import { ItemCircularReferenceMap, sanitizeItem } from "../../../lib/utils/circularityUtils";
 import { defaultEnvId, siteCodename } from "../../../lib/utils/env";
 import { getEnvIdFromRouteParams, getPreviewApiKeyFromPreviewData } from "../../../lib/utils/pageUtils";
 import { contentTypes, Metadata, Nav_NavigationItem, Product, WSL_Page } from "../../../models";
@@ -217,7 +217,7 @@ export const getStaticProps: GetStaticProps<Props, { envId: string }> = async co
     };
   }
 
-  const productsData = await getProductsForListing({ envId, previewApiKey }, !!context.preview);
+  const products = await getProductsForListing({ envId, previewApiKey }, !!context.preview);
   const siteMenuData = await getSiteMenu({ envId, previewApiKey }, !!context.preview);
   const defaultMetadata = await getDefaultMetadata({ envId, previewApiKey }, !!context.preview);
 
@@ -225,20 +225,9 @@ export const getStaticProps: GetStaticProps<Props, { envId: string }> = async co
     throw new Error("Can't find the main menu item.")
   }
 
-  let productsCircularReferences: ItemCircularReferenceMap = {};
+  const [siteMenu, siteMenuCircularReferences] = sanitizeItem(siteMenuData);
 
-  const products = {
-    ...productsData,
-    items: productsData.items.map(product => {
-      const [sanitizedProduct, foundCycles] = sanitizeCircularData(product);
-      productsCircularReferences = {...productsCircularReferences, ...foundCycles};
-      return sanitizedProduct;
-    })
-  }
-
-  const [siteMenu, siteMenuCircularReferences] = sanitizeCircularData(siteMenuData);
-
-  const circularReferences = {...siteMenuCircularReferences, ...productsCircularReferences};
+  const circularReferences = {...siteMenuCircularReferences};
 
   return {
     props: { page, defaultMetadata, products: products.items, circularReferences, totalCount: products.pagination.totalCount ?? 0, siteMenu, isPreview: !!context.preview },

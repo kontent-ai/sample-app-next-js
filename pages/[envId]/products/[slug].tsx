@@ -6,7 +6,7 @@ import { FC } from "react";
 import { AppPage } from "../../../components/shared/ui/appPage";
 import { mainColorButtonClass, mainColorHoverClass, mainColorTextClass } from "../../../lib/constants/colors";
 import { getDefaultMetadata, getProductDetail, getProductItemsWithSlugs, getSiteMenu } from "../../../lib/kontentClient";
-import { ItemCircularReferenceMap, sanitizeCircularData } from "../../../lib/utils/circularityUtils";
+import { ItemCircularReferenceMap, sanitizeItem } from "../../../lib/utils/circularityUtils";
 import { defaultEnvId, siteCodename } from "../../../lib/utils/env";
 import { getEnvIdFromRouteParams, getPreviewApiKeyFromPreviewData } from "../../../lib/utils/pageUtils";
 import { createElementSmartLink } from "../../../lib/utils/smartLinkUtils";
@@ -61,7 +61,7 @@ export const getStaticProps: GetStaticProps<Props, IParams> = async (context) =>
     throw new Error("Can't find main menu item.");
   }
 
-  const [siteMenu, circularReferences] = sanitizeCircularData(siteMenuData);
+  const [siteMenu, circularReferences] = sanitizeItem(siteMenuData);
 
   return {
     props: {

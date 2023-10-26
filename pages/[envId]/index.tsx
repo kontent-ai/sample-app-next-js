@@ -7,7 +7,7 @@ import { Content } from '../../components/shared/Content';
 import { AppPage } from '../../components/shared/ui/appPage';
 import { getHomepage, getSiteMenu } from '../../lib/kontentClient';
 import { useSmartLink } from '../../lib/useSmartLink';
-import { ItemCircularReferenceMap, sanitizeCircularData } from '../../lib/utils/circularityUtils';
+import { ItemCircularReferenceMap, sanitizeItem } from '../../lib/utils/circularityUtils';
 import { defaultEnvId } from '../../lib/utils/env';
 import { getEnvIdFromRouteParams, getPreviewApiKeyFromPreviewData } from '../../lib/utils/pageUtils';
 import { Nav_NavigationItem, WSL_WebSpotlightRoot } from '../../models';
@@ -79,8 +79,8 @@ export const getStaticProps: GetStaticProps<Props, { envId: string }> = async co
     throw new Error("Can't find main menu item.");
   }
 
-  const [homepage, homepageCircularReferences] = sanitizeCircularData(homepageData);
-  const [siteMenu, siteMenuCircularReferences] = sanitizeCircularData(siteMenuData);
+  const [homepage, homepageCircularReferences] = sanitizeItem(homepageData);
+  const [siteMenu, siteMenuCircularReferences] = sanitizeItem(siteMenuData);
 
   const circularReferences = {...homepageCircularReferences, ...siteMenuCircularReferences};
 

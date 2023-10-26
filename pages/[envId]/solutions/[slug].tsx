@@ -7,7 +7,7 @@ import { RichTextElement } from "../../../components/shared/richText/RichTextEle
 import { AppPage } from "../../../components/shared/ui/appPage";
 import { mainColorBgClass } from "../../../lib/constants/colors";
 import { getDefaultMetadata, getSiteMenu, getSolutionDetail, getSolutionsWithSlugs } from "../../../lib/kontentClient";
-import { ItemCircularReferenceMap, sanitizeCircularData } from "../../../lib/utils/circularityUtils";
+import { ItemCircularReferenceMap, sanitizeItem } from "../../../lib/utils/circularityUtils";
 import { defaultEnvId, siteCodename } from "../../../lib/utils/env";
 import { getEnvIdFromRouteParams, getPreviewApiKeyFromPreviewData } from "../../../lib/utils/pageUtils";
 import { createElementSmartLink } from "../../../lib/utils/smartLinkUtils";
@@ -64,8 +64,8 @@ export const getStaticProps: GetStaticProps<Props, IParams> = async (
     throw new Error("Can't find the main menu item.")
   }
 
-  const [solution, solutionCircularReferences] = sanitizeCircularData(solutionData);
-  const [siteMenu, siteMenuCircularReferences] = sanitizeCircularData(siteMenuData);
+  const [solution, solutionCircularReferences] = sanitizeItem(solutionData);
+  const [siteMenu, siteMenuCircularReferences] = sanitizeItem(siteMenuData);
 
   const circularReferences = {...solutionCircularReferences, ...siteMenuCircularReferences};
 
