@@ -1,16 +1,13 @@
-import { KontentSmartLinkEvent } from '@kontent-ai/smart-link';
-import { IRefreshMessageData, IRefreshMessageMetadata } from '@kontent-ai/smart-link/types/lib/IFrameCommunicatorTypes';
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
-import { useEffect, useState } from 'react';
+import {useState} from "react";
 
 import { Content } from '../../components/shared/Content';
+import {useSmartLinkRefresh} from "../../components/shared/contexts/SmartLink";
 import { AppPage } from '../../components/shared/ui/appPage';
 import { getHomepage, getSiteMenu } from '../../lib/kontentClient';
-import { useSmartLink } from '../../lib/useSmartLink';
 import { defaultEnvId } from '../../lib/utils/env';
 import { getEnvIdFromRouteParams, getPreviewApiKeyFromPreviewData } from '../../lib/utils/pageUtils';
 import { Nav_NavigationItem, WSL_WebSpotlightRoot } from '../../models';
-
 
 type Props = Readonly<{
   homepage: WSL_WebSpotlightRoot;
@@ -19,36 +16,25 @@ type Props = Readonly<{
 }>;
 
 const Home: NextPage<Props> = props => {
-  const [homepage, setHomepage] = useState(props.homepage);
+  const [refreshedHomePage, setRefreshedHomePage] = useState(props.homepage);
 
-  const sdk = useSmartLink();
+  useSmartLinkRefresh(async () => {
+    const response = await fetch(`/api/homepage?preview=${props.isPreview}`);
+    const data = await response.json();
 
-  useEffect(() => {
-    const getHomepage = async () => {
-      const response = await fetch(`/api/homepage?preview=${props.isPreview}`);
-      const data = await response.json();
+    setRefreshedHomePage(data);
+  });
 
-      setHomepage(data);
-    }
-
-    sdk?.on(KontentSmartLinkEvent.Refresh, (data: IRefreshMessageData, metadata: IRefreshMessageMetadata, originalRefresh: () => void) => {
-      if (metadata.manualRefresh) {
-        originalRefresh();
-      } else {
-        getHomepage();
-      }
-    });
-  }, [sdk, props.isPreview]);
 
   return (
     <AppPage
-      item={homepage}
+      item={refreshedHomePage}
       siteMenu={props.siteMenu ?? null}
       pageType='WebPage'
-      defaultMetadata={homepage}
+      defaultMetadata={refreshedHomePage}
     >
       <div>
-        {homepage.elements.content.linkedItems.map(item => (
+        {refreshedHomePage.elements.content.linkedItems.map(item => (
           <Content
             key={item.system.id}
             item={item as any}
