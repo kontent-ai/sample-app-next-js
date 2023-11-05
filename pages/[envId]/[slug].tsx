@@ -6,14 +6,15 @@ import { Content } from "../../components/shared/Content";
 import { AppPage } from "../../components/shared/ui/appPage";
 import { getDefaultMetadata, getItemBySlug, getPagesSlugs, getSiteMenu } from "../../lib/kontentClient";
 import { reservedListingSlugs } from "../../lib/routing";
+import { Stringified, parseFlatted, stringifyAsType } from "../../lib/utils/circularityUtils";
 import { defaultEnvId } from "../../lib/utils/env";
 import { getEnvIdFromRouteParams, getPreviewApiKeyFromPreviewData } from "../../lib/utils/pageUtils";
 import { createElementSmartLink, createFixedAddSmartLink } from "../../lib/utils/smartLinkUtils";
 import { contentTypes, Metadata, Nav_NavigationItem, WSL_Page } from "../../models";
 
 type Props = Readonly<{
-  page: WSL_Page;
-  siteMenu: Nav_NavigationItem | null;
+  page: Stringified<WSL_Page>;
+  siteMenu: Stringified<Nav_NavigationItem>;
   defaultMetadata: Metadata;
 }>;
 
@@ -48,41 +49,45 @@ export const getStaticProps: GetStaticProps<Props, IParams> = async (context) =>
 
   const previewApiKey = getPreviewApiKeyFromPreviewData(context.previewData);
 
-  const siteMenu = await getSiteMenu({ envId, previewApiKey }, !!context.preview);
+  const siteMenuData = await getSiteMenu({ envId, previewApiKey }, !!context.preview);
   const defaultMetadata = await getDefaultMetadata({ envId, previewApiKey }, !!context.preview);
 
-  const page = await getItemBySlug<WSL_Page>({ envId, previewApiKey }, slug, contentTypes.page.codename, !!context.preview);
+  const pageData = await getItemBySlug<WSL_Page>({ envId, previewApiKey }, slug, contentTypes.page.codename, !!context.preview);
 
-  if (page === null) {
+  if (pageData === null) {
     return {
       notFound: true
     };
   }
+
+  const page = stringifyAsType(pageData);
+  const siteMenu = stringifyAsType(siteMenuData);
 
   return {
     props: { page, siteMenu, defaultMetadata },
   };
 }
 
-const TopLevelPage: FC<Props> = props => (
-  <AppPage
-    siteMenu={props.siteMenu}
-    defaultMetadata={props.defaultMetadata}
-    item={props.page}
-    pageType="WebPage"
-  >
-    <div
-      {...createElementSmartLink(contentTypes.page.elements.content.codename)}
-      {...createFixedAddSmartLink("end")}
+const TopLevelPage: FC<Props> = (props) => {
+  const page = parseFlatted(props.page);
+  
+  return (
+    <AppPage
+      siteMenu={props.siteMenu}
+      defaultMetadata={props.defaultMetadata}
+      item={page}
+      pageType="WebPage"
     >
-      {props.page.elements.content.linkedItems.map(piece => (
-        <Content
-          key={piece.system.id}
-          item={piece}
-        />
-      ))}
-    </div>
-  </AppPage>
-);
+      <div
+        {...createElementSmartLink(contentTypes.page.elements.content.codename)}
+        {...createFixedAddSmartLink("end")}
+      >
+        {page.elements.content.linkedItems.map((piece) => (
+          <Content key={piece.system.id} item={piece} />
+        ))}
+      </div>
+    </AppPage>
+  );
+};
 
 export default TopLevelPage;

@@ -6,6 +6,7 @@ import { FC } from "react";
 import { AppPage } from "../../../components/shared/ui/appPage";
 import { mainColorButtonClass, mainColorHoverClass, mainColorTextClass } from "../../../lib/constants/colors";
 import { getDefaultMetadata, getProductDetail, getProductItemsWithSlugs, getSiteMenu } from "../../../lib/kontentClient";
+import { Stringified, stringifyAsType } from "../../../lib/utils/circularityUtils";
 import { defaultEnvId, siteCodename } from "../../../lib/utils/env";
 import { getEnvIdFromRouteParams, getPreviewApiKeyFromPreviewData } from "../../../lib/utils/pageUtils";
 import { createElementSmartLink } from "../../../lib/utils/smartLinkUtils";
@@ -16,7 +17,7 @@ import { contentTypes, Metadata, Nav_NavigationItem, Product } from "../../../mo
 type Props = Readonly<{
   product: Product;
   defaultMetadata: Metadata;
-  siteMenu: Nav_NavigationItem | null;
+  siteMenu: Stringified<Nav_NavigationItem>;
 }>;
 
 interface IParams extends ParsedUrlQuery {
@@ -48,18 +49,24 @@ export const getStaticProps: GetStaticProps<Props, IParams> = async (context) =>
   const previewApiKey = getPreviewApiKeyFromPreviewData(context.previewData);
 
   const product = await getProductDetail({ envId, previewApiKey }, slug, !!context.preview);
-  const siteMenu = await getSiteMenu({ envId, previewApiKey }, !!context.preview);
+  const siteMenuData = await getSiteMenu({ envId, previewApiKey }, !!context.preview);
   const defaultMetadata = await getDefaultMetadata({ envId, previewApiKey }, !!context.preview);
 
   if (!product) {
     return { notFound: true };
   }
 
+  if (!siteMenuData) {
+    throw new Error("Can't find main menu item.");
+  }
+
+  const siteMenu = stringifyAsType(siteMenuData);
+
   return {
     props: {
       product,
       siteMenu,
-      defaultMetadata
+      defaultMetadata,
     }
   };
 };
