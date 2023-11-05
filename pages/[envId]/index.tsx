@@ -7,20 +7,21 @@ import { Content } from '../../components/shared/Content';
 import { AppPage } from '../../components/shared/ui/appPage';
 import { getHomepage, getSiteMenu } from '../../lib/kontentClient';
 import { useSmartLink } from '../../lib/useSmartLink';
+import { Stringified, parseFlatted, stringifyAsType } from '../../lib/utils/circularityUtils';
 import { defaultEnvId } from '../../lib/utils/env';
 import { getEnvIdFromRouteParams, getPreviewApiKeyFromPreviewData } from '../../lib/utils/pageUtils';
-import { Nav_NavigationItem, WSL_WebSpotlightRoot } from '../../models';
+import { Metadata, Nav_NavigationItem, WSL_WebSpotlightRoot } from '../../models';
 
 
 type Props = Readonly<{
-  homepage: WSL_WebSpotlightRoot;
-  siteMenu: Nav_NavigationItem | null;
+  homepage: Stringified<WSL_WebSpotlightRoot>;
+  siteMenu: Stringified<Nav_NavigationItem>;
+  metaData: Pick<Metadata, "elements">;
   isPreview: boolean;
 }>;
 
 const Home: NextPage<Props> = props => {
-  const [homepage, setHomepage] = useState(props.homepage);
-
+  const [homepage, setHomepage] = useState(parseFlatted(props.homepage));
   const sdk = useSmartLink();
 
   useEffect(() => {
@@ -43,9 +44,9 @@ const Home: NextPage<Props> = props => {
   return (
     <AppPage
       item={homepage}
-      siteMenu={props.siteMenu ?? null}
+      siteMenu={props.siteMenu}
       pageType='WebPage'
-      defaultMetadata={homepage}
+      defaultMetadata={props.metaData}
     >
       <div>
         {homepage.elements.content.linkedItems.map(item => (
@@ -64,15 +65,29 @@ export const getStaticProps: GetStaticProps<Props, { envId: string }> = async co
 
   const previewApiKey = getPreviewApiKeyFromPreviewData(context.previewData);
 
-  const homepage = await getHomepage({ envId, previewApiKey }, !!context.preview);
-  const siteMenu = await getSiteMenu({ envId, previewApiKey }, !!context.preview);
+  const homepageData = await getHomepage({ envId, previewApiKey }, !!context.preview);
+  const siteMenuData = await getSiteMenu({ envId, previewApiKey }, !!context.preview);
 
-  if (!homepage) {
+  if (!homepageData) {
     throw new Error("Can't find homepage item.");
   }
 
+  if (!siteMenuData) {
+    throw new Error("Can't find main menu item.");
+  }
+
+  const siteMenu = stringifyAsType(siteMenuData);
+  const homepage = stringifyAsType(homepageData);
+  const metaData = {
+    elements: {
+      metadataDescription: homepageData.elements.metadataDescription,
+      metadataKeywords: homepageData.elements.metadataKeywords,
+      metadataTitle: homepageData.elements.metadataTitle
+    }
+  } as const;
+
   return {
-    props: { homepage, siteMenu, isPreview: !!context.preview },
+    props: { homepage, siteMenu, isPreview: !!context.preview, metaData },
   };
 }
 

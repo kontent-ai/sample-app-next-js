@@ -4,6 +4,7 @@ import { FC, ReactNode } from "react";
 import { perCollectionSEOTitle } from "../../../lib/constants/labels";
 import { ValidCollectionCodename } from "../../../lib/types/perCollection";
 import { useSmartLink } from "../../../lib/useSmartLink";
+import { Stringified, parseFlatted } from "../../../lib/utils/circularityUtils";
 import { siteCodename } from "../../../lib/utils/env";
 import { createItemSmartLink } from "../../../lib/utils/smartLinkUtils";
 import { Article, contentTypes, Metadata, Nav_NavigationItem, Product, Solution, WSL_Page, WSL_WebSpotlightRoot } from "../../../models";
@@ -15,13 +16,14 @@ type AcceptedItem = WSL_WebSpotlightRoot | Article | Product | WSL_Page | Soluti
 type Props = Readonly<{
   children: ReactNode;
   item: AcceptedItem;
-  siteMenu: Nav_NavigationItem | null;
-  defaultMetadata: Metadata;
+  siteMenu: Stringified<Nav_NavigationItem>;
+  defaultMetadata: Pick<Metadata, "elements">;
   pageType: "WebPage" | "Article" | "Product" | "Solution",
 }>;
 
 export const AppPage: FC<Props> = props => {
   useSmartLink();
+  const siteMenu = parseFlatted(props.siteMenu);
 
   return (
     <>
@@ -31,7 +33,7 @@ export const AppPage: FC<Props> = props => {
         defaultMetadata={props.defaultMetadata}
       />
       <div className="min-h-full grow flex flex-col items-center overflow-hidden">
-        {props.siteMenu ? <Menu item={props.siteMenu} /> : <span>Missing top navigation. Please provide a valid navigation item in the web spotlight root.</span>}
+        {props.siteMenu ? <Menu item={siteMenu} /> : <span>Missing top navigation. Please provide a valid navigation item in the web spotlight root.</span>}
         {/* https://tailwindcss.com/docs/typography-plugin */}
         <main
           className="grow h-full w-screen bg-slate-50 scroll-smooth"
@@ -52,7 +54,7 @@ AppPage.displayName = "Page";
 const isProductOrSolution = (item: AcceptedItem): item is Product | Solution =>
   [contentTypes.solution.codename as string, contentTypes.product.codename as string].includes(item.system.type)
 
-const PageMetadata: FC<Pick<Props, "item" | "defaultMetadata" | "pageType">> = ({ item, defaultMetadata, pageType }) => {
+  const PageMetadata: FC<Pick<Props, "item" | "defaultMetadata" | "pageType">> = ({ item, defaultMetadata, pageType }) => {
   const pageMetaTitle = createMetaTitle(siteCodename, item);
   const pageMetaDescription = item.elements.metadataDescription.value || defaultMetadata.elements.metadataDescription.value;
   const pageMetaKeywords = item.elements.metadataKeywords.value || defaultMetadata.elements.metadataKeywords.value;

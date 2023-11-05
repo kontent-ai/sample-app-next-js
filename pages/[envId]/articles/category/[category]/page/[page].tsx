@@ -12,14 +12,15 @@ import { ArticlePageSize } from "../../../../../../lib/constants/paging";
 import { getArticlesCountByCategory, getArticlesForListing, getDefaultMetadata, getItemBySlug, getItemsTotalCount, getSiteMenu } from "../../../../../../lib/kontentClient";
 import { ResolutionContext, resolveUrlPath } from "../../../../../../lib/routing";
 import { ArticleListingUrlQuery, ArticleTypeWithAll, categoryFilterSource, isArticleType } from "../../../../../../lib/utils/articlesListing";
+import { Stringified, parseFlatted, stringifyAsType } from "../../../../../../lib/utils/circularityUtils";
 import { defaultEnvId, siteCodename } from "../../../../../../lib/utils/env";
 import { getEnvIdFromRouteParams, getPreviewApiKeyFromPreviewData } from "../../../../../../lib/utils/pageUtils";
 import { Article, contentTypes, Metadata, Nav_NavigationItem, taxonomies, WSL_Page } from "../../../../../../models";
 
 type Props = Readonly<{
-  articles: ReadonlyArray<Article>;
-  siteMenu: Nav_NavigationItem | null,
-  page: WSL_Page,
+  articles: Stringified<Article[]>;
+  siteMenu: Stringified<Nav_NavigationItem>,
+  page: Stringified<WSL_Page>,
   itemCount: number;
   defaultMetadata: Metadata;
 }>;
@@ -108,9 +109,11 @@ const FilterOptions: FC<FilterOptionProps> = ({ options, router }) => {
 
 const ArticlesPagingPage: FC<Props> = props => {
   const router = useRouter();
-  const page = typeof router.query.page === 'string' ? +router.query.page : undefined;
+  const pageNumber = typeof router.query.page === 'string' ? +router.query.page : undefined;
   const category = typeof router.query.category === 'string' ? router.query.category : "all";
   const filterOptions = getFilterOptions();
+  const articles = parseFlatted(props.articles);
+  const page = parseFlatted(props.page);
 
   const pageCount = Math.ceil(props.itemCount / ArticlePageSize);
 
@@ -118,10 +121,10 @@ const ArticlesPagingPage: FC<Props> = props => {
     <AppPage
       siteMenu={props.siteMenu}
       defaultMetadata={props.defaultMetadata}
-      item={props.page}
+      item={page}
       pageType="WebPage"
     >
-      {props.page.elements.content.linkedItems.map(piece => (
+      {page.elements.content.linkedItems.map(piece => (
         <Content
           key={piece.system.id}
           item={piece as any}
@@ -136,7 +139,7 @@ const ArticlesPagingPage: FC<Props> = props => {
         <div className="flex flex-col flex-grow min-h-[500px]">
           {props.articles.length > 0 ? (
             <ul className="w-full grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 place-items-center list-none gap-5 md:pt-4 pl-0 justify-center">
-              {props.articles.map(article => (
+              {articles.map(article => (
                 article.elements.type.value[0]?.codename && (
                   <ArticleItem
                     key={article.system.id}
@@ -164,7 +167,7 @@ const ArticlesPagingPage: FC<Props> = props => {
                 <li>
                   <LinkButton
                     text="Previous"
-                    href={!page || page === 2
+                    href={!pageNumber || pageNumber === 2
                       ? resolveUrlPath({
                         type: "article",
                         term: "all"
@@ -172,9 +175,9 @@ const ArticlesPagingPage: FC<Props> = props => {
                       : resolveUrlPath({
                         type: "article",
                         term: category,
-                        page: page - 1
+                        page: pageNumber - 1
                       } as ResolutionContext)}
-                    disabled={page === 1}
+                    disabled={pageNumber === 1}
                     roundLeft
                   />
 
@@ -188,7 +191,7 @@ const ArticlesPagingPage: FC<Props> = props => {
                         term: category,
                         page: i + 1 > 1 ? i + 1 : undefined
                       } as ResolutionContext)}
-                      highlight={(page ?? 1) === i + 1}
+                      highlight={(pageNumber ?? 1) === i + 1}
                     />
                   </li>
                 ))}
@@ -198,9 +201,9 @@ const ArticlesPagingPage: FC<Props> = props => {
                     href={resolveUrlPath({
                       type: "article",
                       term: category,
-                      page: page ? page + 1 : 2
+                      page: pageNumber ? pageNumber + 1 : 2
                     } as ResolutionContext)}
-                    disabled={(page ?? 1) === pageCount}
+                    disabled={(pageNumber ?? 1) === pageCount}
                     roundRight
                   />
                 </li>
@@ -248,23 +251,31 @@ export const getStaticProps: GetStaticProps<Props, ArticleListingUrlQuery> = asy
   const previewApiKey = getPreviewApiKeyFromPreviewData(context.previewData);
 
   const pageNumber = !pageURLParameter || isNaN(+pageURLParameter) ? 1 : +pageURLParameter;
-  const articles = await getArticlesForListing({ envId, previewApiKey }, !!context.preview, pageNumber, selectedCategory);
-  const siteMenu = await getSiteMenu({ envId, previewApiKey }, !!context.preview);
-  const page = await getItemBySlug<WSL_Page>({ envId, previewApiKey }, "articles", contentTypes.page.codename, !!context.preview);
+  const articlesData = await getArticlesForListing({ envId, previewApiKey }, !!context.preview, pageNumber, selectedCategory);
+  const siteMenuData = await getSiteMenu({ envId, previewApiKey }, !!context.preview);
+  const pageData = await getItemBySlug<WSL_Page>({ envId, previewApiKey }, "articles", contentTypes.page.codename, !!context.preview);
   const itemCount = await getArticlesCountByCategory({ envId, previewApiKey }, !!context.preview, selectedCategory)
   const defaultMetadata = await getDefaultMetadata({ envId, previewApiKey }, !!context.preview);
 
-  if (page === null) {
+  if (pageData === null) {
     return { notFound: true };
   }
 
+  if (!siteMenuData) {
+    throw new Error("Can't find main menu item.");
+  }
+
+  const siteMenu = stringifyAsType(siteMenuData);
+  const page = stringifyAsType(pageData);
+  const articles = stringifyAsType(articlesData.items);
+
   return {
     props: {
-      articles: articles.items,
+      articles,
       siteMenu,
       page,
       itemCount,
-      defaultMetadata
+      defaultMetadata,
     },
     revalidate: 10,
   };

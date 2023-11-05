@@ -11,16 +11,16 @@ import { ProductsPageSize } from "../../../lib/constants/paging";
 import { getDefaultMetadata, getItemBySlug, getProductsForListing, getSiteMenu } from "../../../lib/kontentClient";
 import { createQueryString, reservedListingSlugs, resolveUrlPath } from "../../../lib/routing";
 import { changeUrlQueryString } from "../../../lib/utils/changeUrlQueryString";
+import { Stringified, parseFlatted, stringifyAsType } from "../../../lib/utils/circularityUtils";
 import { defaultEnvId, siteCodename } from "../../../lib/utils/env";
 import { getEnvIdFromRouteParams, getPreviewApiKeyFromPreviewData } from "../../../lib/utils/pageUtils";
 import { contentTypes, Metadata, Nav_NavigationItem, Product, WSL_Page } from "../../../models";
 
-
 type Props = Readonly<{
-  page: WSL_Page;
+  page: Stringified<WSL_Page>;
   products: ReadonlyArray<Product> | undefined;
   totalCount: number;
-  siteMenu: Nav_NavigationItem | null;
+  siteMenu: Stringified<Nav_NavigationItem>;
   isPreview: boolean;
   defaultMetadata: Metadata;
 }>;
@@ -61,7 +61,8 @@ export const Products: FC<Props> = props => {
   const [totalCount, setTotalCount] = useState(props.totalCount);
   const [products, setProducts] = useState<ReadonlyArray<Product> | undefined>(props.products);
   const [taxonomies, setTaxonomies] = useState<ITaxonomyTerms[]>([]);
-  const { page, category } = router.query
+  const { page, category } = router.query;
+  const productsPage = parseFlatted(props.page);
 
   const pageNumber = useMemo(() => !page || isNaN(+page) ? 1 : +page, [page])
 
@@ -159,10 +160,10 @@ export const Products: FC<Props> = props => {
     <AppPage
       siteMenu={props.siteMenu}
       defaultMetadata={props.defaultMetadata}
-      item={props.page}
+      item={productsPage}
       pageType="WebPage"
     >
-      {props.page.elements.content.linkedItems.map(piece => (
+      {productsPage.elements.content.linkedItems.map(piece => (
         <Content
           key={piece.system.id}
           item={piece as any}
@@ -175,7 +176,7 @@ export const Products: FC<Props> = props => {
         <div className={`flex flex-col ${mainColorBgClass[siteCodename]} p-4`}>
           <h4 className="m-0 py-2 text-white">Category</h4>
           <ul className="m-0 min-h-full gap-2 p-0 list-none">
-            {taxonomies.map(renderFilterOption)}
+            {Array.isArray(taxonomies) && taxonomies.map(renderFilterOption)}
           </ul>
         </div>
         <ProductListing products={products} />
@@ -205,18 +206,25 @@ export const getStaticProps: GetStaticProps<Props, { envId: string }> = async co
   const previewApiKey = getPreviewApiKeyFromPreviewData(context.previewData);
 
   // We might want to bound listing pages to something else than URL slug
-  const page = await getItemBySlug<WSL_Page>({ envId: envId, previewApiKey: previewApiKey }, reservedListingSlugs.products, contentTypes.page.codename, !!context.preview);
+  const pageData = await getItemBySlug<WSL_Page>({ envId: envId, previewApiKey: previewApiKey }, reservedListingSlugs.products, contentTypes.page.codename, !!context.preview);
 
 
-  if (page === null) {
+  if (pageData === null) {
     return {
       notFound: true
     };
   }
 
   const products = await getProductsForListing({ envId, previewApiKey }, !!context.preview);
-  const siteMenu = await getSiteMenu({ envId, previewApiKey }, !!context.preview);
+  const siteMenuData = await getSiteMenu({ envId, previewApiKey }, !!context.preview);
   const defaultMetadata = await getDefaultMetadata({ envId, previewApiKey }, !!context.preview);
+
+  if (!siteMenuData) {
+    throw new Error("Can't find the main menu item.")
+  }
+
+  const siteMenu = stringifyAsType(siteMenuData);
+  const page = stringifyAsType(pageData);
 
   return {
     props: { page, defaultMetadata, products: products.items, totalCount: products.pagination.totalCount ?? 0, siteMenu, isPreview: !!context.preview },
