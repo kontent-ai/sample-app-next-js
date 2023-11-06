@@ -33,7 +33,7 @@ export const AppPage: FC<Props> = props => {
         defaultMetadata={props.defaultMetadata}
       />
       <div className="min-h-full grow flex flex-col items-center overflow-hidden">
-        {props.siteMenu ? <Menu item={siteMenu} /> : <span>Missing top navigation. Please provide a valid navigation item in the web spotlight root.</span>}
+        <Menu item={siteMenu} />
         {/* https://tailwindcss.com/docs/typography-plugin */}
         <main
           className="grow h-full w-screen bg-slate-50 scroll-smooth"
