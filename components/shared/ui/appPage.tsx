@@ -4,7 +4,7 @@ import { FC, ReactNode } from "react";
 import { perCollectionSEOTitle } from "../../../lib/constants/labels";
 import { ValidCollectionCodename } from "../../../lib/types/perCollection";
 import { useSmartLink } from "../../../lib/useSmartLink";
-import { Stringified, parseFlatted } from "../../../lib/utils/circularityUtils";
+import { parseFlatted,Stringified } from "../../../lib/utils/circularityUtils";
 import { siteCodename } from "../../../lib/utils/env";
 import { createItemSmartLink } from "../../../lib/utils/smartLinkUtils";
 import { Article, contentTypes, Metadata, Nav_NavigationItem, Product, Solution, WSL_Page, WSL_WebSpotlightRoot } from "../../../models";
