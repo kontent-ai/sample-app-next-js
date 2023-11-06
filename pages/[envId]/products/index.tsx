@@ -11,7 +11,7 @@ import { ProductsPageSize } from "../../../lib/constants/paging";
 import { getDefaultMetadata, getItemBySlug, getProductsForListing, getSiteMenu } from "../../../lib/kontentClient";
 import { createQueryString, reservedListingSlugs, resolveUrlPath } from "../../../lib/routing";
 import { changeUrlQueryString } from "../../../lib/utils/changeUrlQueryString";
-import { Stringified, parseFlatted, stringifyAsType } from "../../../lib/utils/circularityUtils";
+import { parseFlatted, Stringified, stringifyAsType } from "../../../lib/utils/circularityUtils";
 import { defaultEnvId, siteCodename } from "../../../lib/utils/env";
 import { getEnvIdFromRouteParams, getPreviewApiKeyFromPreviewData } from "../../../lib/utils/pageUtils";
 import { contentTypes, Metadata, Nav_NavigationItem, Product, WSL_Page } from "../../../models";
@@ -123,7 +123,7 @@ export const Products: FC<Props> = props => {
         ? [...categories, term.codename, ...term.terms.map((t) => t.codename)]
         : categories.filter((c) => c !== term.codename && !term.terms.map((t) => t.codename).includes(c));
 
-      changeUrlQueryString({ category: newCategories }, router);
+      changeUrlQueryString({ ...router.query, category: newCategories }, router);
     };
 
     return (

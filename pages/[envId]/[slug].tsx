@@ -6,7 +6,7 @@ import { Content } from "../../components/shared/Content";
 import { AppPage } from "../../components/shared/ui/appPage";
 import { getDefaultMetadata, getItemBySlug, getPagesSlugs, getSiteMenu } from "../../lib/kontentClient";
 import { reservedListingSlugs } from "../../lib/routing";
-import { Stringified, parseFlatted, stringifyAsType } from "../../lib/utils/circularityUtils";
+import { parseFlatted, Stringified, stringifyAsType } from "../../lib/utils/circularityUtils";
 import { defaultEnvId } from "../../lib/utils/env";
 import { getEnvIdFromRouteParams, getPreviewApiKeyFromPreviewData } from "../../lib/utils/pageUtils";
 import { createElementSmartLink, createFixedAddSmartLink } from "../../lib/utils/smartLinkUtils";
@@ -83,7 +83,10 @@ const TopLevelPage: FC<Props> = (props) => {
         {...createFixedAddSmartLink("end")}
       >
         {page.elements.content.linkedItems.map((piece) => (
-          <Content key={piece.system.id} item={piece} />
+          <Content
+            key={piece.system.id}
+            item={piece}
+          />
         ))}
       </div>
     </AppPage>

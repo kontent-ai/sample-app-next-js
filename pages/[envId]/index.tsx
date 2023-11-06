@@ -7,7 +7,7 @@ import { Content } from '../../components/shared/Content';
 import { AppPage } from '../../components/shared/ui/appPage';
 import { getHomepage, getSiteMenu } from '../../lib/kontentClient';
 import { useSmartLink } from '../../lib/useSmartLink';
-import { Stringified, parseFlatted, stringifyAsType } from '../../lib/utils/circularityUtils';
+import { parseFlatted, Stringified, stringifyAsType } from '../../lib/utils/circularityUtils';
 import { defaultEnvId } from '../../lib/utils/env';
 import { getEnvIdFromRouteParams, getPreviewApiKeyFromPreviewData } from '../../lib/utils/pageUtils';
 import { Metadata, Nav_NavigationItem, WSL_WebSpotlightRoot } from '../../models';

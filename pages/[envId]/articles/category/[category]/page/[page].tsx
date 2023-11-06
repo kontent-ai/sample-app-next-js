@@ -12,7 +12,7 @@ import { ArticlePageSize } from "../../../../../../lib/constants/paging";
 import { getArticlesCountByCategory, getArticlesForListing, getDefaultMetadata, getItemBySlug, getItemsTotalCount, getSiteMenu } from "../../../../../../lib/kontentClient";
 import { ResolutionContext, resolveUrlPath } from "../../../../../../lib/routing";
 import { ArticleListingUrlQuery, ArticleTypeWithAll, categoryFilterSource, isArticleType } from "../../../../../../lib/utils/articlesListing";
-import { Stringified, parseFlatted, stringifyAsType } from "../../../../../../lib/utils/circularityUtils";
+import { parseFlatted, Stringified, stringifyAsType } from "../../../../../../lib/utils/circularityUtils";
 import { defaultEnvId, siteCodename } from "../../../../../../lib/utils/env";
 import { getEnvIdFromRouteParams, getPreviewApiKeyFromPreviewData } from "../../../../../../lib/utils/pageUtils";
 import { Article, contentTypes, Metadata, Nav_NavigationItem, taxonomies, WSL_Page } from "../../../../../../models";
