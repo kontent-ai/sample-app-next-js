@@ -13,6 +13,8 @@ export type Stringified<T> = string & T
  * Stringifies the provided item as a JSON string while preserving the type information.
  * This allows for the serialized string to be treated as both a string and as an object
  * of type `T` during type checking.
+ * 
+ * Stringification allows passing circular data through getStaticProps.
  *
  * @template T The type of the item to be stringified.
  * @param item The item of generic type `T` to be stringified.
