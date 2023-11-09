@@ -102,6 +102,10 @@ You can adjust the homepage by editing `pages/[envId]/index.tsx`. The page auto-
 
 To generate new models from Kontent.ai data, just run `npm run generateModels`. Make sure you have environment variables filled in properly.
 
+### Circular reference handling
+
+Next.js data fetching functions convert objects to JSON format. Since JSON doesn't support circular data, this can potentially cause crashes in situations where objects reference each other, such as with linked items or rich text elements. To avoid this, the application uses the [`flatted`](https://www.npmjs.com/package/flatted) package to implement two helper functions: `stringifyAsType` and `parseFlatted`, which allow for safe conversion of circular structures into a string form in `getStaticProps` and then accurately reconstruct the original objects from that string.
+
 ### Use codebase as a starter
 
 > ⚠ This project is not intended as a starter project. It is a sample of a presentation channel showcasing Kontent.ai capabilities. The following hints help you use this code as a base for presentation channel for your project like a boilerplate. By doing it, you are accepting the fact you are changing the purpose of this code.
