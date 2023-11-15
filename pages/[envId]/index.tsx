@@ -49,10 +49,11 @@ const Home: NextPage<Props> = props => {
       defaultMetadata={props.metaData}
     >
       <div>
-        {homepage.elements.content.linkedItems.map(item => (
+        {homepage.elements.content.linkedItems.map((item,index) => (
           <Content
             key={item.system.id}
             item={item as any}
+            index={index}
           />
         ))}
       </div>

@@ -20,6 +20,7 @@ type Props = Readonly<{
   subtitle: string;
   itemId: string;
   codename: string;
+  index: number;
 }>;
 
 export const StackComponent: FC<Props> = (props) => {
@@ -83,7 +84,7 @@ export const StackComponent: FC<Props> = (props) => {
         <div>
           <FactComponent
             item={currentAction}
-            isReversed={!!(actionIndex % 2)}
+            isReversed={props.index % 2 === 0}
           />
         </div>
       </section>

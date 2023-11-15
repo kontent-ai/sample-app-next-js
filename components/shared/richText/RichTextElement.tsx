@@ -43,7 +43,8 @@ type ElementProps = Readonly<{
 export const createDefaultResolvers = (
   element: Elements.RichTextElement,
   isElementInsideTable: boolean = false,
-  siteCodename: keyof typeof mainColorAnchor
+  siteCodename: keyof typeof mainColorAnchor,
+  componentIndex = 0
 ): Partial<PortableTextReactComponents> => ({
   types: {
     image: ({ value }: PortableTextTypeComponentProps<IPortableTextImage>) => {
@@ -117,9 +118,10 @@ export const createDefaultResolvers = (
           return <CTAButton reference={componentItem as Action} />;
         case contentTypes.fact.codename:
           return (
+            // incrementing componentIndex ensures zigzag pattern of facts
             <FactComponent
               item={componentItem as Fact}
-              isReversed={false}
+              isReversed={componentIndex++ % 2 !== 0}
             />
           );
         case contentTypes.content_chunk.codename:

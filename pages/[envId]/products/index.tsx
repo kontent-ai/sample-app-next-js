@@ -163,10 +163,11 @@ export const Products: FC<Props> = props => {
       item={productsPage}
       pageType="WebPage"
     >
-      {productsPage.elements.content.linkedItems.map(piece => (
+      {productsPage.elements.content.linkedItems.map((piece, index) => (
         <Content
           key={piece.system.id}
           item={piece as any}
+          index={index}
         />
       ))}
 

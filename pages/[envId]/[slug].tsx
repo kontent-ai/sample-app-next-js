@@ -82,10 +82,11 @@ const TopLevelPage: FC<Props> = (props) => {
         {...createElementSmartLink(contentTypes.page.elements.content.codename)}
         {...createFixedAddSmartLink("end")}
       >
-        {page.elements.content.linkedItems.map((piece) => (
+        {page.elements.content.linkedItems.map((piece, index) => (
           <Content
             key={piece.system.id}
             item={piece}
+            index={index}
           />
         ))}
       </div>

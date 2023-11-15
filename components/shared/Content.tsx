@@ -8,6 +8,7 @@ type AcceptedType = AcceptedTypesByCodename[keyof AcceptedTypesByCodename];
 
 type Props = Readonly<{
   item: AcceptedType;
+  index: number;
 }>;
 
 const isSupportedComponentType = (type: string): type is keyof AcceptedTypesByCodename => (
@@ -21,10 +22,10 @@ export const Content: FC<Props> = props => {
   }
   const TargetComponent = componentMap[type];
 
-  return <TargetComponent item={props.item as any} />;
-}
+  return <TargetComponent index={props.index} item={props.item as any} />;
+} 
 
-const componentMap: Readonly<{ [key in keyof AcceptedTypesByCodename]: ComponentType<Readonly<{ item: AcceptedTypesByCodename[key] }>> }> = {
+const componentMap: Readonly<{ [key in keyof AcceptedTypesByCodename]: ComponentType<Readonly<{ item: AcceptedTypesByCodename[key], index: number }>> }> = {
   content_chunk: ContentChunk,
   visual_container: VisualContainer,
 };
