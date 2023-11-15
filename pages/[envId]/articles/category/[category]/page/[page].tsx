@@ -124,10 +124,11 @@ const ArticlesPagingPage: FC<Props> = props => {
       item={page}
       pageType="WebPage"
     >
-      {page.elements.content.linkedItems.map(piece => (
+      {page.elements.content.linkedItems.map((piece, index) => (
         <Content
           key={piece.system.id}
           item={piece as any}
+          index={index}
         />
       ))}
       <div className="md:px-4">

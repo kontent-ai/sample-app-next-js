@@ -10,6 +10,7 @@ import { StackComponent } from "./Stack";
 
 type Props = Readonly<{
   item: Block_VisualContainer;
+  index: number;
 }>;
 
 const VisualRepresentation: FC<Props> = (props) => {
@@ -27,6 +28,7 @@ const VisualRepresentation: FC<Props> = (props) => {
     case stack.codename:
       return (
         <StackComponent
+          index={props.index}
           items={props.item.elements.items.linkedItems}
           subtitle={props.item.elements.subtitle.value}
           title={props.item.elements.title.value}
@@ -65,6 +67,6 @@ const VisualRepresentation: FC<Props> = (props) => {
 export const VisualContainer: FC<Props> = (props) => (
   // wrapper for anchor functionality, works by passing the item codename to Reference -> External link element
   <div id={sanitizeAnchor(props.item.system.codename)}>
-    <VisualRepresentation item={props.item} />
+    <VisualRepresentation index={props.index} item={props.item} />
   </div>
 );
