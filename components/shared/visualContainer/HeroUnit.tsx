@@ -22,7 +22,7 @@ export const HeroUnitComponent: FC<Props> = (props) => {
       url={fact.elements.image.value[0]?.url || ""}
       itemId={props.item.system.id}
     >
-      <div className={`p-5 text-white ${mainColorBgClass[siteCodename]} bg-opacity-70 w-full`}>
+      <div className={`p-5 text-white ${mainColorBgClass[siteCodename]} w-full`}>
         <div
           className="flex md:w-fit"
           {...createItemSmartLink(fact.system.id)}

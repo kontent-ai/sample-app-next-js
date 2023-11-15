@@ -2,7 +2,7 @@ import { Bars3Icon, ChevronDownIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
 import Link from "next/link";
 import { NextRouter, useRouter } from "next/router";
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 
 import { mainColorBgClass } from "../../../lib/constants/colors";
 import { perCollectionSiteName } from "../../../lib/constants/labels";
@@ -63,31 +63,33 @@ const MenuList: FC<MenuListProps> = (props) => {
   const router = useRouter();
   return (
     <ul
-      className={`transition ${props.smallMenuActive ? "" : "opacity-0 md:opacity-100"
-        } absolute w-full md:static flex flex-col md:flex md:gap-4 font-medium md:flex-row h-full`}
+      className={`transition ${
+        props.smallMenuActive ? "" : "opacity-0 md:opacity-100"
+      } absolute w-full md:static flex flex-col md:flex md:gap-4 font-medium md:flex-row h-full`}
     >
       {props.items.map((link, i) => (
         <li
           key={i}
-          className={`${isCurrentNavigationItemActive(link, router)
-            ? ""
-            : "border-l-transparent border-t-transparent"
-            }
-        border-gray-500 border-l-8 border-t-0 md:border-t-8 md:border-l-0 min-w-fit h-full w-full group grow`}
+          className={`${
+            isCurrentNavigationItemActive(link, router)
+              ? ""
+              : "border-l-transparent border-t-transparent"
+          }
+        border-gray-500 border-l-8 border-t-0 md:border-t-8 md:border-l-0 min-w-fit h-full w-full ${mainColorBgClass[siteCodename]} md:bg-transparent group grow`}
           onClick={() => props.handleClick(i)}
         >
           {link.elements.subitems.value.length > 0 ? (
             <div className="md:hover:bg-white h-full">
               <DropdownButton item={link} />
               <div // TODO: handle mobile menu behavior
-                className="-translate-y-1/2 opacity-0 pointer-events-none group-hover:pointer-events-auto group-hover:opacity-100 group-hover:translate-y-0 absolute z-40 left-0 shadow-sm bg-white border-gray-200 w-full transition-all duration-200 ease-in-out"
+                className="-translate-y-1/2 opacity-0 pointer-events-none md:group-hover:pointer-events-auto group-hover:opacity-100 group-hover:translate-y-0 absolute z-40 left-0 shadow-sm bg-white border-gray-200 w-full transition-all duration-200 ease-in-out"
               >
                 <DropdownMenuItems links={link.elements.subitems.linkedItems} />
               </div>
             </div>
           ) : (
             <Link
-              className="h-full flex items-center justify-between w-full py-2 pl-3 pr-4 font-medium text-white border-b border-gray-100 md:w-auto md:bg-transparent md:border-0 md:hover:bg-white md:group-hover:text-gray-900"
+              className="h-full flex items-center justify-between w-full py-2 px-4 font-medium text-white border-b border-gray-100 md:w-auto md:bg-transparent md:border-0 md:hover:bg-white md:group-hover:text-gray-900"
               href={resolveReference(link)}
               title={link.elements.referenceCaption.value}
             >
@@ -121,10 +123,11 @@ const DropdownMenuItems: FC<DropdownMenuProps> = (props) => {
         <li key={link.system.codename}>
           <Link
             href={resolveReference(link)}
-            className={`${isCurrentNavigationItemActive(link, router)
-              ? "border-l-gray-500 cursor-default "
-              : "border-l-transparent hover:border-l-gray-500"
-              }
+            className={`${
+              isCurrentNavigationItemActive(link, router)
+                ? "border-l-gray-500 cursor-default "
+                : "border-l-transparent hover:border-l-gray-500"
+            }
           block p-3 bg-gray-200 border-l-8 h-full`}
           >
             <div className="font-semibold">
@@ -143,14 +146,32 @@ const DropdownMenuItems: FC<DropdownMenuProps> = (props) => {
 export const Menu: FC<Props> = (props) => {
   const [activeMenu, setActiveMenu] = useState<string | number>(-1);
   const [smallMenuActive, setSmallMenuActive] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
 
   const handleMenuClick = (menuId: string | number): void => {
     setActiveMenu(menuId === activeMenu ? -1 : menuId);
   };
 
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 50) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   return (
     <div
-      className={`w-full fixed z-50 transition-all ease-in-out duration-300 ${mainColorBgClass[siteCodename]}`}
+      className={`w-full fixed z-50 transition-all ease-in-out duration-200 ${
+        (isScrolled || smallMenuActive) ? mainColorBgClass[siteCodename] :  "bg-opacity-0"
+      }`}
     >
       <div className="flex justify-between items-center mx-auto max-w-screen-xl md:h-16 pr-4">
         <div className="w-screen h-full md:flex justify-between z-50 md:pr-24 xl:pr-12 2xl:pr-0">
@@ -162,12 +183,7 @@ export const Menu: FC<Props> = (props) => {
               className="flex items-center"
             >
               <span className="pr-3">
-                <Image
-                  src="/logo.png"
-                  alt="logo"
-                  width={30}
-                  height={30}
-                />
+                <Image src="/logo.png" alt="logo" width={30} height={30} />
               </span>
               <span className="font-bold">Ficto</span>
               <span>&nbsp;{perCollectionSiteName[siteCodename]}</span>
@@ -181,9 +197,7 @@ export const Menu: FC<Props> = (props) => {
               <Bars3Icon className="w-6 h-6" />
             </button>
           </div>
-          <StandaloneSmartLinkButton
-            itemId={props.item.system.id}
-          />
+          <StandaloneSmartLinkButton itemId={props.item.system.id} />
           <div>
             <MenuList
               smallMenuActive={smallMenuActive}
