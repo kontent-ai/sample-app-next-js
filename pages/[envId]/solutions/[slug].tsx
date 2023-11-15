@@ -101,7 +101,6 @@ const SolutionDetail: FC<Props> = props => {
       </div>
     </HeroImage>
     <div
-      className="text-xl font-semibold"
       {...createElementSmartLink(
         contentTypes.solution.elements.showcase.codename
       )}
