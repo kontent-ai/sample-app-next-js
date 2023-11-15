@@ -39,7 +39,7 @@ const CallbackPage: React.FC = () => {
     const getTokenSeedId = async (authToken: string, projectContainerId: string): Promise<string | Readonly<{ error: string }>> => {
       const data = {
         query: '',
-        'token_types': ['delivery-api'],
+        'api_key_types': ['delivery-api'],
         environments: [envId]
       }
 
