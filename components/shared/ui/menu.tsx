@@ -183,7 +183,12 @@ export const Menu: FC<Props> = (props) => {
               className="flex items-center"
             >
               <span className="pr-3">
-                <Image src="/logo.png" alt="logo" width={30} height={30} />
+                <Image
+                  src="/logo.png"
+                  alt="logo"
+                  width={30}
+                  height={30}
+                />
               </span>
               <span className="font-bold">Ficto</span>
               <span>&nbsp;{perCollectionSiteName[siteCodename]}</span>

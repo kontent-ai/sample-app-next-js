@@ -22,7 +22,12 @@ export const Content: FC<Props> = props => {
   }
   const TargetComponent = componentMap[type];
 
-  return <TargetComponent index={props.index} item={props.item as any} />;
+  return (
+<TargetComponent
+  index={props.index}
+  item={props.item as any}
+/>
+);
 } 
 
 const componentMap: Readonly<{ [key in keyof AcceptedTypesByCodename]: ComponentType<Readonly<{ item: AcceptedTypesByCodename[key], index: number }>> }> = {
