@@ -67,6 +67,9 @@ const VisualRepresentation: FC<Props> = (props) => {
 export const VisualContainer: FC<Props> = (props) => (
   // wrapper for anchor functionality, works by passing the item codename to Reference -> External link element
   <div id={sanitizeAnchor(props.item.system.codename)}>
-    <VisualRepresentation index={props.index} item={props.item} />
+    <VisualRepresentation
+      index={props.index}
+      item={props.item}
+    />
   </div>
 );
