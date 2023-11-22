@@ -22,9 +22,7 @@ Ficto Surgical
 
 ## Getting Started
 
-To run the app yourself you will need a clone of the Kontent.ai project.
-As it is currently in early access, please create an issue and mention the email tied with the Kontent.ai account you want to enable the project for.
-Once we grant you access, you will be able to create your copy of the source project right from the Kontent.ai UI (`app.kontent.ai/projects`).
+To run the app yourself you will need a clone of the Kontent.ai project. You can create it right from the [Kontent.ai UI](`https://app.kontent.ai/projects`).
 
 ### Deploy
 
