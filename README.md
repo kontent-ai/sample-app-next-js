@@ -22,7 +22,8 @@ Ficto Surgical
 
 ## Getting Started
 
-To run the app yourself you will need a clone of the Kontent.ai project. You can create it right from the [Kontent.ai UI](`https://app.kontent.ai/projects`).
+To run the app yourself you will need a clone of the Kontent.ai project. You can create it right from the [Kontent.ai UI as a multi-brand sample project](https://kontent.ai/learn/docs/projects#a-create-a-sample-project).
+You can learn more about the sample project in [our documentation](https://kontent.ai/learn/develop/try-sample-apps/adjust-sample-project/javascript).
 
 ### Deploy
 
