@@ -2,7 +2,7 @@ import { Bars3Icon, ChevronDownIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
 import Link from "next/link";
 import { NextRouter, useRouter } from "next/router";
-import { FC, useEffect, useState } from "react";
+import { FC, useState } from "react";
 
 import { mainColorBgClass } from "../../../lib/constants/colors";
 import { perCollectionSiteName } from "../../../lib/constants/labels";
@@ -146,32 +146,15 @@ const DropdownMenuItems: FC<DropdownMenuProps> = (props) => {
 export const Menu: FC<Props> = (props) => {
   const [activeMenu, setActiveMenu] = useState<string | number>(-1);
   const [smallMenuActive, setSmallMenuActive] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
 
   const handleMenuClick = (menuId: string | number): void => {
     setActiveMenu(menuId === activeMenu ? -1 : menuId);
   };
 
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 50) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
 
   return (
     <div
-      className={`w-full fixed z-50 transition-all ease-in-out duration-200 ${
-        (isScrolled || smallMenuActive) ? mainColorBgClass[siteCodename] :  "bg-opacity-0"
-      }`}
+      className={`w-full fixed z-50 transition-all ease-in-out duration-200 ${mainColorBgClass[siteCodename]}`}
     >
       <div className="flex justify-between items-center mx-auto max-w-screen-xl md:h-16 pr-4">
         <div className="w-screen h-full md:flex justify-between z-50 md:pr-24 xl:pr-12 2xl:pr-0">
