@@ -4,7 +4,6 @@ import Link from "next/link";
 import { NextRouter, useRouter } from "next/router";
 import { FC, useState } from "react";
 
-import { mainColorBgClass } from "../../../lib/constants/colors";
 import { perCollectionSiteName } from "../../../lib/constants/labels";
 import {
   ResolutionContext,
@@ -75,7 +74,7 @@ const MenuList: FC<MenuListProps> = (props) => {
               ? ""
               : "border-l-transparent border-t-transparent"
           }
-        border-gray-500 border-l-8 border-t-0 md:border-t-8 md:border-l-0 min-w-fit h-full w-full ${mainColorBgClass[siteCodename]} md:bg-transparent group grow`}
+        border-gray-500 border-l-8 border-t-0 md:border-t-8 md:border-l-0 min-w-fit h-full w-full bg-mainBackgroundColor md:bg-transparent group grow`}
           onClick={() => props.handleClick(i)}
         >
           {link.elements.subitems.value.length > 0 ? (
@@ -154,7 +153,7 @@ export const Menu: FC<Props> = (props) => {
 
   return (
     <div
-      className={`w-full fixed z-50 transition-all ease-in-out duration-200 ${mainColorBgClass[siteCodename]}`}
+      className="w-full fixed z-50 transition-all ease-in-out duration-200 bg-mainBackgroundColor"
     >
       <div className="flex justify-between items-center mx-auto max-w-screen-xl md:h-16 pr-4">
         <div className="w-screen h-full md:flex justify-between z-50 md:pr-24 xl:pr-12 2xl:pr-0">

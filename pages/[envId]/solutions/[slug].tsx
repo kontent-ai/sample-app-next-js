@@ -5,10 +5,9 @@ import { FC } from "react";
 import { HeroImage } from "../../../components/landingPage/ui/heroImage";
 import { RichTextElement } from "../../../components/shared/richText/RichTextElement";
 import { AppPage } from "../../../components/shared/ui/appPage";
-import { mainColorBgClass } from "../../../lib/constants/colors";
 import { getDefaultMetadata, getSiteMenu, getSolutionDetail, getSolutionsWithSlugs } from "../../../lib/kontentClient";
 import { parseFlatted, Stringified, stringifyAsType } from "../../../lib/utils/circularityUtils";
-import { defaultEnvId, siteCodename } from "../../../lib/utils/env";
+import { defaultEnvId } from "../../../lib/utils/env";
 import { getEnvIdFromRouteParams, getPreviewApiKeyFromPreviewData } from "../../../lib/utils/pageUtils";
 import { createElementSmartLink } from "../../../lib/utils/smartLinkUtils";
 import { contentTypes, Metadata, Nav_NavigationItem, Solution } from "../../../models";
@@ -88,7 +87,7 @@ const SolutionDetail: FC<Props> = props => {
       itemId={solution.system.id}
     >
       <div
-        className={`py-1 px-3 w-full md:w-fit ${mainColorBgClass[siteCodename]}  opacity-90`}
+        className="py-1 px-3 w-full md:w-fit bg-mainBackgroundColor  opacity-90"
       >
         <h1
           {...createElementSmartLink(

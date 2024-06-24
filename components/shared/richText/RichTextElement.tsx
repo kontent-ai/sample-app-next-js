@@ -19,8 +19,6 @@ import Image from "next/image";
 import { FC } from "react";
 
 import { sanitizeFirstChildText } from "../../../lib/anchors";
-import { mainColorAnchor } from "../../../lib/constants/colors";
-import { siteCodename } from "../../../lib/utils/env";
 import {
   Action,
   Block_ContentChunk,
@@ -43,7 +41,6 @@ type ElementProps = Readonly<{
 export const createDefaultResolvers = (
   element: Elements.RichTextElement,
   isElementInsideTable: boolean = false,
-  siteCodename: keyof typeof mainColorAnchor,
   componentIndex = 0
 ): Partial<PortableTextReactComponents> => ({
   types: {
@@ -180,7 +177,7 @@ export const createDefaultResolvers = (
         id={sanitizeFirstChildText(value)}
       >
         <a
-          className={mainColorAnchor[siteCodename]}
+          className="border-mainAnchorColor"
           href={`#${sanitizeFirstChildText(value)}`}
         >
           {children}
@@ -193,7 +190,7 @@ export const createDefaultResolvers = (
         id={sanitizeFirstChildText(value)}
       >
         <a
-          className={mainColorAnchor[siteCodename]}
+          className="border-mainAnchorColor"
           href={`#${sanitizeFirstChildText(value)}`}
         >
           {children}
@@ -206,7 +203,7 @@ export const createDefaultResolvers = (
         id={sanitizeFirstChildText(value)}
       >
         <a
-          className={mainColorAnchor[siteCodename]}
+          className="border-mainAnchorColor"
           href={`#${sanitizeFirstChildText(value)}`}
         >
           {children}
@@ -219,7 +216,7 @@ export const createDefaultResolvers = (
         id={sanitizeFirstChildText(value)}
       >
         <a
-          className={mainColorAnchor[siteCodename]}
+          className="border-mainAnchorColor"
           href={`#${sanitizeFirstChildText(value)}`}
         >
           {children}
@@ -232,7 +229,7 @@ export const createDefaultResolvers = (
         id={sanitizeFirstChildText(value)}
       >
         <a
-          className={mainColorAnchor[siteCodename]}
+          className="border-mainAnchorColor"
           href={`#${sanitizeFirstChildText(value)}`}
         >
           {children}
@@ -245,7 +242,7 @@ export const createDefaultResolvers = (
         id={sanitizeFirstChildText(value)}
       >
         <a
-          className={mainColorAnchor[siteCodename]}
+          className="border-mainAnchorColor"
           href={`#${sanitizeFirstChildText(value)}`}
         >
           {children}
@@ -261,7 +258,7 @@ export const RichTextElement: FC<ElementProps> = (props) => {
   return (
     <PortableText
       value={portableText}
-      components={createDefaultResolvers(props.element, false, siteCodename)}
+      components={createDefaultResolvers(props.element, false)}
     />
   );
 };
@@ -275,10 +272,6 @@ type RichTextValueProps = Readonly<{
 const RichTextValue: FC<RichTextValueProps> = (props) => (
   <PortableText
     value={props.value}
-    components={createDefaultResolvers(
-      props.element,
-      props.isInsideTable,
-      siteCodename
-    )}
+    components={createDefaultResolvers(props.element, props.isInsideTable)}
   />
 );

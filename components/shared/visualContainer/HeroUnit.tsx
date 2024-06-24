@@ -1,7 +1,5 @@
 import { FC } from "react";
 
-import { mainColorBgClass } from "../../../lib/constants/colors";
-import { siteCodename } from "../../../lib/utils/env";
 import {
   createElementSmartLink,
   createItemSmartLink,
@@ -22,7 +20,7 @@ export const HeroUnitComponent: FC<Props> = (props) => {
       url={fact.elements.image.value[0]?.url || ""}
       itemId={props.item.system.id}
     >
-      <div className={`p-5 text-white ${mainColorBgClass[siteCodename]} w-full`}>
+      <div className="p-5 text-white bg-mainBackgroundColor w-full">
         <div
           className="flex md:w-fit"
           {...createItemSmartLink(fact.system.id)}

@@ -2,9 +2,7 @@ import Image from "next/image"
 import Link from "next/link";
 import { FC } from "react";
 
-import { mainColorButtonClass, mainColorGroupHoverClass } from "../../lib/constants/colors";
 import { formatDate } from "../../lib/utils/dateTime";
-import { siteCodename } from "../../lib/utils/env";
 import { StandaloneSmartLinkButton } from "../shared/StandaloneSmartLinkButton";
 
 type Props = Readonly<{
@@ -41,7 +39,7 @@ export const ArticleItem: FC<Props> = props => (
         <h5 className="mb-2 text-xl font-bold tracking-tight text-gray-900 no-underline line-clamp-2 ">{props.title}</h5>
         <p className="mb-0 font-normal text-gray-700 line-clamp-6">{props.description}</p>
       </div>
-      <button className={`${mainColorGroupHoverClass[siteCodename]} ${mainColorButtonClass[siteCodename]} block ml-auto w-fit mb-3 mr-4 font-semibold line-clamp-6 border text-white py-2 px-4 md:rounded`}>
+      <button className="group-hover:bg-mainHoverColor bg-mainButtonColor block ml-auto w-fit mb-3 mr-4 font-semibold line-clamp-6 border text-white py-2 px-4 md:rounded">
         <span>Continue reading</span>
       </button>
     </Link>

@@ -7,13 +7,12 @@ import { FC, useState } from "react";
 import { ArticleItem } from "../../../../../../components/listingPage/ArticleItem";
 import { Content } from "../../../../../../components/shared/Content";
 import { AppPage } from "../../../../../../components/shared/ui/appPage";
-import { mainColorBgClass, mainColorBorderClass, mainColorHoverClass } from "../../../../../../lib/constants/colors";
 import { ArticlePageSize } from "../../../../../../lib/constants/paging";
 import { getArticlesCountByCategory, getArticlesForListing, getDefaultMetadata, getItemBySlug, getItemsTotalCount, getSiteMenu } from "../../../../../../lib/kontentClient";
 import { ResolutionContext, resolveUrlPath } from "../../../../../../lib/routing";
 import { ArticleListingUrlQuery, ArticleTypeWithAll, categoryFilterSource, isArticleType } from "../../../../../../lib/utils/articlesListing";
 import { parseFlatted, Stringified, stringifyAsType } from "../../../../../../lib/utils/circularityUtils";
-import { defaultEnvId, siteCodename } from "../../../../../../lib/utils/env";
+import { defaultEnvId } from "../../../../../../lib/utils/env";
 import { getEnvIdFromRouteParams, getPreviewApiKeyFromPreviewData } from "../../../../../../lib/utils/pageUtils";
 import { Article, contentTypes, Metadata, Nav_NavigationItem, taxonomies, WSL_Page } from "../../../../../../models";
 
@@ -50,7 +49,7 @@ const LinkButton: FC<LinkButtonProps> = props => (
   >
     <button
       disabled={props.disabled}
-      className={`${props.roundRight && 'rounded-r-lg'} ${props.roundLeft && 'rounded-l-lg'} disabled:cursor-not-allowed ${props.highlight ? `${mainColorBgClass[siteCodename]} text-white` : 'bg-white'} px-3 py-2 leading-tight text-gray-500 border disabled:bg-gray-200 border-gray-300 enabled:hover:bg-gray-100 enabled:hover:text-gray-700 `}
+      className={`${props.roundRight && 'rounded-r-lg'} ${props.roundLeft && 'rounded-l-lg'} disabled:cursor-not-allowed ${props.highlight ? `bg-mainBackgroundColor text-white` : 'bg-white'} px-3 py-2 leading-tight text-gray-500 border disabled:bg-gray-200 border-gray-300 enabled:hover:bg-gray-100 enabled:hover:text-gray-700 `}
     >
       {props.text}
     </button>
@@ -88,7 +87,7 @@ const FilterOptions: FC<FilterOptionProps> = ({ options, router }) => {
             } as ResolutionContext)}
             onClick={() => setDropdownActive(!dropdownActive)}
             scroll={false}
-            className={`inline-flex items-center z-40 md:justify-between md:mr-4 md:w-max px-6 py-1 no-underline ${key === category ? [mainColorBgClass[siteCodename], mainColorBorderClass[siteCodename], "text-white", "cursor-default"].join(" ") : `border-gray-200 bg-white ${mainColorHoverClass[siteCodename]} hover:text-white cursor-pointer`} md:rounded-3xl`}
+            className={`inline-flex items-center z-40 md:justify-between md:mr-4 md:w-max px-6 py-1 no-underline ${key === category ? ['bg-mainBackgroundColor', 'border-mainBorderColor', "text-white", "cursor-default"].join(" ") : `border-gray-200 bg-white hover:bg-mainColorHover hover:text-white cursor-pointer`} md:rounded-3xl`}
           >{value}
           </Link>
         ))}
