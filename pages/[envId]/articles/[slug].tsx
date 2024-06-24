@@ -5,11 +5,10 @@ import { HeroImage } from "../../../components/landingPage/ui/heroImage";
 import { PersonHorizontal } from "../../../components/shared/PersonHorizontal";
 import { RichTextElement } from "../../../components/shared/richText/RichTextElement";
 import { AppPage } from "../../../components/shared/ui/appPage";
-import { mainColorBgClass } from "../../../lib/constants/colors";
 import { getAllArticles, getArticleBySlug, getDefaultMetadata, getSiteMenu } from "../../../lib/kontentClient";
 import { parseFlatted, Stringified, stringifyAsType } from "../../../lib/utils/circularityUtils";
 import { formatDate } from "../../../lib/utils/dateTime";
-import { defaultEnvId, siteCodename } from "../../../lib/utils/env";
+import { defaultEnvId } from "../../../lib/utils/env";
 import { getPreviewApiKeyFromPreviewData } from "../../../lib/utils/pageUtils";
 import { Article, Metadata, Nav_NavigationItem } from "../../../models";
 
@@ -33,7 +32,7 @@ const ArticlePage: FC<Props> = props => {
         url={article.elements.heroImage.value[0]?.url || ""}
         itemId={article.system.id}
       >
-        <div className={`py-1 px-3 w-full md:w-fit ${mainColorBgClass[siteCodename]}  opacity-90`}>
+        <div className="py-1 px-3 w-full md:w-fit bg-mainBackgroundColor opacity-90">
           <h1 className="m-0 text-white  text-5xl tracking-wide font-semibold">{article.elements.title.value}</h1>
         </div>
         <div className="p-4">
@@ -51,7 +50,7 @@ const ArticlePage: FC<Props> = props => {
               article.elements.type.value.map(type => (
                 <div
                   key={type.codename}
-                  className={`w-fit p-2 ${mainColorBgClass[siteCodename]} font-semibold text-white`}
+                  className="w-fit p-2 bg-mainBackgroundColor font-semibold text-white"
                 >{type.name}
                 </div>
               ))

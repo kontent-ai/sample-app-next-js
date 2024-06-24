@@ -7,10 +7,8 @@ import { FC } from "react";
 
 import {
   calloutTypeColor,
-  mainColorBorderClass,
 } from "../../../lib/constants/colors";
 import { isCalloutType } from "../../../lib/types/calloutType";
-import { siteCodename } from "../../../lib/utils/env";
 import { Component_Callout, contentTypes } from "../../../models";
 import { RichTextElement } from "./RichTextElement";
 
@@ -20,7 +18,7 @@ type Props = Readonly<{
 
 export const CalloutComponent: FC<Props> = (props) => (
   <div
-    className={`p-5 border-2 rounded-3xl ${mainColorBorderClass[siteCodename]}`}
+    className="p-5 border-2 rounded-3xl border-mainBorderColor"
   >
     <div className={`w-5 ${createIconColor(props.item)}`}>
       {renderTypeIcon(props.item)}

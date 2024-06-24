@@ -1,12 +1,7 @@
 import Link from "next/link";
 import React from "react";
 
-import {
-  mainColorButtonClass,
-  mainColorHoverClass,
-} from "../../../lib/constants/colors";
 import { resolveReference } from "../../../lib/routing";
-import { siteCodename } from "../../../lib/utils/env";
 import { Action, Fact, Nav_NavigationItem } from "../../../models";
 
 type Props = {
@@ -22,7 +17,7 @@ export const CTAButton = (props: Props) => {
   return (
     <Link href={factUrl ?? ""}>
       <button
-        className={`${mainColorButtonClass[siteCodename]} bottom-0 group left-0 ${mainColorHoverClass[siteCodename]} text-white font-bold mt-10 py-2 px-4 rounded`}
+        className="bg-mainButtonColor bottom-0 group left-0 hover:bg-mainHoverColor text-white font-bold mt-10 py-2 px-4 rounded"
       >
         <span>{props.reference.elements.referenceLabel.value}</span>
       </button>

@@ -5,9 +5,8 @@ import { useEffect, useState } from "react";
 
 import { BuildError } from "../components/shared/ui/BuildError";
 import { webAuth } from "../lib/constants/auth";
-import { mainColorTextClass } from "../lib/constants/colors";
 import { defaultCookieOptions, previewApiKeyCookieName, urlAfterAuthCookieName } from "../lib/constants/cookies";
-import { internalApiDomain, siteCodename } from "../lib/utils/env";
+import { internalApiDomain } from "../lib/utils/env";
 import { getEnvIdFromCookie } from "../lib/utils/pageUtils";
 
 const CallbackPage: React.FC = () => {
@@ -130,7 +129,7 @@ const isIapiError = (response: unknown): response is Readonly<{ description: str
 
 const Loader = () => (
   <div
-    className={`animate-spin inline-block mt-[20%] ml-[50%] w-8 h-8 border-[3px] border-current border-t-transparent ${mainColorTextClass[siteCodename]} rounded-full`}
+    className="animate-spin inline-block mt-[20%] ml-[50%] w-8 h-8 border-[3px] border-current border-t-transparent text-mainTextColor rounded-full"
     role="status"
     aria-label="loading"
   >

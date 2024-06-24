@@ -2,9 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { FC } from "react";
 
-import { mainColorAnchor } from "../../../lib/constants/colors";
 import { resolveReference } from "../../../lib/routing";
-import { siteCodename } from "../../../lib/utils/env";
 import { createElementSmartLink } from "../../../lib/utils/smartLinkUtils";
 import { contentTypes, Fact } from "../../../models";
 
@@ -56,7 +54,7 @@ export const GridComponent: FC<Props> = (props) => (
         )}
       >
         <a
-          className={mainColorAnchor[siteCodename]}
+          className="border-mainAnchorColor"
           href={"#" + props.codename}
         >
           {props.title}

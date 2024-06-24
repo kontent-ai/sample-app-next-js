@@ -2,8 +2,6 @@ import Image from "next/image"
 import Link from "next/link";
 import { FC } from "react";
 
-import { mainColorButtonClass, mainColorGroupHoverClass } from "../../lib/constants/colors";
-import { siteCodename } from "../../lib/utils/env";
 import { StandaloneSmartLinkButton } from "../shared/StandaloneSmartLinkButton";
 
 type Props = Readonly<{
@@ -36,7 +34,7 @@ export const ProductItem: FC<Props> = props => (
           />
         </figure>
         {props.price && <p className="m-0 text-center text-xl font-normal pb-2">{`${props.price}€`}</p>}
-        <button className={`${mainColorGroupHoverClass[siteCodename]} ${mainColorButtonClass[siteCodename]} text-white block ml-auto w-fit mb-3 mr-4 font-semibold line-clamp-6 hover:bg-transparent border py-2 px-4 rounded`}>Detail</button>
+        <button className="group-hover:bg-mainColorHover bg-mainButtonColor text-white block ml-auto w-fit mb-3 mr-4 font-semibold line-clamp-6 hover:bg-transparent border py-2 px-4 rounded">Detail</button>
       </div>
     </Link>
   </li>

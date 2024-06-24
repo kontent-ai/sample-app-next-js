@@ -6,13 +6,12 @@ import { FC, useCallback, useEffect, useMemo, useState } from "react";
 import { ProductItem } from "../../../components/listingPage/ProductItem";
 import { Content } from "../../../components/shared/Content";
 import { AppPage } from "../../../components/shared/ui/appPage";
-import { mainColorBgClass } from "../../../lib/constants/colors";
 import { ProductsPageSize } from "../../../lib/constants/paging";
 import { getDefaultMetadata, getItemBySlug, getProductsForListing, getSiteMenu } from "../../../lib/kontentClient";
 import { createQueryString, reservedListingSlugs, resolveUrlPath } from "../../../lib/routing";
 import { changeUrlQueryString } from "../../../lib/utils/changeUrlQueryString";
 import { parseFlatted, Stringified, stringifyAsType } from "../../../lib/utils/circularityUtils";
-import { defaultEnvId, siteCodename } from "../../../lib/utils/env";
+import { defaultEnvId } from "../../../lib/utils/env";
 import { getEnvIdFromRouteParams, getPreviewApiKeyFromPreviewData } from "../../../lib/utils/pageUtils";
 import { contentTypes, Metadata, Nav_NavigationItem, Product, WSL_Page } from "../../../models";
 
@@ -174,7 +173,7 @@ export const Products: FC<Props> = props => {
       <h2 className="m-0 mt-16 ml-4 sm:ml-0">Surgical products</h2>
 
       <div className="flex flex-col md:flex-row mt-4 md:gap-2 text-white">
-        <div className={`flex flex-col ${mainColorBgClass[siteCodename]} p-4`}>
+        <div className="flex flex-col bg-mainBackgroundColor p-4">
           <h4 className="m-0 py-2 text-white">Category</h4>
           <ul className="m-0 min-h-full gap-2 p-0 list-none">
             {Array.isArray(taxonomies) && taxonomies.map(renderFilterOption)}

@@ -4,10 +4,9 @@ import { ParsedUrlQuery } from 'querystring';
 import { FC } from "react";
 
 import { AppPage } from "../../../components/shared/ui/appPage";
-import { mainColorButtonClass, mainColorHoverClass, mainColorTextClass } from "../../../lib/constants/colors";
 import { getDefaultMetadata, getProductDetail, getProductItemsWithSlugs, getSiteMenu } from "../../../lib/kontentClient";
 import { Stringified, stringifyAsType } from "../../../lib/utils/circularityUtils";
-import { defaultEnvId, siteCodename } from "../../../lib/utils/env";
+import { defaultEnvId } from "../../../lib/utils/env";
 import { getEnvIdFromRouteParams, getPreviewApiKeyFromPreviewData } from "../../../lib/utils/pageUtils";
 import { createElementSmartLink } from "../../../lib/utils/smartLinkUtils";
 import { contentTypes, Metadata, Nav_NavigationItem, Product } from "../../../models";
@@ -119,7 +118,7 @@ const ProductDetail: FC<Props> = ({ product, siteMenu, defaultMetadata }) => (
               {...createElementSmartLink(contentTypes.product.elements.price.codename)}
             >
               <div>
-                <div className={`rounded-lg bg-gray-100 flex ${mainColorTextClass[siteCodename]} py-2 px-3`}>
+                <div className="rounded-lg bg-gray-100 flex text-mainTextColor py-2 px-3">
                   <span className=" mr-1 mt-1">EUR</span>
                   <span className="font-bold text-3xl">{product.elements.price.value}</span>
                 </div>
@@ -137,7 +136,7 @@ const ProductDetail: FC<Props> = ({ product, siteMenu, defaultMetadata }) => (
             <div className="flex py-4 space-x-4">
               <button
                 type="button"
-                className={`${mainColorHoverClass[siteCodename]} ${mainColorButtonClass[siteCodename]} bottom-0 left-0 text-white font-bold mt-10 py-2 px-4 rounded`}
+                className="hover:bg-mainHoverColor bg-mainButtonColor bottom-0 left-0 text-white font-bold mt-10 py-2 px-4 rounded"
               >
                 Add to Cart
               </button>

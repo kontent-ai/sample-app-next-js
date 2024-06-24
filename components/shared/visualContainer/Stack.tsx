@@ -1,11 +1,6 @@
 import { FC, useState } from "react";
 
 import {
-  mainColorAnchor,
-  mainColorBorderClass,
-} from "../../../lib/constants/colors";
-import { siteCodename } from "../../../lib/utils/env";
-import {
   createElementSmartLink,
   createItemSmartLink,
   createRelativeAddSmartLink,
@@ -45,7 +40,7 @@ export const StackComponent: FC<Props> = (props) => {
           )}
         >
           <a
-            className={mainColorAnchor[siteCodename]}
+            className="border-mainAnchorColor"
             href={"#" + props.codename}
           >
             {props.title}
@@ -106,7 +101,7 @@ const Headers: FC<HeadersProps> = (props) => {
         <li
           key={i}
           className={`grow w-fit justify-center md:justify-between md:pl-5 flex overflow-hidden p-2 cursor-pointer ${props.selectedHeaderIndex === i
-            ? `border-b-2 ${mainColorBorderClass[siteCodename]}`
+            ? `border-b-2 border-mainBorderColor`
             : ""
             }`}
           onClick={() => props.onHeaderSelected(i)}

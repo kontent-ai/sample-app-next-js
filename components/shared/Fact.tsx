@@ -1,8 +1,6 @@
 import Image from "next/image";
 import { FC } from "react";
 
-import { mainColorAfterBgClass } from "../../lib/constants/colors";
-import { siteCodename } from "../../lib/utils/env";
 import {
   createElementSmartLink,
   createItemSmartLink,
@@ -27,7 +25,7 @@ export const FactComponent: FC<Props> = (props) => {
     >
       {image && (
         <div
-          className={`w-full md:w-1/2 h-[400px] relative drop-shadow-lg after:absolute ${props.isReversed ? "after:left-3" : "after:right-3"} after:top-3 ${mainColorAfterBgClass[siteCodename]} after:bg-no-repeat after:w-full after:bg-contain after:h-full after:rounded-lg after:z-[1]`}
+          className={`w-full md:w-1/2 h-[400px] relative drop-shadow-lg after:absolute ${props.isReversed ? "after:left-3" : "after:right-3"} after:top-3 after:mainAfterColor after:bg-no-repeat after:w-full after:bg-contain after:h-full after:rounded-lg after:z-[1]`}
           {...createElementSmartLink(contentTypes.fact.elements.image.codename)}
         >
           <Image
