@@ -18,8 +18,8 @@
     "@kontent-ai/delivery-sdk": "^14.0.1",
     "@kontent-ai/rich-text-resolver": "^0.0.4",
     "@kontent-ai/smart-link": "^3.0.0",
-    "@portabletext/react": "^2.0.2",
-    "@vercel/analytics": "^1.0.0",
+    "@portabletext/react": "^3.2.0",
+    "@vercel/analytics": "^1.4.1",
     "auth0-js": "^9.22.1",
     "cookies-next": "^4.0.0",
     "flatted": "^3.2.9",
@@ -51,7 +51,7 @@
     "rimraf": "^5.0.0",
     "tailwindcss": "^3.3.1",
     "ts-jest": "^29.1.1",
-    "typescript": "5.0.4"
+    "typescript": "5.7.2"
   },
   "overrides": {
     "@types/react": "19.0.2"
