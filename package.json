@@ -4,6 +4,7 @@
   "scripts": {
     "generateModels": "tsc --project scripts/tsconfig.json && node scripts/build/generateModels.mjs",
     "dev": "next dev --turbopack",
+    "dev:https": "next dev --turbopack --experimental-https",
     "lint": "next lint",
     "lint:fix": "next lint --fix",
     "build": "next build",
