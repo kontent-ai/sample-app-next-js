@@ -1,8 +1,8 @@
-import { previewApiKeyCookieName } from "../../../lib/constants/cookies";
 import { ResolutionContext, resolveUrlPath } from "../../../lib/routing";
 import { NextRequest, NextResponse } from "next/server";
 import { cookies, draftMode, headers } from "next/headers";
-import { redirect } from "next/navigation";
+
+const DRAFT_MODE_COOKIE_NAME = "__prerender_bypass";
 
 export const GET = async (req: NextRequest) => {
   const searchParams = req.nextUrl.searchParams;
@@ -16,51 +16,19 @@ export const GET = async (req: NextRequest) => {
     return new Response("Invalid preview token, or no slug and type provided.", {status: 401});
   }
 
-  const cookieStore = await cookies();
-
-  const currentPreviewApiKey = cookieStore.get(previewApiKeyCookieName);
-
   const draft = await draftMode();
   draft.enable();
 
-  const response = new NextResponse();
-
-  // Enable Preview Mode by setting the cookies
-  // const newCookieHeader = await makeCookiesCrossOrigin();
-  // if (newCookieHeader) {
-  //   res.setHeader("Set-Cookie", newCookieHeader);
-  // }
-
-  // response.cookies.set(newCookieHeader)
+  const cookieStore = await cookies();
 
   const path = resolveUrlPath({
     type: type.toString(),
     slug: slug.toString(),
   } as ResolutionContext);
 
-  // Redirect to the path from the fetched post
-  redirect(path);
-}
+  const response = NextResponse.redirect(new URL(path, req.url));
 
-const makeCookieCrossOrigin = (header: string) => {
-  const cookie = header.split(";")[0];
+  response.cookies.set(DRAFT_MODE_COOKIE_NAME, cookieStore.get(DRAFT_MODE_COOKIE_NAME)?.value as string, {path: "/", sameSite:"none", secure: true})
 
-  return cookie
-    ? `${cookie}; Path=/; SameSite=None; Secure`
-    : "";
-};
-
-const makeCookiesCrossOrigin = async () => {
-  const headersList = await headers();
-  const header = headersList.getSetCookie();
-
-  if (typeof header === "string") {
-    return makeCookieCrossOrigin(header);
-  }
-  if (Array.isArray(header)) {
-    return header.map(makeCookieCrossOrigin);
-  }
-
-
-  return header;
+  return response;
 }
