@@ -1,16 +1,13 @@
 import { NextRequest } from "next/server";
-import { parseBoolean } from "../../../lib/utils/parseBoolean";
-import { cookies } from "next/headers";
+import { cookies, draftMode } from "next/headers";
 import { envIdCookieName, previewApiKeyCookieName } from "../../../lib/constants/cookies";
 import { getProductsForListing } from "../../../lib/kontentClient";
 
 export const GET = async (req: NextRequest) => {
   const searchParams = req.nextUrl.searchParams;
 
-  const categoryParam = searchParams.get("category");
-  
+  const category = searchParams.getAll("category");
   const page = searchParams.get("page");
-  const category = typeof categoryParam === "string" ? [categoryParam] : categoryParam;
 
   const pageNumber = parseInt(page as string)
 
@@ -18,10 +15,7 @@ export const GET = async (req: NextRequest) => {
     return new Response("The value you provided for page is not a number", {status: 400});
   }
 
-  const usePreview = parseBoolean(searchParams.get("preview"));
-  if (usePreview === null) {
-    return new Response("Please provide 'preview' query parameter with value 'true' or 'false'.", {status: 400});
-  }
+  const usePreview = (await draftMode()).isEnabled;
 
   const cookiesList = await cookies();
 
@@ -36,7 +30,7 @@ export const GET = async (req: NextRequest) => {
     return new Response("Missing previewApiKey cookie", {status: 400})
   }
 
-  const products = await getProductsForListing({ envId: currentEnvId.value, previewApiKey: currentPreviewApiKey?.value }, usePreview, isNaN(pageNumber) ? undefined : pageNumber, category ?? []);
+  const products = await getProductsForListing({ envId: currentEnvId.value, previewApiKey: currentPreviewApiKey?.value }, usePreview, isNaN(pageNumber) ? undefined : pageNumber, category.length ? category : undefined);
 
   return Response.json({ products: products.items, totalCount: products.pagination.totalCount });
 };
