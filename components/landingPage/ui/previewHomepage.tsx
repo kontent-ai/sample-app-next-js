@@ -18,7 +18,7 @@ const PreviewHomepage: FC<HomepageProps> = ({homepageData}) => {
 
   useEffect(() => {
     const getHomepage = async () => {
-      const response = await fetch(`/api/homepage?preview=true`);
+      const response = await fetch(`/api/homepage`);
       const data = await response.json();
 
       setHomepage(parseFlatted(stringifyAsType(data)));
