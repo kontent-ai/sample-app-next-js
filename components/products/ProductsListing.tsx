@@ -6,6 +6,7 @@ import { Product } from "../../models";
 import { ProductsPageSize } from "../../lib/constants/paging";
 import { ProductItem } from "../listingPage/ProductItem";
 import { resolveUrlPath } from "../../lib/routing";
+import { updateSearchParams } from "../../lib/utils/searchParamsUtils";
 
 const ProductsListing: FC = (props) => {
   const router = useRouter();
@@ -14,78 +15,61 @@ const ProductsListing: FC = (props) => {
   const [products, setProducts] = useState<ReadonlyArray<Product> | undefined>([]);
   const [taxonomies, setTaxonomies] = useState<ITaxonomyTerms[]>([]);
   const searchParams = useSearchParams();
-  const page = searchParams?.get("page");
-  const category = searchParams?.getAll("category");
+  const page = searchParams.get("page");
+  const category = searchParams.getAll("category");
 
   const pageNumber = useMemo(() => !page || isNaN(+page) ? 1 : +page, [page])
   
   const isLastPage = pageNumber * ProductsPageSize >= totalCount;
 
-  const updateSearchParams = useCallback(
-    (originalSearchParams: ReadonlyURLSearchParams | null,  name: string, value: ReadonlyArray<string> | undefined ) => {
-      const params = new URLSearchParams(originalSearchParams?.toString());
-
-      if (!value) {
-        params.delete(name);
-        return params.toString();
-      }
-      
-      params.delete(name);
-      value.forEach((value) => params.append(name, value));
-
-      return params.toString()
-    },
-    [searchParams]
-  )
-
-    const categories = useMemo(() => {
-      if (!category) {
-        return [];
-      }
-      if (typeof category === 'string') {
-        return [category];
-      }
-  
-      return category;
-    }, [category])
-  
-    const getProducts = useCallback(async () => {
-      const response = await fetch(`/api/products${searchParams?.toString() && '?' + searchParams.toString()}`);
-      const newData = await response.json();
-  
-      setProducts(newData.products);
-      setTotalCount(newData.totalCount);
-    }, [searchParams, setProducts, setTotalCount])
-  
-    const getProductCategories = useCallback(async () => {
-      const response = await fetch(`/api/product-categories`);
-      const productCategories = await response.json();
-  
-      setTaxonomies(productCategories);
-    }, [setTaxonomies])
-  
-    useEffect(() => {
-      getProducts();
-    }, [getProducts])
-  
-    useEffect(() => {
-      getProductCategories();
-    }, [getProductCategories])
-
-    const onPreviousClick = () => {
-      if (pageNumber === 2) {
-        const newParams = updateSearchParams(searchParams, "page", undefined);
-  
-        router.replace(`${pathname}?${newParams}`, {scroll: false});
-      } else {
-        const newParams = updateSearchParams(searchParams, "page", [(pageNumber - 1).toString()]);
-  
-        router.replace(`${pathname}?${newParams}`, {scroll: false});
-      }
+  const categories = useMemo(() => {
+    if (!category) {
+      return [];
     }
+    if (typeof category === 'string') {
+      return [category];
+    }
+
+    return category;
+  }, [category])
+  
+  const getProducts = useCallback(async () => {
+    const response = await fetch(`/api/products${searchParams?.toString() && '?' + searchParams.toString()}`);
+    const newData = await response.json();
+
+    setProducts(newData.products);
+    setTotalCount(newData.totalCount);
+  }, [searchParams, setProducts, setTotalCount])
+
+  const getProductCategories = useCallback(async () => {
+    const response = await fetch(`/api/product-categories`);
+    const productCategories = await response.json();
+
+    setTaxonomies(productCategories);
+  }, [setTaxonomies])
+  
+  useEffect(() => {
+    getProducts();
+  }, [getProducts])
+
+  useEffect(() => {
+    getProductCategories();
+  }, [getProductCategories])
+
+  const onPreviousClick = () => {
+    if (pageNumber === 2) {
+      const newParams = updateSearchParams(searchParams, {page: null});
+
+      router.replace(`${pathname}?${newParams}`, {scroll: false});
+    } else {
+      const newParams = updateSearchParams(searchParams, {page: [(pageNumber - 1).toString()]});
+
+      router.replace(`${pathname}?${newParams}`, {scroll: false});
+    }
+  }
   
     const onNextClick = () => {
-      const newParams = updateSearchParams(searchParams, "page", [(pageNumber + 1).toString()]);
+      const newParams = updateSearchParams(searchParams, {page: [(pageNumber + 1).toString()]});
   
       router.replace(`${pathname}?${newParams}`, {scroll: false});
     }
@@ -96,7 +80,7 @@ const ProductsListing: FC = (props) => {
           ? [...categories, term.codename, ...term.terms.map((t) => t.codename)]
           : categories.filter((c) => c !== term.codename && !term.terms.map((t) => t.codename).includes(c));
   
-        const newParams = updateSearchParams(searchParams, "category", newCategories);
+        const newParams = updateSearchParams(searchParams, {category: newCategories});
   
         router.replace(`${pathname}?${newParams}`, {scroll: false});
       };
