@@ -1,22 +1,17 @@
+'use client'
 import { getCookie, setCookie } from "cookies-next";
-import dynamic from "next/dynamic";
-import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
-import { BuildError } from "../components/shared/ui/BuildError";
-import { webAuth } from "../lib/constants/auth";
-import { defaultCookieOptions, previewApiKeyCookieName, urlAfterAuthCookieName } from "../lib/constants/cookies";
-import { internalApiDomain } from "../lib/utils/env";
-import { getEnvIdFromCookie } from "../lib/utils/pageUtils";
+import { BuildError } from "../../components/shared/ui/BuildError";
+import { webAuth } from "../../lib/constants/auth";
+import { defaultCookieOptions, previewApiKeyCookieName, urlAfterAuthCookieName } from "../../lib/constants/cookies";
+import { internalApiDomain } from "../../lib/utils/env";
+import { getEnvIdFromCookie } from "../../lib/utils/pageUtils";
 
 const CallbackPage: React.FC = () => {
-  const router = useRouter();
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!router.isReady) {
-      return;
-    }
     const envId = getEnvIdFromCookie();
 
     if (!internalApiDomain) {
@@ -109,7 +104,7 @@ const CallbackPage: React.FC = () => {
 
       window.location.replace(getCookie(urlAfterAuthCookieName) ?? '/'); // router.replace changes the "slug" query parameter so we can't use it here, because this parameter is used when calling the /api/preview endpoint
     });
-  }, [router.isReady]);
+  }, []);
 
   if (error) {
     return <BuildError>{error}</BuildError>;
@@ -117,12 +112,6 @@ const CallbackPage: React.FC = () => {
 
   return <Loader />;
 };
-
-const callback = dynamic(() => Promise.resolve(CallbackPage), {
-  ssr: false,
-});
-
-export default callback;
 
 const isIapiError = (response: unknown): response is Readonly<{ description: string }> =>
   typeof response === "object" && response !== null && "description" in response && typeof response.description === "string";
@@ -138,3 +127,5 @@ const Loader = () => (
 );
 
 const requiresLoginAuthErrors: ReadonlyArray<string> = ["login_required", "consent_required", "interaction_required"];
+
+export default CallbackPage;
