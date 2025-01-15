@@ -9,19 +9,18 @@ import Homepage from '../../components/landingPage/ui/homepage';
 import { Metadata } from 'next';
 import { AppPage } from '../../components/shared/ui/newAppPage';
 import { cache } from 'react';
+import { notFound } from 'next/navigation';
 
 const getHomepageData = cache(async (envId: string, previewApiKey?: string) => getHomepage({envId, previewApiKey}, !!previewApiKey))
 
 const Home = async ({params}: {params: Promise<{envId: string}>}) => {
   const envId = (await params).envId;
   const draft = await draftMode();
-
   const previewApiKey = draft.isEnabled ? (await cookies()).get(previewApiKeyCookieName)?.value : undefined;
-
   const homepageData = await getHomepageData(envId, previewApiKey);
 
   if (!homepageData) {
-    throw new Error("Can't find homepage item.");
+    return notFound();
   }
 
   const homepage = parseFlatted(stringifyAsType(homepageData));
