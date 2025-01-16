@@ -2,7 +2,7 @@
 
 import { FC, useEffect, useState } from "react";
 import { useSmartLink } from "../../../lib/useSmartLink";
-import { parseFlatted, Stringified, stringifyAsType } from '../../../lib/utils/circularityUtils';
+import { parseFlatted, stringifyAsType } from '../../../lib/utils/circularityUtils';
 import { WSL_WebSpotlightRoot } from "../../../models";
 import { KontentSmartLinkEvent } from "@kontent-ai/smart-link";
 import { IRefreshMessageData, IRefreshMessageMetadata } from "@kontent-ai/smart-link/types/lib/IFrameCommunicatorTypes";

@@ -34,7 +34,7 @@ const ProductsPage = async ({params}: {params: Promise<{envId: string}>}) => {
       {productsPage.elements.content.linkedItems.map((piece, index) => (
         <Content
           key={piece.system.id}
-          item={piece as any}
+          item={piece}
           index={index}
         />
       ))}

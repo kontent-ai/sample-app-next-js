@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-import { getDefaultMetadata, getProductDetail, getProductItemsWithSlugs, getSiteMenu } from "../../../../lib/kontentClient";
+import { getDefaultMetadata, getProductDetail, getProductItemsWithSlugs } from "../../../../lib/kontentClient";
 import { defaultEnvId } from "../../../../lib/utils/env";
 import { createElementSmartLink } from "../../../../lib/utils/smartLinkUtils";
 import { contentTypes } from "../../../../models";

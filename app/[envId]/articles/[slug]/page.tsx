@@ -1,7 +1,7 @@
 import { HeroImage } from "../../../../components/landingPage/ui/heroImage";
 import { PersonHorizontal } from "../../../../components/shared/PersonHorizontal";
 import { RichTextElement } from "../../../../components/shared/richText/RichTextElement";
-import { getAllArticles, getArticleBySlug, getDefaultMetadata, getSiteMenu } from "../../../../lib/kontentClient";
+import { getAllArticles, getArticleBySlug, getDefaultMetadata } from "../../../../lib/kontentClient";
 import { parseFlatted, stringifyAsType } from "../../../../lib/utils/circularityUtils";
 import { formatDate } from "../../../../lib/utils/dateTime";
 import { defaultEnvId } from "../../../../lib/utils/env";

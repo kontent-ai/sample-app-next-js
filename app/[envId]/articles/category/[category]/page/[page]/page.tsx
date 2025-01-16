@@ -1,6 +1,6 @@
 import { Content } from "../../../../../../../components/shared/Content";
 import { ArticlePageSize } from "../../../../../../../lib/constants/paging";
-import { getArticlesCountByCategory, getArticlesForListing, getDefaultMetadata, getItemBySlug, getItemsTotalCount, getSiteMenu } from "../../../../../../../lib/kontentClient";
+import { getArticlesCountByCategory, getArticlesForListing, getDefaultMetadata, getItemBySlug, getItemsTotalCount } from "../../../../../../../lib/kontentClient";
 import { ArticleTypeWithAll, categoryFilterSource, isArticleType } from "../../../../../../../lib/utils/articlesListing";
 import { parseFlatted,  stringifyAsType } from "../../../../../../../lib/utils/circularityUtils";
 import { defaultEnvId } from "../../../../../../../lib/utils/env";
@@ -45,7 +45,7 @@ const ArticlesPagingPage = async ({params}: {params: Promise<{envId: string, pag
       {page.elements.content.linkedItems.map((piece, index) => (
         <Content
           key={piece.system.id}
-          item={piece as any}
+          item={piece}
           index={index}
         />
       ))}

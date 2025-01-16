@@ -1,6 +1,6 @@
 'use client'
 import { ITaxonomyTerms } from "@kontent-ai/delivery-sdk";
-import { ReadonlyURLSearchParams, usePathname, useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { FC, useCallback, useEffect, useMemo, useState } from "react";
 import { Product } from "../../models";
 import { ProductsPageSize } from "../../lib/constants/paging";
@@ -8,7 +8,7 @@ import { ProductItem } from "../listingPage/ProductItem";
 import { resolveUrlPath } from "../../lib/routing";
 import { updateSearchParams } from "../../lib/utils/searchParamsUtils";
 
-const ProductsListing: FC = (props) => {
+const ProductsListing: FC = () => {
   const router = useRouter();
   const pathname = usePathname();
   const [totalCount, setTotalCount] = useState(0);

@@ -11,7 +11,7 @@ export const Homepage: FC<HomepageProps> = ({homepageData}) => (
     {homepageData.elements.content.linkedItems.map((item,index) => (
       <Content
         key={item.system.id}
-        item={item as any}
+        item={item}
         index={index}
       />
     ))}

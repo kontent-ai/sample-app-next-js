@@ -1,5 +1,5 @@
 
-import { getHomepage, getSiteMenu } from '../../lib/kontentClient';
+import { getHomepage } from '../../lib/kontentClient';
 import { stringifyAsType, parseFlatted } from '../../lib/utils/circularityUtils';
 import { defaultEnvId } from '../../lib/utils/env';
 import { cookies, draftMode } from 'next/headers';

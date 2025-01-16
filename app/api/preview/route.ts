@@ -1,6 +1,6 @@
 import { ResolutionContext, resolveUrlPath } from "../../../lib/routing";
 import { NextRequest, NextResponse } from "next/server";
-import { cookies, draftMode, headers } from "next/headers";
+import { cookies, draftMode } from "next/headers";
 
 const DRAFT_MODE_COOKIE_NAME = "__prerender_bypass";
 

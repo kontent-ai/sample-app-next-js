@@ -1,6 +1,5 @@
 import { envIdCookieName, previewApiKeyCookieName } from "../../../lib/constants/cookies";
 import { getHomepage } from "../../../lib/kontentClient";
-import { NextRequest } from "next/server";
 import { cookies, draftMode } from "next/headers";
 
 export const GET = async () => {
