@@ -82,6 +82,11 @@ export const generateMetadata = async ({ params }: { params: Promise<{ envId: st
   const envId = (await params).envId;
 
   const draft = await draftMode();
+
+  if (draft.isEnabled) {
+    return {};
+  }
+  
   const previewApiKey = draft.isEnabled ? (await cookies()).get(previewApiKeyCookieName)?.value : undefined;
 
   const defaultMetadata = await getDefaultMetadata({ envId, previewApiKey }, draft.isEnabled);
