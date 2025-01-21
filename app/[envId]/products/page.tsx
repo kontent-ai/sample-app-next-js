@@ -2,7 +2,6 @@ import { Content } from "../../../components/shared/Content";
 import { getDefaultMetadata, getItemBySlug } from "../../../lib/kontentClient";
 import { reservedListingSlugs } from "../../../lib/routing";
 import { parseFlatted, stringifyAsType } from "../../../lib/utils/circularityUtils";
-import { defaultEnvId } from "../../../lib/utils/env";
 import { contentTypes, WSL_Page } from "../../../models";
 import { notFound } from "next/navigation";
 import { AppPage } from "../../../components/shared/ui/newAppPage";
@@ -48,8 +47,6 @@ const ProductsPage = async ({params}: {params: Promise<{envId: string}>}) => {
 };
 
 export const dynamicParams = true;
-
-export const generateStaticParams = () => [ { envId: defaultEnvId } ]
 
 export const generateMetadata = async ({ params }: { params: Promise<{ envId: string }> }): Promise<Metadata> => {
   const envId = (await params).envId;
