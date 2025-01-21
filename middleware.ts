@@ -31,7 +31,11 @@ export const middleware = (request: NextRequest) => {
     : NextResponse.rewrite(new URL(`/${currentEnvId}${request.nextUrl.pathname ? `${request.nextUrl.pathname}` : ''}`, request.url));
 
 
-  return handlers.reduce((prevResponse, handler) => handler(prevResponse, request), initialResponse);
+  const result = handlers.reduce((prevResponse, handler) => handler(prevResponse, request), initialResponse);
+
+  console.log(JSON.stringify(result));
+
+  return result
 };
 
 const handleExplicitProjectRoute = (currentEnvId: string) => (prevResponse: NextResponse, request: NextRequest) => {
