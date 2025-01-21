@@ -96,6 +96,8 @@ const ProductDetail = async ({params}: {params: Promise<{envId: string, slug: st
     </AppPage >
 )};
 
+export const dynamicParams = true;
+
 export const generateStaticParams = () =>
   getProductItemsWithSlugs({ envId: defaultEnvId })
     .then(products => products

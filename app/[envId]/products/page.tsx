@@ -47,6 +47,7 @@ const ProductsPage = async ({params}: {params: Promise<{envId: string}>}) => {
   )
 };
 
+export const dynamicParams = true;
 
 export const generateStaticParams = () => [ { envId: defaultEnvId } ]
 

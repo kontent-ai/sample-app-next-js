@@ -46,6 +46,8 @@ const TopLevelPage = async ({params}: { params: Promise<{envId: string, slug: st
   );
 };
 
+export const dynamicParams = true;
+
 export const generateStaticParams = async () => {
   const slugsData = await getPagesSlugs({ envId: defaultEnvId });
 

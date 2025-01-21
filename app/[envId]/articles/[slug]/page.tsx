@@ -66,6 +66,8 @@ const ArticlePage = async ({params}: {params: Promise<{envId: string, slug: stri
   );
 };
 
+export const dynamicParams = true;
+
 export const generateStaticParams = async () => {
   const articles = await getAllArticles({ envId: defaultEnvId }, false);
 

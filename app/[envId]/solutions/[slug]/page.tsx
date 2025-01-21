@@ -64,6 +64,8 @@ const SolutionDetailPage = async ({params}: {params: Promise<{envId: string, slu
   )
 };
 
+export const dynamicParams = true;
+
 export const generateStaticParams = () => 
   getSolutionsWithSlugs({ envId: defaultEnvId })
     .then((solutions) => solutions

@@ -34,6 +34,8 @@ const Home = async ({params}: {params: Promise<{envId: string}>}) => {
   )
 };
 
+export const dynamicParams = true;
+
 export async function generateMetadata(
   { params }: { params: Promise<{ envId: string }> },
 ): Promise<Metadata> {
