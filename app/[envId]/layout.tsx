@@ -10,6 +10,7 @@ const PageLayout = async ({children, params}: {children: React.ReactNode, params
   const draft = await draftMode();
   const previewApiKey = draft.isEnabled ? (await cookies()).get(previewApiKeyCookieName)?.value : undefined;
   const { envId } = await params;
+  console.log(envId);
   const siteMenuData = await getSiteMenu({ envId, previewApiKey }, draft.isEnabled);
 
   if(!siteMenuData){
