@@ -5,7 +5,7 @@ import { useSmartLink } from "../../lib/useSmartLink";
 const SmartlinkInitializer: FC = () => {
   useSmartLink();
 
-  return <></>;
+  return null;
 }
 
 export default SmartlinkInitializer;
