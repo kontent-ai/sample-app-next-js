@@ -5,6 +5,7 @@ import { getSiteMenu } from "../../lib/kontentClient";
 import { cookies, draftMode } from 'next/headers';
 import { stringifyAsType, parseFlatted } from '../../lib/utils/circularityUtils';
 import { notFound } from "next/navigation";
+import { defaultEnvId } from "../../lib/utils/env";
 
 const PageLayout = async ({children, params}: {children: React.ReactNode, params: Promise<{envId: string}>}) => {
   const draft = await draftMode();
@@ -28,6 +29,8 @@ const PageLayout = async ({children, params}: {children: React.ReactNode, params
     </div>
   )
 }
+
+export const generateStaticParams = () => [ { envId: defaultEnvId } ]
 
 export const dynamicParams = true;
 
