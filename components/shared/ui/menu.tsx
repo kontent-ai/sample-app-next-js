@@ -93,6 +93,7 @@ const MenuList: FC<MenuListProps> = (props) => {
               className="h-full flex items-center justify-between w-full py-2 px-4 font-medium text-white border-b border-gray-100 md:w-auto md:bg-transparent md:border-0 md:hover:bg-white md:group-hover:text-gray-900"
               href={resolveReference(link)}
               title={link.elements.referenceCaption.value}
+              prefetch={false}
             >
               {link.elements.referenceLabel.value}
             </Link>
