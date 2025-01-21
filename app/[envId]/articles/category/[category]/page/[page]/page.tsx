@@ -26,6 +26,8 @@ const ArticlesPagingPage = async ({params}: {params: Promise<{envId: string, pag
   const draft = await draftMode();
   const previewApiKey = draft.isEnabled ? (await cookies()).get(previewApiKeyCookieName)?.value : undefined;
 
+  console.log(envId);
+
   const pageNumber = !pageURLParameter || isNaN(+pageURLParameter) ? 1 : +pageURLParameter;
   const articlesData = await getArticlesForListing({ envId, previewApiKey }, draft.isEnabled, pageNumber, selectedCategory);
   const pageData = await getItemBySlug<WSL_Page>({ envId, previewApiKey }, "articles", contentTypes.page.codename, draft.isEnabled);
