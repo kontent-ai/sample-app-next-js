@@ -14,6 +14,8 @@ if (!KONTENT_PREVIEW_API_KEY) {
 export const middleware = (request: NextRequest) => {
   const currentEnvId = request.cookies.get(envIdCookieName)?.value ?? defaultEnvId;
 
+  console.log("middleware invoked");
+
   // the order of functions is important
   const handlers = [
     handleArticlesRoute(currentEnvId),
