@@ -12,7 +12,6 @@ export const GET = async (req: NextRequest) => {
 
   // TODO move secret to env variables
   if (secret !== 'mySuperSecret' || !slug || !type) {
-    // res.status(401).json({ message: 'Invalid preview token, or no slug and type provided.' });
     return new Response("Invalid preview token, or no slug and type provided.", {status: 401});
   }
 
