@@ -38,3 +38,5 @@ yarn-error.log*
 
 # scripts
 /scripts/build
+
+certificates

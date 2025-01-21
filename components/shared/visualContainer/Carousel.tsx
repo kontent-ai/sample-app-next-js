@@ -1,3 +1,4 @@
+'use client'
 import { ArrowLeftIcon, ArrowRightIcon } from "@heroicons/react/24/solid";
 import { FC, useState } from "react";
 

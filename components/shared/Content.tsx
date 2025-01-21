@@ -23,10 +23,11 @@ export const Content: FC<Props> = props => {
   const TargetComponent = componentMap[type];
 
   return (
-<TargetComponent
-  index={props.index}
-  item={props.item as any}
-/>
+    <TargetComponent
+      index={props.index}
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      item={props.item as any}
+    />
 );
 } 
 
