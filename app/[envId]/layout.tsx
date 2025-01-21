@@ -29,4 +29,6 @@ const PageLayout = async ({children, params}: {children: React.ReactNode, params
   )
 }
 
+export const dynamicParams = true;
+
 export default PageLayout;
