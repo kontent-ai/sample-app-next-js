@@ -41,23 +41,23 @@ npx create-next-app --example https://github.com/kontent-ai/sample-app-next-js s
 yarn create next-app --example https://github.com/kontent-ai/sample-app-next-js sample-app-next-js
 ```
 
-### Draft mode
+### Preview mode
 
-The app uses the [Next's draft mode](https://nextjs.org/docs/app/building-your-application/configuring/draft-mode) to display [Kontent.ai preview data](https://kontent.ai/learn/create/content-creation-first-steps/preview-your-content) on the site.
+The app uses the [Next's preview mode](https://nextjs.org/docs/pages/building-your-application/configuring/preview-mode) to display [Kontent.ai preview data](https://kontent.ai/learn/create/content-creation-first-steps/preview-your-content) on the site.
 
-All the features, including [preview urls](https://kontent.ai/learn/docs/preview/preview-configuration/javascript#a-define-preview-urls-for-content-types), [Web Spotlight](https://kontent.ai/learn/docs/preview/preview-configuration/javascript#a-set-up-a-preview-for-web-spotlight) and [multiple previews](https://kontent.ai/learn/docs/preview/preview-configuration/javascript#a-set-up-multiple-previews-with-spaces) are configured automatically when the project is generated. Next.js draft mode is also toggled whenever you view content via Web Spotlight or Preview button.
+All the features, including [preview urls](https://kontent.ai/learn/docs/preview/preview-configuration/javascript#a-define-preview-urls-for-content-types), [Web Spotlight](https://kontent.ai/learn/docs/preview/preview-configuration/javascript#a-set-up-a-preview-for-web-spotlight) and [multiple previews](https://kontent.ai/learn/docs/preview/preview-configuration/javascript#a-set-up-multiple-previews-with-spaces) are configured automatically when the project is generated. Next.js preview mode is also toggled whenever you view content via Web Spotlight or Preview button.
 
 If you open the app outside of Kontent.ai, it will by default show the published content.
 To enable the preview mode, visit the `/api/preview` route and provide the following query parameters:
 * `secret` - This prevents unauthorised access to the preview data. Default value is `mySuperSecret`.
-* `slug` - This defines where should the app redirect you once the draft mode is enabled (e.g. `/`).
+* `slug` - This defines where should the app redirect you once the preview mode is enabled (e.g. `/`).
 * `type` - This must be the codename of the content type that the item represented by `slug` is based on. It can be either `page` or `web_spotlight_root`.
 
 An example might look something like this: `/api/preview?secret=mySuperSecret&slug=about-us&type=page`.
-To exit the draft mode, visit the route `/api/exit-preview`. 
+To exit the preview mode, visit the route `/api/exit-preview`. 
 No query parameter is necessary, but you can provide `callback` with a path to redirect to once the preview mode is disabled.
 
-> The draft mode leverages cookies, so when you open the app in preview (e.g. from Kontent.ai) and then open it again (e.g. in a different tab),
+> The preview mode leverages cookies, so when you open the app in preview (e.g. from Kontent.ai) and then open it again (e.g. in a different tab),
 > the second instance will remain in preview, as long as the cookies are present. You can clear cookies manually or visit `/api/exit-preview` which removes them as well.
 
 
@@ -87,7 +87,13 @@ No query parameter is necessary, but you can provide `callback` with a path to r
 If you want to use your app inside [web spotlight](https://kontent.ai/features/webspotlight/), you will need to run the app under the `https` scheme.
 
 To run the app under the `https` scheme you can use one of the following methods:
-* Run `npm run dev:https` to run the app in the development mode with https. 
+* Run `npm run https:dev` to run the app in the development mode and a proxy server proxying `https://localhost:3001` to `http://localhost:3000`. 
+  * The proxy will use a self-signed certificate which might not work in some browsers.
+  * The proxy is run using the [`local-ssl-proxy`](https://www.npmjs.com/package/local-ssl-proxy) package.
+  * The command requires the ports 3001 and 3000 to be free, otherwise it fails. If you want to use different ports, you will need to run the proxy (`npm run https:proxy`) and the app `npm run dev` yourself.
+* Run `npm run https:proxy` to create a proxy as above without running the app (you are expected to run the app separately).
+  * You can use this command with a custom trusted certificate like this `npm run https:proxy -- --key localhost-key.pem --cert localhost.pem`. See [the package documentation](https://github.com/cameronhunter/local-ssl-proxy#run-ssl-proxy-with-a-self-signed-trusted-certificate) for more details
+  * You can also change the source and/or target port (e.g. `npm run https:proxy -- --source 3002 --target 4000`)
 * [Write your own server](https://github.com/vercel/next.js/tree/canary/examples/custom-server).
 * Use [Ngrok](https://ngrok.com/) or a similar tool.
 
@@ -97,7 +103,7 @@ To generate new models from Kontent.ai data, just run `npm run generateModels`. 
 
 ### Circular reference handling
 
-Next.js data fetching functions convert objects to JSON format. Since JSON doesn't support circular data, this can potentially cause crashes in situations where objects reference each other, such as with linked items or rich text elements. To avoid this, the application uses the [`flatted`](https://www.npmjs.com/package/flatted) package to implement two helper functions: `stringifyAsType` and `parseFlatted`.
+Next.js data fetching functions convert objects to JSON format. Since JSON doesn't support circular data, this can potentially cause crashes in situations where objects reference each other, such as with linked items or rich text elements. To avoid this, the application uses the [`flatted`](https://www.npmjs.com/package/flatted) package to implement two helper functions: `stringifyAsType` and `parseFlatted`, which allow for safe conversion of circular structures into a string form in `getStaticProps` and then accurately reconstruct the original objects from that string.
 
 ### Use codebase as a starter
 
@@ -108,8 +114,8 @@ The app contains code to dynamically handle different Kontent.ai projects (e.g. 
 Below are some of the parts responsible for handling different Kontent.ai projects that need adjustment in case of transforming the code into a single-project setup:
 
 * `middleware.ts` - Gets the Kontent.ai environment ID and stores it in a cookie. For single-project setup, a single environment variable should be used to store the environment ID.
-* `app/callback/page.tsx` & `app/getPreviewApiKey/page.ts` & `lib/constants/auth.ts` - Responsible for exchanging preview API keys for specified environment. For single-project setup, a single environment variable should be used to store the preview API key.
-* `app/[envId]` - Folder representing the [dynamic segment](https://nextjs.org/docs/pages/building-your-application/routing/dynamic-routes), passing the environment ID for pages. For single-project setup, remove the folder and move its content one level up.
+* `pages/callback.tsx` & `pages/getPreviewApiKey.ts` & `lib/constants/auth.ts` - Responsible for exchanging preview API keys for specified environment. For single-project setup, a single environment variable should be used to store the preview API key.
+* `pages/[envId]` - Folder representing the [dynamic segment](https://nextjs.org/docs/pages/building-your-application/routing/dynamic-routes), passing the environment ID for pages. For single-project setup, remove the folder and move its content one level up.
 
 ### Commands
 

@@ -20,7 +20,7 @@ export type Stringified<T> = string & T
  * @param item The item of generic type `T` to be stringified.
  * @returns A `Stringified` representation of the input item that retains type `T`.
  */
-export const stringifyAsType = <T>(item: T): Stringified<T> => {
+export const stringifyAsType = <T extends unknown>(item: T): Stringified<T> => {
   return stringify(item) as Stringified<T>;
 }
 
