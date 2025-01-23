@@ -1,9 +1,7 @@
 import { Content } from "../../../../../../../components/shared/Content";
-import { ArticlePageSize } from "../../../../../../../lib/constants/paging";
-import { getArticlesCountByCategory, getArticlesForListing, getDefaultMetadata, getItemBySlug, getItemsTotalCount } from "../../../../../../../lib/kontentClient";
-import { ArticleTypeWithAll, categoryFilterSource, isArticleType } from "../../../../../../../lib/utils/articlesListing";
+import { getArticlesCountByCategory, getArticlesForListing, getDefaultMetadata, getItemBySlug } from "../../../../../../../lib/kontentClient";
+import { isArticleType } from "../../../../../../../lib/utils/articlesListing";
 import { parseFlatted,  stringifyAsType } from "../../../../../../../lib/utils/circularityUtils";
-import { defaultEnvId } from "../../../../../../../lib/utils/env";
 import { contentTypes, WSL_Page } from "../../../../../../../models";
 import { notFound } from "next/navigation";
 import { cookies, draftMode } from "next/headers";
@@ -64,20 +62,6 @@ const ArticlesPagingPage = async ({params}: {params: Promise<{envId: string, pag
 export const dynamicParams = true;
 export const revalidate = 60;
 
-export const generateStaticParams = async () => {
-  const getAllPagesForCategory = async (category: ArticleTypeWithAll) => {
-    const totalCount = category === 'all'
-      ? await getItemsTotalCount({ envId: defaultEnvId }, false, contentTypes.article.codename)
-      : await getArticlesCountByCategory({ envId: defaultEnvId }, false, category);
-    const pagesNumber = Math.ceil((totalCount ?? 0) / ArticlePageSize);
-    const pages = Array.from({ length: pagesNumber }).map((_, index) => index + 1);
-
-    return pages.map(pageNumber => ({ page: pageNumber.toString(), category, envId: defaultEnvId }));
-  };
-
-  return await Promise.all(categoryFilterSource.map(category => getAllPagesForCategory(category)))
-    .then(categoryPaths => categoryPaths.flat());
-};
 
 export const generateMetadata = async ({ params }: { params: Promise<{ envId: string }> }): Promise<Metadata> => {
   const envId = (await params).envId;

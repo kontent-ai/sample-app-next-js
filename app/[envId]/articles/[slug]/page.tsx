@@ -1,10 +1,9 @@
 import { HeroImage } from "../../../../components/landingPage/ui/heroImage";
 import { PersonHorizontal } from "../../../../components/shared/PersonHorizontal";
 import { RichTextElement } from "../../../../components/shared/richText/RichTextElement";
-import { getAllArticles, getArticleBySlug, getDefaultMetadata } from "../../../../lib/kontentClient";
+import { getArticleBySlug, getDefaultMetadata } from "../../../../lib/kontentClient";
 import { parseFlatted, stringifyAsType } from "../../../../lib/utils/circularityUtils";
 import { formatDate } from "../../../../lib/utils/dateTime";
-import { defaultEnvId } from "../../../../lib/utils/env";
 import { cookies, draftMode } from "next/headers";
 import { previewApiKeyCookieName } from "../../../../lib/constants/cookies";
 import { notFound } from "next/navigation";
@@ -68,12 +67,6 @@ const ArticlePage = async ({params}: {params: Promise<{envId: string, slug: stri
 
 export const dynamicParams = true;
 export const revalidate = 60;
-
-export const generateStaticParams = async () => {
-  const articles = await getAllArticles({ envId: defaultEnvId }, false);
-
-  return articles.items.map(a => ({ slug: a.elements.slug.value,envId: defaultEnvId }));
-};
 
 export const generateMetadata = async ({ params }: { params: Promise<{ envId: string }> }): Promise<Metadata> => {
   const envId = (await params).envId;
