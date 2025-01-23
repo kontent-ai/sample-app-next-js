@@ -320,3 +320,5 @@ export const getPagesSlugs = (config: ClientConfig) =>
     .elementsParameter([contentTypes.page.elements.slug.codename])
     .toAllPromise()
     .then(res => res.data.items.map(item => item.elements.slug.value));
+
+export const runtime = "edge";
