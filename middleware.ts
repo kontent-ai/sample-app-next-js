@@ -115,7 +115,7 @@ const createUrlWithQueryString = (url: string | undefined, searchParams: Iterabl
 
 export const config = {
   matcher: [
-    '/((?!_next/static|_next/image|favicon.png|getPreviewApiKey|logo.png|callback).*)',
+    '/((?!api|_next/static|_next/image|favicon.ico|getPreviewApiKey|logo.png|callback|sitemap.xml|robots.txt).*)',
     '/'
   ],
 };
