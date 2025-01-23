@@ -30,5 +30,8 @@ const PageLayout = async ({children, params}: {children: React.ReactNode, params
 }
 
 export const dynamicParams = true;
+export async function generateStaticParams() {
+  return []
+}
 
 export default PageLayout;

@@ -48,6 +48,9 @@ const ProductsPage = async ({params}: {params: Promise<{envId: string}>}) => {
 
 export const dynamicParams = true;
 export const revalidate = 60;
+export async function generateStaticParams() {
+  return []
+}
 
 export const generateMetadata = async ({ params }: { params: Promise<{ envId: string }> }): Promise<Metadata> => {
   const envId = (await params).envId;
