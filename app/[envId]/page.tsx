@@ -34,8 +34,6 @@ const Home = async ({params}: {params: Promise<{envId: string}>}) => {
   )
 };
 
-export const dynamicParams = true;
-
 export async function generateMetadata(
   { params }: { params: Promise<{ envId: string }> },
 ): Promise<Metadata> {
@@ -58,5 +56,8 @@ export async function generateMetadata(
 }
 
 export const generateStaticParams = () => [ { envId: defaultEnvId } ]
+
+export const revalidate = 60;
+export const dynamicParams = true;
 
 export default Home

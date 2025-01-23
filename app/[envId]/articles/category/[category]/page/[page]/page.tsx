@@ -62,6 +62,7 @@ const ArticlesPagingPage = async ({params}: {params: Promise<{envId: string, pag
 }
 
 export const dynamicParams = true;
+export const revalidate = 60;
 
 export const generateStaticParams = async () => {
   const getAllPagesForCategory = async (category: ArticleTypeWithAll) => {
