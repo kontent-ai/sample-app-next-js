@@ -99,12 +99,10 @@ const ProductDetail = async ({params}: {params: Promise<{envId: string, slug: st
 export const generateStaticParams = () =>
   getProductItemsWithSlugs({ envId: defaultEnvId })
     .then(products => products
-      .map(product => (
-        {
-          slug: product.elements.slug.value,
-          envId: defaultEnvId
-        })
-      ));
+      .map(product => ({slug: product.elements.slug.value})
+    ));
+
+export const revalidate = 60;
 
 export const generateMetadata = async ({ params }: { params: Promise<{ envId: string }> }): Promise<Metadata> => {
   const envId = (await params).envId;

@@ -67,12 +67,14 @@ export const generateStaticParams = async () => {
     const pagesNumber = Math.ceil((totalCount ?? 0) / ArticlePageSize);
     const pages = Array.from({ length: pagesNumber }).map((_, index) => index + 1);
 
-    return pages.map(pageNumber => ({ page: pageNumber.toString(), category, envId: defaultEnvId }));
+    return pages.map(pageNumber => ({ page: pageNumber.toString(), category }));
   };
 
   return await Promise.all(categoryFilterSource.map(category => getAllPagesForCategory(category)))
     .then(categoryPaths => categoryPaths.flat());
 };
+
+export const revalidate = 60;
 
 export const generateMetadata = async ({ params }: { params: Promise<{ envId: string }> }): Promise<Metadata> => {
   const envId = (await params).envId;

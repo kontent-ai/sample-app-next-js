@@ -53,8 +53,10 @@ export const generateStaticParams = async () => {
     .filter(item => item != reservedListingSlugs.articles)
     .filter(item => item != reservedListingSlugs.products);
   
-  return slugs.map(slug => ({envId: defaultEnvId, slug}))
+  return slugs.map(slug => ({slug}))
 }
+
+export const revalidate = 60;
 
 export const generateMetadata = async ({ params }: { params: Promise<{ envId: string }> }): Promise<Metadata> => {
   const envId = (await params).envId;

@@ -69,8 +69,10 @@ const ArticlePage = async ({params}: {params: Promise<{envId: string, slug: stri
 export const generateStaticParams = async () => {
   const articles = await getAllArticles({ envId: defaultEnvId }, false);
 
-  return articles.items.map(a => ({ slug: a.elements.slug.value,envId: defaultEnvId }));
+  return articles.items.map(a => ({ slug: a.elements.slug.value }));
 };
+
+export const revalidate = 60;
 
 export const generateMetadata = async ({ params }: { params: Promise<{ envId: string }> }): Promise<Metadata> => {
   const envId = (await params).envId;

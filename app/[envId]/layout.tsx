@@ -30,5 +30,6 @@ const PageLayout = async ({children, params}: {children: React.ReactNode, params
 }
 
 export const generateStaticParams = () => [ { envId: defaultEnvId } ]
+export const revalidate = 60;
 
 export default PageLayout;

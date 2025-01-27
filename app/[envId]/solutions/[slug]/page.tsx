@@ -67,27 +67,28 @@ const SolutionDetailPage = async ({params}: {params: Promise<{envId: string, slu
 export const generateStaticParams = () => 
   getSolutionsWithSlugs({ envId: defaultEnvId })
     .then((solutions) => solutions
-      .map((solution) => ({ slug: solution.elements.slug.value, envId: defaultEnvId} )));
+      .map((solution) => ({ slug: solution.elements.slug.value} )));
 
+export const revalidate = 60;
 
-  export const generateMetadata = async ({ params }: { params: Promise<{ envId: string }> }): Promise<Metadata> => {
-    const envId = (await params).envId;
-  
-    const draft = await draftMode();
-    const previewApiKey = draft.isEnabled ? (await cookies()).get(previewApiKeyCookieName)?.value : undefined;
-  
-    const defaultMetadata = await getDefaultMetadata({ envId, previewApiKey }, draft.isEnabled);
-  
-    if (!defaultMetadata) {
-      console.log("generateMetadata: [envId]/[category]/page/[page]: Could not obtain defaultMetadata");
-      return {};
-    }
-  
-    return {
-      description: defaultMetadata.elements.metadataDescription.value,
-      keywords: defaultMetadata.elements.metadataKeywords.value,
-      title: defaultMetadata.elements.metadataTitle.value 
-    }
+export const generateMetadata = async ({ params }: { params: Promise<{ envId: string }> }): Promise<Metadata> => {
+  const envId = (await params).envId;
+
+  const draft = await draftMode();
+  const previewApiKey = draft.isEnabled ? (await cookies()).get(previewApiKeyCookieName)?.value : undefined;
+
+  const defaultMetadata = await getDefaultMetadata({ envId, previewApiKey }, draft.isEnabled);
+
+  if (!defaultMetadata) {
+    console.log("generateMetadata: [envId]/[category]/page/[page]: Could not obtain defaultMetadata");
+    return {};
   }
+
+  return {
+    description: defaultMetadata.elements.metadataDescription.value,
+    keywords: defaultMetadata.elements.metadataKeywords.value,
+    title: defaultMetadata.elements.metadataTitle.value 
+  }
+}
 
 export default SolutionDetailPage;
