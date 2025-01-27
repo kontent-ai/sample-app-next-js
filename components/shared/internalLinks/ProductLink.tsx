@@ -1,5 +1,5 @@
+'use client'
 import Image from "next/image";
-import { useRouter } from "next/router";
 import { FC, ReactNode, useEffect, useState } from "react";
 
 import { resolveUrlPath } from "../../../lib/routing";
@@ -13,13 +13,12 @@ type Props = Readonly<{
 
 export const ProductLink: FC<Props> = (props) => {
   const [product, setProduct] = useState<Product | null>(null);
-  const isPreview = useRouter().isPreview;
 
   useEffect(() => {
-    fetch(`/api/product?codename=${props.itemCodename}&preview=${isPreview}`)
+    fetch(`/api/product?codename=${props.itemCodename}`)
       .then((res) => res.json())
       .then((res) => setProduct(res.product));
-  }, [props.itemCodename, isPreview]);
+  }, [props.itemCodename]);
 
   return (
     <span className="relative group/popoverTarget">

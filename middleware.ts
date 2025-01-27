@@ -12,6 +12,10 @@ if (!KONTENT_PREVIEW_API_KEY) {
 }
 
 export const middleware = (request: NextRequest) => {
+  if (request.method === 'OPTIONS') {
+    return NextResponse.next(); // Allow OPTIONS to proceed
+  }
+
   const currentEnvId = request.cookies.get(envIdCookieName)?.value ?? defaultEnvId;
 
   // the order of functions is important

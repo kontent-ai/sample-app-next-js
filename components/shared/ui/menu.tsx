@@ -1,7 +1,8 @@
+'use client'
 import { Bars3Icon, ChevronDownIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
 import Link from "next/link";
-import { NextRouter, useRouter } from "next/router";
+import { usePathname } from "next/navigation";
 import { FC, useState } from "react";
 
 import { perCollectionSiteName } from "../../../lib/constants/labels";
@@ -45,12 +46,13 @@ const isPage = (
 
 const isCurrentNavigationItemActive = (
   navigation: Nav_NavigationItem,
-  router: NextRouter
+  pathname: string,
 ) => {
-  const pathWithoutQuerystring = router.asPath.replace(/\?.*/, "");
+  const pathWithoutQuerystring = pathname.replace(/\?.*/, "");
   const pathSegments = pathWithoutQuerystring.split("/");
   const topLevelSegment = pathSegments[1];
   const pageLink = navigation.elements.referenceContentItemLink.linkedItems[0];
+
   return (
     pageLink &&
     isPage(pageLink) &&
@@ -59,7 +61,7 @@ const isCurrentNavigationItemActive = (
 };
 
 const MenuList: FC<MenuListProps> = (props) => {
-  const router = useRouter();
+  const pathname = usePathname() ?? "";
   return (
     <ul
       className={`transition ${
@@ -70,7 +72,7 @@ const MenuList: FC<MenuListProps> = (props) => {
         <li
           key={i}
           className={`${
-            isCurrentNavigationItemActive(link, router)
+            isCurrentNavigationItemActive(link, pathname)
               ? ""
               : "border-l-transparent border-t-transparent"
           }
@@ -114,7 +116,7 @@ const DropdownButton: FC<Props> = (props) => {
 };
 
 const DropdownMenuItems: FC<DropdownMenuProps> = (props) => {
-  const router = useRouter();
+  const pathname = usePathname() ?? "";
 
   return (
     <ul className="grid gap-2 max-w-screen-xl px-4 py-5 mx-auto text-gray-900 sm:grid-cols-2 md:grid-cols-3 md:px-6">
@@ -123,7 +125,7 @@ const DropdownMenuItems: FC<DropdownMenuProps> = (props) => {
           <Link
             href={resolveReference(link)}
             className={`${
-              isCurrentNavigationItemActive(link, router)
+              isCurrentNavigationItemActive(link, pathname)
                 ? "border-l-gray-500 cursor-default "
                 : "border-l-transparent hover:border-l-gray-500"
             }
@@ -149,7 +151,6 @@ export const Menu: FC<Props> = (props) => {
   const handleMenuClick = (menuId: string | number): void => {
     setActiveMenu(menuId === activeMenu ? -1 : menuId);
   };
-
 
   return (
     <div
