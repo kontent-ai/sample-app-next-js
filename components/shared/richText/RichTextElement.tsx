@@ -1,11 +1,8 @@
 import { ArrowTopRightOnSquareIcon } from "@heroicons/react/24/solid";
 import { Elements } from "@kontent-ai/delivery-sdk";
-import { PortableTextItem, transformToPortableText } from "@kontent-ai/rich-text-resolver";
-import { PortableTextReactResolvers } from '@kontent-ai/rich-text-resolver/utils/react';
+import { PortableTextObject, transformToPortableText } from "@kontent-ai/rich-text-resolver";
+import { PortableText, PortableTextReactResolvers } from '@kontent-ai/rich-text-resolver/utils/react';
 
-import {
-  PortableText,
-} from "@portabletext/react";
 import Image from "next/image";
 import { FC } from "react";
 
@@ -249,7 +246,7 @@ export const RichTextElement: FC<ElementProps> = (props) => {
 
 type RichTextValueProps = Readonly<{
   element: Elements.RichTextElement;
-  value: PortableTextItem[];
+  value: PortableTextObject[];
   isInsideTable: boolean;
 }>;
 
