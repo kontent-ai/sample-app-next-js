@@ -1,19 +1,10 @@
 import { ArrowTopRightOnSquareIcon } from "@heroicons/react/24/solid";
 import { Elements } from "@kontent-ai/delivery-sdk";
-import {
-  IPortableTextComponent,
-  IPortableTextImage,
-  IPortableTextInternalLink,
-  IPortableTextItem,
-  IPortableTextTable,
-  nodeParse,
-  transformToPortableText,
-} from "@kontent-ai/rich-text-resolver";
+import { PortableTextItem, transformToPortableText } from "@kontent-ai/rich-text-resolver";
+import { PortableTextReactResolvers } from '@kontent-ai/rich-text-resolver/utils/react';
+
 import {
   PortableText,
-  PortableTextMarkComponentProps,
-  PortableTextReactComponents,
-  PortableTextTypeComponentProps,
 } from "@portabletext/react";
 import Image from "next/image";
 import { FC } from "react";
@@ -42,9 +33,9 @@ export const createDefaultResolvers = (
   element: Elements.RichTextElement,
   isElementInsideTable: boolean = false,
   componentIndex = 0
-): Partial<PortableTextReactComponents> => ({
+): PortableTextReactResolvers => ({
   types: {
-    image: ({ value }: PortableTextTypeComponentProps<IPortableTextImage>) => {
+    image: ({ value }) => {
       const asset = element.images.find((i) => i.imageId === value.asset._ref);
       if (!asset) {
         throw new Error(`Asset ${value.asset._ref} not found.`);
@@ -74,7 +65,7 @@ export const createDefaultResolvers = (
         </span>
       );
     },
-    table: ({ value }: PortableTextTypeComponentProps<IPortableTextTable>) => {
+    table: ({ value }) => {
       return (
         <table className="table-auto">
           <tbody>
@@ -95,12 +86,8 @@ export const createDefaultResolvers = (
         </table>
       );
     },
-    component: ({
-      value,
-    }: PortableTextTypeComponentProps<IPortableTextComponent>) => {
-      const componentItem = element.linkedItems.find(
-        (i) => i.system.codename === value.component._ref
-      );
+    componentOrItem: ({value}) => {
+      const componentItem = element.linkedItems.find((i) => i.system.codename === value.componentOrItem._ref);
 
       if (!componentItem) {
         throw new Error(
@@ -133,15 +120,12 @@ export const createDefaultResolvers = (
     },
   },
   marks: {
-    sub: (props) => <sub>{props.children}</sub>,
-    sup: (props) => <sup>{props.children}</sup>,
-    internalLink: ({
+    contentItemLink: ({
       value,
       children,
-    }: PortableTextMarkComponentProps<IPortableTextInternalLink>) => {
-      const link = element.links.find(
-        (l) => l.linkId === value?.reference._ref
-      );
+    }) => {
+      const link = element.links.find((l) => l.linkId === value?.contentItemLink._ref);
+
       if (!link) {
         throw new Error(
           "Cannot find link reference in links. This should never happen."
@@ -162,9 +146,9 @@ export const createDefaultResolvers = (
           title={value?.title}
         >
           {children}
-          {!!value["data-new-window"] && (
+          {value?.["data-new-window"] ? (
             <ArrowTopRightOnSquareIcon className="w-5 inline-block ml-1" />
-          )}
+          ) : null}
         </a>
       );
     },
@@ -253,7 +237,7 @@ export const createDefaultResolvers = (
 });
 
 export const RichTextElement: FC<ElementProps> = (props) => {
-  const portableText = transformToPortableText(nodeParse(props.element.value));
+  const portableText = transformToPortableText(props.element.value);
 
   return (
     <PortableText
@@ -265,7 +249,7 @@ export const RichTextElement: FC<ElementProps> = (props) => {
 
 type RichTextValueProps = Readonly<{
   element: Elements.RichTextElement;
-  value: IPortableTextItem[];
+  value: PortableTextItem[];
   isInsideTable: boolean;
 }>;
 
