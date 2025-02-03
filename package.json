@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "scripts": {
     "generateModels": "tsc --project scripts/tsconfig.json && node scripts/build/generateModels.mjs",
-    "dev": "next dev --turbopack",
-    "dev:https": "next dev --turbopack --experimental-https",
+    "dev": "next dev",
+    "dev:https": "next dev --experimental-https",
     "lint": "next lint",
     "lint:fix": "next lint --fix",
     "build": "next build",
