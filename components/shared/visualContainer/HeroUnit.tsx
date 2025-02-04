@@ -45,7 +45,7 @@ export const HeroUnitComponent: FC<Props> = (props) => {
             {fact.elements.message.value}
           </h2>
         </div>
-        {fact.elements.referenceLabel.value && <CTAButton reference={fact} />}
+        {fact.elements.reference__label.value && <CTAButton reference={fact} />}
       </div>
     </HeroImage>
   );

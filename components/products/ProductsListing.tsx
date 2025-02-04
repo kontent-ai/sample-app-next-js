@@ -163,8 +163,8 @@ const ProductItems: FC<ProductListingProps> = (props) => {
       {props.products.map(p => (
         <ProductItem
           key={p.system.id}
-          imageUrl={p.elements.productBaseMainImage.value[0]?.url || ""}
-          title={p.elements.productBaseName.value}
+          imageUrl={p.elements.product_base__main_image.value[0]?.url || ""}
+          title={p.elements.product_base__name.value}
           detailUrl={resolveUrlPath({
             type: "product",
             slug: p.elements.slug.value

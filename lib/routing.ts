@@ -1,5 +1,4 @@
-import { Article, contentTypes, Product, Solution, taxonomies, WSL_Page, WSL_WebSpotlightRoot } from "../models";
-import { Reference } from '../models/content-type-snippets/reference';
+import {Article, contentTypes, CoreContentType, Product, Reference, Solution, taxonomies, WSL_Page, WSL_WebSpotlightRoot } from "../models";
 
 const getExternalUrlsMapping = () => Object.fromEntries(
   process.env.NEXT_PUBLIC_OTHER_COLLECTIONS_DOMAINS?.split(",")
@@ -94,12 +93,12 @@ export const resolveUrlPath = (context: ResolutionContext) => {
 const isWSRoot = (item: WSL_Page | WSL_WebSpotlightRoot | Product | Article | Solution): item is WSL_WebSpotlightRoot =>
   item.system.type === contentTypes.web_spotlight_root.codename;
 
-export const resolveReference = (reference: Reference) => {
-  if (reference.elements.referenceExternalUri.value) {
-    return reference.elements.referenceExternalUri.value;
+export const resolveReference = (reference: CoreContentType<Reference>) => {
+  if (reference.elements.reference__external_uri.value) {
+    return reference.elements.reference__external_uri.value;
   }
 
-  const referencedItem = reference.elements.referenceContentItemLink.linkedItems[0];
+  const referencedItem = reference.elements.reference__content__item_link.linkedItems[0];
 
   if (!referencedItem) {
     console.info(`Linked item not found when resolving item with codename ${reference.system.codename} of type ${reference.system.type}`);

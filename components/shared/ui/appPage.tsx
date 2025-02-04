@@ -17,7 +17,7 @@ type Props = Readonly<{
   children: ReactNode;
   item: AcceptedItem;
   siteMenu: Stringified<Nav_NavigationItem>;
-  defaultMetadata: Pick<Metadata, "elements">;
+  defaultMetadata: Metadata;
   pageType: "WebPage" | "Article" | "Product" | "Solution",
 }>;
 
@@ -56,8 +56,8 @@ const isProductOrSolution = (item: AcceptedItem): item is Product | Solution =>
 
   const PageMetadata: FC<Pick<Props, "item" | "defaultMetadata" | "pageType">> = ({ item, defaultMetadata, pageType }) => {
   const pageMetaTitle = createMetaTitle(siteCodename, item);
-  const pageMetaDescription = item.elements.metadataDescription.value || defaultMetadata.elements.metadataDescription.value;
-  const pageMetaKeywords = item.elements.metadataKeywords.value || defaultMetadata.elements.metadataKeywords.value;
+  const pageMetaDescription = item.elements.metadata__description.value || defaultMetadata.metadata__description.value;
+  const pageMetaKeywords = item.elements.metadata__keywords.value || defaultMetadata.metadata__keywords.value;
 
   return (
     <Head>
@@ -83,8 +83,8 @@ const isProductOrSolution = (item: AcceptedItem): item is Product | Solution =>
           JSON.stringify({
             "@context": "http://schema.org",
             "@type": pageType,
-            name: item.elements.metadataTitle.value
-              || (isProductOrSolution(item) ? item.elements.productBaseName.value : item.elements.title.value),
+            name: item.elements.metadata__title.value
+              || (isProductOrSolution(item) ? item.elements.product_base__name.value : item.elements.title.value),
             description: pageMetaDescription,
             keywords: pageMetaKeywords
           })
@@ -96,7 +96,7 @@ const isProductOrSolution = (item: AcceptedItem): item is Product | Solution =>
 
 const createMetaTitle = (siteCodename: ValidCollectionCodename, item: AcceptedItem): string => {
   const siteTitle = perCollectionSEOTitle[siteCodename];
-  const pageTitle = item.elements.metadataTitle.value;
+  const pageTitle = item.elements.metadata__title.value;
 
   return pageTitle && pageTitle !== siteTitle ? `${pageTitle} | ${siteTitle}` : siteTitle;
 };

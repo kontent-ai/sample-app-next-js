@@ -1,33 +1,15 @@
 import * as fsPromises from "fs/promises";
-import { DefaultResolverType, generateModelsAsync, textHelper } from '@kontent-ai/model-generator';
+import { generateDeliveryModelsAsync, generateEnvironmentModelsAsync, resolveCase } from '@kontent-ai/model-generator';
 import * as dotenv from "dotenv";
 
 dotenv.config({ path: ".env.local" });
 
 const createMissingVarErrorMsg = (variableDescription: string) => `Missing ${variableDescription}. Please, make sure it is properly set in your .env.local file or otherwise provided as an environment variable.`
 
-type Style = "camelCase" | "pascalCase" | "camelOrPascalCase";
+const byNameResolver = (obj: Readonly<{ name: string }>) =>  createPrefixFromName(obj.name) + resolveCase(obj.name, "pascalCase");
 
-const byNameResolver = (style: Style) => (obj: Readonly<{ name: string }>) => resolveName(obj.name, style);
-
-const resolveName = (name: string, style: Style) => replaceInvalidChars(textHelper.resolveTextWithDefaultResolver(name, handleCaseSwitch(style, name)));
-
-const upperLetterRegex = /[A-Z]/;
-const handleCaseSwitch = (style: Style, name: string): DefaultResolverType => {
-  if (style === "camelCase" || style === "pascalCase") {
-    return style;
-  }
-
-  return upperLetterRegex.test(name[1])
-    ? "pascalCase"
-    : "camelCase";
-}
-
-const replaceInvalidChars = (str: string) => map(replaceIfNeeded, str)
-
-const replaceIfNeeded = (char: string, index: number) => {
-  const isValid = index === 0 ? isValidFirstChar : isValidChar;
-  switch (char.codePointAt(0)) {
+const createPrefixFromName = (str: string) => {
+  switch (str.codePointAt(0)) {
     case 0x1F9F1:
       return "Block_";
 
@@ -41,18 +23,9 @@ const replaceIfNeeded = (char: string, index: number) => {
       return "Nav_"
 
     default:
-      return isValid(char) ? char : "_";
+      return "";
   }
 };
-
-const firstCharRegex = /[a-zA-Z_$]/;
-const isValidFirstChar = (char: string) => firstCharRegex.test(char);
-
-const validCharRegex = /\w$/;
-const isValidChar = (char: string) => validCharRegex.test(char);
-
-const map = (mapper: (char: string, index: number) => string, str: string) =>
-  str.replaceAll(new RegExp(/./, 'ug'), mapper);
 
 const KONTENT_MANAGEMENT_API_KEY = process.env.KONTENT_MANAGEMENT_API_KEY;
 const  NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID = process.env.NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID;
@@ -75,22 +48,43 @@ await fsPromises.rm(new URL("../../models", import.meta.url), { recursive: true,
 
 console.log("'models' directory deleted. Generating models.");
 
-await generateModelsAsync({
+await generateDeliveryModelsAsync({
   apiKey: KONTENT_MANAGEMENT_API_KEY,
-  sdkType: "delivery",
   environmentId: NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID,
+  moduleFileExtension: "ts",
+  formatOptions: {
+    tabWidth: 2,
+    parser: "typescript",
+  },
   outputDir: "models",
-  isEnterpriseSubscription: false,
   addTimestamp: false,
-  managementApiUrl: `${NEXT_PUBLIC_KONTENT_DOMAIN ? `https://manage.${NEXT_PUBLIC_KONTENT_DOMAIN}` : NEXT_PUBLIC_KONTENT_MAPI_DOMAIN}/v2`,
-  addEnvironmentInfo: false,
-  elementResolver: (_, elementCodename) => resolveName(elementCodename, "camelCase"),
-  contentTypeResolver: byNameResolver("pascalCase"),
-  taxonomyTypeResolver: byNameResolver("pascalCase"),
-  contentTypeFileResolver: byNameResolver("camelOrPascalCase"),
-  taxonomyTypeFileResolver: byNameResolver("camelOrPascalCase"),
-  contentTypeSnippetResolver: byNameResolver("pascalCase"),
-  contentTypeSnippetFileResolver: byNameResolver("camelOrPascalCase"),
+  baseUrl: `${NEXT_PUBLIC_KONTENT_DOMAIN ? `https://manage.${NEXT_PUBLIC_KONTENT_DOMAIN}` : NEXT_PUBLIC_KONTENT_MAPI_DOMAIN}/v2`,
+  fileResolvers: {
+    contentType: byNameResolver,
+    taxonomy: byNameResolver,
+    snippet: byNameResolver,
+  },
+  nameResolvers: {
+    contentType: byNameResolver,  
+    taxonomy: byNameResolver,
+    snippet: byNameResolver,
+  }
 });
+
+await generateEnvironmentModelsAsync({
+  apiKey: KONTENT_MANAGEMENT_API_KEY,
+  environmentId: NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID,
+  moduleFileExtension: "ts",
+  isEnterpriseSubscription: false,
+  formatOptions: {
+    tabWidth: 2,
+    parser: "typescript",
+  },
+  outputDir: "models/environment",
+  addTimestamp: false,
+  baseUrl: `${NEXT_PUBLIC_KONTENT_DOMAIN ? `https://manage.${NEXT_PUBLIC_KONTENT_DOMAIN}` : NEXT_PUBLIC_KONTENT_MAPI_DOMAIN}/v2`,
+});
+
+await fsPromises.appendFile('./models/index.ts', `export * from "./environment/index.ts";`);
 
 console.log("Generating models is finished.");

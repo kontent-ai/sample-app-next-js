@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "@heroicons/react": "^2.0.17",
-    "@kontent-ai/delivery-sdk": "^14.0.1",
+    "@kontent-ai/delivery-sdk": "^15.2.0",
     "@kontent-ai/rich-text-resolver": "^2.0.1",
     "@kontent-ai/smart-link": "^3.0.0",
     "@portabletext/react": "^3.2.0",
@@ -29,8 +29,8 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.2.0",
-    "@kontent-ai/management-sdk": "^5.0.0",
-    "@kontent-ai/model-generator": "6.5.0",
+    "@kontent-ai/management-sdk": "^7.5.1",
+    "@kontent-ai/model-generator": "8.0.0-14",
     "@netlify/plugin-nextjs": "^4.40.1",
     "@next/eslint-plugin-next": "^15.1.4",
     "@portabletext/types": "^2.0.6",

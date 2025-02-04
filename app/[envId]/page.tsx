@@ -47,9 +47,9 @@ export async function generateMetadata(
   }
 
   return {
-    description: homepageData.elements.metadataDescription.value,
-    keywords: homepageData.elements.metadataKeywords.value,
-    title: homepageData.elements.metadataTitle.value 
+    description: homepageData.elements.metadata__description.value,
+    keywords: homepageData.elements.metadata__keywords.value,
+    title: homepageData.elements.metadata__title.value 
   }
 }
 

@@ -13,15 +13,17 @@
 * -------------------------------------------------------------------------------
 **/
 
-/**
- * Product category
- *
- * Codename: product_category
- * Id: 502de9a1-3673-51e5-bf88-92e76c35cbee
- */
-export type ProductCategory =
-  | "cutting"
-  | "hand_held"
-  | "self_retaining"
-  | "retracting"
-  | "grasping";
+export const languages = {
+  /**
+   * Default project language
+   */
+  default: {
+    name: "Default project language",
+    codename: "default",
+    id: "00000000-0000-0000-0000-000000000000",
+    isActive: true,
+    isDefault: true,
+    fallbackLanguageId: "00000000-0000-0000-0000-000000000000",
+    externalId: undefined,
+  },
+} as const;

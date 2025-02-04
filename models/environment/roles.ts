@@ -13,15 +13,4 @@
 * -------------------------------------------------------------------------------
 **/
 
-/**
- * Product category
- *
- * Codename: product_category
- * Id: 502de9a1-3673-51e5-bf88-92e76c35cbee
- */
-export type ProductCategory =
-  | "cutting"
-  | "hand_held"
-  | "self_retaining"
-  | "retracting"
-  | "grasping";
+export const roles = {} as const;

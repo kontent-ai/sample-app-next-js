@@ -63,18 +63,18 @@ const isProduct = (item: Product | Solution): item is Product => {
 const ProductPreview: FC<ProductPreviewProps> = (props) => (
   <>
     <Image
-      src={props.product.elements.productBaseMainImage.value[0]?.url || ""}
+      src={props.product.elements.product_base__main_image.value[0]?.url || ""}
       alt={
-        props.product.elements.productBaseMainImage.value[0]?.description ||
-        props.product.elements.productBaseName.value
+        props.product.elements.product_base__main_image.value[0]?.description ||
+        props.product.elements.product_base__name.value
       }
       height={200}
-      width={props.product.elements.productBaseMainImage.value[0]?.width || 200}
+      width={props.product.elements.product_base__main_image.value[0]?.width || 200}
       className="object-contain"
     />
     <span className="block w-full h-0 border-gray-200 border-b-2 my-3" />
     <span className="flex justify-center">
-      {props.product.elements.productBaseName.value}
+      {props.product.elements.product_base__name.value}
     </span>
     {isProduct(props.product) && (
       <span className="flex justify-center">

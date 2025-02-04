@@ -36,13 +36,13 @@ const ProductDetail = async ({params}: {params: Promise<{envId: string, slug: st
                   className="h-64 lg:h-80 rounded-lg bg-gray-100 mb-4 flex items-center justify-center"
                 >
                   {
-                    product.elements.productBaseMainImage.value[0]
+                    product.elements.product_base__main_image.value[0]
                       ? (
                         <Image
-                          src={product.elements.productBaseMainImage.value[0].url}
-                          alt={product.elements.productBaseMainImage.value[0].description || product.elements.productBaseMainImage.value[0].url.split('/').pop() || "Product image"}
+                          src={product.elements.product_base__main_image.value[0].url}
+                          alt={product.elements.product_base__main_image.value[0].description || product.elements.product_base__main_image.value[0].url.split('/').pop() || "Product image"}
                           width={widthLimit}
-                          height={product.elements.productBaseMainImage.value[0].height || 200}
+                          height={product.elements.product_base__main_image.value[0].height || 200}
                           className="object-cover"
                           priority
                           {...createElementSmartLink(contentTypes.product.elements.product_base__main_image.codename)}
@@ -58,7 +58,7 @@ const ProductDetail = async ({params}: {params: Promise<{envId: string, slug: st
                 className="mb-2 leading-tight tracking-tight font-bold text-gray-800 text-2xl lg:text-3xl"
                 {...createElementSmartLink(contentTypes.product.elements.product_base__name.codename)}
               >
-                {product.elements.productBaseName.value}
+                {product.elements.product_base__name.value}
               </h1>
 
               <div
@@ -77,7 +77,7 @@ const ProductDetail = async ({params}: {params: Promise<{envId: string, slug: st
                 className="text-gray-500"
                 {...createElementSmartLink(contentTypes.product.elements.product_base__description.codename)}
               >
-                {product.elements.productBaseDescription.value}
+                {product.elements.product_base__description.value}
 
               </p>
 
@@ -118,9 +118,9 @@ export const generateMetadata = async ({ params }: { params: Promise<{ envId: st
   }
 
   return {
-    description: defaultMetadata.elements.metadataDescription.value,
-    keywords: defaultMetadata.elements.metadataKeywords.value,
-    title: defaultMetadata.elements.metadataTitle.value 
+    description: defaultMetadata.elements.metadata__description.value,
+    keywords: defaultMetadata.elements.metadata__keywords.value,
+    title: defaultMetadata.elements.metadata__keywords.value 
   }
 }
 

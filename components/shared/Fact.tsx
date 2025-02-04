@@ -16,7 +16,7 @@ type Props = Readonly<{
 export const FactComponent: FC<Props> = (props) => {
   const image = props.item.elements.image.value[0];
   const authorElements = props.item.elements.author.linkedItems[0]?.elements;
-  const { firstName, lastName, occupation } = authorElements ?? {};
+  const { first_name, last_name, occupation } = authorElements ?? {};
 
   return (
     <figure
@@ -69,13 +69,13 @@ export const FactComponent: FC<Props> = (props) => {
           >
             <i>
               {[
-                [firstName?.value, lastName?.value].join(" "),
+                [first_name?.value, last_name?.value].join(" "),
                 occupation?.value,
               ].join(", ")}
             </i>
           </div>
         )}
-        {props.item.elements.referenceLabel.value && (
+        {props.item.elements.reference__label.value && (
           <CTAButton reference={props.item} />
         )}
       </div>

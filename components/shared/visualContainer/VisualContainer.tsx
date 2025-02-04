@@ -15,7 +15,7 @@ type Props = Readonly<{
 
 const VisualRepresentation: FC<Props> = (props) => {
   const { grid, hero_unit, stack } = contentTypes.visual_container.elements.visual_representation.options;
-  switch (props.item.elements.visualRepresentation.value[0]?.codename) {
+  switch (props.item.elements.visual_representation.value[0]?.codename) {
     case grid.codename:
       return (
         <GridComponent
@@ -56,7 +56,7 @@ const VisualRepresentation: FC<Props> = (props) => {
       return (
         <BuildError>
           Visual representation &quot;
-          {props.item.elements.visualRepresentation.value[0]?.name ??
+          {props.item.elements.visual_representation.value[0]?.name ??
             "Missing representation"}
           &quot; is not supported.
         </BuildError>

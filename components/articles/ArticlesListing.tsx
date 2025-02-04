@@ -118,8 +118,8 @@ export const ArticlesListing: FC<ArticlesLitingProps> = (props) => {
                     title={article.elements.title.value}
                     itemId={article.system.id}
                     description={article.elements.abstract.value}
-                    imageUrl={article.elements.heroImage.value[0]?.url || ""}
-                    publishingDate={article.elements.publishingDate.value}
+                    imageUrl={article.elements.hero_image.value[0]?.url || ""}
+                    publishingDate={article.elements.publishing_date.value}
                     detailUrl={resolveUrlPath({
                       type: "article",
                       slug: article.elements.slug.value

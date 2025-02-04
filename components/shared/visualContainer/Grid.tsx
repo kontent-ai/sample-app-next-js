@@ -30,7 +30,7 @@ const GridItem: FC<{ item: Fact }> = ({ item }) => (
           quality={75}
         />
         <div className="font-semibold text-white invisible group-hover:visible absolute top-1/2 left-10 transition delay-300 duration-300 ease-in-out">
-          {item.elements.referenceLabel.value}
+          {item.elements.reference__label.value}
         </div>
       </div>
     )}
@@ -69,7 +69,7 @@ export const GridComponent: FC<Props> = (props) => (
       {props.subtitle}
     </div>
     <div className="grid mx-auto w-full max-w-screen-xl py-7 text-gray-900 sm:grid-cols-2 md:grid-cols-3">
-      {props.items.map((item) => item.elements.referenceLabel.value ? (
+      {props.items.map((item) => item.elements.reference__label.value ? (
         <Link
           key={item.system.codename}
           className="no-underline font-normal group hover:scale-110 transform transition-all duration-300 ease-in-out"
