@@ -129,7 +129,7 @@ const ProductsListing: FC = () => {
         <ProductItems products={products} />
       </div>
 
-      <div className="mt-8 flex flex-row justify-center">
+      <div className="mt-8 flex flex-row justify-center pb-6">
         <button
           className="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg enabled:hover:bg-gray-100 disabled:bg-gray-200 enabled:hover:text-gray-700"
           onClick={onPreviousClick}
