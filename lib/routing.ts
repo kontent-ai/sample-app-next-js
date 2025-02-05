@@ -1,4 +1,4 @@
-import {Article, contentTypes, CoreContentType, Product, Reference, Solution, taxonomies, WSL_Page, WSL_WebSpotlightRoot } from "../models";
+import {contentTypes, CoreContentType, isWSL_WebSpotlightRoot, Reference, taxonomies} from "../models";
 
 const getExternalUrlsMapping = () => Object.fromEntries(
   process.env.NEXT_PUBLIC_OTHER_COLLECTIONS_DOMAINS?.split(",")
@@ -90,9 +90,6 @@ export const resolveUrlPath = (context: ResolutionContext) => {
   }
 }
 
-const isWSRoot = (item: WSL_Page | WSL_WebSpotlightRoot | Product | Article | Solution): item is WSL_WebSpotlightRoot =>
-  item.system.type === contentTypes.web_spotlight_root.codename;
-
 export const resolveReference = (reference: CoreContentType<Reference>) => {
   if (reference.elements.reference__external_uri.value) {
     return reference.elements.reference__external_uri.value;
@@ -107,7 +104,7 @@ export const resolveReference = (reference: CoreContentType<Reference>) => {
 
   const collectionDomain = getExternalUrlsMapping()[referencedItem.system.collection] || "";
 
-  const slug = isWSRoot(referencedItem)
+  const slug = isWSL_WebSpotlightRoot(referencedItem)
     ? "/"
     : referencedItem.elements.slug.value; // expecting "slug" codename
 
