@@ -26,7 +26,7 @@ const GridItem: FC<{ item: Fact }> = ({ item }) => (
           fill
           style={{ objectFit: "cover" }}
           sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
-          className="rounded-lg transition ease-in-out group-hover:brightness-50 duration-300"
+          className="rounded-lg transition ease-in-out group-hover:brightness-50 duration-300 not-prose"
           quality={75}
         />
         <div className="font-semibold text-white invisible group-hover:visible absolute top-1/2 left-10 transition delay-300 duration-300 ease-in-out">

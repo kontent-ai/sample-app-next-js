@@ -21,7 +21,7 @@ export const ArticleItem: FC<Props> = props => (
       className="no-underline group"
     >
       <StandaloneSmartLinkButton itemId={props.itemId} />
-      <figure className="w-full relative m-0 h-40">
+      <figure className="w-full relative m-0 h-40 not-prose">
         <Image
           src={props.imageUrl}
           alt={props.title}

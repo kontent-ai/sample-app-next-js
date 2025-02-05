@@ -5,7 +5,7 @@ import { getSiteMenu } from "../../lib/kontentClient";
 import { cookies, draftMode } from 'next/headers';
 import { stringifyAsType, parseFlatted } from '../../lib/utils/circularityUtils';
 import { notFound } from "next/navigation";
-import { defaultEnvId } from "../../lib/utils/env";
+import { defaultEnvId, siteCodename } from "../../lib/utils/env";
 
 const PageLayout = async ({children, params}: {children: React.ReactNode, params: Promise<{envId: string}>}) => {
   const draft = await draftMode();
@@ -20,7 +20,7 @@ const PageLayout = async ({children, params}: {children: React.ReactNode, params
   const siteMenu = parseFlatted(stringifyAsType(siteMenuData));
 
   return (
-    <div className="min-h-full grow flex flex-col items-center overflow-hidden">
+    <div className="min-h-full grow flex flex-col items-center overflow-hidden" data-theme={siteCodename}>
       <Menu item={siteMenu} />
       {/* https://tailwindcss.com/docs/typography-plugin */}
       <main>{children}</main>

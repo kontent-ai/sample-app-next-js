@@ -20,12 +20,12 @@ export const FactComponent: FC<Props> = (props) => {
 
   return (
     <figure
-      className={`flex flex-col ${props.isReversed ? "md:flex-row-reverse" : "md:flex-row"} items-center gap-1 w-full m-0 py-10`}
+      className={`flex flex-col ${props.isReversed ? "md:flex-row-reverse" : "md:flex-row"} items-center gap-1 w-full m-0`}
       {...createItemSmartLink(props.item.system.id, true)}
     >
       {image && (
         <div
-          className={`w-full md:w-1/2 h-[400px] relative drop-shadow-lg after:absolute ${props.isReversed ? "after:left-3" : "after:right-3"} after:top-3 after:mainAfterColor after:bg-no-repeat after:w-full after:bg-contain after:h-full after:rounded-lg after:z-[1]`}
+          className={`w-full md:w-1/2 h-[400px] not-prose relative drop-shadow-lg after:absolute ${props.isReversed ? "after:left-3" : "after:right-3"} after:top-3 after:mainAfterColor after:bg-no-repeat after:w-full after:bg-contain after:h-full after:rounded-lg after:z-[1]`}
           {...createElementSmartLink(contentTypes.fact.elements.image.codename)}
         >
           <Image
@@ -33,7 +33,7 @@ export const FactComponent: FC<Props> = (props) => {
             alt={props.item.elements.title.value}
             fill
             sizes="(max-width: 757px) 100vw, 50vw"
-            className="object-cover m-0 rounded-lg z-10"
+            className="object-cover rounded-lg z-10 prose-img:m-0"
           />
         </div>
       )}

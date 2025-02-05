@@ -52,7 +52,7 @@ export const createDefaultResolvers = (
       }
 
       return (
-        <span className="flex justify-center">
+        <span className="flex justify-center not-prose">
           <Image
             src={value.asset.url}
             alt={asset.description ?? ""}
