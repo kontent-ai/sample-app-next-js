@@ -13,7 +13,7 @@
 * -------------------------------------------------------------------------------
 **/
 
-export * from "./ArticleType.ts";
-export * from "./FactType.ts";
-export * from "./ImagingTechnology.ts";
-export * from "./ProductCategory.ts";
+export * from "./articleType.ts";
+export * from "./factType.ts";
+export * from "./imagingTechnology.ts";
+export * from "./productCategory.ts";

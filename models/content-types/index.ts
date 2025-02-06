@@ -13,15 +13,15 @@
 * -------------------------------------------------------------------------------
 **/
 
-export * from "./Action.ts";
-export * from "./Article.ts";
-export * from "./Block_ContentChunk.ts";
-export * from "./Block_VisualContainer.ts";
-export * from "./Component_Callout.ts";
-export * from "./Fact.ts";
-export * from "./Nav_NavigationItem.ts";
-export * from "./Person.ts";
-export * from "./Product.ts";
-export * from "./Solution.ts";
-export * from "./WSL_Page.ts";
-export * from "./WSL_WebSpotlightRoot.ts";
+export * from "./action.ts";
+export * from "./article.ts";
+export * from "./Block_contentChunk.ts";
+export * from "./Block_visualContainer.ts";
+export * from "./Component_callout.ts";
+export * from "./fact.ts";
+export * from "./Nav_navigationItem.ts";
+export * from "./person.ts";
+export * from "./product.ts";
+export * from "./solution.ts";
+export * from "./WSL_page.ts";
+export * from "./WSL_webSpotlightRoot.ts";

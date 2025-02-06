@@ -13,9 +13,9 @@
 * -------------------------------------------------------------------------------
 **/
 
-export * from "./Block_BlockGuidelines.ts";
-export * from "./Component_ComponentGuidelines.ts";
-export * from "./Metadata.ts";
-export * from "./ProductBase.ts";
-export * from "./Reference.ts";
-export * from "./WSL_SpotlightGuidelines.ts";
+export * from "./Block_blockGuidelines.ts";
+export * from "./Component_componentGuidelines.ts";
+export * from "./metadata.ts";
+export * from "./productBase.ts";
+export * from "./reference.ts";
+export * from "./WSL_spotlightGuidelines.ts";

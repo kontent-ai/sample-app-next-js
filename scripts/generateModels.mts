@@ -6,7 +6,7 @@ dotenv.config({ path: ".env.local" });
 
 const createMissingVarErrorMsg = (variableDescription: string) => `Missing ${variableDescription}. Please, make sure it is properly set in your .env.local file or otherwise provided as an environment variable.`
 
-const byNameResolver = (obj: Readonly<{ name: string }>) =>  createPrefixFromName(obj.name) + resolveCase(obj.name, "pascalCase");
+const byNameResolver = (obj: Readonly<{ name: string }>, style: 'pascalCase' | 'camelCase') =>  createPrefixFromName(obj.name) + resolveCase(obj.name, style);
 
 const createPrefixFromName = (str: string) => {
   switch (str.codePointAt(0)) {
@@ -60,14 +60,14 @@ await generateDeliveryModelsAsync({
   addTimestamp: false,
   baseUrl: `${NEXT_PUBLIC_KONTENT_DOMAIN ? `https://manage.${NEXT_PUBLIC_KONTENT_DOMAIN}` : NEXT_PUBLIC_KONTENT_MAPI_DOMAIN}/v2`,
   fileResolvers: {
-    contentType: byNameResolver,
-    taxonomy: byNameResolver,
-    snippet: byNameResolver,
+    contentType: (obj) => byNameResolver(obj, 'camelCase'),
+    taxonomy: (obj) => byNameResolver(obj, 'camelCase'),
+    snippet: (obj) => byNameResolver(obj, 'camelCase'),
   },
   nameResolvers: {
-    contentType: byNameResolver,  
-    taxonomy: byNameResolver,
-    snippet: byNameResolver,
+    contentType: (obj) => byNameResolver(obj, 'pascalCase'),  
+    taxonomy: (obj) => byNameResolver(obj, 'pascalCase'),
+    snippet: (obj) => byNameResolver(obj, 'pascalCase'),
   }
 });
 
