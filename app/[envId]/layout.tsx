@@ -20,10 +20,10 @@ const PageLayout = async ({children, params}: {children: React.ReactNode, params
   const siteMenu = parseFlatted(stringifyAsType(siteMenuData));
 
   return (
-    <div className="min-h-full grow flex flex-col items-center overflow-hidden" data-theme={siteCodename}>
+    <div className="min-h-full flex flex-col items-center overflow-hidden" data-theme={siteCodename}>
       <Menu item={siteMenu} />
       {/* https://tailwindcss.com/docs/typography-plugin */}
-      <main>{children}</main>
+      <main className="grow">{children}</main>
       <Footer />
     </div>
   )

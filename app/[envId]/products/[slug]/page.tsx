@@ -27,14 +27,8 @@ const ProductDetail = async ({params}: {params: Promise<{envId: string, slug: st
 
   return ( 
     <AppPage item={product} >
-      <div className="bg-white pt-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col lg:flex-row -mx-4">
-            <div className="lg:flex-1 px-4 ">
-              <div className="h-64 lg:h-80 rounded-lg bg-gray-100 mb-4">
-                <div
-                  className="h-64 lg:h-80 rounded-lg bg-gray-100 mb-4 flex items-center justify-center"
-                >
+        <div className="max-w-7xl mt-20 mx-auto px-4 sm:px-6 lg:px-8 flex flex-col lg:flex-row">
+          <figure className="lg:flex-1 rounded-lg flex items-center justify-center not-prose">
                   {
                     product.elements.product_base__main_image.value[0]
                       ? (
@@ -50,19 +44,17 @@ const ProductDetail = async ({params}: {params: Promise<{envId: string, slug: st
                       )
                       : <span>N/A</span>
                   }
-                </div>
-              </div>
-            </div>
-            <div className="lg:flex-1 px-4">
+            </figure>
+            <div className="lg:flex-2 px-4 flex flex-col gap-0">
               <h1
-                className="mb-2 leading-tight tracking-tight font-bold text-gray-800 text-2xl lg:text-3xl"
+                className="leading-tight tracking-tight font-bold text-gray-800 text-2xl lg:text-3xl"
                 {...createElementSmartLink(contentTypes.product.elements.product_base__name.codename)}
               >
                 {product.elements.product_base__name.value}
               </h1>
 
               <div
-                className="flex items-center space-x-4 my-4"
+                className="flex items-center space-x-4"
                 {...createElementSmartLink(contentTypes.product.elements.price.codename)}
               >
                 <div>
@@ -81,18 +73,14 @@ const ProductDetail = async ({params}: {params: Promise<{envId: string, slug: st
 
               </p>
 
-              <div className="flex py-4 space-x-4">
                 <button
                   type="button"
-                  className="hover:bg-mainHoverColor bg-mainButtonColor bottom-0 left-0 text-white font-bold mt-10 py-2 px-4 rounded"
+                  className="hover:bg-mainHoverColor bg-mainButtonColor text-white font-bold py-2 px-4 rounded"
                 >
                   Add to Cart
                 </button>
               </div>
             </div>
-          </div>
-        </div >
-      </div >
     </AppPage >
 )};
 
