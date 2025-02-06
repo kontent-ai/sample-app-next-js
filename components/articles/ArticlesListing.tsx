@@ -70,7 +70,7 @@ const FilterOptions: FC<FilterOptionProps> = ({ options, category }) => {
             } as ResolutionContext)}
             onClick={() => setDropdownActive(!dropdownActive)}
             scroll={false}
-            className={`inline-flex items-center z-40 md:justify-between md:mr-4 md:w-max px-6 py-1 no-underline ${key === category ? ['bg-mainBackgroundColor', 'border-mainBorderColor', "text-white", "cursor-default"].join(" ") : `border-gray-200 bg-white hover:bg-mainColorHover hover:text-white cursor-pointer`} md:rounded-3xl`}
+            className={`inline-flex items-center z-40 md:justify-between md:mr-4 md:w-max px-6 py-1 no-underline ${key === category ? ['bg-mainBackgroundColor', 'border-mainBorderColor', "text-white", "cursor-default"].join(" ") : `border-gray-200 bg-slate-100 hover:bg-mainHoverColor hover:text-white cursor-pointer`} md:rounded-3xl`}
           >{value}
           </Link>
         ))}
