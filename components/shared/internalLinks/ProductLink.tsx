@@ -3,9 +3,9 @@ import Image from "next/image";
 import { FC, ReactNode, useEffect, useState } from "react";
 
 import { resolveUrlPath } from "../../../lib/routing";
-import { Product } from "../../../models/content-types/Product";
+import { Product } from "../../../models/content-types/product";
 import { contentTypes } from "../../../models/environment/contentTypes";
-import { Solution } from "../../../models/content-types/Solution";
+import { Solution } from "../../../models/content-types/solution";
 
 type Props = Readonly<{
   children: ReactNode;

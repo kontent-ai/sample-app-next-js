@@ -6,7 +6,7 @@ import { FC, useState } from "react";
 import { ArticleItem } from "../listingPage/ArticleItem";
 import { ArticlePageSize } from "../../lib/constants/paging";
 import { taxonomies } from "../../models/environment/taxonomies";
-import { Article } from "../../models/content-types/Article";
+import { Article } from "../../models/content-types/article";
 
 type LinkButtonProps = {
   text: string;

@@ -1,6 +1,6 @@
 
 import { Reference } from "../models/content-type-snippets";
-import { isWSL_WebSpotlightRoot } from "../models/content-types/WSL_WebSpotlightRoot";
+import { isWSL_WebSpotlightRoot } from "../models/content-types/WSL_webSpotlightRoot";
 import { contentTypes, taxonomies } from "../models/environment";
 import { CoreContentType } from "../models/system";
 

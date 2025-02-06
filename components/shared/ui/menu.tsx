@@ -13,7 +13,7 @@ import {
 } from "../../../lib/routing";
 import { siteCodename } from "../../../lib/utils/env";
 import { StandaloneSmartLinkButton } from "../StandaloneSmartLinkButton";
-import { Nav_NavigationItem } from "../../../models/content-types/Nav_NavigationItem";
+import { Nav_NavigationItem } from "../../../models/content-types/Nav_navigationItem";
 import { Article, Product, Solution, WSL_Page, WSL_WebSpotlightRoot } from "../../../models/content-types";
 import { contentTypes } from "../../../models/environment";
 
