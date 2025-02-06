@@ -8,7 +8,7 @@ import { contentTypes, WSL_Page } from "../../../../../../../models";
 import { notFound } from "next/navigation";
 import { cookies, draftMode } from "next/headers";
 import { previewApiKeyCookieName } from "../../../../../../../lib/constants/cookies";
-import { AppPage } from "../../../../../../../components/shared/ui/newAppPage";
+import { AppPage } from "../../../../../../../components/shared/ui/appPage";
 import { ArticlesListing } from "../../../../../../../components/articles/ArticlesListing";
 import { Metadata } from "next";
 

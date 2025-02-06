@@ -4,7 +4,7 @@ import { reservedListingSlugs } from "../../../lib/routing";
 import { parseFlatted, stringifyAsType } from "../../../lib/utils/circularityUtils";
 import { contentTypes, WSL_Page } from "../../../models";
 import { notFound } from "next/navigation";
-import { AppPage } from "../../../components/shared/ui/newAppPage";
+import { AppPage } from "../../../components/shared/ui/appPage";
 import { cookies, draftMode } from "next/headers";
 import { previewApiKeyCookieName } from "../../../lib/constants/cookies";
 import ProductsListing from "../../../components/products/ProductsListing";

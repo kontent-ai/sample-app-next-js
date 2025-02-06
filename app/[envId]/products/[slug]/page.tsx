@@ -7,7 +7,7 @@ import { contentTypes } from "../../../../models";
 import { previewApiKeyCookieName } from "../../../../lib/constants/cookies";
 import { cookies, draftMode } from "next/headers";
 import { notFound } from "next/navigation";
-import { AppPage } from "../../../../components/shared/ui/newAppPage";
+import { AppPage } from "../../../../components/shared/ui/appPage";
 import { Metadata } from "next";
 
 const widthLimit = 300;
@@ -29,21 +29,21 @@ const ProductDetail = async ({params}: {params: Promise<{envId: string, slug: st
     <AppPage item={product} >
         <div className="max-w-7xl mt-20 mx-auto px-4 sm:px-6 lg:px-8 flex flex-col lg:flex-row">
           <figure className="lg:flex-1 rounded-lg flex items-center justify-center not-prose">
-                  {
-                    product.elements.product_base__main_image.value[0]
-                      ? (
-                        <Image
-                          src={product.elements.product_base__main_image.value[0].url}
-                          alt={product.elements.product_base__main_image.value[0].description || product.elements.product_base__main_image.value[0].url.split('/').pop() || "Product image"}
-                          width={widthLimit}
-                          height={product.elements.product_base__main_image.value[0].height || 200}
-                          className="object-cover"
-                          priority
-                          {...createElementSmartLink(contentTypes.product.elements.product_base__main_image.codename)}
-                        />
-                      )
-                      : <span>N/A</span>
-                  }
+              {
+                product.elements.product_base__main_image.value[0]
+                  ? (
+                    <Image
+                      src={product.elements.product_base__main_image.value[0].url}
+                      alt={product.elements.product_base__main_image.value[0].description || product.elements.product_base__main_image.value[0].url.split('/').pop() || "Product image"}
+                      width={widthLimit}
+                      height={product.elements.product_base__main_image.value[0].height || 200}
+                      className="object-cover"
+                      priority
+                      {...createElementSmartLink(contentTypes.product.elements.product_base__main_image.codename)}
+                    />
+                  )
+                  : <span>N/A</span>
+              }
             </figure>
             <div className="lg:flex-2 px-4 flex flex-col gap-0">
               <h1
@@ -79,8 +79,8 @@ const ProductDetail = async ({params}: {params: Promise<{envId: string, slug: st
                 >
                   Add to Cart
                 </button>
-              </div>
             </div>
+          </div>
     </AppPage >
 )};
 

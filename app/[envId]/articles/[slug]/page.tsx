@@ -8,7 +8,7 @@ import { defaultEnvId } from "../../../../lib/utils/env";
 import { cookies, draftMode } from "next/headers";
 import { previewApiKeyCookieName } from "../../../../lib/constants/cookies";
 import { notFound } from "next/navigation";
-import { AppPage } from "../../../../components/shared/ui/newAppPage";
+import { AppPage } from "../../../../components/shared/ui/appPage";
 import { Metadata } from "next";
 
 const ArticlePage = async ({params}: {params: Promise<{envId: string, slug: string}>}) => {

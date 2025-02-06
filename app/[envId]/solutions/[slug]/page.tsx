@@ -10,7 +10,7 @@ import { contentTypes } from "../../../../models";
 import { notFound } from "next/navigation";
 import { previewApiKeyCookieName } from "../../../../lib/constants/cookies";
 import { cookies, draftMode } from "next/headers";
-import { AppPage } from "../../../../components/shared/ui/newAppPage";
+import { AppPage } from "../../../../components/shared/ui/appPage";
 
 const SolutionDetailPage = async ({params}: {params: Promise<{envId: string, slug: string}>}) => {
   const slug = (await params).slug;

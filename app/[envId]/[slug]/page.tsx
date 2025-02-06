@@ -7,7 +7,7 @@ import { createElementSmartLink, createFixedAddSmartLink } from "../../../lib/ut
 import { contentTypes, WSL_Page } from "../../../models";
 import { cookies, draftMode } from "next/headers";
 import { previewApiKeyCookieName } from "../../../lib/constants/cookies";
-import { AppPage } from "../../../components/shared/ui/newAppPage";
+import { AppPage } from "../../../components/shared/ui/appPage";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 
