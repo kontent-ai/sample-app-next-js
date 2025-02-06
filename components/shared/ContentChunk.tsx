@@ -7,9 +7,9 @@ import {
 } from "../../lib/utils/smartLinkUtils";
 import {
   Block_ContentChunk,
-  contentTypes,
 } from "../../models";
 import { RichTextElement } from "./richText/RichTextElement";
+import { contentTypes } from "../../models/environment";
 
 type Props = Readonly<{
   item: Block_ContentChunk;

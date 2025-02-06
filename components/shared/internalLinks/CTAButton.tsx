@@ -2,7 +2,7 @@ import Link from "next/link";
 import React from "react";
 
 import { resolveReference } from "../../../lib/routing";
-import { Fact, Action, Nav_NavigationItem } from "../../../models";
+import { Action, Fact, Nav_NavigationItem } from "../../../models/content-types";
 
 type Props = {
   reference: Fact | Action | Nav_NavigationItem;

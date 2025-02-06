@@ -1,11 +1,12 @@
 'use client'
 import { ChevronDownIcon } from "@heroicons/react/24/solid";
-import { Article, taxonomies } from "../../models";
 import Link from "next/link";
 import { ResolutionContext, resolveUrlPath } from "../../lib/routing";
 import { FC, useState } from "react";
 import { ArticleItem } from "../listingPage/ArticleItem";
 import { ArticlePageSize } from "../../lib/constants/paging";
+import { taxonomies } from "../../models/environment/taxonomies";
+import { Article } from "../../models/content-types/Article";
 
 type LinkButtonProps = {
   text: string;

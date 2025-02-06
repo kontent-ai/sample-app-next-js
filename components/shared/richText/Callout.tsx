@@ -9,8 +9,9 @@ import {
   calloutTypeColor,
 } from "../../../lib/constants/colors";
 import { isCalloutType } from "../../../lib/types/calloutType";
-import { Component_Callout, contentTypes } from "../../../models";
 import { RichTextElement } from "./RichTextElement";
+import { Component_Callout } from "../../../models/content-types";
+import { contentTypes } from "../../../models/environment";
 
 type Props = Readonly<{
   item: Component_Callout;

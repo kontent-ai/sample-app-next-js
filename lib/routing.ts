@@ -1,4 +1,9 @@
-import {contentTypes, CoreContentType, isWSL_WebSpotlightRoot, Reference, taxonomies} from "../models";
+
+import { Reference } from "../models/content-type-snippets";
+import { isWSL_WebSpotlightRoot } from "../models/content-types/WSL_WebSpotlightRoot";
+import { contentTypes, taxonomies } from "../models/environment";
+import { CoreContentType } from "../models/system";
+
 
 const getExternalUrlsMapping = () => Object.fromEntries(
   process.env.NEXT_PUBLIC_OTHER_COLLECTIONS_DOMAINS?.split(",")

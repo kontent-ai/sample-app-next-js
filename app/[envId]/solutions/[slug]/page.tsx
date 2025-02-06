@@ -6,11 +6,11 @@ import { getDefaultMetadata, getSolutionDetail, getSolutionsWithSlugs } from "..
 import { parseFlatted, stringifyAsType } from "../../../../lib/utils/circularityUtils";
 import { defaultEnvId } from "../../../../lib/utils/env";
 import { createElementSmartLink } from "../../../../lib/utils/smartLinkUtils";
-import { contentTypes } from "../../../../models";
 import { notFound } from "next/navigation";
 import { previewApiKeyCookieName } from "../../../../lib/constants/cookies";
 import { cookies, draftMode } from "next/headers";
 import { AppPage } from "../../../../components/shared/ui/appPage";
+import { contentTypes } from "../../../../models/environment";
 
 const SolutionDetailPage = async ({params}: {params: Promise<{envId: string, slug: string}>}) => {
   const slug = (await params).slug;

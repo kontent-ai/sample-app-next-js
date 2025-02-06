@@ -4,7 +4,8 @@ import React, { FC } from "react";
 
 import { resolveReference } from "../../../lib/routing";
 import { createElementSmartLink } from "../../../lib/utils/smartLinkUtils";
-import { contentTypes, Fact } from "../../../models";
+import { Fact } from "../../../models/content-types";
+import { contentTypes } from "../../../models/environment";
 
 type Props = Readonly<{
   items: ReadonlyArray<Fact>;

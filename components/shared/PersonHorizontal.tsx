@@ -2,11 +2,10 @@ import Image from "next/image";
 import { FC } from "react";
 
 import { createElementSmartLink, createItemSmartLink } from "../../lib/utils/smartLinkUtils";
-import { contentTypes,Person } from "../../models"
+import { contentTypes } from "../../models/environment";
+import { Person } from "../../models/content-types";
 
-type Props = Readonly<{
-  item: Person;
-}>;
+type Props = Readonly<{ item: Person; }>;
 
 export const PersonHorizontal: FC<Props> = props => {
   const fullName = `${props.item.elements.first_name.value}${props.item.elements.last_name.value}`;

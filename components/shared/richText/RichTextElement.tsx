@@ -11,7 +11,6 @@ import {
   Action,
   Block_ContentChunk,
   Component_Callout,
-  contentTypes,
   Fact,
 } from "../../../models";
 import { ContentChunk } from "../ContentChunk";
@@ -20,6 +19,7 @@ import { CTAButton } from "../internalLinks/CTAButton";
 import { InternalLink } from "../internalLinks/InternalLink";
 import { BuildError } from "../ui/BuildError";
 import { CalloutComponent } from "./Callout";
+import { contentTypes } from "../../../models/environment";
 
 type ElementProps = Readonly<{
   element: Elements.RichTextElement;

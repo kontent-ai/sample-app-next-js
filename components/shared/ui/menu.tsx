@@ -12,16 +12,10 @@ import {
   resolveUrlPath,
 } from "../../../lib/routing";
 import { siteCodename } from "../../../lib/utils/env";
-import {
-  Article,
-  contentTypes,
-  Nav_NavigationItem,
-  Product,
-  Solution,
-  WSL_Page,
-  WSL_WebSpotlightRoot,
-} from "../../../models";
 import { StandaloneSmartLinkButton } from "../StandaloneSmartLinkButton";
+import { Nav_NavigationItem } from "../../../models/content-types/Nav_NavigationItem";
+import { Article, Product, Solution, WSL_Page, WSL_WebSpotlightRoot } from "../../../models/content-types";
+import { contentTypes } from "../../../models/environment";
 
 type Link = Readonly<Nav_NavigationItem>;
 

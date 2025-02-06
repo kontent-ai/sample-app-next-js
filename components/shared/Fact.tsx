@@ -5,8 +5,9 @@ import {
   createElementSmartLink,
   createItemSmartLink,
 } from "../../lib/utils/smartLinkUtils";
-import { contentTypes, Fact } from "../../models";
+import { Fact } from "../../models";
 import { CTAButton } from "./internalLinks/CTAButton";
+import { contentTypes } from "../../models/environment";
 
 type Props = Readonly<{
   item: Fact;

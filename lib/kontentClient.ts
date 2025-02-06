@@ -1,9 +1,10 @@
 import { createDeliveryClient, DeliveryError, IContentItem } from '@kontent-ai/delivery-sdk';
 
-import { Article, contentTypes, contentTypeSnippets, Product, Solution, WSL_Page, WSL_WebSpotlightRoot } from '../models';
+import { Article, Product, Solution, WSL_Page, WSL_WebSpotlightRoot } from '../models/content-types';
 import { ArticlePageSize, ProductsPageSize } from './constants/paging';
 import { ArticleTypeWithAll } from './utils/articlesListing';
 import { defaultEnvId, deliveryApiDomain, deliveryPreviewApiDomain, siteCodename } from './utils/env';
+import { contentTypes, contentTypeSnippets } from '../models/environment';
 
 const sourceTrackingHeaderName = 'X-KC-SOURCE';
 const defaultDepth = 10;

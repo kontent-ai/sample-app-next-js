@@ -1,12 +1,13 @@
 import { FC } from "react";
 
 import { sanitizeAnchor } from "../../../lib/anchors";
-import { Block_VisualContainer, contentTypes } from "../../../models";
 import { BuildError } from "../ui/BuildError";
 import { CarouselComponent } from "./Carousel";
 import { GridComponent } from "./Grid";
 import { HeroUnitComponent } from "./HeroUnit";
 import { StackComponent } from "./Stack";
+import { Block_VisualContainer } from "../../../models/content-types";
+import { contentTypes } from "../../../models/environment";
 
 type Props = Readonly<{
   item: Block_VisualContainer;

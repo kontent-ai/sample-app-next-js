@@ -3,12 +3,12 @@ import Image from "next/image";
 import { getDefaultMetadata, getProductDetail, getProductItemsWithSlugs } from "../../../../lib/kontentClient";
 import { defaultEnvId } from "../../../../lib/utils/env";
 import { createElementSmartLink } from "../../../../lib/utils/smartLinkUtils";
-import { contentTypes } from "../../../../models";
 import { previewApiKeyCookieName } from "../../../../lib/constants/cookies";
 import { cookies, draftMode } from "next/headers";
 import { notFound } from "next/navigation";
 import { AppPage } from "../../../../components/shared/ui/appPage";
 import { Metadata } from "next";
+import { contentTypes } from "../../../../models/environment";
 
 const widthLimit = 300;
 
