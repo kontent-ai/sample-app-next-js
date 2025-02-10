@@ -1,12 +1,11 @@
 'use client'
 
-import { FC, useEffect, useState } from "react";
-import { useSmartLink } from "../../../lib/useSmartLink";
+import { FC, useState } from "react";
 import { parseFlatted, stringifyAsType } from '../../../lib/utils/circularityUtils';
 import { WSL_WebSpotlightRoot } from "../../../models";
-import { KontentSmartLinkEvent } from "@kontent-ai/smart-link";
-import { IRefreshMessageData, IRefreshMessageMetadata } from "@kontent-ai/smart-link/types/lib/IFrameCommunicatorTypes";
+import { applyUpdateOnItemAndLoadLinkedItems } from "@kontent-ai/smart-link";
 import Homepage from "./homepage";
+import { useLivePreview } from "../../../lib/useLivePreview";
 
 type HomepageProps = {
   homepageData: WSL_WebSpotlightRoot
@@ -14,24 +13,16 @@ type HomepageProps = {
 
 const PreviewHomepage: FC<HomepageProps> = ({homepageData}) => {
   const [homepage, setHomepage] = useState(parseFlatted(stringifyAsType(homepageData)));
-  const sdk = useSmartLink();
 
-  useEffect(() => {
-    const getHomepage = async () => {
-      const response = await fetch(`/api/homepage`);
-      const data = await response.json();
+  useLivePreview(async (data) => {
+    const updatedHomepage = applyUpdateOnItemAndLoadLinkedItems(homepage, data, async codenamesToFetch => {
+      const response = await fetch('/api/items?codenames=' + codenamesToFetch.join(','));
+      
+      return await response.json();
+    })
 
-      setHomepage(parseFlatted(stringifyAsType(data)));
-    }
-
-    sdk?.on(KontentSmartLinkEvent.Refresh, (data: IRefreshMessageData, metadata: IRefreshMessageMetadata, originalRefresh: () => void) => {
-      if (metadata.manualRefresh) {
-        originalRefresh();
-      } else {
-        getHomepage();
-      }
-    });
-  }, [sdk]);
+    setHomepage(updatedHomepage as unknown as WSL_WebSpotlightRoot);
+})
 
   return <Homepage homepageData={homepage}></Homepage>
 }
