@@ -320,3 +320,15 @@ export const getPagesSlugs = (config: ClientConfig) =>
     .elementsParameter([contentTypes.page.elements.slug.codename])
     .toAllPromise()
     .then(res => res.data.items.map(item => item.elements.slug.value));
+
+export const getItemsByCodenames = (config: ClientConfig, codenames: string[], usePreview: boolean) => 
+  getDeliveryClient(config)
+    .items()
+    .inFilter("system.codename", codenames)
+    .collections([siteCodename, "default"])
+    .queryConfig({
+      usePreviewMode: usePreview,
+      waitForLoadingNewContent: usePreview
+    })
+    .depthParameter(defaultDepth)
+    .toAllPromise();
