@@ -4,7 +4,8 @@ import React, { FC } from "react";
 
 import { resolveReference } from "../../../lib/routing";
 import { createElementSmartLink } from "../../../lib/utils/smartLinkUtils";
-import { contentTypes, Fact } from "../../../models";
+import { Fact } from "../../../models/content-types";
+import { contentTypes } from "../../../models/environment";
 
 type Props = Readonly<{
   items: ReadonlyArray<Fact>;
@@ -26,11 +27,11 @@ const GridItem: FC<{ item: Fact }> = ({ item }) => (
           fill
           style={{ objectFit: "cover" }}
           sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
-          className="rounded-lg transition ease-in-out group-hover:brightness-50 duration-300"
+          className="rounded-lg transition ease-in-out group-hover:brightness-50 duration-300 not-prose"
           quality={75}
         />
         <div className="font-semibold text-white invisible group-hover:visible absolute top-1/2 left-10 transition delay-300 duration-300 ease-in-out">
-          {item.elements.referenceLabel.value}
+          {item.elements.reference__label.value}
         </div>
       </div>
     )}
@@ -69,7 +70,7 @@ export const GridComponent: FC<Props> = (props) => (
       {props.subtitle}
     </div>
     <div className="grid mx-auto w-full max-w-screen-xl py-7 text-gray-900 sm:grid-cols-2 md:grid-cols-3">
-      {props.items.map((item) => item.elements.referenceLabel.value ? (
+      {props.items.map((item) => item.elements.reference__label.value ? (
         <Link
           key={item.system.codename}
           className="no-underline font-normal group hover:scale-110 transform transition-all duration-300 ease-in-out"

@@ -1,5 +1,5 @@
 'use client'
-import { getCookie, setCookie } from "cookies-next";
+import { setCookie, getCookie } from "cookies-next/client";
 import { useEffect, useState } from "react";
 
 import { BuildError } from "../../components/shared/ui/BuildError";

@@ -5,7 +5,7 @@ import { previewApiKeyCookieName } from '../../lib/constants/cookies';
 import PreviewHomepage from '../../components/landingPage/ui/previewHomepage';
 import Homepage from '../../components/landingPage/ui/homepage';
 import { Metadata } from 'next';
-import { AppPage } from '../../components/shared/ui/newAppPage';
+import { AppPage } from '../../components/shared/ui/appPage';
 import { cache } from 'react';
 import { notFound } from 'next/navigation';
 
@@ -47,9 +47,9 @@ export async function generateMetadata(
   }
 
   return {
-    description: homepageData.elements.metadataDescription.value,
-    keywords: homepageData.elements.metadataKeywords.value,
-    title: homepageData.elements.metadataTitle.value 
+    description: homepageData.elements.metadata__description.value,
+    keywords: homepageData.elements.metadata__keywords.value,
+    title: homepageData.elements.metadata__title.value 
   }
 }
 

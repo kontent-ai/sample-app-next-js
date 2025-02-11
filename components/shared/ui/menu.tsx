@@ -12,16 +12,10 @@ import {
   resolveUrlPath,
 } from "../../../lib/routing";
 import { siteCodename } from "../../../lib/utils/env";
-import {
-  Article,
-  contentTypes,
-  Nav_NavigationItem,
-  Product,
-  Solution,
-  WSL_Page,
-  WSL_WebSpotlightRoot,
-} from "../../../models";
 import { StandaloneSmartLinkButton } from "../StandaloneSmartLinkButton";
+import { Nav_NavigationItem } from "../../../models/content-types/Nav_navigationItem";
+import { Article, Product, Solution, WSL_Page, WSL_WebSpotlightRoot } from "../../../models/content-types";
+import { contentTypes } from "../../../models/environment";
 
 type Link = Readonly<Nav_NavigationItem>;
 
@@ -51,7 +45,7 @@ const isCurrentNavigationItemActive = (
   const pathWithoutQuerystring = pathname.replace(/\?.*/, "");
   const pathSegments = pathWithoutQuerystring.split("/");
   const topLevelSegment = pathSegments[1];
-  const pageLink = navigation.elements.referenceContentItemLink.linkedItems[0];
+  const pageLink = navigation.elements.reference__content__item_link.linkedItems[0];
 
   return (
     pageLink &&
@@ -92,9 +86,9 @@ const MenuList: FC<MenuListProps> = (props) => {
             <Link
               className="h-full flex items-center justify-between w-full py-2 px-4 font-medium text-white border-b border-gray-100 md:w-auto md:bg-transparent md:border-0 md:hover:bg-white md:group-hover:text-gray-900"
               href={resolveReference(link)}
-              title={link.elements.referenceCaption.value}
+              title={link.elements.reference__caption.value}
             >
-              {link.elements.referenceLabel.value}
+              {link.elements.reference__label.value}
             </Link>
           )}
         </li>
@@ -107,9 +101,9 @@ const DropdownButton: FC<Props> = (props) => {
   return (
     <button
       className="md:group-hover:text-gray-900 h-full flex items-center justify-between w-full p-4 py-2 font-medium text-white border-b border-gray-100 md:w-auto md:bg-transparent md:border-0"
-      title={props.item.elements.referenceCaption.value}
+      title={props.item.elements.reference__caption.value}
     >
-      {props.item.elements.referenceLabel.value}
+      {props.item.elements.reference__label.value}
       <ChevronDownIcon className="w-4 h-4 ml-1 mt-1" />
     </button>
   );
@@ -132,10 +126,10 @@ const DropdownMenuItems: FC<DropdownMenuProps> = (props) => {
           block p-3 bg-gray-200 border-l-8 h-full`}
           >
             <div className="font-semibold">
-              {link.elements.referenceLabel.value}
+              {link.elements.reference__label.value}
             </div>
             <span className="text-sm text-gray-500">
-              {link.elements.referenceCaption.value}
+              {link.elements.reference__caption.value}
             </span>
           </Link>
         </li>

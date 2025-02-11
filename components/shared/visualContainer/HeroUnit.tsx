@@ -4,13 +4,12 @@ import {
   createElementSmartLink,
   createItemSmartLink,
 } from "../../../lib/utils/smartLinkUtils";
-import { contentTypes, Fact } from "../../../models";
 import { HeroImage } from "../../landingPage/ui/heroImage";
 import { CTAButton } from "../internalLinks/CTAButton";
+import { Fact } from "../../../models/content-types";
+import { contentTypes } from "../../../models/environment";
 
-type Props = Readonly<{
-  item: Fact;
-}>;
+type Props = Readonly<{item: Fact;}>;
 
 export const HeroUnitComponent: FC<Props> = (props) => {
   const fact = props.item;
@@ -45,7 +44,7 @@ export const HeroUnitComponent: FC<Props> = (props) => {
             {fact.elements.message.value}
           </h2>
         </div>
-        {fact.elements.referenceLabel.value && <CTAButton reference={fact} />}
+        {fact.elements.reference__label.value && <CTAButton reference={fact} />}
       </div>
     </HeroImage>
   );

@@ -4,12 +4,13 @@ import { reservedListingSlugs } from "../../../lib/routing";
 import { parseFlatted, stringifyAsType } from "../../../lib/utils/circularityUtils";
 import { defaultEnvId } from "../../../lib/utils/env";
 import { createElementSmartLink, createFixedAddSmartLink } from "../../../lib/utils/smartLinkUtils";
-import { contentTypes, WSL_Page } from "../../../models";
+import { WSL_Page } from "../../../models/content-types";
 import { cookies, draftMode } from "next/headers";
 import { previewApiKeyCookieName } from "../../../lib/constants/cookies";
-import { AppPage } from "../../../components/shared/ui/newAppPage";
+import { AppPage } from "../../../components/shared/ui/appPage";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { contentTypes } from "../../../models/environment";
 
 const TopLevelPage = async ({params}: { params: Promise<{envId: string, slug: string}> }) => {
   const envId = (await params).envId;
@@ -72,9 +73,9 @@ export const generateMetadata = async ({ params }: { params: Promise<{ envId: st
   }
 
   return {
-    description: defaultMetadata.elements.metadataDescription.value,
-    keywords: defaultMetadata.elements.metadataKeywords.value,
-    title: defaultMetadata.elements.metadataTitle.value 
+    description: defaultMetadata.elements.metadata__description.value,
+    keywords: defaultMetadata.elements.metadata__keywords.value,
+    title: defaultMetadata.elements.metadata__title.value 
   }
 }
 

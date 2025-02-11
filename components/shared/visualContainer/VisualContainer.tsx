@@ -1,12 +1,13 @@
 import { FC } from "react";
 
 import { sanitizeAnchor } from "../../../lib/anchors";
-import { Block_VisualContainer, contentTypes } from "../../../models";
 import { BuildError } from "../ui/BuildError";
 import { CarouselComponent } from "./Carousel";
 import { GridComponent } from "./Grid";
 import { HeroUnitComponent } from "./HeroUnit";
 import { StackComponent } from "./Stack";
+import { Block_VisualContainer } from "../../../models/content-types";
+import { contentTypes } from "../../../models/environment";
 
 type Props = Readonly<{
   item: Block_VisualContainer;
@@ -15,7 +16,7 @@ type Props = Readonly<{
 
 const VisualRepresentation: FC<Props> = (props) => {
   const { grid, hero_unit, stack } = contentTypes.visual_container.elements.visual_representation.options;
-  switch (props.item.elements.visualRepresentation.value[0]?.codename) {
+  switch (props.item.elements.visual_representation.value[0]?.codename) {
     case grid.codename:
       return (
         <GridComponent
@@ -56,7 +57,7 @@ const VisualRepresentation: FC<Props> = (props) => {
       return (
         <BuildError>
           Visual representation &quot;
-          {props.item.elements.visualRepresentation.value[0]?.name ??
+          {props.item.elements.visual_representation.value[0]?.name ??
             "Missing representation"}
           &quot; is not supported.
         </BuildError>

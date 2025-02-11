@@ -1,9 +1,10 @@
-import { camelCasePropertyNameResolver, createDeliveryClient, DeliveryError, IContentItem } from '@kontent-ai/delivery-sdk';
+import { createDeliveryClient, DeliveryError, IContentItem } from '@kontent-ai/delivery-sdk';
 
-import { Article, contentTypes, contentTypeSnippets, Metadata, Product, Solution, WSL_Page, WSL_WebSpotlightRoot } from '../models';
+import { Article, Product, Solution, WSL_Page, WSL_WebSpotlightRoot } from '../models/content-types';
 import { ArticlePageSize, ProductsPageSize } from './constants/paging';
 import { ArticleTypeWithAll } from './utils/articlesListing';
 import { defaultEnvId, deliveryApiDomain, deliveryPreviewApiDomain, siteCodename } from './utils/env';
+import { contentTypes, contentTypeSnippets } from '../models/environment';
 
 const sourceTrackingHeaderName = 'X-KC-SOURCE';
 const defaultDepth = 10;
@@ -16,7 +17,6 @@ const getDeliveryClient = ({ envId, previewApiKey }: ClientConfig) => createDeli
       value: `${process.env.APP_NAME || "n/a"};${process.env.APP_VERSION || "n/a"}`,
     }
   ],
-  propertyNameResolver: camelCasePropertyNameResolver,
   proxy: {
     baseUrl: deliveryApiDomain,
     basePreviewUrl: deliveryPreviewApiDomain,
@@ -264,7 +264,7 @@ export const getProductTaxonomy = async (config: ClientConfig, usePreview: boole
 
 export const getDefaultMetadata = async (config: ClientConfig, usePreview: boolean) =>
   getDeliveryClient(config)
-    .items<Metadata>()
+    .items<WSL_WebSpotlightRoot>()
     .type(homepageTypeCodename)
     .collection(siteCodename)
     .queryConfig({

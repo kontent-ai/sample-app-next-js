@@ -4,13 +4,14 @@ import { getArticlesCountByCategory, getArticlesForListing, getDefaultMetadata, 
 import { ArticleTypeWithAll, categoryFilterSource, isArticleType } from "../../../../../../../lib/utils/articlesListing";
 import { parseFlatted,  stringifyAsType } from "../../../../../../../lib/utils/circularityUtils";
 import { defaultEnvId } from "../../../../../../../lib/utils/env";
-import { contentTypes, WSL_Page } from "../../../../../../../models";
+import { WSL_Page } from "../../../../../../../models/content-types";
 import { notFound } from "next/navigation";
 import { cookies, draftMode } from "next/headers";
 import { previewApiKeyCookieName } from "../../../../../../../lib/constants/cookies";
-import { AppPage } from "../../../../../../../components/shared/ui/newAppPage";
+import { AppPage } from "../../../../../../../components/shared/ui/appPage";
 import { ArticlesListing } from "../../../../../../../components/articles/ArticlesListing";
 import { Metadata } from "next";
+import { contentTypes } from "../../../../../../../models/environment";
 
 
 const ArticlesPagingPage = async ({params}: {params: Promise<{envId: string, page: string, category: string}>}) => {
@@ -90,9 +91,9 @@ export const generateMetadata = async ({ params }: { params: Promise<{ envId: st
   }
 
   return {
-    description: defaultMetadata.elements.metadataDescription.value,
-    keywords: defaultMetadata.elements.metadataKeywords.value,
-    title: defaultMetadata.elements.metadataTitle.value 
+    description: defaultMetadata.elements.metadata__description.value,
+    keywords: defaultMetadata.elements.metadata__keywords.value,
+    title: defaultMetadata.elements.metadata__title.value 
   }
 }
 

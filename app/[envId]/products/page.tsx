@@ -2,14 +2,15 @@ import { Content } from "../../../components/shared/Content";
 import { getDefaultMetadata, getItemBySlug } from "../../../lib/kontentClient";
 import { reservedListingSlugs } from "../../../lib/routing";
 import { parseFlatted, stringifyAsType } from "../../../lib/utils/circularityUtils";
-import { contentTypes, WSL_Page } from "../../../models";
+import { WSL_Page } from "../../../models/content-types";
 import { notFound } from "next/navigation";
-import { AppPage } from "../../../components/shared/ui/newAppPage";
+import { AppPage } from "../../../components/shared/ui/appPage";
 import { cookies, draftMode } from "next/headers";
 import { previewApiKeyCookieName } from "../../../lib/constants/cookies";
 import ProductsListing from "../../../components/products/ProductsListing";
 import { Metadata } from "next";
 import { Suspense } from "react";
+import { contentTypes } from "../../../models/environment";
 
 const ProductsPage = async ({params}: {params: Promise<{envId: string}>}) => {
   const envId = (await params).envId;
@@ -60,9 +61,9 @@ export const generateMetadata = async ({ params }: { params: Promise<{ envId: st
   }
 
   return {
-    description: defaultMetadata.elements.metadataDescription.value,
-    keywords: defaultMetadata.elements.metadataKeywords.value,
-    title: defaultMetadata.elements.metadataTitle.value 
+    description: defaultMetadata.elements.metadata__description.value,
+    keywords: defaultMetadata.elements.metadata__keywords.value,
+    title: defaultMetadata.elements.metadata__title.value 
   }
 }
 

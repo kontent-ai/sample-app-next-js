@@ -1,7 +1,6 @@
 import { ElementType } from "@kontent-ai/delivery-sdk";
 import { ResolutionContext, resolveReference, resolveUrlPath } from "../lib/routing";
-import { Reference } from '../models/content-type-snippets/reference';
-import { Article, Product, WSL_Page, WSL_WebSpotlightRoot } from "../models";
+import { Article, CoreContentType, Product, Reference, WSL_Page, WSL_WebSpotlightRoot } from "../models";
 
 
 describe("resolveUrlPath", () => {
@@ -129,6 +128,7 @@ describe("resolveReference", () => {
       language: "default",
       type: "page",
       collection: "default",
+      workflow: "default",
       sitemapLocations: [],
       lastModified: "2023-08-17T09:39:14.3252398Z",
       workflowStep: "published"
@@ -157,18 +157,18 @@ describe("resolveReference", () => {
         linkedItems: []
 
       },
-      metadataTitle: {
+      metadata__title: {
         type: ElementType.Text,
         name: "Title",
         value: "About us"
       },
-      metadataDescription: {
+      metadata__description: {
         type: ElementType.Text,
 
         name: "Description",
         value: ""
       },
-      metadataKeywords: {
+      metadata__keywords: {
         type: ElementType.Text,
 
         name: "Keywords",
@@ -178,7 +178,7 @@ describe("resolveReference", () => {
   }
 
 
-  const referenceTemplate: Reference = {
+  const referenceTemplate: CoreContentType<Reference> = {
     system: {
       id: "091590b2-a93a-47e7-8405-3c629260f3be",
       name: "reference resolution",
@@ -186,27 +186,28 @@ describe("resolveReference", () => {
       language: "default",
       type: "action",
       sitemapLocations: [],
+      workflow: "default",
       collection: "default",
       lastModified: "2023-08-17T11:04:41.1006295Z",
       workflowStep: "published"
     },
     elements: {
-      referenceLabel: {
+      reference__label: {
         type: ElementType.Text,
         name: "Label",
         value: "Label"
       },
-      referenceCaption: {
+      reference__caption: {
         type: ElementType.Text,
         name: "Caption",
         value: "Caption"
       },
-      referenceExternalUri: {
+      reference__external_uri: {
         type: ElementType.Text,
         name: "External URI",
         value: ""
       },
-      referenceContentItemLink: {
+      reference__content__item_link: {
         type: ElementType.ModularContent,
         name: "Content item link",
         value: [],
@@ -217,38 +218,38 @@ describe("resolveReference", () => {
 
 
   it("Resolve external URL", () => {
-    const inputClone: Reference = JSON.parse(JSON.stringify(referenceTemplate));
-    inputClone.elements.referenceExternalUri.value = "https://example.com";
+    const inputClone: CoreContentType<Reference> = JSON.parse(JSON.stringify(referenceTemplate));
+    inputClone.elements.reference__external_uri.value = "https://example.com";
     const result = resolveReference(inputClone);
 
     expect(result).toBe("https://example.com");
   })
 
   it("Resolve internal URL", () => {
-    const inputClone: Reference = JSON.parse(JSON.stringify(referenceTemplate));
-    inputClone.elements.referenceContentItemLink.value = [internalLinkItem.system.codename];
-    inputClone.elements.referenceContentItemLink.linkedItems = [internalLinkItem];
+    const inputClone: CoreContentType<Reference> = JSON.parse(JSON.stringify(referenceTemplate));
+    inputClone.elements.reference__content__item_link.value = [internalLinkItem.system.codename];
+    inputClone.elements.reference__content__item_link.linkedItems = [internalLinkItem];
     const result = resolveReference(inputClone);
 
     expect(result).toBe("/about-us");
   })
 
   it("External URL takes precedence over internal URL", () => {
-    const inputClone: Reference = JSON.parse(JSON.stringify(referenceTemplate));
-    inputClone.elements.referenceExternalUri.value = "https://example.com";
-    inputClone.elements.referenceContentItemLink.value = [internalLinkItem.system.codename];
-    inputClone.elements.referenceContentItemLink.linkedItems = [internalLinkItem];
+    const inputClone: CoreContentType<Reference> = JSON.parse(JSON.stringify(referenceTemplate));
+    inputClone.elements.reference__external_uri.value = "https://example.com";
+    inputClone.elements.reference__content__item_link.value = [internalLinkItem.system.codename];
+    inputClone.elements.reference__content__item_link.linkedItems = [internalLinkItem];
     const result = resolveReference(inputClone);
 
     expect(result).toBe("https://example.com");
   })
 
   it("Page from other domain is resolved correctly", () => {
-    const inputClone: Reference = JSON.parse(JSON.stringify(referenceTemplate));
-    inputClone.elements.referenceContentItemLink.value = [internalLinkItem.system.codename];
-    inputClone.elements.referenceContentItemLink.linkedItems = [internalLinkItem];
+    const inputClone: CoreContentType<Reference> = JSON.parse(JSON.stringify(referenceTemplate));
+    inputClone.elements.reference__content__item_link.value = [internalLinkItem.system.codename];
+    inputClone.elements.reference__content__item_link.linkedItems = [internalLinkItem];
 
-    process.env.NEXT_PUBLIC_OTHER_COLLECTIONS_DOMAINS = `${inputClone.elements.referenceContentItemLink.linkedItems[0]?.system.collection}:otherdomain.com`
+    process.env.NEXT_PUBLIC_OTHER_COLLECTIONS_DOMAINS = `${inputClone.elements.reference__content__item_link.linkedItems[0]?.system.collection}:otherdomain.com`
     const result = resolveReference(inputClone);
 
     expect(result).toBe("https://otherdomain.com/about-us");

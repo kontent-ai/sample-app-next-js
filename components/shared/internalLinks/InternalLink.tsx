@@ -1,8 +1,8 @@
 import { ILink } from "@kontent-ai/delivery-sdk"
 import { FC, ReactNode } from "react";
 
-import { contentTypes } from "../../../models";
 import { ProductLink } from "./ProductLink";
+import { contentTypes } from "../../../models/environment";
 
 type Props = Readonly<{
   link: ILink;

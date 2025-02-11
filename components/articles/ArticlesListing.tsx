@@ -1,11 +1,12 @@
 'use client'
 import { ChevronDownIcon } from "@heroicons/react/24/solid";
-import { Article, taxonomies } from "../../models";
 import Link from "next/link";
 import { ResolutionContext, resolveUrlPath } from "../../lib/routing";
 import { FC, useState } from "react";
 import { ArticleItem } from "../listingPage/ArticleItem";
 import { ArticlePageSize } from "../../lib/constants/paging";
+import { taxonomies } from "../../models/environment/taxonomies";
+import { Article } from "../../models/content-types/article";
 
 type LinkButtonProps = {
   text: string;
@@ -70,7 +71,7 @@ const FilterOptions: FC<FilterOptionProps> = ({ options, category }) => {
             } as ResolutionContext)}
             onClick={() => setDropdownActive(!dropdownActive)}
             scroll={false}
-            className={`inline-flex items-center z-40 md:justify-between md:mr-4 md:w-max px-6 py-1 no-underline ${key === category ? ['bg-mainBackgroundColor', 'border-mainBorderColor', "text-white", "cursor-default"].join(" ") : `border-gray-200 bg-white hover:bg-mainColorHover hover:text-white cursor-pointer`} md:rounded-3xl`}
+            className={`inline-flex items-center z-40 md:justify-between md:mr-4 md:w-max px-6 py-1 no-underline ${key === category ? ['bg-mainBackgroundColor', 'border-mainBorderColor', "text-white", "cursor-default"].join(" ") : `border-gray-200 bg-slate-100 hover:bg-mainHoverColor hover:text-white cursor-pointer`} md:rounded-3xl`}
           >{value}
           </Link>
         ))}
@@ -118,8 +119,8 @@ export const ArticlesListing: FC<ArticlesLitingProps> = (props) => {
                     title={article.elements.title.value}
                     itemId={article.system.id}
                     description={article.elements.abstract.value}
-                    imageUrl={article.elements.heroImage.value[0]?.url || ""}
-                    publishingDate={article.elements.publishingDate.value}
+                    imageUrl={article.elements.hero_image.value[0]?.url || ""}
+                    publishingDate={article.elements.publishing_date.value}
                     detailUrl={resolveUrlPath({
                       type: "article",
                       slug: article.elements.slug.value

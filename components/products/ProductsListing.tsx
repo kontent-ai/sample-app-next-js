@@ -129,7 +129,7 @@ const ProductsListing: FC = () => {
         <ProductItems products={products} />
       </div>
 
-      <div className="mt-8 flex flex-row justify-center">
+      <div className="mt-8 flex flex-row justify-center pb-6">
         <button
           className="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg enabled:hover:bg-gray-100 disabled:bg-gray-200 enabled:hover:text-gray-700"
           onClick={onPreviousClick}
@@ -159,12 +159,12 @@ const ProductItems: FC<ProductListingProps> = (props) => {
   }
 
   return (
-    <ul className="w-full min-h-full mt-4 m-0 md:mt-0 p-0 px-4 sm:px-0 grid grid-cols-1 sm:grid-cols-2 2xl:grid-cols-4 list-none items-center md:justify-start gap-2">
+    <ul className="w-full not-prose min-h-full mt-4 m-0 md:mt-0 p-0 px-4 sm:px-0 grid grid-cols-1 sm:grid-cols-2 2xl:grid-cols-4 list-none items-center md:justify-start gap-2">
       {props.products.map(p => (
         <ProductItem
           key={p.system.id}
-          imageUrl={p.elements.productBaseMainImage.value[0]?.url || ""}
-          title={p.elements.productBaseName.value}
+          imageUrl={p.elements.product_base__main_image.value[0]?.url || ""}
+          title={p.elements.product_base__name.value}
           detailUrl={resolveUrlPath({
             type: "product",
             slug: p.elements.slug.value

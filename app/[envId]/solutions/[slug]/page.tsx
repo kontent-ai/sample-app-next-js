@@ -6,11 +6,11 @@ import { getDefaultMetadata, getSolutionDetail, getSolutionsWithSlugs } from "..
 import { parseFlatted, stringifyAsType } from "../../../../lib/utils/circularityUtils";
 import { defaultEnvId } from "../../../../lib/utils/env";
 import { createElementSmartLink } from "../../../../lib/utils/smartLinkUtils";
-import { contentTypes } from "../../../../models";
 import { notFound } from "next/navigation";
 import { previewApiKeyCookieName } from "../../../../lib/constants/cookies";
 import { cookies, draftMode } from "next/headers";
-import { AppPage } from "../../../../components/shared/ui/newAppPage";
+import { AppPage } from "../../../../components/shared/ui/appPage";
+import { contentTypes } from "../../../../models/environment";
 
 const SolutionDetailPage = async ({params}: {params: Promise<{envId: string, slug: string}>}) => {
   const slug = (await params).slug;
@@ -34,7 +34,7 @@ const SolutionDetailPage = async ({params}: {params: Promise<{envId: string, slu
   return(
     <AppPage item={solution} >
       <HeroImage
-        url={solution.elements.productBaseMainImage.value[0]?.url || ""}
+        url={solution.elements.product_base__main_image.value[0]?.url || ""}
         itemId={solution.system.id}
       >
         <div
@@ -46,7 +46,7 @@ const SolutionDetailPage = async ({params}: {params: Promise<{envId: string, slu
             )}
             className="m-0 text-8xl text-white align-text-bottom max-w-2xl tracking-wide font-semibold"
           >
-            {solution.elements.productBaseName.value}
+            {solution.elements.product_base__name.value}
           </h1>
         </div>
       </HeroImage>
@@ -85,9 +85,9 @@ export const generateMetadata = async ({ params }: { params: Promise<{ envId: st
   }
 
   return {
-    description: defaultMetadata.elements.metadataDescription.value,
-    keywords: defaultMetadata.elements.metadataKeywords.value,
-    title: defaultMetadata.elements.metadataTitle.value 
+    description: defaultMetadata.elements.metadata__description.value,
+    keywords: defaultMetadata.elements.metadata__keywords.value,
+    title: defaultMetadata.elements.metadata__title.value 
   }
 }
 

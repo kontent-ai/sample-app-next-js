@@ -8,7 +8,7 @@ import { defaultEnvId } from "../../../../lib/utils/env";
 import { cookies, draftMode } from "next/headers";
 import { previewApiKeyCookieName } from "../../../../lib/constants/cookies";
 import { notFound } from "next/navigation";
-import { AppPage } from "../../../../components/shared/ui/newAppPage";
+import { AppPage } from "../../../../components/shared/ui/appPage";
 import { Metadata } from "next";
 
 const ArticlePage = async ({params}: {params: Promise<{envId: string, slug: string}>}) => {
@@ -29,7 +29,7 @@ const ArticlePage = async ({params}: {params: Promise<{envId: string, slug: stri
   return (
     <AppPage item={article}>
       <HeroImage
-        url={article.elements.heroImage.value[0]?.url || ""}
+        url={article.elements.hero_image.value[0]?.url || ""}
         itemId={article.system.id}
       >
         <div className="py-1 px-3 w-full md:w-fit bg-mainBackgroundColor opacity-90">
@@ -44,7 +44,7 @@ const ArticlePage = async ({params}: {params: Promise<{envId: string, slug: stri
       <div className="px-2 max-w-screen m-auto md:px-20">
         {article.elements.author.linkedItems[0] && <PersonHorizontal item={article.elements.author.linkedItems[0]} />}
         <div className="flex flex-col gap-2">
-          <div className="w-fit p-2 bg-gray-800 text-white opacity-90 font-semibold">{article.elements.publishingDate.value && formatDate(article.elements.publishingDate.value)}</div>
+          <div className="w-fit p-2 bg-gray-800 text-white opacity-90 font-semibold">{article.elements.publishing_date.value && formatDate(article.elements.publishing_date.value)}</div>
           <div className="flex gap-2" >
             {
               article.elements.type.value.map(type => (
@@ -88,9 +88,9 @@ export const generateMetadata = async ({ params }: { params: Promise<{ envId: st
   }
 
   return {
-    description: defaultMetadata.elements.metadataDescription.value,
-    keywords: defaultMetadata.elements.metadataKeywords.value,
-    title: defaultMetadata.elements.metadataTitle.value 
+    description: defaultMetadata.elements.metadata__description.value,
+    keywords: defaultMetadata.elements.metadata__keywords.value,
+    title: defaultMetadata.elements.metadata__title.value 
   }
 }
 

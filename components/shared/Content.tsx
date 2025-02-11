@@ -1,8 +1,9 @@
 import { ComponentType, FC } from "react";
 
-import { Block_ContentChunk, Block_VisualContainer, contentTypes } from "../../models";
+import { Block_ContentChunk, Block_VisualContainer } from "../../models";
 import { ContentChunk as ContentChunk } from "./ContentChunk";
 import { VisualContainer } from "./visualContainer/VisualContainer";
+import { contentTypes } from "../../models/environment";
 
 type AcceptedType = AcceptedTypesByCodename[keyof AcceptedTypesByCodename];
 

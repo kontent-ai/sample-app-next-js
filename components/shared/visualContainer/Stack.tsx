@@ -6,9 +6,10 @@ import {
   createItemSmartLink,
   createRelativeAddSmartLink,
 } from "../../../lib/utils/smartLinkUtils";
-import { contentTypes, Fact } from "../../../models";
 import { FactComponent } from "../Fact";
 import { StandaloneSmartLinkButton } from "../StandaloneSmartLinkButton";
+import { Fact } from "../../../models/content-types";
+import { contentTypes } from "../../../models/environment";
 
 type Props = Readonly<{
   items: ReadonlyArray<Fact>;

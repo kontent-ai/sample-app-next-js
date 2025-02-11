@@ -3,8 +3,8 @@ import { ArrowLeftIcon, ArrowRightIcon } from "@heroicons/react/24/solid";
 import { FC, useState } from "react";
 
 import { range } from "../../../lib/utils/range";
-import { Fact } from "../../../models";
 import { HeroUnitComponent } from "./HeroUnit";
+import { Fact } from "../../../models/content-types";
 
 type Props = Readonly<{
   items: ReadonlyArray<Fact>;
