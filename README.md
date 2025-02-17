@@ -12,9 +12,12 @@ The content of the Sample Project is based on a fictional health technology comp
 - **Ficto Surgical** is the site with the catalog of the products the company offers. It also shows articles from the Ficto Healthtech world.
 - **Ficto Imaging** is the last of the sites. It describes the company's research and unique solutions.
 
+| Ficto Healthtech | Ficto Imaging | Ficto Surgical |
+|------------------|--------------|---------------|
+| [![Ficto Healthtech](https://therealsujitk-vercel-badge.vercel.app/?app=ficto-healthtech&style=for-the-badge&logo=false)](https://ficto-healthtech.vercel.app) | [![Ficto Imaging](https://therealsujitk-vercel-badge.vercel.app/?app=ficto-imaging&style=for-the-badge&logo=false)](https://ficto-imaging.vercel.app) | [![Ficto Surgical](https://therealsujitk-vercel-badge.vercel.app/?app=ficto-surgical&style=for-the-badge&logo=false)](https://ficto-surgical.vercel.app) |
+
 ## Table of Contents
 
-- [Demos](#demos)
 - [Getting Started](#getting-started)
   - [Clone the Next.js project using command line](#clone-the-nextjs-project-using-command-line)
   - [Deploy the application](#deploy-the-application)
@@ -36,13 +39,6 @@ The content of the Sample Project is based on a fictional health technology comp
 - [License](#license)
 - [Support](#support)
 - [Additional Resources](#additional-resources)
-
-
-## Demos
-
-| Ficto Healthtech | Ficto Imaging | Ficto Surgical |
-|------------------|--------------|---------------|
-| [![Ficto Healthtech](https://therealsujitk-vercel-badge.vercel.app/?app=ficto-healthtech&style=for-the-badge&logo=false)](https://ficto-healthtech.vercel.app) | [![Ficto Imaging](https://therealsujitk-vercel-badge.vercel.app/?app=ficto-imaging&style=for-the-badge&logo=false)](https://ficto-imaging.vercel.app) | [![Ficto Surgical](https://therealsujitk-vercel-badge.vercel.app/?app=ficto-surgical&style=for-the-badge&logo=false)](https://ficto-surgical.vercel.app) |
 
 ## Getting Started
 To run the and explore the application on your own, you will need a clone of the Kontent.ai Multi-site sample project. You can create it right from the [Kontent.ai UI as a multi-brand sample project](https://kontent.ai/learn/docs/projects#a-create-a-sample-project).
