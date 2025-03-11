@@ -15,7 +15,7 @@ const PreviewHomepage: FC<HomepageProps> = ({homepageData}) => {
   const [homepage, setHomepage] = useState(parseFlatted(stringifyAsType(homepageData)));
 
   useLivePreview(async (data) => {
-    const updatedHomepage = applyUpdateOnItemAndLoadLinkedItems(homepage, data, async codenamesToFetch => {
+    const updatedHomepage = await applyUpdateOnItemAndLoadLinkedItems(homepage, data, async codenamesToFetch => {
       const response = await fetch('/api/items?codenames=' + codenamesToFetch.join(','));
       
       return await response.json();
