@@ -16,7 +16,7 @@
     "@heroicons/react": "^2.2.0",
     "@kontent-ai/delivery-sdk": "^15.2.0",
     "@kontent-ai/rich-text-resolver": "^2.0.1",
-    "@kontent-ai/smart-link": "^3.3.0",
+    "@kontent-ai/smart-link": "^4.0.0",
     "@portabletext/react": "^3.2.0",
     "@tailwindcss/postcss": "^4.0.3",
     "@vercel/analytics": "^1.4.1",
