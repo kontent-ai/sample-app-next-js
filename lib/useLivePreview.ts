@@ -1,4 +1,4 @@
-import { IUpdateMessageData } from "@kontent-ai/smart-link/types/lib/IFrameCommunicatorTypes";
+import { IUpdateMessageData } from "@kontent-ai/smart-link";
 import { useSmartLink } from "./useSmartLink";
 import { useEffect } from "react";
 import { KontentSmartLinkEvent } from "@kontent-ai/smart-link";
