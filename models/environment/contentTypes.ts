@@ -441,7 +441,7 @@ export const contentTypes = {
 
       /**
        * Subpages (subpages)
-       * Guidelines: Page items populating this element will be shown in the web spotlight tree. Further populating a subpages element in the child items allows you to create a multi-level hierarchy.
+       * Guidelines: Page of a website for the website tree in live preview.
        */
       subpages: {
         name: "Subpages",
@@ -820,11 +820,11 @@ export const contentTypes = {
   },
 
   /**
-   * 💡 Web spotlight root
+   * 💡 Website root
    */
-  web_spotlight_root: {
-    name: "💡 Web spotlight root",
-    codename: "web_spotlight_root",
+  website_root: {
+    name: "💡 Website root",
+    codename: "website_root",
     id: "bc0ca9d3-82be-439d-8488-3f6104d58125",
     externalId: undefined,
     elements: {
@@ -842,7 +842,7 @@ export const contentTypes = {
 
       /**
        * Subpages (subpages)
-       * Guidelines: Page items populating this element will be shown in the web spotlight tree. Further populating a subpages element in the child items allows you to create a multi-level hierarchy.
+       * Guidelines: Page of a website for the website tree in live preview.
        */
       subpages: {
         name: "Subpages",

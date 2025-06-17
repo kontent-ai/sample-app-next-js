@@ -15,11 +15,11 @@
 
 export const contentTypeSnippets = {
   /**
-   * 💡 Spotlight guidelines
+   * 💡 Live preview guidelines
    */
-  spotlight_guidelines: {
-    name: "💡 Spotlight guidelines",
-    codename: "spotlight_guidelines",
+  live_preview_guidelines: {
+    name: "💡 Live preview guidelines",
+    codename: "live_preview_guidelines",
     id: "b0299f53-78b4-5c20-bbf3-7cc9129cdb12",
     externalId: "spotlightGuidelines-367e017c-5b46-471f-8da0-4baa6f249dc8",
     elements: {},

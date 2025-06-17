@@ -15,7 +15,7 @@
 
 import type { Elements, Snippet } from "@kontent-ai/delivery-sdk";
 import type {
-  WSL_WebSpotlightRoot,
+  WSL_WebsiteRoot,
   WSL_Page,
   Article,
   Product,
@@ -69,7 +69,7 @@ export type Reference = Snippet<
      * Guidelines: Link to a supported content item, resolution can vary based on presentation layer.
      */
     readonly reference__content__item_link: Elements.LinkedItemsElement<
-      WSL_WebSpotlightRoot | WSL_Page | Article | Product | Solution
+      WSL_WebsiteRoot | WSL_Page | Article | Product | Solution
     >;
   }
 >;

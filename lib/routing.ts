@@ -1,6 +1,6 @@
 
 import { Reference } from "../models/content-type-snippets";
-import { isWSL_WebSpotlightRoot } from "../models/content-types/WSL_webSpotlightRoot";
+import { isWSL_WebsiteRoot } from "../models/content-types/WSL_websiteRoot";
 import { contentTypes, taxonomies } from "../models/environment";
 import { CoreContentType } from "../models/system";
 
@@ -40,7 +40,7 @@ type GenericContentTypeOptions = Readonly<{
   slug: string
 }>;
 type WebSpotlightRootOptions = Readonly<{
-  type: typeof contentTypes.web_spotlight_root.codename
+  type: typeof contentTypes.website_root.codename
 }>;
 
 export type ResolutionContext = GenericContentTypeOptions
@@ -57,7 +57,7 @@ export const reservedListingSlugs = {
 export const resolveUrlPath = (context: ResolutionContext) => {
 
   switch (context.type) {
-    case contentTypes.web_spotlight_root.codename: {
+    case contentTypes.website_root.codename: {
       return `/`;
     }
     case contentTypes.page.codename: {
@@ -109,7 +109,7 @@ export const resolveReference = (reference: CoreContentType<Reference>) => {
 
   const collectionDomain = getExternalUrlsMapping()[referencedItem.system.collection] || "";
 
-  const slug = isWSL_WebSpotlightRoot(referencedItem)
+  const slug = isWSL_WebsiteRoot(referencedItem)
     ? "/"
     : referencedItem.elements.slug.value; // expecting "slug" codename
 

@@ -31,7 +31,7 @@ export type ContentTypeCodenames =
   | "fact"
   | "callout"
   | "product"
-  | "web_spotlight_root"
+  | "website_root"
   | "visual_container"
   | "solution";
 
@@ -92,7 +92,7 @@ export type ElementCodenames =
   | "action_guidelines"
   | "image"
   | "spotlight_guidelines"
-  | "b3181458_86e3_4a4f_a2de_3fd633c16afa"
+  | "n07e9edea_7327_434b_97b7_400f8d5cacf1"
   | "subpages"
   | "message"
   | "fact_type"
@@ -110,7 +110,7 @@ export type ElementCodenames =
   | "n57e24022_8b5a_4b98_821e_97217a884dcc"
   | "imaging_technology"
   | "showcase"
-  | "spotlight_guidelines__guidelines"
+  | "live_preview_guidelines__spotlight_guidelines__guidelines"
   | "metadata__guidelines"
   | "metadata__title"
   | "metadata__description"

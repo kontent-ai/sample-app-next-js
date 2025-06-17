@@ -1,9 +1,9 @@
 
 import { FC, ReactNode } from "react";
 import { createItemSmartLink } from "../../../lib/utils/smartLinkUtils";
-import { Article, Product, Solution, WSL_Page, WSL_WebSpotlightRoot } from "../../../models";
+import { Article, Product, Solution, WSL_Page, WSL_WebsiteRoot } from "../../../models/content-types";
 
-type AcceptedItem = WSL_WebSpotlightRoot | Article | Product | WSL_Page | Solution;
+type AcceptedItem = WSL_WebsiteRoot | Article | Product | WSL_Page | Solution;
 
 type Props = Readonly<{
   children: ReactNode;

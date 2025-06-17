@@ -16,17 +16,17 @@
 import type { Snippet } from "@kontent-ai/delivery-sdk";
 
 /**
- * 💡 Spotlight guidelines
+ * 💡 Live preview guidelines
  *
  * Id: b0299f53-78b4-5c20-bbf3-7cc9129cdb12
- * Codename: spotlight_guidelines
+ * Codename: live_preview_guidelines
  */
-export type WSL_SpotlightGuidelines = Snippet<
-  WSL_SpotlightGuidelinesElementCodenames,
+export type WSL_LivePreviewGuidelines = Snippet<
+  WSL_LivePreviewGuidelinesElementCodenames,
   Record<string, never>
 >;
 
 /**
- * Type representing all available element codenames for 💡 Spotlight guidelines
+ * Type representing all available element codenames for 💡 Live preview guidelines
  */
-export type WSL_SpotlightGuidelinesElementCodenames = never;
+export type WSL_LivePreviewGuidelinesElementCodenames = never;

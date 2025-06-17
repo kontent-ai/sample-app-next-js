@@ -1,6 +1,6 @@
 import { createDeliveryClient, DeliveryError, IContentItem } from '@kontent-ai/delivery-sdk';
 
-import { Article, Product, Solution, WSL_Page, WSL_WebSpotlightRoot } from '../models/content-types';
+import { Article, Product, Solution, WSL_Page, WSL_WebsiteRoot } from '../models/content-types';
 import { ArticlePageSize, ProductsPageSize } from './constants/paging';
 import { ArticleTypeWithAll } from './utils/articlesListing';
 import { defaultEnvId, deliveryApiDomain, deliveryPreviewApiDomain, siteCodename } from './utils/env';
@@ -57,12 +57,10 @@ export const getItemByCodename = <ItemType extends IContentItem>(config: ClientC
 
 }
 
-const homepageTypeCodename = "web_spotlight_root" as const;
-
 export const getHomepage = (config: ClientConfig, usePreview: boolean) =>
   getDeliveryClient(config)
     .items()
-    .type(homepageTypeCodename)
+    .type(contentTypes.website_root.codename)
     .collection(siteCodename)
     .queryConfig({
       usePreviewMode: usePreview,
@@ -70,7 +68,7 @@ export const getHomepage = (config: ClientConfig, usePreview: boolean) =>
     })
     .depthParameter(defaultDepth)
     .toPromise()
-    .then(res => res.data.items[0] as WSL_WebSpotlightRoot | undefined)
+    .then(res => res.data.items[0] as WSL_WebsiteRoot | undefined)
 
 export const getProductsForListing = async (config: ClientConfig, usePreview: boolean, page?: number, categories?: string[], pageSize: number = ProductsPageSize) => {
   const query = getDeliveryClient(config)
@@ -146,8 +144,8 @@ export const getSolutionDetail = (config: ClientConfig, slug: string, usePreview
 
 export const getSiteMenu = async (config: ClientConfig, usePreview: boolean) => {
   return getDeliveryClient(config)
-    .items<WSL_WebSpotlightRoot>()
-    .type(contentTypes.web_spotlight_root.codename)
+    .items<WSL_WebsiteRoot>()
+    .type(contentTypes.website_root.codename)
     .collection(siteCodename)
     .queryConfig({
       usePreviewMode: usePreview,
@@ -264,8 +262,8 @@ export const getProductTaxonomy = async (config: ClientConfig, usePreview: boole
 
 export const getDefaultMetadata = async (config: ClientConfig, usePreview: boolean) =>
   getDeliveryClient(config)
-    .items<WSL_WebSpotlightRoot>()
-    .type(homepageTypeCodename)
+    .items<WSL_WebsiteRoot>()
+    .type(contentTypes.website_root.codename)
     .collection(siteCodename)
     .queryConfig({
       usePreviewMode: usePreview,

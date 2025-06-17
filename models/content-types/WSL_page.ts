@@ -17,7 +17,7 @@ import type { Elements } from "@kontent-ai/delivery-sdk";
 import type { CoreContentType } from "../system/index.ts";
 import type { Metadata } from "../content-type-snippets/index.ts";
 import type {
-  WSL_WebSpotlightRoot,
+  WSL_WebsiteRoot,
   Article,
   Product,
   Solution,
@@ -59,10 +59,10 @@ export type WSL_Page = CoreContentType<
      * Required: false
      * Codename: subpages
      * Id: a4f188c5-30c0-41aa-b238-b2777a6bb031
-     * Guidelines: Page items populating this element will be shown in the web spotlight tree. Further populating a subpages element in the child items allows you to create a multi-level hierarchy.
+     * Guidelines: Page of a website for the website tree in live preview.
      */
     readonly subpages: Elements.LinkedItemsElement<
-      WSL_Page | WSL_WebSpotlightRoot | Article | Product | Solution
+      WSL_Page | WSL_WebsiteRoot | Article | Product | Solution
     >;
     /**
      * Content

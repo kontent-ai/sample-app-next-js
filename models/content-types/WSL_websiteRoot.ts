@@ -24,12 +24,12 @@ import type {
 } from "./index.ts";
 
 /**
- * 💡 Web spotlight root
+ * 💡 Website root
  *
  * Id: bc0ca9d3-82be-439d-8488-3f6104d58125
- * Codename: web_spotlight_root
+ * Codename: website_root
  */
-export type WSL_WebSpotlightRoot = CoreContentType<
+export type WSL_WebsiteRoot = CoreContentType<
   {
     /**
      * Title
@@ -47,11 +47,9 @@ export type WSL_WebSpotlightRoot = CoreContentType<
      * Required: false
      * Codename: subpages
      * Id: fa27125f-c274-4ffe-bf4e-fef14bf47deb
-     * Guidelines: Page items populating this element will be shown in the web spotlight tree. Further populating a subpages element in the child items allows you to create a multi-level hierarchy.
+     * Guidelines: Page of a website for the website tree in live preview.
      */
-    readonly subpages: Elements.LinkedItemsElement<
-      WSL_Page | WSL_WebSpotlightRoot
-    >;
+    readonly subpages: Elements.LinkedItemsElement<WSL_Page | WSL_WebsiteRoot>;
     /**
      * Navigation
      *
@@ -75,13 +73,13 @@ export type WSL_WebSpotlightRoot = CoreContentType<
       Block_VisualContainer | Block_ContentChunk
     >;
   } & Metadata,
-  "web_spotlight_root"
+  "website_root"
 >;
 
 /**
- * Type representing all available element codenames for 💡 Web spotlight root
+ * Type representing all available element codenames for 💡 Website root
  */
-export type WSL_WebSpotlightRootElementCodenames =
+export type WSL_WebsiteRootElementCodenames =
   | "title"
   | "subpages"
   | "navigation"
@@ -91,13 +89,13 @@ export type WSL_WebSpotlightRootElementCodenames =
   | "metadata__keywords";
 
 /**
- * Type guard for 💡 Web spotlight root
+ * Type guard for 💡 Website root
  *
  * Id: bc0ca9d3-82be-439d-8488-3f6104d58125
- * Codename: web_spotlight_root
+ * Codename: website_root
  */
-export function isWSL_WebSpotlightRoot(
+export function isWSL_WebsiteRoot(
   item: CoreContentType | undefined | null,
-): item is WSL_WebSpotlightRoot {
-  return item?.system?.type === "web_spotlight_root";
+): item is WSL_WebsiteRoot {
+  return item?.system?.type === "website_root";
 }
