@@ -4,7 +4,7 @@ import { getArticlesCountByCategory, getArticlesForListing, getDefaultMetadata, 
 import { ArticleTypeWithAll, categoryFilterSource, isArticleType } from "../../../../../../../lib/utils/articlesListing";
 import { parseFlatted,  stringifyAsType } from "../../../../../../../lib/utils/circularityUtils";
 import { defaultEnvId } from "../../../../../../../lib/utils/env";
-import { WSL_Page } from "../../../../../../../models/content-types";
+import { LP_Page } from "../../../../../../../models/content-types";
 import { notFound } from "next/navigation";
 import { cookies, draftMode } from "next/headers";
 import { previewApiKeyCookieName } from "../../../../../../../lib/constants/cookies";
@@ -29,7 +29,7 @@ const ArticlesPagingPage = async ({params}: {params: Promise<{envId: string, pag
 
   const pageNumber = !pageURLParameter || isNaN(+pageURLParameter) ? 1 : +pageURLParameter;
   const articlesData = await getArticlesForListing({ envId, previewApiKey }, draft.isEnabled, pageNumber, selectedCategory);
-  const pageData = await getItemBySlug<WSL_Page>({ envId, previewApiKey }, "articles", contentTypes.page.codename, draft.isEnabled);
+  const pageData = await getItemBySlug<LP_Page>({ envId, previewApiKey }, "articles", contentTypes.page.codename, draft.isEnabled);
   const itemCount = await getArticlesCountByCategory({ envId, previewApiKey }, draft.isEnabled, selectedCategory)
 
   if (pageData === null) {

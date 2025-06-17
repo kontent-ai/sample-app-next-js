@@ -89,80 +89,6 @@ export const contentTypes = {
   },
 
   /**
-   * 🧭 Navigation item
-   */
-  navigation_item: {
-    name: "🧭 Navigation item",
-    codename: "navigation_item",
-    id: "fc4d093f-9e1a-5c1a-a47c-21acf156dadf",
-    externalId: "navigationItem-9f210108-90a0-4e61-a577-3f0b44d48d62",
-    elements: {
-      /**
-       * Label (text)
-       */
-      reference__label: {
-        name: "Label",
-        codename: "reference__label",
-        id: "15ee4053-00fd-5d5e-a2d7-4437079251ce",
-        externalId: "label-6a1dec94-5127-4d8f-908c-3c0aedbe1f5b",
-        required: false,
-        type: "text",
-      },
-
-      /**
-       * Caption (text)
-       */
-      reference__caption: {
-        name: "Caption",
-        codename: "reference__caption",
-        id: "75684270-5e43-5d21-b93a-700f85e50853",
-        externalId: "caption-7983245f-e1fc-4ed0-a185-f064e82cf5c7",
-        required: false,
-        type: "text",
-      },
-
-      /**
-       * External URI (text)
-       * Guidelines: Link to an external resource, has higher resolution priority than item link.
-       */
-      reference__external_uri: {
-        name: "External URI",
-        codename: "reference__external_uri",
-        id: "580e3f46-f033-50d4-9f34-4ed91384f4e4",
-        externalId: "externalURI-2d6525cc-0fe7-4c3e-8ebe-357711715c60",
-        required: false,
-        type: "text",
-      },
-
-      /**
-       * Content item link (modular_content)
-       * Guidelines: Link to a supported content item, resolution can vary based on presentation layer.
-       */
-      reference__content__item_link: {
-        name: "Content item link",
-        codename: "reference__content__item_link",
-        id: "ed9d88d5-2375-57c3-9916-615eaae7d5da",
-        externalId: "contentItemLink-5f68c354-0d2e-472d-a2a6-fdc928c55d97",
-        required: false,
-        type: "modular_content",
-      },
-
-      /**
-       * Subitems (modular_content)
-       * Guidelines: Fill with further Navigation items to create a hierarchical menu.
-       */
-      subitems: {
-        name: "Subitems",
-        codename: "subitems",
-        id: "673d7bea-bd01-5bc2-bbd2-e51abc5f24bb",
-        externalId: "subItems-46f08e0b-4e3a-4eb5-b179-4476583226d6",
-        required: false,
-        type: "modular_content",
-      },
-    },
-  },
-
-  /**
    * Article
    */
   article: {
@@ -305,6 +231,80 @@ export const contentTypes = {
         externalId: "keywords-8c99c0f7-87ed-4df9-86db-34e112e3b3c9",
         required: false,
         type: "text",
+      },
+    },
+  },
+
+  /**
+   * 🧭 Navigation item
+   */
+  navigation_item: {
+    name: "🧭 Navigation item",
+    codename: "navigation_item",
+    id: "fc4d093f-9e1a-5c1a-a47c-21acf156dadf",
+    externalId: "navigationItem-9f210108-90a0-4e61-a577-3f0b44d48d62",
+    elements: {
+      /**
+       * Label (text)
+       */
+      reference__label: {
+        name: "Label",
+        codename: "reference__label",
+        id: "15ee4053-00fd-5d5e-a2d7-4437079251ce",
+        externalId: "label-6a1dec94-5127-4d8f-908c-3c0aedbe1f5b",
+        required: false,
+        type: "text",
+      },
+
+      /**
+       * Caption (text)
+       */
+      reference__caption: {
+        name: "Caption",
+        codename: "reference__caption",
+        id: "75684270-5e43-5d21-b93a-700f85e50853",
+        externalId: "caption-7983245f-e1fc-4ed0-a185-f064e82cf5c7",
+        required: false,
+        type: "text",
+      },
+
+      /**
+       * External URI (text)
+       * Guidelines: Link to an external resource, has higher resolution priority than item link.
+       */
+      reference__external_uri: {
+        name: "External URI",
+        codename: "reference__external_uri",
+        id: "580e3f46-f033-50d4-9f34-4ed91384f4e4",
+        externalId: "externalURI-2d6525cc-0fe7-4c3e-8ebe-357711715c60",
+        required: false,
+        type: "text",
+      },
+
+      /**
+       * Content item link (modular_content)
+       * Guidelines: Link to a supported content item, resolution can vary based on presentation layer.
+       */
+      reference__content__item_link: {
+        name: "Content item link",
+        codename: "reference__content__item_link",
+        id: "ed9d88d5-2375-57c3-9916-615eaae7d5da",
+        externalId: "contentItemLink-5f68c354-0d2e-472d-a2a6-fdc928c55d97",
+        required: false,
+        type: "modular_content",
+      },
+
+      /**
+       * Subitems (modular_content)
+       * Guidelines: Fill with further Navigation items to create a hierarchical menu.
+       */
+      subitems: {
+        name: "Subitems",
+        codename: "subitems",
+        id: "673d7bea-bd01-5bc2-bbd2-e51abc5f24bb",
+        externalId: "subItems-46f08e0b-4e3a-4eb5-b179-4476583226d6",
+        required: false,
+        type: "modular_content",
       },
     },
   },

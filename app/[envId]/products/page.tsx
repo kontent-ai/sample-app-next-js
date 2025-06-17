@@ -2,7 +2,7 @@ import { Content } from "../../../components/shared/Content";
 import { getDefaultMetadata, getItemBySlug } from "../../../lib/kontentClient";
 import { reservedListingSlugs } from "../../../lib/routing";
 import { parseFlatted, stringifyAsType } from "../../../lib/utils/circularityUtils";
-import { WSL_Page } from "../../../models/content-types";
+import { LP_Page } from "../../../models/content-types";
 import { notFound } from "next/navigation";
 import { AppPage } from "../../../components/shared/ui/appPage";
 import { cookies, draftMode } from "next/headers";
@@ -19,7 +19,7 @@ const ProductsPage = async ({params}: {params: Promise<{envId: string}>}) => {
   const previewApiKey = draft.isEnabled ? (await cookies()).get(previewApiKeyCookieName)?.value : undefined;
 
   // We might want to bound listing pages to something else than URL slug
-  const pageData = await getItemBySlug<WSL_Page>({ envId: envId, previewApiKey: previewApiKey }, reservedListingSlugs.products, contentTypes.page.codename, draft.isEnabled);
+  const pageData = await getItemBySlug<LP_Page>({ envId: envId, previewApiKey: previewApiKey }, reservedListingSlugs.products, contentTypes.page.codename, draft.isEnabled);
 
   if (pageData === null) {
     return notFound();

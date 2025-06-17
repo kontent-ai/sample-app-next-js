@@ -1,6 +1,6 @@
 
 import { Reference } from "../models/content-type-snippets";
-import { isWSL_WebsiteRoot } from "../models/content-types/WSL_websiteRoot";
+import { isLP_WebsiteRoot } from "../models/content-types/LP_websiteRoot";
 import { contentTypes, taxonomies } from "../models/environment";
 import { CoreContentType } from "../models/system";
 
@@ -109,7 +109,7 @@ export const resolveReference = (reference: CoreContentType<Reference>) => {
 
   const collectionDomain = getExternalUrlsMapping()[referencedItem.system.collection] || "";
 
-  const slug = isWSL_WebsiteRoot(referencedItem)
+  const slug = isLP_WebsiteRoot(referencedItem)
     ? "/"
     : referencedItem.elements.slug.value; // expecting "slug" codename
 

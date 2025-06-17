@@ -21,12 +21,12 @@ import type { Snippet } from "@kontent-ai/delivery-sdk";
  * Id: b0299f53-78b4-5c20-bbf3-7cc9129cdb12
  * Codename: live_preview_guidelines
  */
-export type WSL_LivePreviewGuidelines = Snippet<
-  WSL_LivePreviewGuidelinesElementCodenames,
+export type LP_LivePreviewGuidelines = Snippet<
+  LP_LivePreviewGuidelinesElementCodenames,
   Record<string, never>
 >;
 
 /**
  * Type representing all available element codenames for 💡 Live preview guidelines
  */
-export type WSL_LivePreviewGuidelinesElementCodenames = never;
+export type LP_LivePreviewGuidelinesElementCodenames = never;

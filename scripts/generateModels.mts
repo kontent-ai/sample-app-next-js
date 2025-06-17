@@ -17,7 +17,7 @@ const createPrefixFromName = (str: string) => {
       return "Component_";
 
     case 0x1F4A1:
-      return "WSL_"
+      return "LP_"
 
     case 0x1F9ED:
       return "Nav_"

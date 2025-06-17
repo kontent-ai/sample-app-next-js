@@ -1,6 +1,6 @@
 import { createDeliveryClient, DeliveryError, IContentItem } from '@kontent-ai/delivery-sdk';
 
-import { Article, Product, Solution, WSL_Page, WSL_WebsiteRoot } from '../models/content-types';
+import { Article, Product, Solution, LP_Page, LP_WebsiteRoot } from '../models/content-types';
 import { ArticlePageSize, ProductsPageSize } from './constants/paging';
 import { ArticleTypeWithAll } from './utils/articlesListing';
 import { defaultEnvId, deliveryApiDomain, deliveryPreviewApiDomain, siteCodename } from './utils/env';
@@ -68,7 +68,7 @@ export const getHomepage = (config: ClientConfig, usePreview: boolean) =>
     })
     .depthParameter(defaultDepth)
     .toPromise()
-    .then(res => res.data.items[0] as WSL_WebsiteRoot | undefined)
+    .then(res => res.data.items[0] as LP_WebsiteRoot | undefined)
 
 export const getProductsForListing = async (config: ClientConfig, usePreview: boolean, page?: number, categories?: string[], pageSize: number = ProductsPageSize) => {
   const query = getDeliveryClient(config)
@@ -144,7 +144,7 @@ export const getSolutionDetail = (config: ClientConfig, slug: string, usePreview
 
 export const getSiteMenu = async (config: ClientConfig, usePreview: boolean) => {
   return getDeliveryClient(config)
-    .items<WSL_WebsiteRoot>()
+    .items<LP_WebsiteRoot>()
     .type(contentTypes.website_root.codename)
     .collection(siteCodename)
     .queryConfig({
@@ -262,7 +262,7 @@ export const getProductTaxonomy = async (config: ClientConfig, usePreview: boole
 
 export const getDefaultMetadata = async (config: ClientConfig, usePreview: boolean) =>
   getDeliveryClient(config)
-    .items<WSL_WebsiteRoot>()
+    .items<LP_WebsiteRoot>()
     .type(contentTypes.website_root.codename)
     .collection(siteCodename)
     .queryConfig({
@@ -312,7 +312,7 @@ export const getItemBySlug = async <T extends IContentItem>(config: ClientConfig
 
 export const getPagesSlugs = (config: ClientConfig) =>
   getDeliveryClient(config)
-    .items<WSL_Page>()
+    .items<LP_Page>()
     .type(contentTypes.page.codename)
     .collections([siteCodename, "default"])
     .elementsParameter([contentTypes.page.elements.slug.codename])
