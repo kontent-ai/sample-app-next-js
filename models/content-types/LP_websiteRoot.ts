@@ -15,13 +15,13 @@
 
 import type { Elements } from "@kontent-ai/delivery-sdk";
 import type { CoreContentType } from "../system/index.ts";
-import type { Metadata } from "../content-type-snippets/index.ts";
 import type {
-  WSL_Page,
+  LP_Page,
   Nav_NavigationItem,
   Block_VisualContainer,
   Block_ContentChunk,
 } from "./index.ts";
+import type { Metadata } from "../content-type-snippets/index.ts";
 
 /**
  * 💡 Website root
@@ -29,7 +29,7 @@ import type {
  * Id: bc0ca9d3-82be-439d-8488-3f6104d58125
  * Codename: website_root
  */
-export type WSL_WebsiteRoot = CoreContentType<
+export type LP_WebsiteRoot = CoreContentType<
   {
     /**
      * Title
@@ -49,7 +49,7 @@ export type WSL_WebsiteRoot = CoreContentType<
      * Id: fa27125f-c274-4ffe-bf4e-fef14bf47deb
      * Guidelines: Page of a website for the website tree in live preview.
      */
-    readonly subpages: Elements.LinkedItemsElement<WSL_Page | WSL_WebsiteRoot>;
+    readonly subpages: Elements.LinkedItemsElement<LP_Page | LP_WebsiteRoot>;
     /**
      * Navigation
      *
@@ -79,7 +79,7 @@ export type WSL_WebsiteRoot = CoreContentType<
 /**
  * Type representing all available element codenames for 💡 Website root
  */
-export type WSL_WebsiteRootElementCodenames =
+export type LP_WebsiteRootElementCodenames =
   | "title"
   | "subpages"
   | "navigation"
@@ -94,8 +94,8 @@ export type WSL_WebsiteRootElementCodenames =
  * Id: bc0ca9d3-82be-439d-8488-3f6104d58125
  * Codename: website_root
  */
-export function isWSL_WebsiteRoot(
+export function isLP_WebsiteRoot(
   item: CoreContentType | undefined | null,
-): item is WSL_WebsiteRoot {
+): item is LP_WebsiteRoot {
   return item?.system?.type === "website_root";
 }

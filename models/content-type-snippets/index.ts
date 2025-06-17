@@ -15,7 +15,7 @@
 
 export * from "./Block_blockGuidelines.ts";
 export * from "./Component_componentGuidelines.ts";
+export * from "./LP_livePreviewGuidelines.ts";
 export * from "./metadata.ts";
 export * from "./productBase.ts";
 export * from "./reference.ts";
-export * from "./WSL_livePreviewGuidelines.ts";

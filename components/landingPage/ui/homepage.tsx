@@ -1,9 +1,9 @@
 import { FC } from "react"
-import { WSL_WebsiteRoot } from "../../../models/content-types"
+import { LP_WebsiteRoot } from "../../../models/content-types"
 import { Content } from "../../shared/Content"
 
 type HomepageProps = {
-  homepageData: WSL_WebsiteRoot
+  homepageData: LP_WebsiteRoot
 }
 
 export const Homepage: FC<HomepageProps> = ({homepageData}) => (

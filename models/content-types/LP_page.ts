@@ -15,15 +15,15 @@
 
 import type { Elements } from "@kontent-ai/delivery-sdk";
 import type { CoreContentType } from "../system/index.ts";
-import type { Metadata } from "../content-type-snippets/index.ts";
 import type {
-  WSL_WebsiteRoot,
+  LP_WebsiteRoot,
   Article,
   Product,
   Solution,
   Block_ContentChunk,
   Block_VisualContainer,
 } from "./index.ts";
+import type { Metadata } from "../content-type-snippets/index.ts";
 
 /**
  * 💡 Page
@@ -31,7 +31,7 @@ import type {
  * Id: c99c1b81-dc7a-4926-869c-fbdf543f83fa
  * Codename: page
  */
-export type WSL_Page = CoreContentType<
+export type LP_Page = CoreContentType<
   {
     /**
      * Title
@@ -62,7 +62,7 @@ export type WSL_Page = CoreContentType<
      * Guidelines: Page of a website for the website tree in live preview.
      */
     readonly subpages: Elements.LinkedItemsElement<
-      WSL_Page | WSL_WebsiteRoot | Article | Product | Solution
+      LP_Page | LP_WebsiteRoot | Article | Product | Solution
     >;
     /**
      * Content
@@ -83,7 +83,7 @@ export type WSL_Page = CoreContentType<
 /**
  * Type representing all available element codenames for 💡 Page
  */
-export type WSL_PageElementCodenames =
+export type LP_PageElementCodenames =
   | "title"
   | "slug"
   | "subpages"
@@ -98,8 +98,8 @@ export type WSL_PageElementCodenames =
  * Id: c99c1b81-dc7a-4926-869c-fbdf543f83fa
  * Codename: page
  */
-export function isWSL_Page(
+export function isLP_Page(
   item: CoreContentType | undefined | null,
-): item is WSL_Page {
+): item is LP_Page {
   return item?.system?.type === "page";
 }

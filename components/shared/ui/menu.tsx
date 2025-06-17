@@ -14,7 +14,7 @@ import {
 import { siteCodename } from "../../../lib/utils/env";
 import { StandaloneSmartLinkButton } from "../StandaloneSmartLinkButton";
 import { Nav_NavigationItem } from "../../../models/content-types/Nav_navigationItem";
-import { Article, Product, Solution, WSL_Page, WSL_WebsiteRoot } from "../../../models/content-types";
+import { Article, Product, Solution, LP_Page, LP_WebsiteRoot } from "../../../models/content-types";
 import { contentTypes } from "../../../models/environment";
 
 type Link = Readonly<Nav_NavigationItem>;
@@ -35,8 +35,8 @@ type DropdownMenuProps = Readonly<{
 }>;
 
 const isPage = (
-  item: WSL_Page | WSL_WebsiteRoot | Product | Article | Solution
-): item is WSL_Page => item.system.type === contentTypes.page.codename;
+  item: LP_Page | LP_WebsiteRoot | Product | Article | Solution
+): item is LP_Page => item.system.type === contentTypes.page.codename;
 
 const isCurrentNavigationItemActive = (
   navigation: Nav_NavigationItem,

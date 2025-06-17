@@ -4,7 +4,7 @@ import { reservedListingSlugs } from "../../../lib/routing";
 import { parseFlatted, stringifyAsType } from "../../../lib/utils/circularityUtils";
 import { defaultEnvId } from "../../../lib/utils/env";
 import { createElementSmartLink, createFixedAddSmartLink } from "../../../lib/utils/smartLinkUtils";
-import { WSL_Page } from "../../../models/content-types";
+import { LP_Page } from "../../../models/content-types";
 import { cookies, draftMode } from "next/headers";
 import { previewApiKeyCookieName } from "../../../lib/constants/cookies";
 import { AppPage } from "../../../components/shared/ui/appPage";
@@ -19,7 +19,7 @@ const TopLevelPage = async ({params}: { params: Promise<{envId: string, slug: st
   const draft = await draftMode();
   const previewApiKey = draft.isEnabled ? (await cookies()).get(previewApiKeyCookieName)?.value : undefined;
 
-  const pageData = await getItemBySlug<WSL_Page>({ envId, previewApiKey }, slug, contentTypes.page.codename, draft.isEnabled);
+  const pageData = await getItemBySlug<LP_Page>({ envId, previewApiKey }, slug, contentTypes.page.codename, draft.isEnabled);
 
   if (pageData === null) {
     notFound();

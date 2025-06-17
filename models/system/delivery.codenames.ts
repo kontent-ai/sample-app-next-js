@@ -23,8 +23,8 @@ export type LanguageCodenames = "default";
  */
 export type ContentTypeCodenames =
   | "person"
-  | "navigation_item"
   | "article"
+  | "navigation_item"
   | "content_chunk"
   | "action"
   | "page"
@@ -77,8 +77,6 @@ export type ElementCodenames =
   | "last_name"
   | "occupation"
   | "bio"
-  | "reference"
-  | "subitems"
   | "title"
   | "hero_image"
   | "abstract"
@@ -88,6 +86,8 @@ export type ElementCodenames =
   | "author"
   | "slug"
   | "metadata"
+  | "reference"
+  | "subitems"
   | "block_guidelines"
   | "action_guidelines"
   | "image"
