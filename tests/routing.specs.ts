@@ -1,6 +1,6 @@
 import { ElementType } from "@kontent-ai/delivery-sdk";
 import { ResolutionContext, resolveReference, resolveUrlPath } from "../lib/routing";
-import { Article, CoreContentType, Product, Reference, WSL_Page, WSL_WebSpotlightRoot } from "../models";
+import { Article, CoreContentType, Product, Reference, WSL_Page, WSL_WebsiteRoot } from "../models";
 
 
 describe("resolveUrlPath", () => {
@@ -14,7 +14,7 @@ describe("resolveUrlPath", () => {
     ],
     [
       {
-        type: "web_spotlight_root",
+        type: "website_root",
       } as ResolutionContext,
       "/"
     ],
@@ -120,7 +120,7 @@ describe("resolveReference", () => {
   });
 
 
-  const internalLinkItem: WSL_Page | WSL_WebSpotlightRoot | Product | Article = {
+  const internalLinkItem: WSL_Page | WSL_WebsiteRoot | Product | Article = {
     system: {
       id: "8f098856-895c-5518-a8e0-d834ee28813a",
       name: "About us",

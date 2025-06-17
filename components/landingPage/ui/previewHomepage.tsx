@@ -2,13 +2,13 @@
 
 import { FC, useState } from "react";
 import { parseFlatted, stringifyAsType } from '../../../lib/utils/circularityUtils';
-import { WSL_WebSpotlightRoot } from "../../../models";
+import { WSL_WebsiteRoot } from "../../../models/content-types";
 import { applyUpdateOnItemAndLoadLinkedItems } from "@kontent-ai/smart-link";
 import Homepage from "./homepage";
 import { useLivePreview } from "../../../lib/useLivePreview";
 
 type HomepageProps = {
-  homepageData: WSL_WebSpotlightRoot
+  homepageData: WSL_WebsiteRoot
 }
 
 const PreviewHomepage: FC<HomepageProps> = ({homepageData}) => {
@@ -21,10 +21,10 @@ const PreviewHomepage: FC<HomepageProps> = ({homepageData}) => {
       return await response.json();
     })
 
-    setHomepage(updatedHomepage as unknown as WSL_WebSpotlightRoot);
+    setHomepage(updatedHomepage as unknown as WSL_WebsiteRoot);
 })
 
-  return <Homepage homepageData={homepage}></Homepage>
+  return <Homepage homepageData={homepage} />
 }
 
 export default PreviewHomepage

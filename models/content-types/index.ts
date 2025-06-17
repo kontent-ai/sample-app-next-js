@@ -24,4 +24,4 @@ export * from "./person.ts";
 export * from "./product.ts";
 export * from "./solution.ts";
 export * from "./WSL_page.ts";
-export * from "./WSL_webSpotlightRoot.ts";
+export * from "./WSL_websiteRoot.ts";

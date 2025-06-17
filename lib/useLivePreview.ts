@@ -9,10 +9,7 @@ export const useLivePreview = (callback: (data: IUpdateMessageData) => void): vo
   useEffect(() => {
     if (smartLink) {
       smartLink.on(KontentSmartLinkEvent.Update, callback);
-
-      return () => {
-        smartLink.off(KontentSmartLinkEvent.Update, callback); 
-      }
+      // useSmartLink destroys the sdk so there is no need to remove the event listener
     }
 
     return;
