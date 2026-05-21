@@ -5,7 +5,7 @@ import {
   envIdCookieName,
   previewApiKeyCookieName,
 } from "./lib/constants/cookies.ts";
-import { createQueryString } from "./lib/routing.ts";
+import { createQueryString, getSafeRedirectPath } from "./lib/routing.ts";
 import { defaultEnvId } from "./lib/utils/env.ts";
 
 const envIdRegex = /(?<envId>[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12})(?<remainingUrl>.*)/;
@@ -15,7 +15,7 @@ if (!KONTENT_PREVIEW_API_KEY) {
   throw new Error(`Environment variable KONTENT_PREVIEW_API_KEY is missing`);
 }
 
-export const middleware = (request: NextRequest) => {
+export const proxy = (request: NextRequest) => {
   if (request.method === "OPTIONS") {
     return NextResponse.next(); // Allow OPTIONS to proceed
   }
@@ -51,7 +51,11 @@ const handleExplicitProjectRoute =
   (currentEnvId: string) => (prevResponse: NextResponse, request: NextRequest) => {
     const regexResult = request.nextUrl.pathname.match(envIdRegex);
     const routeEnvId = regexResult?.groups?.envId;
-    const remainingUrl = regexResult?.groups?.remainingUrl;
+    // Sanitize at the source so every downstream redirect built from it stays same-origin.
+    const remainingUrl = getSafeRedirectPath(
+      regexResult?.groups?.remainingUrl,
+      request.nextUrl.origin,
+    );
 
     if (!routeEnvId) {
       return prevResponse;
@@ -85,7 +89,7 @@ const handleExplicitProjectRoute =
 
     return NextResponse.redirect(
       new URL(
-        `${remainingUrl ?? ""}?${createQueryString(Object.fromEntries(request.nextUrl.searchParams.entries()))}`,
+        `${remainingUrl}?${createQueryString(Object.fromEntries(request.nextUrl.searchParams.entries()))}`,
         request.nextUrl.origin,
       ),
     );
