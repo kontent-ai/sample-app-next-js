@@ -1,11 +1,11 @@
-'use client'
+"use client";
 import Image from "next/image";
-import { FC, ReactNode, useEffect, useState } from "react";
+import { type FC, type ReactNode, useEffect, useState } from "react";
 
-import { resolveUrlPath } from "../../../lib/routing";
-import { Product } from "../../../models/content-types/product";
-import { contentTypes } from "../../../models/environment/contentTypes";
-import { Solution } from "../../../models/content-types/solution";
+import { resolveUrlPath } from "../../../lib/routing.ts";
+import type { Product } from "../../../models/content-types/product.ts";
+import type { Solution } from "../../../models/content-types/solution.ts";
+import { contentTypes } from "../../../models/environment/contentTypes.ts";
 
 type Props = Readonly<{
   children: ReactNode;
@@ -17,8 +17,8 @@ export const ProductLink: FC<Props> = (props) => {
   const [product, setProduct] = useState<Product | null>(null);
 
   useEffect(() => {
-    fetch(`/api/product?codename=${props.itemCodename}`)
-      .then((res) => res.json())
+    void fetch(`/api/product?codename=${props.itemCodename}`)
+      .then(async (res) => (await res.json()) as { product: Product | null })
       .then((res) => setProduct(res.product));
   }, [props.itemCodename]);
 
@@ -33,11 +33,11 @@ export const ProductLink: FC<Props> = (props) => {
       >
         {props.children}
       </a>
-      {product && (
+      {product ? (
         <Popover>
           <ProductPreview product={product} />
         </Popover>
-      )}
+      ) : null}
     </span>
   );
 };
@@ -65,23 +65,19 @@ const isProduct = (item: Product | Solution): item is Product => {
 const ProductPreview: FC<ProductPreviewProps> = (props) => (
   <>
     <Image
-      src={props.product.elements.product_base__main_image.value[0]?.url || ""}
+      src={props.product.elements.product_base__main_image.value[0]?.url ?? ""}
       alt={
-        props.product.elements.product_base__main_image.value[0]?.description ||
+        props.product.elements.product_base__main_image.value[0]?.description ??
         props.product.elements.product_base__name.value
       }
       height={200}
-      width={props.product.elements.product_base__main_image.value[0]?.width || 200}
+      width={props.product.elements.product_base__main_image.value[0]?.width ?? 200}
       className="object-contain"
     />
     <span className="block w-full h-0 border-gray-200 border-b-2 my-3" />
-    <span className="flex justify-center">
-      {props.product.elements.product_base__name.value}
-    </span>
+    <span className="flex justify-center">{props.product.elements.product_base__name.value}</span>
     {isProduct(props.product) && (
-      <span className="flex justify-center">
-        Price: {props.product.elements.price.value}€
-      </span>
+      <span className="flex justify-center">Price: {props.product.elements.price.value}€</span>
     )}
   </>
 );

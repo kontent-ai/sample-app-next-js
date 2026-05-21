@@ -6,8 +6,9 @@ export type PerCollection<T> = Readonly<{
 
 export type ValidCollectionCodename = keyof PerCollection<never>;
 
-export const isValidCollectionCodename = (codename: string | undefined): codename is ValidCollectionCodename =>
-  Object.keys(emptyCodenames).includes(codename || "");
+export const isValidCollectionCodename = (
+  codename: string | undefined,
+): codename is ValidCollectionCodename => Object.keys(emptyCodenames).includes(codename ?? "");
 
 const emptyCodenames: PerCollection<null> = {
   ficto_imaging: null,

@@ -1,21 +1,17 @@
-import '../styles/globals.css'
-import SmartlinkInitializer from '../components/smartlink/SmartlinkInitializer'
-import { Analytics } from '@vercel/analytics/react'
+import "../styles/globals.css";
+import { Analytics } from "@vercel/analytics/react";
+import SmartlinkInitializer from "../components/smartlink/SmartlinkInitializer.tsx";
 
-export default async function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <body>
-      <Analytics />
-      <div className="w-full h-screen">
-        <SmartlinkInitializer />
-        {children}
-      </div>
+        <Analytics />
+        <div className="w-full h-screen">
+          <SmartlinkInitializer />
+          {children}
+        </div>
       </body>
     </html>
-  )
+  );
 }

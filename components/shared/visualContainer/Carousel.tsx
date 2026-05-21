@@ -1,30 +1,30 @@
-'use client'
+"use client";
 import { ArrowLeftIcon, ArrowRightIcon } from "@heroicons/react/24/solid";
-import { FC, useState } from "react";
+import { type FC, useState } from "react";
 
-import { range } from "../../../lib/utils/range";
-import { HeroUnitComponent } from "./HeroUnit";
-import { Fact } from "../../../models/content-types";
+import { range } from "../../../lib/utils/range.ts";
+import type { Fact } from "../../../models/content-types/index.ts";
+import { HeroUnitComponent } from "./HeroUnit.tsx";
 
 type Props = Readonly<{
   items: ReadonlyArray<Fact>;
 }>;
 
-export const CarouselComponent: FC<Props> = props => {
+export const CarouselComponent: FC<Props> = (props) => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [lastMove, setLastMove] = useState<LastMove>("withoutAnimation")
+  const [lastMove, setLastMove] = useState<LastMove>("withoutAnimation");
 
-  const itemsToRender = props.items.length == 2 ? [...props.items, ...props.items] : props.items;
+  const itemsToRender = props.items.length === 2 ? [...props.items, ...props.items] : props.items;
 
-  const wrapIndex = (i: number) => i < 0 ? itemsToRender.length + i : i % itemsToRender.length;
+  const wrapIndex = (i: number) => (i < 0 ? itemsToRender.length + i : i % itemsToRender.length);
 
   const moveForward = () => {
     setLastMove("forward");
-    setCurrentIndex(prev => wrapIndex(prev + 1));
+    setCurrentIndex((prev) => wrapIndex(prev + 1));
   };
   const moveBackward = () => {
     setLastMove("back");
-    setCurrentIndex(prev => wrapIndex(prev - 1));
+    setCurrentIndex((prev) => wrapIndex(prev - 1));
   };
   const jumpToIndex = (i: number) => {
     setLastMove("withoutAnimation");
@@ -33,16 +33,17 @@ export const CarouselComponent: FC<Props> = props => {
 
   return (
     <div className="relative w-full">
-        {/*This is a placeholder to determine the carousel height, because the real carousel items are absolutely positioned.*/}
-        {props.items[0] && <HeroUnitComponent item={props.items[0]} />}
-        {itemsToRender.map((item, index) => (
-          <Item
-            key={index}
-            state={calculateItemState({ currentIndex, itemIndex: index, lastMove, wrapIndex })}
-            shouldAnimate={lastMove !== "withoutAnimation"}
-            item={item}
-          />
-        ))}
+      {/*This is a placeholder to determine the carousel height, because the real carousel items are absolutely positioned.*/}
+      {props.items[0] ? <HeroUnitComponent item={props.items[0]} /> : null}
+      {itemsToRender.map((item, index) => (
+        <Item
+          // biome-ignore lint/suspicious/noArrayIndexKey: itemsToRender may contain duplicated items, so the index is required for a unique key
+          key={index}
+          state={calculateItemState({ currentIndex, itemIndex: index, lastMove, wrapIndex })}
+          shouldAnimate={lastMove !== "withoutAnimation"}
+          item={item}
+        />
+      ))}
       {props.items.length > 1 && (
         <>
           <Indicator
@@ -50,10 +51,7 @@ export const CarouselComponent: FC<Props> = props => {
             navigateTo={jumpToIndex}
             totalItems={props.items.length}
           />
-          <NextPrev
-            onNext={moveForward}
-            onPrev={moveBackward}
-          />
+          <NextPrev onNext={moveForward} onPrev={moveBackward} />
         </>
       )}
     </div>
@@ -62,7 +60,12 @@ export const CarouselComponent: FC<Props> = props => {
 
 type LastMove = "forward" | "back" | "withoutAnimation";
 
-const calculateItemState = (params: { currentIndex: number; itemIndex: number; lastMove: LastMove; wrapIndex: (i: number) => number }): ItemState => {
+const calculateItemState = (params: {
+  currentIndex: number;
+  itemIndex: number;
+  lastMove: LastMove;
+  wrapIndex: (i: number) => number;
+}): ItemState => {
   if (params.currentIndex === params.itemIndex) {
     return "current";
   }
@@ -81,15 +84,24 @@ type ItemProps = Readonly<{
   state: ItemState;
 }>;
 
-type ItemState = "current" | "next" | "previous" | "hidden" | "nextMovingAway" | "previousMovingAway";
+type ItemState =
+  | "current"
+  | "next"
+  | "previous"
+  | "hidden"
+  | "nextMovingAway"
+  | "previousMovingAway";
 
-const Item: FC<ItemProps> = props => (
-  <div className={`${createItemAnimationClasses(props.state)} absolute ${props.shouldAnimate ? "transition-transform" : ""} transform inset-0 duration-700 ease-in-out`}>
-      <HeroUnitComponent item={props.item} />
+const Item: FC<ItemProps> = (props) => (
+  <div
+    className={`${createItemAnimationClasses(props.state)} absolute ${props.shouldAnimate ? "transition-transform" : ""} transform inset-0 duration-700 ease-in-out`}
+  >
+    <HeroUnitComponent item={props.item} />
   </div>
 );
 
 const createItemAnimationClasses = (state: ItemState): string => {
+  // biome-ignore lint/nursery/noUnnecessaryConditions: the default branch is a defensive guard for the exhaustive switch
   switch (state) {
     case "current":
       return "z-20 translate-x-0";
@@ -104,7 +116,7 @@ const createItemAnimationClasses = (state: ItemState): string => {
     case "previousMovingAway":
       return "z-[11] -translate-x-full";
     default:
-      throw new Error(`Unknown item state ${state}.`);
+      throw new Error(`Unknown item state ${String(state)}.`);
   }
 };
 
@@ -114,9 +126,9 @@ type IndicatorProps = Readonly<{
   navigateTo: (index: number) => void;
 }>;
 
-const Indicator: FC<IndicatorProps> = props => (
+const Indicator: FC<IndicatorProps> = (props) => (
   <div className="absolute z-30 flex space-x-3 -translate-x-1/2 bottom-5 left-1/2">
-    {range(props.totalItems).map(i => (
+    {range(props.totalItems).map((i) => (
       <button
         key={i}
         onClick={() => props.navigateTo(i)}
@@ -129,16 +141,15 @@ const Indicator: FC<IndicatorProps> = props => (
   </div>
 );
 
-const createIndicatorClasses = (isCurrent: boolean) => isCurrent
-  ? "bg-white"
-  : "bg-white/50 hover:bg-white";
+const createIndicatorClasses = (isCurrent: boolean) =>
+  isCurrent ? "bg-white" : "bg-white/50 hover:bg-white";
 
 type NextPrevProps = Readonly<{
   onPrev: () => void;
   onNext: () => void;
 }>;
 
-const NextPrev: FC<NextPrevProps> = props => (
+const NextPrev: FC<NextPrevProps> = (props) => (
   <>
     <button
       type="button"
@@ -146,10 +157,7 @@ const NextPrev: FC<NextPrevProps> = props => (
       onClick={props.onPrev}
     >
       <span className="inline-flex items-center justify-center w-8 h-8 rounded-full sm:w-10 sm:h-10 bg-white/30 group-hover:bg-white/50 group-focus:ring-4 group-focus:ring-white  group-focus:outline-none">
-        <ArrowLeftIcon
-          className="w-5 h-5 text-white sm:w-6 sm:h-6"
-          aria-hidden="true"
-        />
+        <ArrowLeftIcon className="w-5 h-5 text-white sm:w-6 sm:h-6" aria-hidden="true" />
         <span className="sr-only">Previous</span>
       </span>
     </button>
@@ -159,13 +167,9 @@ const NextPrev: FC<NextPrevProps> = props => (
       onClick={props.onNext}
     >
       <span className="inline-flex items-center justify-center w-8 h-8 rounded-full sm:w-10 sm:h-10 bg-white/30 group-hover:bg-white/50 group-focus:ring-4 group-focus:ring-white group-focus:outline-none">
-        <ArrowRightIcon
-          className="w-5 h-5 text-white sm:w-6 sm:h-6"
-          aria-hidden="true"
-        />
+        <ArrowRightIcon className="w-5 h-5 text-white sm:w-6 sm:h-6" aria-hidden="true" />
         <span className="sr-only">Next</span>
       </span>
     </button>
   </>
 );
-

@@ -1,0 +1,17 @@
+{
+  "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
+  "extends": ["@kontent-ai/biome-config/base", "@kontent-ai/biome-config/react"],
+  "files": {
+    "includes": ["!**/*.css", "!models", "!.next"]
+  },
+  "linter": {
+    "rules": {
+      "a11y": {
+        "useValidAnchor": "off"
+      }
+    }
+  },
+  "javascript": {
+    "globals": ["jest"]
+  }
+}

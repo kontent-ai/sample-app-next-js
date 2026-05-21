@@ -1,7 +1,7 @@
 import Image from "next/image";
-import { FC, ReactNode } from "react";
+import type { FC, ReactNode } from "react";
 
-import { createItemSmartLink } from "../../../lib/utils/smartLinkUtils";
+import { createItemSmartLink } from "../../../lib/utils/smartLinkUtils.ts";
 
 type Props = Readonly<{
   url: string;
@@ -20,15 +20,13 @@ export const HeroImage: FC<Props> = (props) => (
         <Image
           src={props.url}
           alt="Hero image"
-          fill
+          fill={true}
           className="object-cover"
           sizes="(max-width: 1200px) 100vw, 80vw"
-          priority
+          priority={true}
         />
       </div>
-      <div
-        className="md:bg-mainBackgroundColor relative w-fit h-full flex max-w-3xl flex-col items-center md:items-start justify-end min-[900px]:justify-center pt-20 pb-32 md:pb-12 pr-6 min-[900px]:px-6"
-      >
+      <div className="md:bg-mainBackgroundColor relative w-fit h-full flex max-w-3xl flex-col items-center md:items-start justify-end min-[900px]:justify-center pt-20 pb-32 md:pb-12 pr-6 min-[900px]:px-6">
         {props.children}
       </div>
     </figure>

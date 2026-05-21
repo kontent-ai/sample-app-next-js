@@ -1,11 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
-import React, { FC } from "react";
+import type { FC } from "react";
 
-import { resolveReference } from "../../../lib/routing";
-import { createElementSmartLink } from "../../../lib/utils/smartLinkUtils";
-import { Fact } from "../../../models/content-types";
-import { contentTypes } from "../../../models/environment";
+import { resolveReference } from "../../../lib/routing.ts";
+import { createElementSmartLink } from "../../../lib/utils/smartLinkUtils.ts";
+import type { Fact } from "../../../models/content-types/index.ts";
+import { contentTypes } from "../../../models/environment/index.ts";
 
 type Props = Readonly<{
   items: ReadonlyArray<Fact>;
@@ -15,16 +15,13 @@ type Props = Readonly<{
 }>;
 
 const GridItem: FC<{ item: Fact }> = ({ item }) => (
-  <div
-    className="md:p-4 flex flex-col items-center"
-    key={item.system.id}
-  >
-    {item.elements.image.value[0] && (
+  <div className="md:p-4 flex flex-col items-center" key={item.system.id}>
+    {item.elements.image.value[0] ? (
       <div className="relative max-w-sm w-full h-[400px]">
         <Image
           src={item.elements.image.value[0].url}
           alt={item.elements.title.value}
-          fill
+          fill={true}
           style={{ objectFit: "cover" }}
           sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
           className="rounded-lg transition ease-in-out group-hover:brightness-50 duration-300 not-prose"
@@ -34,59 +31,43 @@ const GridItem: FC<{ item: Fact }> = ({ item }) => (
           {item.elements.reference__label.value}
         </div>
       </div>
-    )}
+    ) : null}
     <div className="font-semibold text-3xl w-full md:px-4 pt-10 pb-2">
       {item.elements.title.value}
     </div>
-    <div className="md:px-4 justify-center w-full">
-      {item.elements.message.value}
-    </div>
+    <div className="md:px-4 justify-center w-full">{item.elements.message.value}</div>
   </div>
 );
 
 export const GridComponent: FC<Props> = (props) => (
   <div className="vis-container px-10 w-full relative">
-    {props.title && (
+    {props.title ? (
       <h3
         className="heading"
         id={props.codename}
-        {...createElementSmartLink(
-          contentTypes.visual_container.elements.title.codename
-        )}
+        {...createElementSmartLink(contentTypes.visual_container.elements.title.codename)}
       >
-        <a
-          className="border-mainAnchorColor"
-          href={"#" + props.codename}
-        >
+        <a className="border-mainAnchorColor" href={`#${props.codename}`}>
           {props.title}
         </a>
       </h3>
-    )}
-    <div
-      {...createElementSmartLink(
-        contentTypes.visual_container.elements.subtitle.codename
-      )}
-    >
+    ) : null}
+    <div {...createElementSmartLink(contentTypes.visual_container.elements.subtitle.codename)}>
       {props.subtitle}
     </div>
     <div className="grid mx-auto w-full max-w-screen-xl py-7 text-gray-900 sm:grid-cols-2 md:grid-cols-3">
-      {props.items.map((item) => item.elements.reference__label.value ? (
-        <Link
-          key={item.system.codename}
-          className="no-underline font-normal group hover:scale-110 transform transition-all duration-300 ease-in-out"
-          href={resolveReference(item)}
-        >
-          <GridItem
-            item={item}
+      {props.items.map((item) =>
+        item.elements.reference__label.value ? (
+          <Link
             key={item.system.codename}
-          />
-        </Link>
-      ) : (
-        <GridItem
-          item={item}
-          key={item.system.codename}
-        />
-      )
+            className="no-underline font-normal group hover:scale-110 transform transition-all duration-300 ease-in-out"
+            href={resolveReference(item)}
+          >
+            <GridItem item={item} key={item.system.codename} />
+          </Link>
+        ) : (
+          <GridItem item={item} key={item.system.codename} />
+        ),
       )}
     </div>
   </div>

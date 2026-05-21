@@ -1,9 +1,8 @@
-import { ComponentType, FC } from "react";
-
-import { Block_ContentChunk, Block_VisualContainer } from "../../models";
-import { ContentChunk as ContentChunk } from "./ContentChunk";
-import { VisualContainer } from "./visualContainer/VisualContainer";
-import { contentTypes } from "../../models/environment";
+import type { ComponentType, FC } from "react";
+import { contentTypes } from "../../models/environment/index.ts";
+import type { Block_ContentChunk, Block_VisualContainer } from "../../models/index.ts";
+import { ContentChunk } from "./ContentChunk.tsx";
+import { VisualContainer } from "./visualContainer/VisualContainer.tsx";
 
 type AcceptedType = AcceptedTypesByCodename[keyof AcceptedTypesByCodename];
 
@@ -12,27 +11,24 @@ type Props = Readonly<{
   index: number;
 }>;
 
-const isSupportedComponentType = (type: string): type is keyof AcceptedTypesByCodename => (
-  Object.keys(componentMap).includes(type)
-);
+const isSupportedComponentType = (type: string): type is keyof AcceptedTypesByCodename =>
+  Object.keys(componentMap).includes(type);
 
-export const Content: FC<Props> = props => {
+export const Content: FC<Props> = (props) => {
   const type = props.item.system.type;
   if (!isSupportedComponentType(type)) {
     return null;
   }
   const TargetComponent = componentMap[type];
 
-  return (
-    <TargetComponent
-      index={props.index}
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      item={props.item as any}
-    />
-);
-} 
+  return <TargetComponent index={props.index} item={props.item as never} />;
+};
 
-const componentMap: Readonly<{ [key in keyof AcceptedTypesByCodename]: ComponentType<Readonly<{ item: AcceptedTypesByCodename[key], index: number }>> }> = {
+const componentMap: Readonly<{
+  [key in keyof AcceptedTypesByCodename]: ComponentType<
+    Readonly<{ item: AcceptedTypesByCodename[key]; index: number }>
+  >;
+}> = {
   content_chunk: ContentChunk,
   visual_container: VisualContainer,
 };
@@ -42,4 +38,3 @@ type AcceptedTypesByCodename = {
   [contentTypes.content_chunk.codename]: Block_ContentChunk;
   [contentTypes.visual_container.codename]: Block_VisualContainer;
 };
-

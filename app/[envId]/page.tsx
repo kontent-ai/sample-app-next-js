@@ -1,20 +1,24 @@
-import { getHomepage } from '../../lib/kontentClient';
-import { stringifyAsType, parseFlatted } from '../../lib/utils/circularityUtils';
-import { cookies, draftMode } from 'next/headers';
-import { previewApiKeyCookieName } from '../../lib/constants/cookies';
-import PreviewHomepage from '../../components/landingPage/ui/previewHomepage';
-import Homepage from '../../components/landingPage/ui/homepage';
-import { Metadata } from 'next';
-import { AppPage } from '../../components/shared/ui/appPage';
-import { cache } from 'react';
-import { notFound } from 'next/navigation';
+import type { Metadata } from "next";
+import { cookies, draftMode } from "next/headers";
+import { notFound } from "next/navigation";
+import { cache } from "react";
+import Homepage from "../../components/landingPage/ui/homepage.tsx";
+import PreviewHomepage from "../../components/landingPage/ui/previewHomepage.tsx";
+import { AppPage } from "../../components/shared/ui/appPage.tsx";
+import { previewApiKeyCookieName } from "../../lib/constants/cookies.ts";
+import { getHomepage } from "../../lib/kontentClient.ts";
+import { parseFlatted, stringifyAsType } from "../../lib/utils/circularityUtils.ts";
 
-const getHomepageData = cache(async (envId: string, previewApiKey?: string) => getHomepage({envId, previewApiKey}, !!previewApiKey))
+const getHomepageData = cache(async (envId: string, previewApiKey?: string) =>
+  getHomepage({ envId, previewApiKey }, !!previewApiKey),
+);
 
-const Home = async ({params}: {params: Promise<{envId: string}>}) => {
+const Home = async ({ params }: { params: Promise<{ envId: string }> }) => {
   const envId = (await params).envId;
   const draft = await draftMode();
-  const previewApiKey = draft.isEnabled ? (await cookies()).get(previewApiKeyCookieName)?.value : undefined;
+  const previewApiKey = draft.isEnabled
+    ? (await cookies()).get(previewApiKeyCookieName)?.value
+    : undefined;
   const homepageData = await getHomepageData(envId, previewApiKey);
 
   if (!homepageData) {
@@ -29,16 +33,20 @@ const Home = async ({params}: {params: Promise<{envId: string}>}) => {
     <AppPage item={homepageData}>
       <HomepageComponent homepageData={homepage} />
     </AppPage>
-  )
+  );
 };
 
-export async function generateMetadata(
-  { params }: { params: Promise<{ envId: string }> },
-): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ envId: string }>;
+}): Promise<Metadata> {
   const envId = (await params).envId;
 
   const draft = await draftMode();
-  const previewApiKey = draft.isEnabled ? (await cookies()).get(previewApiKeyCookieName)?.value : undefined;
+  const previewApiKey = draft.isEnabled
+    ? (await cookies()).get(previewApiKeyCookieName)?.value
+    : undefined;
   const homepageData = await getHomepageData(envId, previewApiKey);
 
   if (!homepageData) {
@@ -49,8 +57,8 @@ export async function generateMetadata(
   return {
     description: homepageData.elements.metadata__description.value,
     keywords: homepageData.elements.metadata__keywords.value,
-    title: homepageData.elements.metadata__title.value 
-  }
+    title: homepageData.elements.metadata__title.value,
+  };
 }
 
-export default Home
+export default Home;

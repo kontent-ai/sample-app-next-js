@@ -1,47 +1,63 @@
-import { createDeliveryClient, DeliveryError, IContentItem } from '@kontent-ai/delivery-sdk';
+import { createDeliveryClient, DeliveryError, type IContentItem } from "@kontent-ai/delivery-sdk";
 
-import { Article, Product, Solution, LP_Page, LP_WebsiteRoot } from '../models/content-types';
-import { ArticlePageSize, ProductsPageSize } from './constants/paging';
-import { ArticleTypeWithAll } from './utils/articlesListing';
-import { defaultEnvId, deliveryApiDomain, deliveryPreviewApiDomain, siteCodename } from './utils/env';
-import { contentTypes, contentTypeSnippets } from '../models/environment';
+import type {
+  Article,
+  LP_Page,
+  LP_WebsiteRoot,
+  Product,
+  Solution,
+} from "../models/content-types/index.ts";
+import { contentTypeSnippets, contentTypes } from "../models/environment/index.ts";
+import { ArticlePageSize, ProductsPageSize } from "./constants/paging.ts";
+import type { ArticleTypeWithAll } from "./utils/articlesListing.ts";
+import {
+  defaultEnvId,
+  deliveryApiDomain,
+  deliveryPreviewApiDomain,
+  siteCodename,
+} from "./utils/env.ts";
 
-const sourceTrackingHeaderName = 'X-KC-SOURCE';
+const sourceTrackingHeaderName = "X-KC-SOURCE";
 const defaultDepth = 10;
 
-const getDeliveryClient = ({ envId, previewApiKey }: ClientConfig) => createDeliveryClient({
-  environmentId: envId,
-  globalHeaders: () => [
-    {
-      header: sourceTrackingHeaderName,
-      value: `${process.env.APP_NAME || "n/a"};${process.env.APP_VERSION || "n/a"}`,
-    }
-  ],
-  proxy: {
-    baseUrl: deliveryApiDomain,
-    basePreviewUrl: deliveryPreviewApiDomain,
-  },
-  previewApiKey: defaultEnvId === envId ? process.env.KONTENT_PREVIEW_API_KEY : previewApiKey
-});
+const getDeliveryClient = ({ envId, previewApiKey }: ClientConfig) =>
+  createDeliveryClient({
+    environmentId: envId,
+    globalHeaders: () => [
+      {
+        header: sourceTrackingHeaderName,
+        value: `${process.env.APP_NAME ?? "n/a"};${process.env.APP_VERSION ?? "n/a"}`,
+      },
+    ],
+    proxy: {
+      baseUrl: deliveryApiDomain,
+      basePreviewUrl: deliveryPreviewApiDomain,
+    },
+    previewApiKey: defaultEnvId === envId ? process.env.KONTENT_PREVIEW_API_KEY : previewApiKey,
+  });
 
 type ClientConfig = {
-  envId: string,
-  previewApiKey?: string
-}
+  envId: string;
+  previewApiKey?: string;
+};
 
-export const getItemByCodename = <ItemType extends IContentItem>(config: ClientConfig, codename: string, usePreview: boolean): Promise<ItemType | null> => {
-  return getDeliveryClient(config)
+export const getItemByCodename = async <ItemType extends IContentItem>(
+  config: ClientConfig,
+  codename: string,
+  usePreview: boolean,
+): Promise<ItemType | null> => {
+  return await getDeliveryClient(config)
     .item<ItemType>(codename)
     .queryConfig({
       usePreviewMode: usePreview,
     })
     .depthParameter(defaultDepth)
     .toPromise()
-    .then(res => {
+    .then((res) => {
       if (res.response.status === 404) {
         return null;
       }
-      return res.data.item
+      return res.data.item;
     })
     .catch((error) => {
       if (error instanceof DeliveryError) {
@@ -54,23 +70,28 @@ export const getItemByCodename = <ItemType extends IContentItem>(config: ClientC
         return null;
       }
     });
+};
 
-}
-
-export const getHomepage = (config: ClientConfig, usePreview: boolean) =>
+export const getHomepage = async (config: ClientConfig, usePreview: boolean) =>
   getDeliveryClient(config)
     .items()
     .type(contentTypes.website_root.codename)
     .collection(siteCodename)
     .queryConfig({
       usePreviewMode: usePreview,
-      waitForLoadingNewContent: usePreview
+      waitForLoadingNewContent: usePreview,
     })
     .depthParameter(defaultDepth)
     .toPromise()
-    .then(res => res.data.items[0] as LP_WebsiteRoot | undefined)
+    .then((res) => res.data.items[0] as LP_WebsiteRoot | undefined);
 
-export const getProductsForListing = async (config: ClientConfig, usePreview: boolean, page?: number, categories?: string[], pageSize: number = ProductsPageSize) => {
+export const getProductsForListing = async (
+  config: ClientConfig,
+  usePreview: boolean,
+  page?: number,
+  categories?: string[],
+  pageSize: number = ProductsPageSize,
+) => {
   const query = getDeliveryClient(config)
     .items<Product>()
     .type(contentTypes.product.codename)
@@ -86,78 +107,81 @@ export const getProductsForListing = async (config: ClientConfig, usePreview: bo
       usePreviewMode: usePreview,
     })
     .includeTotalCountParameter()
-    .limitParameter(pageSize)
+    .limitParameter(pageSize);
 
   if (page) {
-    query.skipParameter((page - 1) * pageSize)
+    query.skipParameter((page - 1) * pageSize);
   }
 
   if (categories) {
     query.anyFilter(`elements.${contentTypes.product.elements.category.codename}`, categories);
   }
 
-  return query
-    .toPromise()
-    .then(res => res.data);
-}
+  return await query.toPromise().then((res) => res.data);
+};
 
-export const getProductItemsWithSlugs = (config: ClientConfig) =>
+export const getProductItemsWithSlugs = async (config: ClientConfig) =>
   getDeliveryClient(config)
     .items<Product>()
     .type(contentTypes.product.codename)
     .collections([siteCodename, "default"])
     .elementsParameter([contentTypes.product.elements.slug.codename])
     .toAllPromise()
-    .then(res => res.data.items)
+    .then((res) => res.data.items);
 
-export const getProductDetail = (config: ClientConfig, slug: string, usePreview: boolean) =>
+export const getProductDetail = async (config: ClientConfig, slug: string, usePreview: boolean) =>
   getDeliveryClient(config)
     .items<Product>()
     .equalsFilter(`elements.${contentTypes.product.elements.slug.codename}`, slug)
     .queryConfig({
       usePreviewMode: usePreview,
-      waitForLoadingNewContent: usePreview
-
+      waitForLoadingNewContent: usePreview,
     })
     .toAllPromise()
-    .then(res => res.data.items[0]);
+    .then((res) => res.data.items[0]);
 
-export const getSolutionsWithSlugs = (config: ClientConfig) =>
+export const getSolutionsWithSlugs = async (config: ClientConfig) =>
   getDeliveryClient(config)
     .items<Solution>()
     .type(contentTypes.solution.codename)
     .collections([siteCodename, "default"])
     .elementsParameter([contentTypes.solution.elements.slug.codename])
     .toAllPromise()
-    .then(res => res.data.items)
+    .then((res) => res.data.items);
 
-export const getSolutionDetail = (config: ClientConfig, slug: string, usePreview: boolean) =>
+export const getSolutionDetail = async (config: ClientConfig, slug: string, usePreview: boolean) =>
   getDeliveryClient(config)
     .items<Solution>()
     .equalsFilter(`elements.${contentTypes.solution.elements.slug.codename}`, slug)
     .queryConfig({
       usePreviewMode: usePreview,
-      waitForLoadingNewContent: usePreview
+      waitForLoadingNewContent: usePreview,
     })
     .toAllPromise()
-    .then(res => res.data.items[0]);
+    .then((res) => res.data.items[0]);
 
 export const getSiteMenu = async (config: ClientConfig, usePreview: boolean) => {
-  return getDeliveryClient(config)
+  return await getDeliveryClient(config)
     .items<LP_WebsiteRoot>()
     .type(contentTypes.website_root.codename)
     .collection(siteCodename)
     .queryConfig({
       usePreviewMode: usePreview,
-      waitForLoadingNewContent: usePreview
+      waitForLoadingNewContent: usePreview,
     })
     .depthParameter(defaultDepth)
     .toAllPromise()
-    .then(res => res.data.items[0] || null)
-    .then(item => item?.elements.navigation.linkedItems[0] || null)
-}
+    .then((res) => res.data.items[0] ?? null)
+    .then((item) => item?.elements.navigation.linkedItems[0] ?? null);
+};
 
-export const getArticlesForListing = (config: ClientConfig, usePreview: boolean, page?: number, articleType?: string, pageSize: number = ArticlePageSize) => {
+export const getArticlesForListing = async (
+  config: ClientConfig,
+  usePreview: boolean,
+  page?: number,
+  articleType?: string,
+  pageSize: number = ArticlePageSize,
+) => {
   const query = getDeliveryClient(config)
     .items<Article>()
     .type(contentTypes.article.codename)
@@ -165,100 +189,102 @@ export const getArticlesForListing = (config: ClientConfig, usePreview: boolean,
     .orderByDescending(`elements.${contentTypes.article.elements.publishing_date.codename}`)
     .queryConfig({
       usePreviewMode: usePreview,
-      waitForLoadingNewContent: usePreview
+      waitForLoadingNewContent: usePreview,
     })
-    .limitParameter(pageSize)
+    .limitParameter(pageSize);
 
   if (page) {
-    query.skipParameter((page - 1) * pageSize)
+    query.skipParameter((page - 1) * pageSize);
   }
 
-  if (articleType && articleType !== 'all') {
-    query.containsFilter(`elements.${contentTypes.article.elements.type.codename}`, [articleType])
+  if (articleType && articleType !== "all") {
+    query.containsFilter(`elements.${contentTypes.article.elements.type.codename}`, [articleType]);
   }
 
   query.includeTotalCountParameter();
-  return query
-    .toPromise()
-    .then(res => res.data);
-}
+  return await query.toPromise().then((res) => res.data);
+};
 
-export const getAllArticles = (config: ClientConfig, usePreview: boolean) =>
+export const getAllArticles = async (config: ClientConfig, usePreview: boolean) =>
   getDeliveryClient(config)
     .items<Article>()
     .type(contentTypes.article.codename)
     .collections([siteCodename, "default"])
     .queryConfig({
-      usePreviewMode: usePreview
+      usePreviewMode: usePreview,
     })
     .toPromise()
-    .then(res => res.data);
+    .then((res) => res.data);
 
-export const getArticleBySlug = (config: ClientConfig, slug: string, usePreview: boolean) =>
+export const getArticleBySlug = async (config: ClientConfig, slug: string, usePreview: boolean) =>
   getDeliveryClient(config)
     .items<Article>()
     .equalsFilter(`elements.${contentTypes.article.elements.slug.codename}`, slug)
     .depthParameter(defaultDepth)
     .queryConfig({
       usePreviewMode: usePreview,
-      waitForLoadingNewContent: usePreview
+      waitForLoadingNewContent: usePreview,
     })
     .toAllPromise()
-    .then(res => res.data.items[0]);
+    .then((res) => res.data.items[0]);
 
-const getCurrentCollectionTotalCountQuery = (config: ClientConfig) => (
+const getCurrentCollectionTotalCountQuery = (config: ClientConfig) =>
   getDeliveryClient(config)
     .items()
     .collection(siteCodename)
     .elementsParameter([])
     .limitParameter(1)
-    .includeTotalCountParameter()
-);
+    .includeTotalCountParameter();
 
-const getItemsCountByTypeQuery = (config: ClientConfig, usePreview: boolean, contentTypeCodename?: string) => {
-  const query = getCurrentCollectionTotalCountQuery(config)
-    .collection(siteCodename)
-    .queryConfig({
-      usePreviewMode: usePreview,
-      waitForLoadingNewContent: usePreview
-    })
+const getItemsCountByTypeQuery = (
+  config: ClientConfig,
+  usePreview: boolean,
+  contentTypeCodename?: string,
+) => {
+  const query = getCurrentCollectionTotalCountQuery(config).collection(siteCodename).queryConfig({
+    usePreviewMode: usePreview,
+    waitForLoadingNewContent: usePreview,
+  });
 
   if (contentTypeCodename) {
     query.type(contentTypeCodename);
   }
   return query;
-}
+};
 
-
-export const getItemsTotalCount = (config: ClientConfig, usePreview: boolean, contentTypeCodename?: string) => {
+export const getItemsTotalCount = async (
+  config: ClientConfig,
+  usePreview: boolean,
+  contentTypeCodename?: string,
+) => {
   const query = getItemsCountByTypeQuery(config, usePreview, contentTypeCodename);
 
-  return query
-    .toPromise()
-    .then(res => res.data.pagination.totalCount)
-}
+  return await query.toPromise().then((res) => res.data.pagination.totalCount);
+};
 
-export const getArticlesCountByCategory = (config: ClientConfig, usePreview: boolean, articleType: ArticleTypeWithAll) => {
+export const getArticlesCountByCategory = async (
+  config: ClientConfig,
+  usePreview: boolean,
+  articleType: ArticleTypeWithAll,
+) => {
   const query = getItemsCountByTypeQuery(config, usePreview, contentTypes.article.codename);
 
-  if (articleType !== 'all') {
-    query.containsFilter(`elements.${contentTypes.article.elements.type.codename}`, [articleType])
+  if (articleType !== "all") {
+    query.containsFilter(`elements.${contentTypes.article.elements.type.codename}`, [articleType]);
   }
 
-  return query
-    .toPromise()
-    .then(res => res.data.pagination.totalCount || 0)
-}
+  return await query.toPromise().then((res) => res.data.pagination.totalCount ?? 0);
+};
 
 export const getProductTaxonomy = async (config: ClientConfig, usePreview: boolean) =>
   getDeliveryClient(config)
     .taxonomy("product_category")
     .queryConfig({
       usePreviewMode: usePreview,
-      waitForLoadingNewContent: usePreview
+      waitForLoadingNewContent: usePreview,
     })
     .toPromise()
-    .then(res => res.data.taxonomy.terms);
+    .then((res) => res.data.taxonomy.terms);
 
 export const getDefaultMetadata = async (config: ClientConfig, usePreview: boolean) =>
   getDeliveryClient(config)
@@ -267,20 +293,27 @@ export const getDefaultMetadata = async (config: ClientConfig, usePreview: boole
     .collection(siteCodename)
     .queryConfig({
       usePreviewMode: usePreview,
-      waitForLoadingNewContent: usePreview
+      waitForLoadingNewContent: usePreview,
     })
-    .elementsParameter(Object.values(contentTypeSnippets.metadata.elements).map(element => element.codename))
+    .elementsParameter(
+      Object.values(contentTypeSnippets.metadata.elements).map((element) => element.codename),
+    )
     .depthParameter(defaultDepth)
     .toPromise()
-    .then(res => {
+    .then((res) => {
       const data = res.data.items[0];
       if (!data) {
-        throw new Error('Default metadata not found.');
+        throw new Error("Default metadata not found.");
       }
       return data;
-    })
+    });
 
-export const getItemBySlug = async <T extends IContentItem>(config: ClientConfig, slug: string, type: string, usePreview: boolean = false): Promise<T | null> => {
+export const getItemBySlug = async <T extends IContentItem>(
+  config: ClientConfig,
+  slug: string,
+  type: string,
+  usePreview: boolean = false,
+): Promise<T | null> => {
   const items = await getDeliveryClient(config)
     .items<T>()
     .equalsFilter("elements.slug", slug)
@@ -288,11 +321,11 @@ export const getItemBySlug = async <T extends IContentItem>(config: ClientConfig
     .collections([siteCodename, "default"])
     .queryConfig({
       usePreviewMode: usePreview,
-      waitForLoadingNewContent: usePreview
+      waitForLoadingNewContent: usePreview,
     })
     .depthParameter(defaultDepth)
     .toAllPromise()
-    .then(response => response.data.items);
+    .then((response) => response.data.items);
 
   if (items.length === 0) {
     console.warn(`Could not find item with URL slug "${slug}" of type "${type}"`);
@@ -300,33 +333,39 @@ export const getItemBySlug = async <T extends IContentItem>(config: ClientConfig
   }
 
   if (items.length > 1) {
-    console.warn(`Found more then one items with URL slug "${slug}" of type "${type} - found ${items.length} items. Using the first one.`)
+    console.warn(
+      `Found more then one items with URL slug "${slug}" of type "${type} - found ${items.length} items. Using the first one.`,
+    );
   }
 
   const item = items[0];
   if (!item) {
-    throw Error(`Item by URL slug "${slug}" of type "${type} nof found`);
+    throw new Error(`Item by URL slug "${slug}" of type "${type} nof found`);
   }
   return item;
-}
+};
 
-export const getPagesSlugs = (config: ClientConfig) =>
+export const getPagesSlugs = async (config: ClientConfig) =>
   getDeliveryClient(config)
     .items<LP_Page>()
     .type(contentTypes.page.codename)
     .collections([siteCodename, "default"])
     .elementsParameter([contentTypes.page.elements.slug.codename])
     .toAllPromise()
-    .then(res => res.data.items.map(item => item.elements.slug.value));
+    .then((res) => res.data.items.map((item) => item.elements.slug.value));
 
-export const getItemsByCodenames = (config: ClientConfig, codenames: string[], usePreview: boolean) => 
+export const getItemsByCodenames = async (
+  config: ClientConfig,
+  codenames: string[],
+  usePreview: boolean,
+) =>
   getDeliveryClient(config)
     .items()
     .inFilter("system.codename", codenames)
     .collections([siteCodename, "default"])
     .queryConfig({
       usePreviewMode: usePreview,
-      waitForLoadingNewContent: usePreview
+      waitForLoadingNewContent: usePreview,
     })
     .depthParameter(defaultDepth)
     .toAllPromise();

@@ -1,5 +1,5 @@
-import {  getCookie } from "cookies-next/client";
+import { getCookie } from "cookies-next/client";
 
-import { defaultCookieOptions, envIdCookieName } from "../constants/cookies";
+import { defaultCookieOptions, envIdCookieName } from "../constants/cookies.ts";
 
 export const getEnvIdFromCookie = () => getCookie(envIdCookieName, defaultCookieOptions);
