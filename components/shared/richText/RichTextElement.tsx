@@ -1,7 +1,7 @@
 import { ArrowTopRightOnSquareIcon } from "@heroicons/react/24/solid";
 import { Elements } from "@kontent-ai/delivery-sdk";
 import { PortableTextObject, transformToPortableText } from "@kontent-ai/rich-text-resolver";
-import { PortableText, PortableTextReactResolvers } from '@kontent-ai/rich-text-resolver/utils/react';
+import { PortableText, PortableTextReactResolvers } from "@kontent-ai/rich-text-resolver-react";
 
 import Image from "next/image";
 import { FC } from "react";

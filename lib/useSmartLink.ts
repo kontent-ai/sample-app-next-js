@@ -12,7 +12,7 @@ export const useSmartLink = () => {
 
     setSdk(KontentSmartLink.initialize({
       defaultDataAttributes: {
-        projectId: envId,
+        environmentId: envId,
         languageCodename: "default",
       }
     }));
