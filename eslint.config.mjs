@@ -7,7 +7,7 @@ export default defineConfig([
     ignores: [".next/**", "out/**", "node_modules/**", "next-env.d.ts"],
   },
   {
-    files: ["app/**/*.{ts,tsx}", "components/**/*.{ts,tsx}", "lib/**/*.{ts,tsx}", "middleware.ts"],
+    files: ["app/**/*.{ts,tsx}", "components/**/*.{ts,tsx}", "lib/**/*.{ts,tsx}", "proxy.ts"],
     extends: [kontentAiConfig, kontentAiReactConfig],
     languageOptions: {
       parserOptions: {

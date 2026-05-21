@@ -124,6 +124,28 @@ export const resolveReference = (reference: CoreContentType<Reference>) => {
   return collectionDomain + urlPath;
 };
 
+// Guards against open redirects: resolves a candidate redirect target and keeps
+// only same-origin paths, falling back to the site root otherwise. Relies on the
+// WHATWG URL parser, which normalizes the tricks (`//host`, `/\host`, `\t`) that
+// browsers also normalize.
+export const getSafeRedirectPath = (
+  candidate: string | null | undefined,
+  origin: string,
+): string => {
+  if (!candidate) {
+    return "/";
+  }
+
+  try {
+    const resolved = new URL(candidate, origin);
+    return resolved.origin === origin
+      ? `${resolved.pathname}${resolved.search}${resolved.hash}`
+      : "/";
+  } catch {
+    return "/";
+  }
+};
+
 export const createQueryString = (params: Record<string, string | string[] | undefined>) => {
   const queryString = Object.entries(params)
     .map(([paramKey, paramValue]) => {
