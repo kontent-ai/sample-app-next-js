@@ -1,16 +1,23 @@
-import { dirname } from "path";
-import { fileURLToPath } from "url";
-import { FlatCompat } from "@eslint/eslintrc";
+import kontentAiConfig from "@kontent-ai/eslint-config";
+import kontentAiReactConfig from "@kontent-ai/eslint-config/react";
+import { defineConfig } from "eslint/config";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-});
-
-const eslintConfig = [
-  ...compat.extends("next/core-web-vitals", "next/typescript"),
-];
-
-export default eslintConfig;
+export default defineConfig([
+  {
+    ignores: [".next/**", "out/**", "node_modules/**", "next-env.d.ts"],
+  },
+  {
+    files: ["app/**/*.{ts,tsx}", "components/**/*.{ts,tsx}", "lib/**/*.{ts,tsx}", "middleware.ts"],
+    extends: [kontentAiConfig, kontentAiReactConfig],
+    languageOptions: {
+      parserOptions: {
+        project: "./tsconfig.json",
+      },
+    },
+    rules: {
+      "react/jsx-max-props-per-line": "off",
+      "@typescript-eslint/strict-boolean-expressions": "off",
+      "react/jsx-wrap-multilines": "off",
+    },
+  },
+]);

@@ -1,15 +1,15 @@
-'use client'
-import { FC, useState } from "react";
+"use client";
+import { type FC, useState } from "react";
 
 import {
   createElementSmartLink,
   createItemSmartLink,
   createRelativeAddSmartLink,
-} from "../../../lib/utils/smartLinkUtils";
-import { FactComponent } from "../Fact";
-import { StandaloneSmartLinkButton } from "../StandaloneSmartLinkButton";
-import { Fact } from "../../../models/content-types";
-import { contentTypes } from "../../../models/environment";
+} from "../../../lib/utils/smartLinkUtils.ts";
+import type { Fact } from "../../../models/content-types/index.ts";
+import { contentTypes } from "../../../models/environment/index.ts";
+import { FactComponent } from "../Fact.tsx";
+import { StandaloneSmartLinkButton } from "../StandaloneSmartLinkButton.tsx";
 
 type Props = Readonly<{
   items: ReadonlyArray<Fact>;
@@ -33,40 +33,28 @@ export const StackComponent: FC<Props> = (props) => {
       className="vis-container px-3 md:px-10 relative"
       {...createItemSmartLink(props.itemId, true)}
     >
-      {props.title && (
+      {props.title ? (
         <h3
           id={props.codename}
           className="heading"
-          {...createElementSmartLink(
-            contentTypes.visual_container.elements.title.codename
-          )}
+          {...createElementSmartLink(contentTypes.visual_container.elements.title.codename)}
         >
-          <a
-            className="border-mainAnchorColor"
-            href={"#" + props.codename}
-          >
+          <a className="border-mainAnchorColor" href={`#${props.codename}`}>
             {props.title}
           </a>
         </h3>
-      )}
+      ) : null}
       <div
         className="pb-5"
-        {...createElementSmartLink(
-          contentTypes.visual_container.elements.subtitle.codename
-        )}
+        {...createElementSmartLink(contentTypes.visual_container.elements.subtitle.codename)}
       >
         {props.subtitle}
       </div>
       <section
-        {...createElementSmartLink(
-          contentTypes.visual_container.elements.items.codename,
-          true
-        )}
+        {...createElementSmartLink(contentTypes.visual_container.elements.items.codename, true)}
       >
         <StandaloneSmartLinkButton
-          elementCodename={
-            contentTypes.visual_container.elements.items.codename
-          }
+          elementCodename={contentTypes.visual_container.elements.items.codename}
         />
         {props.items.length > 1 && (
           <Headers
@@ -79,10 +67,7 @@ export const StackComponent: FC<Props> = (props) => {
           />
         )}
         <div>
-          <FactComponent
-            item={currentAction}
-            isReversed={props.index % 2 === 0}
-          />
+          <FactComponent item={currentAction} isReversed={props.index % 2 === 0} />
         </div>
       </section>
     </div>
@@ -96,16 +81,15 @@ type HeadersProps = Readonly<{
 }>;
 
 const Headers: FC<HeadersProps> = (props) => {
-
   return (
     <menu className="flex grow">
       {props.headers.map((header, i) => (
+        // biome-ignore lint/a11y/useKeyWithClickEvents: header tabs are a pointer affordance; the displayed fact is also reachable via the carousel controls
         <li
-          key={i}
-          className={`grow w-fit justify-center md:justify-between md:pl-5 flex overflow-hidden p-2 cursor-pointer ${props.selectedHeaderIndex === i
-            ? `border-b-2 border-mainBorderColor`
-            : ""
-            }`}
+          key={header.id}
+          className={`grow w-fit justify-center md:justify-between md:pl-5 flex overflow-hidden p-2 cursor-pointer ${
+            props.selectedHeaderIndex === i ? `border-b-2 border-mainBorderColor` : ""
+          }`}
           onClick={() => props.onHeaderSelected(i)}
           {...createItemSmartLink(header.id, true)}
           {...createRelativeAddSmartLink("after", "bottom-end")}

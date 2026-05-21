@@ -1,12 +1,12 @@
-'use client'
+"use client";
 import { ChevronDownIcon } from "@heroicons/react/24/solid";
 import Link from "next/link";
-import { ResolutionContext, resolveUrlPath } from "../../lib/routing";
-import { FC, useState } from "react";
-import { ArticleItem } from "../listingPage/ArticleItem";
-import { ArticlePageSize } from "../../lib/constants/paging";
-import { taxonomies } from "../../models/environment/taxonomies";
-import { Article } from "../../models/content-types/article";
+import { type FC, useState } from "react";
+import { ArticlePageSize } from "../../lib/constants/paging.ts";
+import { type ResolutionContext, resolveUrlPath } from "../../lib/routing.ts";
+import type { Article } from "../../models/content-types/article.ts";
+import { taxonomies } from "../../models/environment/taxonomies.ts";
+import { ArticleItem } from "../listingPage/ArticleItem.tsx";
 
 type LinkButtonProps = {
   text: string;
@@ -15,20 +15,25 @@ type LinkButtonProps = {
   roundRight?: boolean;
   roundLeft?: boolean;
   highlight?: boolean;
-}
+};
 
-const LinkButton: FC<LinkButtonProps> = props => (
+const LinkButton: FC<LinkButtonProps> = (props) => (
   <Link
     scroll={false}
-    href={props.disabled ? resolveUrlPath({
-      type: "article",
-      term: "all"
-    }) : props.href}
+    href={
+      props.disabled
+        ? resolveUrlPath({
+            type: "article",
+            term: "all",
+          })
+        : props.href
+    }
     className="h-full"
   >
     <button
+      type="button"
       disabled={props.disabled}
-      className={`${props.roundRight && 'rounded-r-lg'} ${props.roundLeft && 'rounded-l-lg'} disabled:cursor-not-allowed ${props.highlight ? `bg-mainBackgroundColor text-white` : 'bg-white'} px-3 py-2 leading-tight text-gray-500 border disabled:bg-gray-200 border-gray-300 enabled:hover:bg-gray-100 enabled:hover:text-gray-700 `}
+      className={`${props.roundRight && "rounded-r-lg"} ${props.roundLeft && "rounded-l-lg"} disabled:cursor-not-allowed ${props.highlight ? `bg-mainBackgroundColor text-white` : "bg-white"} px-3 py-2 leading-tight text-gray-500 border disabled:bg-gray-200 border-gray-300 enabled:hover:bg-gray-100 enabled:hover:text-gray-700 `}
     >
       {props.text}
     </button>
@@ -36,12 +41,13 @@ const LinkButton: FC<LinkButtonProps> = props => (
 );
 
 const getFilterOptions = () =>
-  Object.fromEntries(Object.entries(taxonomies.article_type.terms).map(([codename, obj]) => [codename, obj.name]));
-
+  Object.fromEntries(
+    Object.entries(taxonomies.article_type.terms).map(([codename, obj]) => [codename, obj.name]),
+  );
 
 type FilterOptionProps = Readonly<{
   options: Record<string, string>;
-  category: string
+  category: string;
 }>;
 
 const FilterOptions: FC<FilterOptionProps> = ({ options, category }) => {
@@ -55,7 +61,9 @@ const FilterOptions: FC<FilterOptionProps> = ({ options, category }) => {
           className="w-screen flex items-center py-1 px-6"
           onClick={() => setDropdownActive(!dropdownActive)}
         >
-          <ChevronDownIcon className={`w-6 h-full transform ${dropdownActive ? "rotate-180" : ""}`} />
+          <ChevronDownIcon
+            className={`w-6 h-full transform ${dropdownActive ? "rotate-180" : ""}`}
+          />
           <span className="font-semibold pb-1 pl-1">Category</span>
         </button>
       </div>
@@ -67,23 +75,25 @@ const FilterOptions: FC<FilterOptionProps> = ({ options, category }) => {
             key={key}
             href={resolveUrlPath({
               type: "article",
-              term: key
+              term: key,
             } as ResolutionContext)}
             onClick={() => setDropdownActive(!dropdownActive)}
             scroll={false}
-            className={`inline-flex items-center z-40 md:justify-between md:mr-4 md:w-max px-6 py-1 no-underline ${key === category ? ['bg-mainBackgroundColor', 'border-mainBorderColor', "text-white", "cursor-default"].join(" ") : `border-gray-200 bg-slate-100 hover:bg-mainHoverColor hover:text-white cursor-pointer`} md:rounded-3xl`}
-          >{value}
+            className={`inline-flex items-center z-40 md:justify-between md:mr-4 md:w-max px-6 py-1 no-underline ${key === category ? ["bg-mainBackgroundColor", "border-mainBorderColor", "text-white", "cursor-default"].join(" ") : `border-gray-200 bg-slate-100 hover:bg-mainHoverColor hover:text-white cursor-pointer`} md:rounded-3xl`}
+          >
+            {value}
           </Link>
         ))}
         <Link
           href={resolveUrlPath({
             type: "article",
-            term: "all"
+            term: "all",
           })}
           onClick={() => setDropdownActive(!dropdownActive)}
           scroll={false}
           className={`px-6 py-1 ${category === "all" ? "hidden" : ""} bg-gray-500 text-white no-underline font-bold md:rounded-3xl cursor-pointer`}
-        >Clear
+        >
+          Clear
         </Link>
       </div>
     </>
@@ -91,11 +101,11 @@ const FilterOptions: FC<FilterOptionProps> = ({ options, category }) => {
 };
 
 type ArticlesLitingProps = {
-  pageNumber: number
-  category: string
-  articles: ReadonlyArray<Article>
+  pageNumber: number;
+  category: string;
+  articles: ReadonlyArray<Article>;
   itemCount: number;
-}
+};
 
 export const ArticlesListing: FC<ArticlesLitingProps> = (props) => {
   const filterOptions = getFilterOptions();
@@ -104,86 +114,87 @@ export const ArticlesListing: FC<ArticlesLitingProps> = (props) => {
 
   return (
     <div className="md:px-4">
-        <h2 className="mt-4 px-6 md:px-0 md:mt-16">Latest Articles</h2>
-        <FilterOptions
-          options={filterOptions}
-          category={props.category}
-        />
-        <div className="flex flex-col flex-grow min-h-[500px]">
-          {props.articles.length > 0 ? (
-            <ul className="w-full grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 place-items-center list-none gap-5 md:pt-4 pl-0 justify-center">
-              {props.articles.map(article => (
+      <h2 className="mt-4 px-6 md:px-0 md:mt-16">Latest Articles</h2>
+      <FilterOptions options={filterOptions} category={props.category} />
+      <div className="flex flex-col flex-grow min-h-[500px]">
+        {props.articles.length > 0 ? (
+          <ul className="w-full grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 place-items-center list-none gap-5 md:pt-4 pl-0 justify-center">
+            {props.articles.map(
+              (article) =>
                 article.elements.type.value[0]?.codename && (
                   <ArticleItem
                     key={article.system.id}
                     title={article.elements.title.value}
                     itemId={article.system.id}
                     description={article.elements.abstract.value}
-                    imageUrl={article.elements.hero_image.value[0]?.url || ""}
+                    imageUrl={article.elements.hero_image.value[0]?.url ?? ""}
                     publishingDate={article.elements.publishing_date.value}
                     detailUrl={resolveUrlPath({
                       type: "article",
-                      slug: article.elements.slug.value
+                      slug: article.elements.slug.value,
                     })}
                   />
-                )
-              ))}
-            </ul>
-          )
-            :
-            <div className="w-full flex my-auto grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5 pt-4 pl-0 justify-center font-bold">No articles match this criteria.</div>
-          }
+                ),
+            )}
+          </ul>
+        ) : (
+          <div className="w-full flex my-auto grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5 pt-4 pl-0 justify-center font-bold">
+            No articles match this criteria.
+          </div>
+        )}
 
-          {pageCount > 1 && (
-            <nav>
-              <ul className="mr-14 sm:mr-0 flex flex-row flex-wrap list-none justify-center">
-                <li>
-                  <LinkButton
-                    text="Previous"
-                    href={!props.pageNumber || props.pageNumber === 2
+        {pageCount > 1 && (
+          <nav>
+            <ul className="mr-14 sm:mr-0 flex flex-row flex-wrap list-none justify-center">
+              <li>
+                <LinkButton
+                  text="Previous"
+                  href={
+                    !props.pageNumber || props.pageNumber === 2
                       ? resolveUrlPath({
-                        type: "article",
-                        term: "all"
-                      })
+                          type: "article",
+                          term: "all",
+                        })
                       : resolveUrlPath({
-                        type: "article",
-                        term: props.category,
-                        page: props.pageNumber - 1
-                      } as ResolutionContext)}
-                    disabled={props.pageNumber === 1}
-                    roundLeft
-                  />
-
-                </li>
-                {Array.from({ length: pageCount }).map((_, i) => (
-                  <li key={i}>
-                    <LinkButton
-                      text={`${i + 1}`}
-                      href={resolveUrlPath({
-                        type: "article",
-                        term: props.category,
-                        page: i + 1 > 1 ? i + 1 : undefined
-                      } as ResolutionContext)}
-                      highlight={(props.pageNumber ?? 1) === i + 1}
-                    />
-                  </li>
-                ))}
-                <li>
+                          type: "article",
+                          term: props.category,
+                          page: props.pageNumber - 1,
+                        } as ResolutionContext)
+                  }
+                  disabled={props.pageNumber === 1}
+                  roundLeft={true}
+                />
+              </li>
+              {Array.from({ length: pageCount }).map((_, i) => (
+                // biome-ignore lint/suspicious/noArrayIndexKey: pagination is a fixed-length, non-reordered list
+                <li key={i}>
                   <LinkButton
-                    text="Next"
+                    text={`${i + 1}`}
                     href={resolveUrlPath({
                       type: "article",
                       term: props.category,
-                      page: props.pageNumber ? props.pageNumber + 1 : 2
+                      page: i + 1 > 1 ? i + 1 : undefined,
                     } as ResolutionContext)}
-                    disabled={(props.pageNumber ?? 1) === pageCount}
-                    roundRight
+                    highlight={(props.pageNumber ?? 1) === i + 1}
                   />
                 </li>
-              </ul>
-            </nav>
-          )}
-        </div>
+              ))}
+              <li>
+                <LinkButton
+                  text="Next"
+                  href={resolveUrlPath({
+                    type: "article",
+                    term: props.category,
+                    page: props.pageNumber ? props.pageNumber + 1 : 2,
+                  } as ResolutionContext)}
+                  disabled={(props.pageNumber ?? 1) === pageCount}
+                  roundRight={true}
+                />
+              </li>
+            </ul>
+          </nav>
+        )}
       </div>
-  )
-}
+    </div>
+  );
+};

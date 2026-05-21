@@ -1,4 +1,4 @@
-import { ReadonlyURLSearchParams } from "next/navigation";
+import type { ReadonlyURLSearchParams } from "next/navigation";
 
 /**
  * Updates the search parameters of a URL.
@@ -7,18 +7,23 @@ import { ReadonlyURLSearchParams } from "next/navigation";
  * @param {Record<string, ReadonlyArray<string> | null>} newValues - The new values to update the search parameters with.
  * @returns {ReadonlyURLSearchParams} The updated search parameters.
  */
-export const updateSearchParams = (originalSearchParams: ReadonlyURLSearchParams, newValues: Record<string, ReadonlyArray<string> | null>) => {
+export const updateSearchParams = (
+  originalSearchParams: ReadonlyURLSearchParams,
+  newValues: Record<string, ReadonlyArray<string> | null>,
+) => {
   const params = new URLSearchParams(originalSearchParams?.toString());
 
   Object.entries(newValues).forEach(([name, value]) => {
     if (!value) {
       params.delete(name);
-      return params.toString();
+      return;
     }
-    
+
     params.delete(name);
-    value.forEach((val) => params.append(name, val));
-  })
+    value.forEach((val) => {
+      params.append(name, val);
+    });
+  });
 
   return params;
-}
+};

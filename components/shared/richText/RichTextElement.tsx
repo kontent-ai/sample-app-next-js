@@ -1,25 +1,23 @@
 import { ArrowTopRightOnSquareIcon } from "@heroicons/react/24/solid";
-import { Elements } from "@kontent-ai/delivery-sdk";
-import { PortableTextObject, transformToPortableText } from "@kontent-ai/rich-text-resolver";
-import { PortableText, PortableTextReactResolvers } from "@kontent-ai/rich-text-resolver-react";
+import type { Elements } from "@kontent-ai/delivery-sdk";
+import { type PortableTextObject, transformToPortableText } from "@kontent-ai/rich-text-resolver";
+import {
+  PortableText,
+  type PortableTextReactResolvers,
+} from "@kontent-ai/rich-text-resolver-react";
 
 import Image from "next/image";
-import { FC } from "react";
+import type { FC } from "react";
 
-import { sanitizeFirstChildText } from "../../../lib/anchors";
-import {
-  Action,
-  Block_ContentChunk,
-  Component_Callout,
-  Fact,
-} from "../../../models";
-import { ContentChunk } from "../ContentChunk";
-import { FactComponent } from "../Fact";
-import { CTAButton } from "../internalLinks/CTAButton";
-import { InternalLink } from "../internalLinks/InternalLink";
-import { BuildError } from "../ui/BuildError";
-import { CalloutComponent } from "./Callout";
-import { contentTypes } from "../../../models/environment";
+import { sanitizeFirstChildText } from "../../../lib/anchors.ts";
+import { contentTypes } from "../../../models/environment/index.ts";
+import type { Action, Block_ContentChunk, Component_Callout, Fact } from "../../../models/index.ts";
+import { ContentChunk } from "../ContentChunk.tsx";
+import { FactComponent } from "../Fact.tsx";
+import { CTAButton } from "../internalLinks/CTAButton.tsx";
+import { InternalLink } from "../internalLinks/InternalLink.tsx";
+import { BuildError } from "../ui/BuildError.tsx";
+import { CalloutComponent } from "./Callout.tsx";
 
 type ElementProps = Readonly<{
   element: Elements.RichTextElement;
@@ -29,7 +27,7 @@ type ElementProps = Readonly<{
 export const createDefaultResolvers = (
   element: Elements.RichTextElement,
   isElementInsideTable: boolean = false,
-  componentIndex = 0
+  componentIndex = 0,
 ): PortableTextReactResolvers => ({
   types: {
     image: ({ value }) => {
@@ -44,7 +42,7 @@ export const createDefaultResolvers = (
             <Image
               src={value.asset.url}
               alt={asset.description ?? ""}
-              fill
+              fill={true}
               className="object-contain"
             />
           </div>
@@ -70,11 +68,7 @@ export const createDefaultResolvers = (
               <tr key={r._key}>
                 {r.cells.map((c) => (
                   <td key={c._key}>
-                    <RichTextValue
-                      isInsideTable
-                      value={c.content}
-                      element={element}
-                    />
+                    <RichTextValue isInsideTable={true} value={c.content} element={element} />
                   </td>
                 ))}
               </tr>
@@ -83,13 +77,13 @@ export const createDefaultResolvers = (
         </table>
       );
     },
-    componentOrItem: ({value}) => {
-      const componentItem = element.linkedItems.find((i) => i.system.codename === value.componentOrItem._ref);
+    componentOrItem: ({ value }) => {
+      const componentItem = element.linkedItems.find(
+        (i) => i.system.codename === value.componentOrItem._ref,
+      );
 
       if (!componentItem) {
-        throw new Error(
-          "Component item not found, probably not enough depth requested."
-        );
+        throw new Error("Component item not found, probably not enough depth requested.");
       }
 
       switch (componentItem.system.type) {
@@ -100,10 +94,7 @@ export const createDefaultResolvers = (
         case contentTypes.fact.codename:
           return (
             // incrementing componentIndex ensures zigzag pattern of facts
-            <FactComponent
-              item={componentItem as Fact}
-              isReversed={componentIndex++ % 2 !== 0}
-            />
+            <FactComponent item={componentItem as Fact} isReversed={componentIndex++ % 2 !== 0} />
           );
         case contentTypes.content_chunk.codename:
           return <ContentChunk item={componentItem as Block_ContentChunk} />;
@@ -117,31 +108,19 @@ export const createDefaultResolvers = (
     },
   },
   marks: {
-    contentItemLink: ({
-      value,
-      children,
-    }) => {
+    contentItemLink: ({ value, children }) => {
       const link = element.links.find((l) => l.linkId === value?.contentItemLink._ref);
 
       if (!link) {
-        throw new Error(
-          "Cannot find link reference in links. This should never happen."
-        );
+        throw new Error("Cannot find link reference in links. This should never happen.");
       }
 
       return <InternalLink link={link}>{children}</InternalLink>;
     },
     link: ({ value, children }) => {
-      const target = (value?.href || "").startsWith("http")
-        ? "_blank"
-        : undefined;
+      const target = (value?.href ?? "").startsWith("http") ? "_blank" : undefined;
       return (
-        <a
-          href={value?.href}
-          target={target}
-          rel={value?.rel}
-          title={value?.title}
-        >
+        <a href={value?.href} target={target} rel={value?.rel} title={value?.title}>
           {children}
           {value?.["data-new-window"] ? (
             <ArrowTopRightOnSquareIcon className="w-5 inline-block ml-1" />
@@ -153,79 +132,43 @@ export const createDefaultResolvers = (
   block: {
     // TODO don't resolve when block contains link type markdef
     h1: ({ value, children }) => (
-      <h1
-        className="scroll-mt-20 heading"
-        id={sanitizeFirstChildText(value)}
-      >
-        <a
-          className="border-mainAnchorColor"
-          href={`#${sanitizeFirstChildText(value)}`}
-        >
+      <h1 className="scroll-mt-20 heading" id={sanitizeFirstChildText(value)}>
+        <a className="border-mainAnchorColor" href={`#${sanitizeFirstChildText(value)}`}>
           {children}
         </a>
       </h1>
     ),
     h2: ({ value, children }) => (
-      <h2
-        className="scroll-mt-20 heading"
-        id={sanitizeFirstChildText(value)}
-      >
-        <a
-          className="border-mainAnchorColor"
-          href={`#${sanitizeFirstChildText(value)}`}
-        >
+      <h2 className="scroll-mt-20 heading" id={sanitizeFirstChildText(value)}>
+        <a className="border-mainAnchorColor" href={`#${sanitizeFirstChildText(value)}`}>
           {children}
         </a>
       </h2>
     ),
     h3: ({ value, children }) => (
-      <h3
-        className="scroll-mt-20 heading"
-        id={sanitizeFirstChildText(value)}
-      >
-        <a
-          className="border-mainAnchorColor"
-          href={`#${sanitizeFirstChildText(value)}`}
-        >
+      <h3 className="scroll-mt-20 heading" id={sanitizeFirstChildText(value)}>
+        <a className="border-mainAnchorColor" href={`#${sanitizeFirstChildText(value)}`}>
           {children}
         </a>
       </h3>
     ),
     h4: ({ value, children }) => (
-      <h4
-        className="scroll-mt-20 heading"
-        id={sanitizeFirstChildText(value)}
-      >
-        <a
-          className="border-mainAnchorColor"
-          href={`#${sanitizeFirstChildText(value)}`}
-        >
+      <h4 className="scroll-mt-20 heading" id={sanitizeFirstChildText(value)}>
+        <a className="border-mainAnchorColor" href={`#${sanitizeFirstChildText(value)}`}>
           {children}
         </a>
       </h4>
     ),
     h5: ({ value, children }) => (
-      <h5
-        className="scroll-mt-20 heading"
-        id={sanitizeFirstChildText(value)}
-      >
-        <a
-          className="border-mainAnchorColor"
-          href={`#${sanitizeFirstChildText(value)}`}
-        >
+      <h5 className="scroll-mt-20 heading" id={sanitizeFirstChildText(value)}>
+        <a className="border-mainAnchorColor" href={`#${sanitizeFirstChildText(value)}`}>
           {children}
         </a>
       </h5>
     ),
     h6: ({ value, children }) => (
-      <h6
-        className="scroll-mt-20 heading"
-        id={sanitizeFirstChildText(value)}
-      >
-        <a
-          className="border-mainAnchorColor"
-          href={`#${sanitizeFirstChildText(value)}`}
-        >
+      <h6 className="scroll-mt-20 heading" id={sanitizeFirstChildText(value)}>
+        <a className="border-mainAnchorColor" href={`#${sanitizeFirstChildText(value)}`}>
           {children}
         </a>
       </h6>
@@ -237,10 +180,7 @@ export const RichTextElement: FC<ElementProps> = (props) => {
   const portableText = transformToPortableText(props.element.value);
 
   return (
-    <PortableText
-      value={portableText}
-      components={createDefaultResolvers(props.element, false)}
-    />
+    <PortableText value={portableText} components={createDefaultResolvers(props.element, false)} />
   );
 };
 

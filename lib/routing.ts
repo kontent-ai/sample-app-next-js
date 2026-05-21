@@ -1,49 +1,54 @@
+import type { Reference } from "../models/content-type-snippets/index.ts";
+import { isLP_WebsiteRoot } from "../models/content-types/LP_websiteRoot.ts";
+import { contentTypes, type taxonomies } from "../models/environment/index.ts";
+import type { CoreContentType } from "../models/system/index.ts";
 
-import { Reference } from "../models/content-type-snippets";
-import { isLP_WebsiteRoot } from "../models/content-types/LP_websiteRoot";
-import { contentTypes, taxonomies } from "../models/environment";
-import { CoreContentType } from "../models/system";
-
-
-const getExternalUrlsMapping = () => Object.fromEntries(
-  process.env.NEXT_PUBLIC_OTHER_COLLECTIONS_DOMAINS?.split(",")
-    .map(collectionPair => collectionPair.split(":"))
-    .map(([collectionCodename, domain]) => [collectionCodename, "https://" + domain]) ?? []
-);
+const getExternalUrlsMapping = () =>
+  Object.fromEntries(
+    process.env.NEXT_PUBLIC_OTHER_COLLECTIONS_DOMAINS?.split(",")
+      .map((collectionPair) => collectionPair.split(":"))
+      .map(([collectionCodename, domain]): [string, string] => [
+        collectionCodename ?? "",
+        `https://${domain}`,
+      ]) ?? [],
+  );
 
 // union type of all nested terms codenames
-type RecursiveTaxonomyCodenames<T extends { readonly terms: unknown }> = keyof T["terms"] extends infer TermCodenames
-  ? TermCodenames extends keyof T["terms"]
-  ? T["terms"][TermCodenames] extends infer ChildTerm extends { readonly terms: unknown }
-  ? RecursiveTaxonomyCodenames<ChildTerm> | TermCodenames
-  : never
-  : never
-  : never;
+type RecursiveTaxonomyCodenames<T extends { readonly terms: unknown }> =
+  keyof T["terms"] extends infer TermCodenames
+    ? TermCodenames extends keyof T["terms"]
+      ? T["terms"][TermCodenames] extends infer ChildTerm extends { readonly terms: unknown }
+        ? RecursiveTaxonomyCodenames<ChildTerm> | TermCodenames
+        : never
+      : never
+    : never;
 
 type ArticleListingPathOptions = Readonly<{
   type: typeof contentTypes.article.codename;
-  term: keyof typeof taxonomies.article_type.terms | "all",
-  page?: number
+  term: keyof typeof taxonomies.article_type.terms | "all";
+  page?: number;
 }>;
 
 type ProductListingPathOptions = Readonly<{
   type: typeof contentTypes.product.codename;
-  terms: ReadonlyArray<RecursiveTaxonomyCodenames<typeof taxonomies.product_category>>
-  page?: number
+  terms: ReadonlyArray<RecursiveTaxonomyCodenames<typeof taxonomies.product_category>>;
+  page?: number;
 }>;
 
 type GenericContentTypeOptions = Readonly<{
-  type: typeof contentTypes.page.codename
-  | typeof contentTypes.article.codename
-  | typeof contentTypes.product.codename
-  | typeof contentTypes.solution.codename,
-  slug: string
+  type:
+    | typeof contentTypes.page.codename
+    | typeof contentTypes.article.codename
+    | typeof contentTypes.product.codename
+    | typeof contentTypes.solution.codename;
+  slug: string;
 }>;
 type WebSpotlightRootOptions = Readonly<{
-  type: typeof contentTypes.website_root.codename
+  type: typeof contentTypes.website_root.codename;
 }>;
 
-export type ResolutionContext = GenericContentTypeOptions
+export type ResolutionContext =
+  | GenericContentTypeOptions
   | ArticleListingPathOptions
   | ProductListingPathOptions
   | GenericContentTypeOptions
@@ -51,11 +56,10 @@ export type ResolutionContext = GenericContentTypeOptions
 
 export const reservedListingSlugs = {
   articles: "articles",
-  products: "products"
+  products: "products",
 };
 
 export const resolveUrlPath = (context: ResolutionContext) => {
-
   switch (context.type) {
     case contentTypes.website_root.codename: {
       return `/`;
@@ -67,33 +71,32 @@ export const resolveUrlPath = (context: ResolutionContext) => {
     case contentTypes.article.codename: {
       if ("term" in context) {
         if (context.term === "all" && !context.page) {
-          return `/${reservedListingSlugs.articles}`
+          return `/${reservedListingSlugs.articles}`;
         }
 
-        return `/${reservedListingSlugs.articles}/category/${context.term}${context.page ? `/page/${context.page}` : ""}`
+        return `/${reservedListingSlugs.articles}/category/${context.term}${context.page ? `/page/${context.page}` : ""}`;
       }
 
       return `/${reservedListingSlugs.articles}/${context.slug}`;
-
     }
     case contentTypes.product.codename: {
       if ("terms" in context) {
         const query = createQueryString({
           category: context.terms as string[],
-          page: context.page?.toString() || undefined
+          page: context.page?.toString(),
         });
-        return `/${reservedListingSlugs.products}${query && '?' + query}`
+        return `/${reservedListingSlugs.products}${query && `?${query}`}`;
       }
 
       return `/${reservedListingSlugs.products}/${context.slug}`;
     }
     case contentTypes.solution.codename: {
-      return `/solutions/${context.slug}`
+      return `/solutions/${context.slug}`;
     }
     default:
-      throw Error(`Not supported resolution for options ${JSON.stringify(context)}`);
+      throw new Error(`Not supported resolution for options ${JSON.stringify(context)}`);
   }
-}
+};
 
 export const resolveReference = (reference: CoreContentType<Reference>) => {
   if (reference.elements.reference__external_uri.value) {
@@ -103,38 +106,37 @@ export const resolveReference = (reference: CoreContentType<Reference>) => {
   const referencedItem = reference.elements.reference__content__item_link.linkedItems[0];
 
   if (!referencedItem) {
-    console.info(`Linked item not found when resolving item with codename ${reference.system.codename} of type ${reference.system.type}`);
+    console.info(
+      `Linked item not found when resolving item with codename ${reference.system.codename} of type ${reference.system.type}`,
+    );
     return "#";
   }
 
-  const collectionDomain = getExternalUrlsMapping()[referencedItem.system.collection] || "";
+  const collectionDomain = getExternalUrlsMapping()[referencedItem.system.collection] ?? "";
 
-  const slug = isLP_WebsiteRoot(referencedItem)
-    ? "/"
-    : referencedItem.elements.slug.value; // expecting "slug" codename
+  const slug = isLP_WebsiteRoot(referencedItem) ? "/" : referencedItem.elements.slug.value; // expecting "slug" codename
 
   const urlPath = resolveUrlPath({
     type: referencedItem.system.type,
-    slug
+    slug,
   } as GenericContentTypeOptions);
 
   return collectionDomain + urlPath;
-}
+};
 
 export const createQueryString = (params: Record<string, string | string[] | undefined>) => {
-
-  const queryString = Object.entries(params).map(
-    ([paramKey, paramValue]) => {
+  const queryString = Object.entries(params)
+    .map(([paramKey, paramValue]) => {
       if (!paramValue) {
         return undefined;
       }
 
-      return typeof paramValue === 'string'
+      return typeof paramValue === "string"
         ? `${paramKey}=${paramValue}`
-        : paramValue.map(v => `${paramKey}=${v}`).join('&');
-    },)
-    .filter(p => p !== undefined)
-    .join('&');
+        : paramValue.map((v) => `${paramKey}=${v}`).join("&");
+    })
+    .filter((p) => p !== undefined)
+    .join("&");
 
   return queryString;
-}
+};

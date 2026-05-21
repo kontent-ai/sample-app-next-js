@@ -1,26 +1,28 @@
-'use client'
+"use client";
 import { Bars3Icon, ChevronDownIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { FC, useState } from "react";
+import { type FC, useState } from "react";
 
-import { perCollectionSiteName } from "../../../lib/constants/labels";
-import {
-  ResolutionContext,
-  resolveReference,
-  resolveUrlPath,
-} from "../../../lib/routing";
-import { siteCodename } from "../../../lib/utils/env";
-import { StandaloneSmartLinkButton } from "../StandaloneSmartLinkButton";
-import { Nav_NavigationItem } from "../../../models/content-types/Nav_navigationItem";
-import { Article, Product, Solution, LP_Page, LP_WebsiteRoot } from "../../../models/content-types";
-import { contentTypes } from "../../../models/environment";
+import { perCollectionSiteName } from "../../../lib/constants/labels.ts";
+import { resolveReference, resolveUrlPath } from "../../../lib/routing.ts";
+import { siteCodename } from "../../../lib/utils/env.ts";
+import type {
+  Article,
+  LP_Page,
+  LP_WebsiteRoot,
+  Product,
+  Solution,
+} from "../../../models/content-types/index.ts";
+import type { Nav_NavigationItem } from "../../../models/content-types/Nav_navigationItem.ts";
+import { contentTypes } from "../../../models/environment/index.ts";
+import { StandaloneSmartLinkButton } from "../StandaloneSmartLinkButton.tsx";
 
-type Link = Readonly<Nav_NavigationItem>;
+type NavLink = Readonly<Nav_NavigationItem>;
 
 type Props = Readonly<{
-  item: Link;
+  item: NavLink;
 }>;
 
 type MenuListProps = Readonly<{
@@ -31,27 +33,19 @@ type MenuListProps = Readonly<{
 }>;
 
 type DropdownMenuProps = Readonly<{
-  links: ReadonlyArray<Link>;
+  links: ReadonlyArray<NavLink>;
 }>;
 
-const isPage = (
-  item: LP_Page | LP_WebsiteRoot | Product | Article | Solution
-): item is LP_Page => item.system.type === contentTypes.page.codename;
+const isPage = (item: LP_Page | LP_WebsiteRoot | Product | Article | Solution): item is LP_Page =>
+  item.system.type === contentTypes.page.codename;
 
-const isCurrentNavigationItemActive = (
-  navigation: Nav_NavigationItem,
-  pathname: string,
-) => {
+const isCurrentNavigationItemActive = (navigation: Nav_NavigationItem, pathname: string) => {
   const pathWithoutQuerystring = pathname.replace(/\?.*/, "");
   const pathSegments = pathWithoutQuerystring.split("/");
   const topLevelSegment = pathSegments[1];
   const pageLink = navigation.elements.reference__content__item_link.linkedItems[0];
 
-  return (
-    pageLink &&
-    isPage(pageLink) &&
-    pageLink.elements.slug.value === topLevelSegment
-  );
+  return pageLink && isPage(pageLink) && pageLink.elements.slug.value === topLevelSegment;
 };
 
 const MenuList: FC<MenuListProps> = (props) => {
@@ -63,8 +57,9 @@ const MenuList: FC<MenuListProps> = (props) => {
       } absolute w-full md:static flex flex-col md:flex md:gap-4 font-medium md:flex-row h-full`}
     >
       {props.items.map((link, i) => (
+        // biome-ignore lint/a11y/useKeyWithClickEvents: focusable button/link children handle keyboard interaction
         <li
-          key={i}
+          key={link.system.codename}
           className={`${
             isCurrentNavigationItemActive(link, pathname)
               ? ""
@@ -100,6 +95,7 @@ const MenuList: FC<MenuListProps> = (props) => {
 const DropdownButton: FC<Props> = (props) => {
   return (
     <button
+      type="button"
       className="md:group-hover:text-gray-900 h-full flex items-center justify-between w-full p-4 py-2 font-medium text-white border-b border-gray-100 md:w-auto md:bg-transparent md:border-0"
       title={props.item.elements.reference__caption.value}
     >
@@ -125,12 +121,8 @@ const DropdownMenuItems: FC<DropdownMenuProps> = (props) => {
             }
           block p-3 bg-gray-200 border-l-8 h-full`}
           >
-            <div className="font-semibold">
-              {link.elements.reference__label.value}
-            </div>
-            <span className="text-sm text-gray-500">
-              {link.elements.reference__caption.value}
-            </span>
+            <div className="font-semibold">{link.elements.reference__label.value}</div>
+            <span className="text-sm text-gray-500">{link.elements.reference__caption.value}</span>
           </Link>
         </li>
       ))}
@@ -147,25 +139,18 @@ export const Menu: FC<Props> = (props) => {
   };
 
   return (
-    <div
-      className="w-full fixed z-50 transition-all ease-in-out duration-200 bg-mainBackgroundColor"
-    >
+    <div className="w-full fixed z-50 transition-all ease-in-out duration-200 bg-mainBackgroundColor">
       <div className="flex justify-between items-center mx-auto max-w-screen-xl md:h-16 pr-4">
         <div className="w-screen h-full md:flex justify-between z-50 md:pr-24 xl:pr-12 2xl:pr-0">
           <div className="flex text-white h-full justify-between items-center px-8 py-4">
             <Link
               href={resolveUrlPath({
                 type: "website_root",
-              } as ResolutionContext)}
+              })}
               className="flex items-center"
             >
               <span className="pr-3">
-                <Image
-                  src="/logo.png"
-                  alt="logo"
-                  width={30}
-                  height={30}
-                />
+                <Image src="/logo.png" alt="logo" width={30} height={30} />
               </span>
               <span className="font-bold">Ficto</span>
               <span>&nbsp;{perCollectionSiteName[siteCodename]}</span>

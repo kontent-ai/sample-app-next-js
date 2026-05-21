@@ -1,9 +1,9 @@
-'use client'
+"use client";
 import { setCookie } from "cookies-next";
-import { FC, useEffect } from "react";
+import { type FC, useEffect } from "react";
 
-import { webAuth } from "../../lib/constants/auth";
-import { defaultCookieOptions, urlAfterAuthCookieName } from "../../lib/constants/cookies";
+import { webAuth } from "../../lib/constants/auth.ts";
+import { defaultCookieOptions, urlAfterAuthCookieName } from "../../lib/constants/cookies.ts";
 
 const GetPreviewApiKey: FC = () => {
   useEffect(() => {
@@ -12,13 +12,18 @@ const GetPreviewApiKey: FC = () => {
     const promptLogin = searchParams?.get("promptLogin");
 
     if (!path) {
-      console.warn("Missing query parameter 'path' in /getPreviewApiKey. Will redirect to / after auth.");
+      console.warn(
+        "Missing query parameter 'path' in /getPreviewApiKey. Will redirect to / after auth.",
+      );
     }
-    setCookie(urlAfterAuthCookieName, path, defaultCookieOptions);
-    webAuth.authorize({ redirectUri: `${window.origin}/callback`, prompt: typeof promptLogin === "string" ? undefined : "none" });
-  }, [])
+    void setCookie(urlAfterAuthCookieName, path, defaultCookieOptions);
+    webAuth.authorize({
+      redirectUri: `${window.origin}/callback`,
+      prompt: typeof promptLogin === "string" ? undefined : "none",
+    });
+  }, []);
 
   return null;
-}
+};
 
 export default GetPreviewApiKey;

@@ -1,5 +1,5 @@
-import { Component_Callout } from "../../models";
-import { contentTypes } from "../../models/environment/contentTypes";
+import { contentTypes } from "../../models/environment/contentTypes.ts";
+import type { Component_Callout } from "../../models/index.ts";
 
 export type CalloutType = Component_Callout["elements"]["type"]["value"][0]["codename"];
 

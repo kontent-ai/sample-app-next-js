@@ -1,4 +1,4 @@
-import { parse,stringify } from "flatted";
+import { parse, stringify } from "flatted";
 
 /**
  * Helper methods for managing circular references.
@@ -7,13 +7,13 @@ import { parse,stringify } from "flatted";
 /**
  * Stringified object with a type reference for deserialization.
  */
-export type Stringified<T> = string & T
+export type Stringified<T> = string & T;
 
 /**
  * Stringifies the provided item as a JSON string while preserving the type information.
  * This allows for the serialized string to be treated as both a string and as an object
  * of type `T` during type checking.
- * 
+ *
  * Stringification allows passing circular data through getStaticProps.
  *
  * @template T The type of the item to be stringified.
@@ -22,7 +22,7 @@ export type Stringified<T> = string & T
  */
 export const stringifyAsType = <T>(item: T): Stringified<T> => {
   return stringify(item) as Stringified<T>;
-}
+};
 
 /**
  * Parses a stringified item that was previously converted to a JSON string
@@ -34,5 +34,5 @@ export const stringifyAsType = <T>(item: T): Stringified<T> => {
  * @returns The original object of type `T` that was stringified.
  */
 export const parseFlatted = <T>(flatItem: Stringified<T>): T => {
-  return parse(flatItem);
-}
+  return parse(flatItem) as T;
+};

@@ -1,13 +1,13 @@
-import { FC } from "react";
+import type { FC } from "react";
 
-import { sanitizeAnchor } from "../../../lib/anchors";
-import { BuildError } from "../ui/BuildError";
-import { CarouselComponent } from "./Carousel";
-import { GridComponent } from "./Grid";
-import { HeroUnitComponent } from "./HeroUnit";
-import { StackComponent } from "./Stack";
-import { Block_VisualContainer } from "../../../models/content-types";
-import { contentTypes } from "../../../models/environment";
+import { sanitizeAnchor } from "../../../lib/anchors.ts";
+import type { Block_VisualContainer } from "../../../models/content-types/index.ts";
+import { contentTypes } from "../../../models/environment/index.ts";
+import { BuildError } from "../ui/BuildError.tsx";
+import { CarouselComponent } from "./Carousel.tsx";
+import { GridComponent } from "./Grid.tsx";
+import { HeroUnitComponent } from "./HeroUnit.tsx";
+import { StackComponent } from "./Stack.tsx";
 
 type Props = Readonly<{
   item: Block_VisualContainer;
@@ -15,7 +15,8 @@ type Props = Readonly<{
 }>;
 
 const VisualRepresentation: FC<Props> = (props) => {
-  const { grid, hero_unit, stack } = contentTypes.visual_container.elements.visual_representation.options;
+  const { grid, hero_unit, stack } =
+    contentTypes.visual_container.elements.visual_representation.options;
   switch (props.item.elements.visual_representation.value[0]?.codename) {
     case grid.codename:
       return (
@@ -42,23 +43,19 @@ const VisualRepresentation: FC<Props> = (props) => {
         const fact = props.item.elements.items.linkedItems[0];
         return !fact ? (
           <BuildError>
-            Visual container {props.item.system.codename} does not contain any
-            Fact.
+            Visual container {props.item.system.codename} does not contain any Fact.
           </BuildError>
         ) : (
           <HeroUnitComponent item={fact} />
         );
       }
 
-      return (
-        <CarouselComponent items={props.item.elements.items.linkedItems} />
-      );
+      return <CarouselComponent items={props.item.elements.items.linkedItems} />;
     default:
       return (
         <BuildError>
           Visual representation &quot;
-          {props.item.elements.visual_representation.value[0]?.name ??
-            "Missing representation"}
+          {props.item.elements.visual_representation.value[0]?.name ?? "Missing representation"}
           &quot; is not supported.
         </BuildError>
       );
@@ -68,9 +65,6 @@ const VisualRepresentation: FC<Props> = (props) => {
 export const VisualContainer: FC<Props> = (props) => (
   // wrapper for anchor functionality, works by passing the item codename to Reference -> External link element
   <div id={sanitizeAnchor(props.item.system.codename)}>
-    <VisualRepresentation
-      index={props.index}
-      item={props.item}
-    />
+    <VisualRepresentation index={props.index} item={props.item} />
   </div>
 );

@@ -1,13 +1,10 @@
 import Image from "next/image";
-import { FC } from "react";
+import type { FC } from "react";
 
-import {
-  createElementSmartLink,
-  createItemSmartLink,
-} from "../../lib/utils/smartLinkUtils";
-import { Fact } from "../../models";
-import { CTAButton } from "./internalLinks/CTAButton";
-import { contentTypes } from "../../models/environment";
+import { createElementSmartLink, createItemSmartLink } from "../../lib/utils/smartLinkUtils.ts";
+import { contentTypes } from "../../models/environment/index.ts";
+import type { Fact } from "../../models/index.ts";
+import { CTAButton } from "./internalLinks/CTAButton.tsx";
 
 type Props = Readonly<{
   item: Fact;
@@ -24,7 +21,7 @@ export const FactComponent: FC<Props> = (props) => {
       className={`flex flex-col ${props.isReversed ? "md:flex-row-reverse" : "md:flex-row"} items-center gap-1 w-full m-0`}
       {...createItemSmartLink(props.item.system.id, true)}
     >
-      {image && (
+      {image ? (
         <div
           className={`w-full md:w-1/2 h-[400px] not-prose relative drop-shadow-lg after:absolute ${props.isReversed ? "after:left-3" : "after:right-3"} after:top-3 after:mainAfterColor after:bg-no-repeat after:w-full after:bg-contain after:h-full after:rounded-lg after:z-[1]`}
           {...createElementSmartLink(contentTypes.fact.elements.image.codename)}
@@ -32,53 +29,37 @@ export const FactComponent: FC<Props> = (props) => {
           <Image
             src={image.url}
             alt={props.item.elements.title.value}
-            fill
+            fill={true}
             sizes="(max-width: 757px) 100vw, 50vw"
             className="object-cover rounded-lg z-10 prose-img:m-0"
           />
         </div>
-      )}
-      <div
-        className={`md:w-1/2 pl-2 pr-10 relative ${props.isReversed ? "md:pl-0" : "md:pl-20"}`}
-      >
+      ) : null}
+      <div className={`md:w-1/2 pl-2 pr-10 relative ${props.isReversed ? "md:pl-0" : "md:pl-20"}`}>
         <h3
           className="heading scroll-mt-20"
           id={props.item.system.codename}
           {...createElementSmartLink(contentTypes.fact.elements.title.codename)}
         >
-          <a
-            className="fact"
-            href={"#" + props.item.system.codename}
-          >
+          <a className="fact" href={`#${props.item.system.codename}`}>
             {props.item.elements.title.value}
           </a>
         </h3>
         <div
           className="text-justify"
-          {...createElementSmartLink(
-            contentTypes.fact.elements.message.codename
-          )}
+          {...createElementSmartLink(contentTypes.fact.elements.message.codename)}
         >
           {props.item.elements.message.value}
         </div>
         {props.item.elements.author.value.length > 0 && (
           <div
             className="pt-5 text-right"
-            {...createElementSmartLink(
-              contentTypes.fact.elements.author.codename
-            )}
+            {...createElementSmartLink(contentTypes.fact.elements.author.codename)}
           >
-            <i>
-              {[
-                [first_name?.value, last_name?.value].join(" "),
-                occupation?.value,
-              ].join(", ")}
-            </i>
+            <i>{[[first_name?.value, last_name?.value].join(" "), occupation?.value].join(", ")}</i>
           </div>
         )}
-        {props.item.elements.reference__label.value && (
-          <CTAButton reference={props.item} />
-        )}
+        {props.item.elements.reference__label.value ? <CTAButton reference={props.item} /> : null}
       </div>
     </figure>
   );
