@@ -38,7 +38,7 @@
     "@kontent-ai/biome-config": "^0.7.0",
     "@kontent-ai/eslint-config": "^2.4.1",
     "@kontent-ai/management-sdk": "^8.5.1",
-    "@kontent-ai/model-generator": "^10.0.0",
+    "@kontent-ai/model-generator": "^10.0.1",
     "@netlify/plugin-nextjs": "^5.15.11",
     "@portabletext/types": "^4.0.2",
     "@tailwindcss/typography": "^0.5.19",
