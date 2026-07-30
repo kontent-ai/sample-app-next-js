@@ -16,6 +16,9 @@
     "start": "next start",
     "test": "jest"
   },
+  "overrides": {
+    "sharp": "^0.35.3"
+  },
   "dependencies": {
     "@heroicons/react": "^2.2.0",
     "@kontent-ai/delivery-sdk": "^16.4.4",
