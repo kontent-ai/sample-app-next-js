@@ -9,6 +9,13 @@
     --color-mainTextColor: var(--mainTextColor);
     --color-mainAfterColor: var(--mainAfterColor);
     --color-mainAnchorColor: var(--mainAnchorColor);
+    --color-granite-navy: #0b1f3a;
+    --color-granite-gold: #c59d4a;
+    --color-granite-gold-hover: #b38b3c;
+    --color-granite-cream: #f4e6c8;
+    --color-granite-tag: #d7e7f4;
+    --color-granite-muted: #5c6b7c;
+    --color-granite-line: #e6e8eb;
 }
 
 [data-theme="ficto_healthtech"] {
@@ -50,6 +57,20 @@
 }
 
 @layer utilities {
+    .granite-grid {
+        background-color: #fff;
+        background-image:
+            linear-gradient(to right, rgb(11 31 58 / 0.07) 1px, transparent 1px),
+            linear-gradient(to bottom, rgb(11 31 58 / 0.07) 1px, transparent 1px);
+        background-size: 48px 48px;
+    }
+
+    .granite-dots {
+        background-color: #fafbfc;
+        background-image: radial-gradient(rgb(11 31 58 / 0.12) 1px, transparent 1px);
+        background-size: 16px 16px;
+    }
+
     .heading a {
         @apply border-l-4 pl-7 -ml-10 font-normal scroll-m-20 no-underline;
     }

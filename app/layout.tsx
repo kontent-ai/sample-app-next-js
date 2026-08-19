@@ -7,7 +7,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body>
         <Analytics />
-        <div className="w-full h-screen">
+        <div className="w-full min-h-screen">
           <SmartlinkInitializer />
           {children}
         </div>

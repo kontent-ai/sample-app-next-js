@@ -9,6 +9,13 @@ import type {
 } from "../models/content-types/index.ts";
 import { contentTypeSnippets, contentTypes } from "../models/environment/index.ts";
 import { ArticlePageSize, ProductsPageSize } from "./constants/paging.ts";
+import {
+  complianceContentTypes,
+  complianceElements,
+  type FeaturedNotice,
+  type RegulatoryNotice,
+  type RiskAlert,
+} from "./types/compliance.ts";
 import type { ArticleTypeWithAll } from "./utils/articlesListing.ts";
 import {
   defaultEnvId,
@@ -72,6 +79,15 @@ export const getItemByCodename = async <ItemType extends IContentItem>(
     });
 };
 
+const logDeliveryFailure = (error: unknown) => {
+  if (error instanceof DeliveryError) {
+    console.error(error.message, error.errorCode);
+    return;
+  }
+
+  console.error("HTTP request error", error instanceof Error ? error.message : error);
+};
+
 export const getHomepage = async (config: ClientConfig, usePreview: boolean) =>
   getDeliveryClient(config)
     .items()
@@ -83,7 +99,11 @@ export const getHomepage = async (config: ClientConfig, usePreview: boolean) =>
     })
     .depthParameter(defaultDepth)
     .toPromise()
-    .then((res) => res.data.items[0] as LP_WebsiteRoot | undefined);
+    .then((res) => res.data.items[0] as LP_WebsiteRoot | undefined)
+    .catch((error) => {
+      logDeliveryFailure(error);
+      return undefined;
+    });
 
 export const getProductsForListing = async (
   config: ClientConfig,
@@ -172,7 +192,11 @@ export const getSiteMenu = async (config: ClientConfig, usePreview: boolean) => 
     .depthParameter(defaultDepth)
     .toAllPromise()
     .then((res) => res.data.items[0] ?? null)
-    .then((item) => item?.elements.navigation.linkedItems[0] ?? null);
+    .then((item) => item?.elements.navigation.linkedItems[0] ?? null)
+    .catch((error) => {
+      logDeliveryFailure(error);
+      return null;
+    });
 };
 
 export const getArticlesForListing = async (
@@ -362,10 +386,80 @@ export const getItemsByCodenames = async (
   getDeliveryClient(config)
     .items()
     .inFilter("system.codename", codenames)
-    .collections([siteCodename, "default"])
     .queryConfig({
       usePreviewMode: usePreview,
       waitForLoadingNewContent: usePreview,
     })
     .depthParameter(defaultDepth)
     .toAllPromise();
+
+const getItemsByType = async <ItemType extends IContentItem>(
+  config: ClientConfig,
+  usePreview: boolean,
+  typeCodename: string,
+): Promise<ReadonlyArray<ItemType>> => {
+  const client = getDeliveryClient(config);
+  const queryConfig = {
+    usePreviewMode: usePreview,
+    waitForLoadingNewContent: usePreview,
+  };
+
+  try {
+    const ordered = await client
+      .items<ItemType>()
+      .type(typeCodename)
+      .orderByDescending(`elements.${complianceElements.effectiveDate}`)
+      .queryConfig(queryConfig)
+      .toPromise();
+
+    return ordered.data.items;
+  } catch (error) {
+    logDeliveryFailure(error);
+  }
+
+  try {
+    const unordered = await client
+      .items<ItemType>()
+      .type(typeCodename)
+      .queryConfig(queryConfig)
+      .toPromise();
+
+    return unordered.data.items;
+  } catch (error) {
+    logDeliveryFailure(error);
+    return [];
+  }
+};
+
+const loadHomepageNotices = async (
+  config: ClientConfig,
+  usePreview: boolean,
+): Promise<ReadonlyArray<FeaturedNotice>> => {
+  const [riskAlerts, regulatoryNotices] = await Promise.all([
+    getItemsByType<RiskAlert>(config, usePreview, complianceContentTypes.riskAlert),
+    getItemsByType<RegulatoryNotice>(config, usePreview, complianceContentTypes.regulatoryNotice),
+  ]);
+
+  return [...riskAlerts, ...regulatoryNotices];
+};
+
+export const getHomepageNotices = async (
+  config: ClientConfig,
+  usePreview: boolean,
+): Promise<ReadonlyArray<FeaturedNotice>> => {
+  const primary = await loadHomepageNotices(config, usePreview);
+  if (primary.length > 0) {
+    return primary;
+  }
+
+  const previewItems = await loadHomepageNotices(config, true);
+  if (previewItems.length > 0) {
+    return previewItems;
+  }
+
+  if (config.envId !== defaultEnvId) {
+    return loadHomepageNotices({ envId: defaultEnvId }, true);
+  }
+
+  return [];
+};

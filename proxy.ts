@@ -139,6 +139,11 @@ const handleArticlesCategoryWithNoPaginationRoute =
       : prevResponse;
 
 const handleEmptyCookies = (prevResponse: NextResponse, request: NextRequest) => {
+  // Drop the previous cookie name so leftover local env IDs cannot keep serving 404s.
+  if (request.cookies.get("currentEnvId")?.value) {
+    prevResponse.cookies.set("currentEnvId", "", cookieDeleteOptions);
+  }
+
   if (!request.cookies.get(envIdCookieName)?.value && !prevResponse.cookies.get(envIdCookieName)) {
     prevResponse.cookies.set(envIdCookieName, defaultEnvId, defaultCookieOptions);
   }

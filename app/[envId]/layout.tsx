@@ -1,11 +1,9 @@
 import { cookies, draftMode } from "next/headers";
-import { notFound } from "next/navigation";
-import { Footer } from "../../components/shared/ui/footer.tsx";
-import { Menu } from "../../components/shared/ui/menu.tsx";
+import { SiteChrome } from "../../components/shared/ui/siteChrome.tsx";
 import { previewApiKeyCookieName } from "../../lib/constants/cookies.ts";
 import { getSiteMenu } from "../../lib/kontentClient.ts";
 import { parseFlatted, stringifyAsType } from "../../lib/utils/circularityUtils.ts";
-import { defaultEnvId, siteCodename } from "../../lib/utils/env.ts";
+import { defaultEnvId } from "../../lib/utils/env.ts";
 
 const PageLayout = async ({
   children,
@@ -20,24 +18,9 @@ const PageLayout = async ({
     : undefined;
   const { envId } = await params;
   const siteMenuData = await getSiteMenu({ envId, previewApiKey }, draft.isEnabled);
+  const siteMenu = siteMenuData ? parseFlatted(stringifyAsType(siteMenuData)) : null;
 
-  if (!siteMenuData) {
-    return notFound();
-  }
-
-  const siteMenu = parseFlatted(stringifyAsType(siteMenuData));
-
-  return (
-    <div
-      className="min-h-full flex flex-col items-center overflow-hidden"
-      data-theme={siteCodename}
-    >
-      <Menu item={siteMenu} />
-      {/* https://tailwindcss.com/docs/typography-plugin */}
-      <main className="grow">{children}</main>
-      <Footer />
-    </div>
-  );
+  return <SiteChrome item={siteMenu}>{children}</SiteChrome>;
 };
 
 export const generateStaticParams = () => [{ envId: defaultEnvId }];

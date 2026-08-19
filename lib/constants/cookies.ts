@@ -1,4 +1,4 @@
-export const envIdCookieName = "currentEnvId";
+export const envIdCookieName = "kontentEnvId";
 
 export const previewApiKeyCookieName = "currentPreviewApiKey";
 
